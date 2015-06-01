@@ -1,0 +1,194 @@
+
+ExtractDates <- function(articlesHtml, dateFormat = "dmY", language = "en", customString = "") {  
+  numberOfArticles <- length(articlesHtml)
+  datesTxt <- rep(NA, numberOfArticles)
+  if (dateFormat == "dby" | dateFormat == "dBy" | dateFormat == "dBY" | dateFormat == "dbY") {
+    for (i in 1:numberOfArticles) {
+      dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]]?[[:digit:]][[:space:]][[:alpha:]]*[[:space:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]", articlesHtml[i]))
+      if (length(dateTxt) == 0) {
+        datesTxt[i] <- NA        
+      } else {
+        datesTxt[i] <- dateTxt
+      }
+    }
+  } else if (dateFormat == "dB,Y") {
+    for (i in 1:numberOfArticles) {
+      dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]]?[[:digit:]][[:space:]][[:alpha:]]*,[[:space:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]?", articlesHtml[i]))
+      if (length(dateTxt) == 0) {
+        datesTxt[i] <- NA        
+      } else {
+        datesTxt[i] <- dateTxt
+      }
+    }
+  } else if (dateFormat == "Bd,Y") {
+    for (i in 1:numberOfArticles) {
+      dateTxt <- regmatches(articlesHtml[i], regexpr("[[:space:]][[:alpha:]]*[[:space:]][[:digit:]]?[[:digit:]],[[:space:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]?", articlesHtml[i]))
+      if (length(dateTxt) == 0) {
+        datesTxt[i] <- NA        
+      } else {
+        datesTxt[i] <- dateTxt
+      }
+    } 
+  } else if (dateFormat == "xdBY") {
+    for (i in 1:numberOfArticles) {
+      dateTxt <- regmatches(articlesHtml[i], regexpr(paste0(customString, "[[:digit:]]?[[:digit:]][[:space:]][[:alpha:]]*[[:space:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]?"), articlesHtml[i]))
+      if (length(dateTxt) == 0) {
+        datesTxt[i] <- NA        
+      } else {
+        datesTxt[i] <- dateTxt
+      }
+    }
+    dateFormat <- "dBY"
+  } else if (dateFormat == "ymd") {
+    for (i in 1:numberOfArticles) {
+      datesTxt[i] <- regmatches(articlesHtml[i], regexpr("[[:digit:]][[:digit:]][[:digit:]][[:digit:]][[:punct:]][[:digit:]][[:digit:]][[:punct:]][[:digit:]][[:digit:]]", articlesHtml[i]))
+    }
+  } else if (dateFormat == "dmy" | dateFormat == "mdy") {
+    for (i in 1:numberOfArticles) {
+      dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]]?[[:digit:]][[:punct:]][[:digit:]]?[[:digit:]][[:punct:]][[:digit:]][[:digit:]]", articlesHtml[i]))
+      if (length(dateTxt) == 0) {
+        datesTxt[i] <- NA        
+      } else {
+        datesTxt[i] <- dateTxt
+      }
+    }
+  } else if (dateFormat == "dmY" | dateFormat == "mdY") {
+    for (i in 1:numberOfArticles) {
+      dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]]?[[:digit:]][[:punct:]][[:digit:]]?[[:digit:]][[:punct:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]", articlesHtml[i]))
+      if (length(dateTxt) == 0) {
+        datesTxt[i] <- NA        
+      } else {
+        datesTxt[i] <- dateTxt
+      }
+    }
+  }
+  if (language == "ru") {
+    monthsRu <- c("Января", "Февраля", "Марта", "Апреля", "Мая", "Июня", "Июля", "Августа", "Сентября", "Октября", "Ноября", "Декабря")
+    monthsEn <- month.name
+    monthsRu <- tolower(monthsRu)
+    datesTxt <- tolower(datesTxt)
+    for (i in 1:12) {
+      datesTxt <- gsub(monthsRu[i], monthsEn[i], datesTxt)      
+    }
+  }
+  dates <- parse_date_time(datesTxt, dateFormat)
+  dates
+}
+
+ExtractDatesXpath <- function(articlesHtml, dateFormat = "dmy", divClass = "", spanClass = "", customXpath = "", language = "en", customString = "") {
+  numberOfArticles <- length(articlesHtml)
+  datesTxt <- rep(NA, numberOfArticles)
+  if (divClass != "") {
+    for (i in 1:numberOfArticles) {
+      if (articlesHtml[i] != "") {
+        articleHtmlParsed <- htmlTreeParse(articlesHtml[i], useInternalNodes=T)
+        if (length(xpathSApply(articleHtmlParsed, paste0("//div[@class='", divClass, "']"), xmlValue)) == 0) {
+          datesTxt[i] <- NA
+          print(paste("Date in article with ID", i, "could not be extracted."))
+        } else {
+          datesTxt[i] <- xpathSApply(articleHtmlParsed, paste0("//div[@class='", divClass, "']"), xmlValue)
+        }
+      }
+    }
+  }
+  if (spanClass != "") {
+    for (i in 1:numberOfArticles) {
+      articleHtmlParsed <- htmlTreeParse(articlesHtml[i], useInternalNodes=T)
+      datesTxt[i] <- xpathSApply(articleHtmlParsed, paste0("//span[@class='", spanClass, "']"), xmlValue)
+    }
+  }
+  if (customXpath != "") {
+    for (i in 1:numberOfArticles) {
+      if (articlesHtml[i] != "") {
+        articleHtmlParsed <- htmlTreeParse(articlesHtml[i], useInternalNodes=T)
+        datesTxt[i] <- xpathSApply(articleHtmlParsed, customXpath, xmlValue)
+      }
+    }    
+  }
+  ExtractDates(datesTxt, dateFormat, language)
+}
+
+MergeDates <- function(dates1, dates2, dates3 = "", firstPossibleDate = "", lastPossibleDate = "") {
+  dates <- dates1
+  for (i in 1:length(dates)) {
+    if (is.na(dates[i])) {
+      dates[i] <- dates2[i]
+    }
+    if (is.na(dates[i])) {
+      dates[i] <- dates3[i]
+    }
+    if (firstPossibleDate != "" & lastPossibleDate != "") {
+      if (is.na(dates[i]) == FALSE & dates[i] < firstPossibleDate | is.na(dates[i]) == FALSE & dates[i] > lastPossibleDate) {
+        dates[i] <- NA    
+      }
+    }
+  }
+  dates
+}
+
+ExtractTitles <- function(articlesHtml, articlesLinks = "", titlesExtractMethod = "indexLink", removePunctuationInFilename = TRUE, remove = "", removeString = "", customXpath = "") {
+  titles <- vector()
+  numberOfArticles <- length(articlesHtml)
+  if (titlesExtractMethod == "htmlTitle") {
+    for (i in 1:numberOfArticles) {
+      articleHtmlParsed <- htmlTreeParse(articlesHtml[i], useInternalNodes=T)
+      titles[i] <- xpathSApply(articleHtmlParsed, "//title", xmlValue)
+    }    
+  } else if (titlesExtractMethod == "htmlH2") {
+    for (i in 1:numberOfArticles) {
+      articleHtmlParsed <- htmlTreeParse(articlesHtml[i], useInternalNodes=T)
+      titles[i] <- xpathSApply(articleHtmlParsed, "//h2", xmlValue)
+    }     
+  } else if (titlesExtractMethod == "htmlH1") {
+    for (i in 1:numberOfArticles) {
+      articleHtmlParsed <- htmlTreeParse(articlesHtml[i], useInternalNodes=T)
+      titles[i] <- xpathSApply(articleHtmlParsed, "//h1", xmlValue)
+    }
+  } else if (titlesExtractMethod == "customXpath") {
+    articleHtmlParsed <- htmlTreeParse(articlesHtml[i], useInternalNodes=T)
+    titles[i] <- xpathSApply(articleHtmlParsed, customXpath, xmlValue)    
+  } else if (titlesExtractMethod == "indexLink") {
+    titles <- names(articlesLinks)
+  }
+  if (removeString != "") {
+    titles <- gsub(removeString, "", titles, fixed = TRUE)
+  }
+  if (remove == "onlyStandardCharacters") {
+    titles <- gsub("[^A-Za-z0-9 ]", "-", titles)
+    titles <- gsub("  ", " ", titles)
+    titles <- gsub("--", "-", titles)
+  } else if (removePunctuationInFilename == TRUE) {
+    titles <- gsub("[[:punct:]]", "-", titles)
+    titles <- gsub("  ", " ", titles)
+    titles <- gsub("--", "-", titles)
+  }
+  titles
+}
+
+ExtractArticleId <- function(nameOfProject, nameOfWebsite, accordingToDate = FALSE) {
+  htmlFilesList <- list.files(file.path(nameOfProject, nameOfWebsite, "Html"))
+  htmlFilesList <- mixedsort(htmlFilesList)
+  if (accordingToDate == TRUE) {
+    htmlFilesList <- htmlFilesList[order(dates)]   
+  }
+  articlesId <- as.integer(regmatches(htmlFilesList, regexpr("[[:digit:]]+", htmlFilesList)))
+  articlesId
+}
+
+ExportMetadata <- function(nameOfProject, nameOfWebsite, dates, articlesId, titles, language, articlesLinks, exportXlsx = FALSE, accordingToDate = FALSE) {
+  metadata <- data.frame(nameOfProject, nameOfWebsite, dates, articlesId, titles, language, articlesLinks, check.names = FALSE, stringsAsFactors = FALSE)
+  if (accordingToDate == TRUE) {
+    metadata <- metadata[order(metadata$dates), ]
+    metadata$articlesId <- 1:length(metadata$articlesId)
+    htmlFilesList <- list.files(file.path(nameOfProject, nameOfWebsite, "Html"), full.names = TRUE)
+    htmlFilesList <- mixedsort(htmlFilesList)
+    for (i in 1:length(htmlFilesList)) {
+      file.rename(htmlFilesList[i], paste0(file.path(nameOfProject, nameOfWebsite, "Html", paste0(metadata$articlesId[i], ".html"))))
+    }
+  }
+  write.csv(metadata, file = file.path(nameOfProject, nameOfWebsite, paste(nameOfWebsite, "metadata.csv")), row.names = FALSE)
+  if (exportXlsx == TRUE) {
+    write.xlsx(metadata, file = file.path(nameOfProject, nameOfWebsite, paste(nameOfWebsite, "metadata.xlsx")), row.names = FALSE)
+  }
+  metadata
+}
