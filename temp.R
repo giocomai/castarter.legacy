@@ -5,4 +5,5 @@ document()
 
 install_github("giocomai/castarter", auth_token = "2808c6bf295f7455a85767496592880939a247cf")
 
-
+formatR::tidy_app()
+tidy_dir(path = file.path("R"))
