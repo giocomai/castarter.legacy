@@ -1,4 +1,8 @@
-library("devtools")
-library("roxygen2")
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load("devtools", "roxygen2", "formatR", "shiny")
 
 document()
+
+install_github("giocomai/castarter", auth_token = "2808c6bf295f7455a85767496592880939a247cf")
+
+
