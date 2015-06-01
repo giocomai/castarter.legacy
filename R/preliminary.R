@@ -1,3 +1,11 @@
+#' A function that loads all needed packages
+#'
+#' It needs to be deleted
+#' @keywords toBeRemoved
+#' @export
+#' @examples
+#' LoadRequiredPackages()
+
 LoadRequiredPackages <- function() {
   if (!require("pacman")) install.packages("pacman")
   pacman::p_load("RCurl", "stringr", "gtools", "boilerpipeR", "XML", "lubridate", "tm", "SnowballC", "ggplot2", "wordcloud", "dplyr", "xlsx", "slam", "zoo", "RGtk2Extras", "scales", "reshape2", "gridExtra", "RColorBrewer", "mgcv")
