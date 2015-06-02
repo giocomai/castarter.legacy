@@ -3,14 +3,18 @@ ArchiveFolders <- function(nameOfProject, nameOfWebsite) {
     if (!file.exists(file.path(nameOfProject, nameOfWebsite, "Archives"))) {
         dir.create(file.path(nameOfProject, nameOfWebsite, "Archives"))
     }
+    today <- Sys.Date()
+    if (!file.exists(file.path(nameOfProject, nameOfWebsite, "Archives", today))) {
+      dir.create(file.path(nameOfProject, nameOfWebsite, "Archives", today))
+    }    
     if (file.exists(file.path(nameOfProject, nameOfWebsite, "Html"))) {
-        tar(file.path(nameOfProject, nameOfWebsite, "Archives", "html.tgz"), file.path(nameOfProject, nameOfWebsite, "Html"), compression = "gzip")
+        tar(file.path(nameOfProject, nameOfWebsite, "Archives", today, "Html.tar.gz"), file.path(nameOfProject, nameOfWebsite, "Html"), compression = "gzip")
     }
     if (file.exists(file.path(nameOfProject, nameOfWebsite, "IndexHtml"))) {
-        tar(file.path(nameOfProject, nameOfWebsite, "Archives", "IndexHtml.tgz"), file.path(nameOfProject, nameOfWebsite, "IndexHtml"), compression = "gzip")
+        tar(file.path(nameOfProject, nameOfWebsite, "Archives", today, "IndexHtml.tar.gz"), file.path(nameOfProject, nameOfWebsite, "IndexHtml"), compression = "gzip")
     }
     if (file.exists(file.path(nameOfProject, nameOfWebsite, "Txt"))) {
-        tar(file.path(nameOfProject, nameOfWebsite, "Archives", "Txt.tgz"), file.path(nameOfProject, nameOfWebsite, "Txt"), compression = "gzip")
+        tar(file.path(nameOfProject, nameOfWebsite, "Archives", today, "Txt.tar.gz"), file.path(nameOfProject, nameOfWebsite, "Txt"), compression = "gzip")
     }
     if (removeArchivedFolders == TRUE) {
         if (file.exists(file.path(nameOfProject, nameOfWebsite, "Html"))) {
