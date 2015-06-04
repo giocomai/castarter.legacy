@@ -7,3 +7,6 @@ install_github("giocomai/castarter", auth_token = "2808c6bf295f7455a857674965928
 
 formatR::tidy_app()
 tidy_dir(path = file.path("R"))
+
+devtools::use_package("RCurl")
+devtools::use_package("XML")
