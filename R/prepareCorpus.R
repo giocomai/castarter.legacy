@@ -21,6 +21,14 @@ LoadAllDatasets <- function(nameOfProject) {
     allDatasets
 }
 
+#' A function that converts a dataset created by 'castarter' into a corpus using the 'tm' package.Metadata are automatically imported.
+#'
+#' @keywords tm
+#' @export
+#' @examples
+#' ConvertToCorpus(dataset)
+#' 
+
 ConvertToCorpus <- function(allDatasets) {
     corpus <- VCorpus(VectorSource(allDatasets$articlesTxt))
     for (i in 1:length(allDatasets$articlesTxt)) {
