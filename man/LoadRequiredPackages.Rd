@@ -2,12 +2,12 @@
 % Please edit documentation in R/preliminary.R
 \name{LoadRequiredPackages}
 \alias{LoadRequiredPackages}
-\title{A function that loads all needed packages}
+\title{Loads all packages needed for 'castarter'}
 \usage{
 LoadRequiredPackages()
 }
 \description{
-It needs to be deleted
+It needs to be deleted.
 }
 \examples{
 LoadRequiredPackages()
