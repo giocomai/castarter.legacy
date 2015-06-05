@@ -3,6 +3,7 @@
 export(ArchiveFolders)
 export(ConvertToCorpus)
 export(CreateFolderStructure)
+export(CreateTimeSeries)
 export(LoadLatestWebsite)
 export(LoadRequiredPackages)
 export(SaveAndExportWebsite)

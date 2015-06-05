@@ -1,6 +1,16 @@
-CreateTimeSeries <- function(allDatasets, corpus, specificTerms, specificWebsites = "", startDate = "", rollingAverage = 30) {
-    time <- as.character(strptime(allDatasets$dates, "%Y-%m-%d"))
-    nameOfWebsite <- as.character(allDatasets$nameOfWebsite)
+#' Creates time series of the frequency of specific terms.
+#'
+#' It creates time series with the frequency of one or more terms, in one or more websites. 
+#' @param dataset A dataset of one or more websites created with 'castarter'.
+#' @param corpus TM corpus with the same contents of the dataset.
+#' @param specificTerms Character vector with one or more words to be analysed. 
+#' @export
+#' @examples
+#' CreateTimeSeries(dataset, corpus, specificTerms = c("word1", "word2"))
+
+CreateTimeSeries <- function(dataset, corpus, specificTerms, specificWebsites = "", startDate = "", rollingAverage = 30) {
+    time <- as.character(strptime(dataset$dates, "%Y-%m-%d"))
+    nameOfWebsite <- as.character(dataset$nameOfWebsite)
     corpusDtm <- DocumentTermMatrix(corpus)
     if (length(specificTerms>1)) {
         frequencyOfSpecificTerms <- as.table(rollup(corpusDtm[, specificTerms], 1, time))
@@ -17,6 +27,11 @@ CreateTimeSeries <- function(allDatasets, corpus, specificTerms, specificWebsite
     if (rollingAverage != "") {
         termSeries <- rollapply(termSeries, rollingAverage, align = "left", mean, na.rm = TRUE)
     }
-    autoplot(termSeries, facets = NULL) + ggtitle(paste("Time series of references to", dQuote(specificTerms))) + scale_x_datetime("Date") + theme(plot.title = element_text(size = rel(1.8)), 
-                                                                                                                                                  legend.title = element_text(size = rel(1.5)), legend.text = element_text(size = rel(1))) + scale_colour_brewer(type = "qual", palette = 6)
+    autoplot(termSeries, facets = NULL) +
+        ggtitle(paste("Time series of references to", dQuote(specificTerms))) +
+        scale_x_datetime("Date") +
+        theme(plot.title = element_text(size = rel(1.8)),
+              legend.title = element_text(size = rel(1.5)),
+              legend.text = element_text(size = rel(1))) +
+        scale_colour_brewer(type = "qual", palette = 6)
 } 
