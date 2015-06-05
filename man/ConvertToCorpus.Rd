@@ -2,8 +2,7 @@
 % Please edit documentation in R/prepareCorpus.R
 \name{ConvertToCorpus}
 \alias{ConvertToCorpus}
-\title{Converts a 'castarter' dataset into a 'tm' corpus.
-Takes a dataset created with 'castarter' and converts it into a 'tm' corpus. Metadata are automatically imported.}
+\title{Converts a 'castarter' dataset into a 'tm' corpus.}
 \usage{
 ConvertToCorpus(dataset)
 }
@@ -14,7 +13,6 @@ ConvertToCorpus(dataset)
 A corpus as created by the 'tm' package including metadata.
 }
 \description{
-Converts a 'castarter' dataset into a 'tm' corpus.
 Takes a dataset created with 'castarter' and converts it into a 'tm' corpus. Metadata are automatically imported.
 }
 \examples{

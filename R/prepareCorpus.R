@@ -22,6 +22,7 @@ LoadAllDatasets <- function(nameOfProject) {
 }
 
 #' Converts a 'castarter' dataset into a 'tm' corpus.
+#' 
 #' Takes a dataset created with 'castarter' and converts it into a 'tm' corpus. Metadata are automatically imported.
 #'  
 #' @param dataset A data.frame created by 'castarter' including metadata and full text articles to be converted into a corpus. 
