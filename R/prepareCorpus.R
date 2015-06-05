@@ -22,22 +22,24 @@ LoadAllDatasets <- function(nameOfProject) {
 }
 
 #' A function that converts a dataset created by 'castarter' into a corpus using the 'tm' package.Metadata are automatically imported.
-#'
+#' 
+#' @param dataset A data.frame created by 'castarter' including metadata and full text articles to be converted into a corpus. 
+#' @return A corpus as created by the 'tm' package including metadata. 
 #' @keywords tm
 #' @export
 #' @examples
-#' ConvertToCorpus(dataset)
+#' corpus <- ConvertToCorpus(dataset)
 #' 
 
-ConvertToCorpus <- function(allDatasets) {
-    corpus <- VCorpus(VectorSource(allDatasets$articlesTxt))
-    for (i in 1:length(allDatasets$articlesTxt)) {
-        meta(corpus[[i]], tag = "author") <- allDatasets$nameOfWebsite[i]
-        meta(corpus[[i]], tag = "datetimestamp") <- allDatasets$dates[i]
-        meta(corpus[[i]], tag = "heading") <- allDatasets$titles[i]
-        meta(corpus[[i]], tag = "id") <- allDatasets$articlesId[i]
-        meta(corpus[[i]], tag = "language") <- allDatasets$language[i]
-        meta(corpus[[i]], tag = "origin") <- allDatasets$articlesLinks[i]
+ConvertToCorpus <- function(dataset) {
+    corpus <- VCorpus(VectorSource(dataset$articlesTxt))
+    for (i in 1:length(dataset$articlesTxt)) {
+        meta(corpus[[i]], tag = "author") <- dataset$nameOfWebsite[i]
+        meta(corpus[[i]], tag = "datetimestamp") <- dataset$dates[i]
+        meta(corpus[[i]], tag = "heading") <- dataset$titles[i]
+        meta(corpus[[i]], tag = "id") <- dataset$articlesId[i]
+        meta(corpus[[i]], tag = "language") <- dataset$language[i]
+        meta(corpus[[i]], tag = "origin") <- dataset$articlesLinks[i]
     }
     corpus
 } 
