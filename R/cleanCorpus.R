@@ -34,22 +34,6 @@ CombineWords <- function(corpus, wordCombinations) {
     corpus
 }
 
-# AddWordsToBeUnited <- function(wordsToBeCombined, nameOfProject) { if (file.exists(file.path(nameOfProject, paste(nameOfProject,
-# 'wordsToBeUnited.txt')))) { wordCombinations <- as.vector(readLines(con = file.path(nameOfProject, paste(nameOfProject,
-# 'wordsToBeUnited.txt')))) } else { writeLines(wordsToBeCombined, con = file.path(nameOfProject, paste(nameOfProject,
-# 'wordsToBeUnited.txt'))) } if (exists('wordsToBeUnited') == FALSE) { wordCombinations <- wordsToBeCombined } else { wordCombinations <-
-# c(wordCombinations, wordsToBeCombined) } wordCombinations <- unique(as.character(wordCombinations[wordCombinations != '']))
-# writeLines(wordCombinations, con = file.path(nameOfProject, paste(nameOfProject, 'wordsToBeUnited.txt'))) wordCombinations } UniteWords <-
-# function(corpus, wordCombinations) { # Export metadata author <- vector() datetimestamp <- vector() heading <- vector() id <- vector()
-# language <- vector() origin <- vector() for (i in 1:length(corpus)) { author[i] <- meta(corpus[[i]], tag = 'author') datetimestamp[i] <-
-# meta(corpus[[i]], tag = 'datetimestamp') heading[i] <- meta(corpus[[i]], tag = 'heading') id[i] <- meta(corpus[[i]], tag = 'id')
-# language[i] <- meta(corpus[[i]], tag = 'language') origin[i] <- meta(corpus[[i]], tag = 'origin') } wordCombined <- gsub('\\s+','',
-# wordCombinations) for (i in 1:length(wordCombinations)) { word1 <- wordCombinations[i] word2 <- wordCombined[i] for (i in 1:length(corpus))
-# { corpus[[i]] <- gsub(word1, word2, corpus[[i]], fixed = TRUE) } } corpus <- VCorpus(VectorSource(corpus)) for (i in 1:length(corpus)) {
-# meta(corpus[[i]], tag = 'author') <- author[i] meta(corpus[[i]], tag = 'datetimestamp') <- datetimestamp[i] meta(corpus[[i]], tag =
-# 'heading') <- heading[i] meta(corpus[[i]], tag = 'id') <- id[i] meta(corpus[[i]], tag = 'language') <- language[i] meta(corpus[[i]], tag =
-# 'origin') <- origin[i] } corpus }
-
 AddStopwords <- function(newStopwords, nameOfProject, includeDefaultList = FALSE, language = "en") {
     if (file.exists(file.path(nameOfProject, paste(nameOfProject, "stopwords.txt")))) {
         stopwords <- as.vector(readLines(con = file.path(nameOfProject, paste(nameOfProject, "stopwords.txt"))))
@@ -74,6 +58,16 @@ RemoveStopwords <- function(corpus, stopwords) {
     corpus
 }
 
+#' Calls various 'tm' functions to clean up the corpus. 
+#' 
+#' It applies to a corpus common operations to prepare it for further analysis using functions of the 'tm' package.
+#'  
+#' @param corpus A corpus as created by the 'tm' package including metadata.
+#' @return A corpus as created by the 'tm' package including metadata, after all enabled transformations are applied.
+#' @keywords tm
+#' @export
+#' @examples
+#' corpus <- CleanCorpus(corpus)
 CleanCorpus <- function(corpus, stripWhitespace = TRUE, toLowerCase = TRUE, removeNumbers = TRUE, removePunctuation = TRUE, removeControlCharacters = TRUE, 
     removeCharacter = "") {
     if (toLowerCase == TRUE) {
@@ -130,3 +124,18 @@ StemCorpusDtm <- function(corpusDtm, stemmingDictionary) {
     dtm <- dtm[, Terms(dtm) != ""]
     dtm
 } 
+
+#' Creates a Document Term Matrix (DTM).
+#'  
+#' @param corpus A corpus as created by the 'tm' package including metadata.
+#' @param removeSparseTerms A value between 0 and 1, to be passed to the removeSparseTerms function of the 'tm' function.
+#' @return A Document Term Matrix (DTM).
+#' @keywords tm
+#' @export
+#' @examples
+#' dtm <- CreateDtm(corpus)
+CreateDtm <- function(corpus, removeSparseTerms = ""){
+    if (removeSparseTerms != "") {
+        corpus <- removeSparseTerms(dtm, removeSparseTerms)
+    }
+}

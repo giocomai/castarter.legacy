@@ -2,7 +2,9 @@
 
 export(AnalyseTerms)
 export(ArchiveFolders)
+export(CleanCorpus)
 export(ConvertToCorpus)
+export(CreateDtm)
 export(CreateFolderStructure)
 export(CreateTimeSeries)
 export(ExportArticlesWith)
