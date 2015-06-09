@@ -1,3 +1,12 @@
+#' Compares frequency of specific words across websites. 
+#' 
+#' @param corpus A TM corpus. 
+#' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.
+#' @param specificTerms Character vector of terms to be compared. 
+#' @export
+#' @examples
+#' AnalyseTerms(corpus, nameOfProject, specificTerms)
+
 AnalyseTerms <- function(corpus, nameOfProject, specificTerms, mode = "graph", includeOnly = "", order = "", tipology = "", frequency = "relative") {
     byWebsiteAll <- DivideByWebsite(corpus, nameOfProject)
     if (includeOnly[1] != "") {
@@ -64,3 +73,4 @@ AnalyseTerms <- function(corpus, nameOfProject, specificTerms, mode = "graph", i
     }
     mostFrequentByWebsite
 } 
+

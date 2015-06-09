@@ -1,4 +1,14 @@
-ExportArticlesWith <- function(dataset, word, nameOfProject, nameOfWebsite, txt = TRUE, csv = FALSE, xlsx = FALSE, data.frame = FALSE, includeOnly = "", 
+#' Exports all articles that contain a given term.
+#'
+#' @param dataset A dataset created with 'castarter'.
+#' @param term The term that determines which articles are exported.
+#' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
+#' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
+#' @export
+#' @examples
+#' ExportArticlesWith(dataset, "example", nameOfProject, nameOfWebsite)
+
+ExportArticlesWith <- function(dataset, term, nameOfProject, nameOfWebsite, txt = TRUE, csv = FALSE, xlsx = FALSE, data.frame = FALSE, includeOnly = "", 
     sortBy = "date") {
     # Export only items that include...
     tempDataset <- dataset[grep(word, dataset$articlesTxt, ignore.case = TRUE), ]
