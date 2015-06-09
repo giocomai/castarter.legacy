@@ -30,6 +30,15 @@ DownloadArticles <- function(nameOfProject, nameOfWebsite, articlesLinks, extrac
     articlesHtml
 }
 
+#' ReDownloads missing articles. 
+#'
+#' Probably needs to be deleted, and integrated into DownloadArticles
+#' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
+#' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
+#' @export
+#' @examples
+#' ReDownloadMissingArticles(nameOfProject, nameOfWebsite, articlesLinks)
+
 ReDownloadMissingArticles <- function(nameOfProject, nameOfWebsite, links = articlesLinks, size = 500, htmlFilesToDownload = "", wget = FALSE, 
     wait = 3) {
     htmlFilesList <- mixedsort(list.files(file.path(nameOfProject, nameOfWebsite, "Html"), full.names = TRUE))
