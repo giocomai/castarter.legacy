@@ -1,3 +1,13 @@
+#' Loads all datasets of a 'castarter' project.
+#' 
+#' Takes all datasets from all websites in a project and outputs them in a data frame.
+#'  
+#' @param nameOfProject The name of the project whose datasets are to be imported.
+#' @return A data frame including all datasets of a project.
+#' @export
+#' @examples
+#' allDatasets <- LoadAllDatasets(dataset)
+
 LoadAllDatasets <- function(nameOfProject) {
     listOfWebsites <- gsub(paste0(nameOfProject, "/"), "", list.dirs(file.path(nameOfProject), recursive = FALSE), fixed = TRUE)
     lastSavedDatasets <- vector()
@@ -17,7 +27,6 @@ LoadAllDatasets <- function(nameOfProject) {
         allDatasets <- rbind(allDatasets, dataset)
         rm(dataset)
     }
-    # allDatasets$nameOfProject <- as.factor(allDatasets$nameOfProject) allDatasets$nameOfWebsite <- as.factor(allDatasets$nameOfWebsite)
     allDatasets
 }
 
