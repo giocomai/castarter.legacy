@@ -20,5 +20,4 @@ It applies to a corpus common operations to prepare it for further analysis usin
 \examples{
 corpus <- CleanCorpus(corpus)
 }
-\keyword{tm}
 

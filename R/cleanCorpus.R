@@ -64,7 +64,6 @@ RemoveStopwords <- function(corpus, stopwords) {
 #'  
 #' @param corpus A corpus as created by the 'tm' package including metadata.
 #' @return A corpus as created by the 'tm' package including metadata, after all enabled transformations are applied.
-#' @keywords tm
 #' @export
 #' @examples
 #' corpus <- CleanCorpus(corpus)

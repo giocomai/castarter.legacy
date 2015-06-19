@@ -1,3 +1,14 @@
+#' Imports html files into a character vector. 
+#' 
+#' Imports html files already downloaded into a character vector.
+#'  
+#' @param from Allows to choose which type of contents to import. Can be either "articles" or "index".
+#' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
+#' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
+#' @return A character vector of html files.
+#' @export
+#' @examples
+#' articlesHtml <- ImportHtml(from = articles, nameOfProject, nameOfWebsite)
 ImportHtml <- function(from = "", nameOfProject = "", nameOfWebsite = "", pathToHtmlFolder = "") {
     if (from == "articles") {
         htmlFilesList <- list.files(file.path(nameOfProject, nameOfWebsite, "Html"), pattern = "\\.html$", full.names = TRUE)
