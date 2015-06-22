@@ -4,6 +4,7 @@
 #'  
 #' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
 #' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
+#' @param start ID of articleLinks from which the download should start. Useful for interrupted downloads. Defaults to 1.
 #' @return A character vector of html file, and html files saved in dedicated folder. 
 #' @export
 #' @examples

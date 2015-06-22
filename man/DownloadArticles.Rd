@@ -11,6 +11,8 @@ DownloadArticles(nameOfProject, nameOfWebsite, articlesLinks,
 \item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
 
 \item{nameOfWebsite}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
+
+\item{start}{ID of articleLinks from which the download should start. Useful for interrupted downloads. Defaults to 1.}
 }
 \value{
 A character vector of html file, and html files saved in dedicated folder.
