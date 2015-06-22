@@ -1,5 +1,15 @@
+#' Downloads files in html format based on list of links. 
+#' 
+#' Downloads files in html format based on list of links.
+#'  
+#' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
+#' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
+#' @return A character vector of html file, and html files saved in dedicated folder. 
+#' @export
+#' @examples
+#' articlesHtml <- DownloadArticles(nameOfProject, nameOfWebsite, articlesLinks)
 
-DownloadArticles <- function(nameOfProject, nameOfWebsite, articlesLinks, extractArticlesId = FALSE, start = 1, wait = 0, wget = FALSE) {
+DownloadArticles <- function(nameOfProject, nameOfWebsite, articlesLinks, extractArticlesId = FALSE, start = 1, wait = 1, wget = FALSE) {
     numberOfArticles <- length(articlesLinks)
     articlesHtml <- rep(NA, numberOfArticles)
     if (extractArticlesId == FALSE) {
