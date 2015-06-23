@@ -1,3 +1,13 @@
+#' Generates links to index pages listing individual articles.. 
+#' 
+#' Generates links to index pages listing individual articles.
+#'  
+#' @param linkFirstChunkIndex First part of index link that does not change in other index pages.
+#' @param linkSecondChunkIndex Part of index link appneded after the part of the link that varies. If not relevant, may be left empty. 
+#' @return A character vector of links to index pages. 
+#' @export
+#' @examples
+#' CreateIndexPagesLinks <- CreateIndexPagesLinks("http://www.example.com/news/")
 CreateIndexPagesLinks <- function(linkFirstChunkIndex, linkSecondChunkIndex = "", firstIndexPage = 1, lastIndexPage = 10, increaseBy = 1, dateStyle = "", 
     firstYear = "", lastYear = "", leadingZero = TRUE, startDate = "", endDate = "", sortIndexPagesLinks = TRUE, dateSeparator = "/", export = FALSE, 
     reversedOrder = FALSE) {
@@ -58,6 +68,17 @@ CreateIndexPagesLinks <- function(linkFirstChunkIndex, linkSecondChunkIndex = ""
     }
 }
 
+#' Downloads index pages of a website. 
+#' 
+#' Downloads index pages of a website. 
+#'  
+#' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
+#' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
+#' @param indexPagesLinks A character vector of index pages, possibly generated with the function CreateIndexPagesLinks.
+#' @return A character vector of html files.
+#' @export
+#' @examples
+#' indexPagesHtml <- DownloadIndexPages(nameOfProject, nameOfWebsite, indexPagesLinks)
 DownloadIndexPages <- function(nameOfProject, nameOfWebsite, indexPagesLinks, start = 1, wget = FALSE, phantomjs = FALSE, wait = 0, update = FALSE) {
     numberOfIndexPages <- length(indexPagesLinks)
     listOfnumberOfIndexPages <- 1:numberOfIndexPages
