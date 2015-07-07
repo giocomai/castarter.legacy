@@ -178,6 +178,9 @@ ExtractTitles <- function(articlesHtml, articlesLinks = "", titlesExtractMethod 
         titles[i] <- xpathSApply(articleHtmlParsed, customXpath, xmlValue)
     } else if (titlesExtractMethod == "indexLink") {
         titles <- names(articlesLinks)
+    } else if (titlesExtractMethod == "beginning") {
+        articlesTxt <- ExtractTxt(articlesHtml, export = FALSE, keepEverything = TRUE)
+        titles <- substring(articlesTxt, 1, maximumNumberOfCharactersInTitle)
     }
     if (removeString != "") {
         titles <- gsub(removeString, "", titles, fixed = TRUE)
