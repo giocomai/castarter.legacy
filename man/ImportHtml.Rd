@@ -5,7 +5,8 @@
 \title{Imports html files into a character vector.}
 \usage{
 ImportHtml(from = "", nameOfProject = "", nameOfWebsite = "",
-  pathToHtmlFolder = "")
+  pathToHtmlFolder = "", sort = TRUE, recursive = TRUE,
+  includePath = FALSE)
 }
 \arguments{
 \item{from}{Allows to choose which type of contents to import. Can be either "articles" or "index".}
@@ -13,9 +14,11 @@ ImportHtml(from = "", nameOfProject = "", nameOfWebsite = "",
 \item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
 
 \item{nameOfWebsite}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
+
+\item{recursive}{Value is passed to list.files function when using the pathToHtmlFolder option.}
 }
 \value{
-A character vector of html files.
+A character vector of html file, or a data frame if includePath is set to TRUE.
 }
 \description{
 Imports html files already downloaded into a character vector.
