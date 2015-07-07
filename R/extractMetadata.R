@@ -180,8 +180,7 @@ ExtractTitles <- function(articlesHtml, articlesLinks = "", titlesExtractMethod 
     } else if (titlesExtractMethod == "indexLink") {
         titles <- names(articlesLinks)
     } else if (titlesExtractMethod == "beginning") {
-        articlesTxt <- ExtractTxt(articlesHtml, export = FALSE, keepEverything = TRUE)
-        titles <- substring(articlesTxt, 1, maximumNumberOfCharactersInTitle)
+        titles <- ExtractTxt(articlesHtml, export = FALSE, keepEverything = TRUE)
     }
     if (removeString[1] != "") {
         titles <- gsub(paste(removeString, collapse = "|"), replacement = "", x = titles)
