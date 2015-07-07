@@ -150,6 +150,7 @@ MergeDates <- function(dates1, dates2, dates3 = "", firstPossibleDate = "", last
 #'  
 #' @param articlesHtml A character vector of html files.
 #' @param articlesLinks A named character vector, typically created by the ExtractArticlesLinks function.
+#' @param removeString A character vector of one or more strings to be removed from the extracted title.
 #' @return A character vector.
 #' @export
 #' @examples
@@ -182,12 +183,8 @@ ExtractTitles <- function(articlesHtml, articlesLinks = "", titlesExtractMethod 
         articlesTxt <- ExtractTxt(articlesHtml, export = FALSE, keepEverything = TRUE)
         titles <- substring(articlesTxt, 1, maximumNumberOfCharactersInTitle)
     }
-    if (removeString != "") {
-        if (length(removeString)>1) {
-            titles <- as.character(sapply(removeString, gsub, replacement = "", x = titles, fixed = TRUE))
-        } else {
-            titles <- gsub(removeString, "", titles, fixed = TRUE)
-        }
+    if (removeString[1] != "") {
+        titles <- gsub(paste(removeString, collapse = "|"), replacement = "", x = titles, fixed = TRUE)
     }
     if (remove == "onlyStandardCharacters") {
         titles <- gsub("[^A-Za-z0-9 ]", "-", titles)

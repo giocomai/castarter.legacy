@@ -13,6 +13,8 @@ ExtractTitles(articlesHtml, articlesLinks = "",
 \item{articlesHtml}{A character vector of html files.}
 
 \item{articlesLinks}{A named character vector, typically created by the ExtractArticlesLinks function.}
+
+\item{removeString}{A character vector of one or more strings to be removed from the extracted title.}
 }
 \value{
 A character vector.
