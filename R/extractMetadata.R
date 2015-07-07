@@ -184,6 +184,9 @@ ExtractTitles <- function(articlesHtml, articlesLinks = "", titlesExtractMethod 
     }
     if (removeString != "") {
         titles <- gsub(removeString, "", titles, fixed = TRUE)
+        if (length(removeString)>1) {
+            titles <- as.character(sapply(removeString, gsub, replacement = "", x = titles, fixed = TRUE))
+        }
     }
     if (remove == "onlyStandardCharacters") {
         titles <- gsub("[^A-Za-z0-9 ]", "-", titles)
