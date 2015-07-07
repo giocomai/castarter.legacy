@@ -15,6 +15,7 @@ SaveAndExportWebsite(nameOfProject, nameOfWebsite, exportXlsx = TRUE)
 }
 \description{
 It saves the working environment in the website folder, the dataset as an .Rdata file in the dataset subfolder, and, if exportXlsx = TRUE (by default), exports it as an .xlsx file in the Dataset sub-folder.
+It assumes that previous operations have been completed, and both a 'metadata' and an 'articlesTxt' object exist. If they don't, it just prints this to the console.
 }
 \examples{
 LoadLatestWebsite(nameOfProject, nameOfWebsite)

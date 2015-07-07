@@ -66,6 +66,7 @@ LoadLatestWebsite <- function(nameOfProject, nameOfWebsite) {
 #' Saves working environment and dataset.
 #'
 #' It saves the working environment in the website folder, the dataset as an .Rdata file in the dataset subfolder, and, if exportXlsx = TRUE (by default), exports it as an .xlsx file in the Dataset sub-folder.
+#' It assumes that previous operations have been completed, and both a 'metadata' and an 'articlesTxt' object exist. If they don't, it just prints this to the console. 
 #' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
 #' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
 #' @param exportXlsx If equal to TRUE, exports the complete dataset in the .xlsx file format in the Dataset sub-folder.
@@ -75,10 +76,15 @@ LoadLatestWebsite <- function(nameOfProject, nameOfWebsite) {
 SaveAndExportWebsite <- function(nameOfProject, nameOfWebsite, exportXlsx = TRUE) {
     ## Save environment
     save.image(file = file.path(nameOfProject, nameOfWebsite, paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, sep = " - "), ".RData")))
+    print(paste("Environment saved in", file.path(nameOfProject, nameOfWebsite, paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, sep = " - "), ".RData"))))
     ## Save dataset
+    if (exists(metadata)==FALSE) {
+        print("Metadata not available, the dataset has not been saved separately.")
+    } else {
     dataset <- cbind(metadata, articlesTxt, stringsAsFactors = FALSE)
     save(dataset, file = file.path(nameOfProject, nameOfWebsite, "Dataset", paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "dataset", 
         sep = " - "), ".RData")))
+    }
     # export all as xlsx
     if (exportXlsx == TRUE) {
         write.xlsx(cbind(metadata, articlesTxt), file.path(nameOfProject, nameOfWebsite, "Dataset", paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, 
