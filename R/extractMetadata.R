@@ -7,7 +7,7 @@
 #' @return A vector of the POSIXct class. 
 #' @export
 #' @examples
-#' ExtractDates <- ExtractDates(articlesHtml)
+#' dates <- ExtractDates(articlesHtml)
 ExtractDates <- function(articlesHtml, dateFormat = "dmY", language = "en", customString = "") {
     numberOfArticles <- length(articlesHtml)
     datesTxt <- rep(NA, numberOfArticles)
