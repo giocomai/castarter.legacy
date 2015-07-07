@@ -151,7 +151,7 @@ MergeDates <- function(dates1, dates2, dates3 = "", firstPossibleDate = "", last
 #' @param articlesHtml A character vector of html files.
 #' @param articlesLinks A named character vector, typically created by the ExtractArticlesLinks function.
 #' @param removeString A character vector of one or more strings to be removed from the extracted title.
-#' @return A character vector.
+#' @return A character vector of article titles.
 #' @export
 #' @examples
 #' titles <- ExtractTitles(articlesHtml)
@@ -208,6 +208,17 @@ ExtractArticleId <- function(nameOfProject, nameOfWebsite, accordingToDate = FAL
     articlesId
 }
 
+#' Exports metadata
+#' 
+#' Exports metadata to a csv file.
+#'  
+#' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
+#' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
+#' @param exportXlsx If equal to TRUE, exports the complete dataset in the .xlsx file format in the Dataset sub-folder.
+#' @return A vector of the POSIXct class. 
+#' @export
+#' @examples
+#' ExportMetadata(nameOfProject, nameOfWebsite, dates, articlesId, titles, language, articlesLinks)
 ExportMetadata <- function(nameOfProject, nameOfWebsite, dates, articlesId, titles, language, articlesLinks, exportXlsx = FALSE, accordingToDate = FALSE) {
     metadata <- data.frame(nameOfProject, nameOfWebsite, dates, articlesId, titles, language, articlesLinks, check.names = FALSE, stringsAsFactors = FALSE)
     if (accordingToDate == TRUE) {

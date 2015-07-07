@@ -17,7 +17,7 @@ ExtractTitles(articlesHtml, articlesLinks = "",
 \item{removeString}{A character vector of one or more strings to be removed from the extracted title.}
 }
 \value{
-A character vector.
+A character vector of article titles.
 }
 \description{
 Extracts titles of individual pages from a vector of html files or from a named vector of links.
