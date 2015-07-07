@@ -19,6 +19,6 @@ A vector of the POSIXct class.
 Extracts dates from a vector of html files.
 }
 \examples{
-ExtractDates <- ExtractDates(articlesHtml)
+dates <- ExtractDates(articlesHtml)
 }
 

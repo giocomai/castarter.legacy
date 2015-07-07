@@ -52,7 +52,7 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", language = "en", cust
             }
         }
         dateFormat <- "dBY"
-    } else if (dateFormat == "ymd") {
+    } else if (dateFormat == "ymd" | dateFormat == "Ymd") {
         for (i in 1:numberOfArticles) {
             datesTxt[i] <- regmatches(articlesHtml[i], regexpr("[[:digit:]][[:digit:]][[:digit:]][[:digit:]][[:punct:]][[:digit:]][[:digit:]][[:punct:]][[:digit:]][[:digit:]]", 
                 articlesHtml[i]))
