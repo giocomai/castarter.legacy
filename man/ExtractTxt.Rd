@@ -4,17 +4,20 @@
 \alias{ExtractTxt}
 \title{Extracts textual contents from a vector of html files}
 \usage{
-ExtractTxt(articlesHtml, metadata, numberOfTitleCharacters = 80,
-  textToBeRemoved = "", removeEverythingAfter = "",
-  removePunctuationInFilename = TRUE, keepEverything = FALSE)
+ExtractTxt(articlesHtml, metadata = "", export = TRUE,
+  maximumNumberOfCharactersInTitle = 80, textToBeRemoved = "",
+  removeEverythingAfter = "", removePunctuationInFilename = TRUE,
+  keepEverything = FALSE)
 }
 \arguments{
 \item{articlesHtml}{A character vector of html files.}
 
+\item{export}{Logical, defaults to TRUE. If TRUE, textual contents are saved as individual txt files in a dedicated folder. Filename is based on the medatadata.}
+
 \item{keepEverything}{Logical. If TRUE, the functions calls the KeepEverythingExtractor from boilerpipeR, instead of ArticleExtractor.}
 }
 \value{
-A character vector of txt files, and individual articles saves ad txt files in a dedicated folder.
+A character vector of txt files, and individual articles saved as txt files in a dedicated folder if 'export' is set to TRUE.
 }
 \description{
 Extracts textual contents from a vector of html files.

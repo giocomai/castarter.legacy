@@ -143,8 +143,19 @@ MergeDates <- function(dates1, dates2, dates3 = "", firstPossibleDate = "", last
     dates
 }
 
+
+#' Extracts titles of individual pages
+#' 
+#' Extracts titles of individual pages from a vector of html files or from a named vector of links.
+#'  
+#' @param articlesHtml A character vector of html files.
+#' @param articlesLinks A named character vector, typically created by the ExtractArticlesLinks function.
+#' @return A character vector.
+#' @export
+#' @examples
+#' titles <- ExtractTitles(articlesHtml)
 ExtractTitles <- function(articlesHtml, articlesLinks = "", titlesExtractMethod = "indexLink", removePunctuationInFilename = TRUE, remove = "", 
-    removeString = "", customXpath = "") {
+    removeString = "", customXpath = "", maximumNumberOfCharactersInTitle = "") {
     titles <- vector()
     numberOfArticles <- length(articlesHtml)
     if (titlesExtractMethod == "htmlTitle") {
@@ -180,6 +191,7 @@ ExtractTitles <- function(articlesHtml, articlesLinks = "", titlesExtractMethod 
         titles <- gsub("  ", " ", titles)
         titles <- gsub("--", "-", titles)
     }
+    titles <- substring(titles, 1, maximumNumberOfCharactersInTitle)
     titles
 }
 
