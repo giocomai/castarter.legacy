@@ -21,6 +21,6 @@ A vector of the POSIXct class.
 Exports metadata to a csv file.
 }
 \examples{
-ExportMetadata(nameOfProject, nameOfWebsite, dates, articlesId, titles, language, articlesLinks)
+metadata <- ExportMetadata(nameOfProject, nameOfWebsite, dates, articlesId, titles, language, articlesLinks)
 }
 

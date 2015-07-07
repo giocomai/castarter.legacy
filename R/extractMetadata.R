@@ -218,7 +218,7 @@ ExtractArticleId <- function(nameOfProject, nameOfWebsite, accordingToDate = FAL
 #' @return A vector of the POSIXct class. 
 #' @export
 #' @examples
-#' ExportMetadata(nameOfProject, nameOfWebsite, dates, articlesId, titles, language, articlesLinks)
+#' metadata <- ExportMetadata(nameOfProject, nameOfWebsite, dates, articlesId, titles, language, articlesLinks)
 ExportMetadata <- function(nameOfProject, nameOfWebsite, dates, articlesId, titles, language, articlesLinks, exportXlsx = FALSE, accordingToDate = FALSE) {
     metadata <- data.frame(nameOfProject, nameOfWebsite, dates, articlesId, titles, language, articlesLinks, check.names = FALSE, stringsAsFactors = FALSE)
     if (accordingToDate == TRUE) {
