@@ -78,7 +78,7 @@ SaveAndExportWebsite <- function(nameOfProject, nameOfWebsite, exportXlsx = TRUE
     save.image(file = file.path(nameOfProject, nameOfWebsite, paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, sep = " - "), ".RData")))
     print(paste("Environment saved in", file.path(nameOfProject, nameOfWebsite, paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, sep = " - "), ".RData"))))
     ## Save dataset
-    if (exists(metadata)==FALSE) {
+    if (exists("metadata")==FALSE) {
         print("Metadata not available, the dataset has not been saved separately.")
     } else {
     dataset <- cbind(metadata, articlesTxt, stringsAsFactors = FALSE)
