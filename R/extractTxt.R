@@ -4,16 +4,18 @@
 #'  
 #' @param articlesHtml A character vector of html files.
 #' @param keepEverything Logical. If TRUE, the functions calls the KeepEverythingExtractor from boilerpipeR, instead of ArticleExtractor.
-#' @return A character vector of txt files, and individual articles saves ad txt files in a dedicated folder. 
+#' @param export Logical, defaults to TRUE. If TRUE, textual contents are saved as individual txt files in a dedicated folder. Filename is based on the medatadata.
+#' @return A character vector of txt files, and individual articles saved as txt files in a dedicated folder if 'export' is set to TRUE.
 #' @export
 #' @examples
 #' articlesTxt <- ExtractTxt(articlesHtml, metadata)
-ExtractTxt <- function(articlesHtml, metadata, numberOfTitleCharacters = 80, textToBeRemoved = "", removeEverythingAfter = "", removePunctuationInFilename = TRUE, keepEverything = FALSE) {
+ExtractTxt <- function(articlesHtml, metadata = "", export = TRUE, maximumNumberOfCharactersInTitle = 80, textToBeRemoved = "", removeEverythingAfter = "", removePunctuationInFilename = TRUE, keepEverything = FALSE) {
     numberOfArticles <- length(articlesHtml)
     articlesTxt <- rep(NA, numberOfArticles)
-    titles <- metadata$titles
-    txtFilenames <- paste0(file.path(nameOfProject, nameOfWebsite, "Txt", paste0(paste(metadata$dates, metadata$nameOfWebsite, metadata$articlesId, 
-        substring(titles, 1, numberOfTitleCharacters), sep = " - "), ".txt")))
+    if (export == TRUE) {
+        titles <- metadata$titles
+        txtFilenames <- paste0(file.path(nameOfProject, nameOfWebsite, "Txt", paste0(paste(metadata$dates, metadata$nameOfWebsite, metadata$articlesId,                                                                                       substring(titles, 1, maximumNumberOfCharactersInTitle), sep = " - "), ".txt")))
+    }
     for (i in 1:numberOfArticles) {
         if (keepEverything == TRUE) {
             articleTxt <- KeepEverythingExtractor(articlesHtml[i])
@@ -29,7 +31,9 @@ ExtractTxt <- function(articlesHtml, metadata, numberOfTitleCharacters = 80, tex
             articleTxt <- sub(paste0(removeEverythingAfter, ".*"), "", articleTxt)
         }
         articlesTxt[i] <- articleTxt
+        if (export == TRUE) {
         write(articleTxt, file = txtFilenames[i])
+        }
     }
     articlesTxt
 } 
