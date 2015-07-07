@@ -183,9 +183,10 @@ ExtractTitles <- function(articlesHtml, articlesLinks = "", titlesExtractMethod 
         titles <- substring(articlesTxt, 1, maximumNumberOfCharactersInTitle)
     }
     if (removeString != "") {
-        titles <- gsub(removeString, "", titles, fixed = TRUE)
         if (length(removeString)>1) {
             titles <- as.character(sapply(removeString, gsub, replacement = "", x = titles, fixed = TRUE))
+        } else {
+            titles <- gsub(removeString, "", titles, fixed = TRUE)
         }
     }
     if (remove == "onlyStandardCharacters") {
