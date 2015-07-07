@@ -33,7 +33,7 @@ ImportHtml <- function(from = "", nameOfProject = "", nameOfWebsite = "", pathTo
         htmlFiles[i] <- htmlFile
     }
     if (includePath == TRUE) {
-        htmlFiles <- cbind(htmlFiles, htmlFilesList)
+        htmlFiles <- data.frame(htmlFiles, htmlFilesList, stringsAsFactors = FALSE)
     }
     htmlFiles
 }
