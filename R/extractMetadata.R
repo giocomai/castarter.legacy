@@ -1,4 +1,13 @@
-
+#' Extracts dates from a vector of html files
+#' 
+#' Extracts dates from a vector of html files.
+#'  
+#' @param articlesHtml A character vector of html files.
+#' @param dateFormat A string used to extract the date. Available date formats options include dmY, dby, dBy, dBY, dbY, etc.
+#' @return A vector of the POSIXct class. 
+#' @export
+#' @examples
+#' ExtractDates <- ExtractDates(articlesHtml)
 ExtractDates <- function(articlesHtml, dateFormat = "dmY", language = "en", customString = "") {
     numberOfArticles <- length(articlesHtml)
     datesTxt <- rep(NA, numberOfArticles)
