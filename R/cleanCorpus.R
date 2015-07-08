@@ -68,7 +68,7 @@ CombineWords <- function(corpus, wordCombinations) {
 #' newStopwords <- c("will", "also", "can")
 #' stopwords <- AddStopwords(newStopwords, nameOfProject, includeDefaultStopwords = TRUE, language = "en")
 
-AddStopwords <- function(newStopwords = NULL, nameOfProject = NULL, includeDefaultList = FALSE, language = "en", importExport = FALSE) {
+AddStopwords <- function(newStopwords = NULL, nameOfProject = NULL, includeDefaultStopwords = FALSE, language = "en", importExport = FALSE) {
     if (is.null(nameOfProject)==FALSE & importExport == TRUE) {
         if (file.exists(file.path(nameOfProject, paste(nameOfProject, "stopwords.txt")))) {
             stopwords <- as.vector(readLines(con = file.path(nameOfProject, paste(nameOfProject, "stopwords.txt"))))
