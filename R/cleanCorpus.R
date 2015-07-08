@@ -10,13 +10,15 @@
 #' originalCombination <- "European Union"
 #' toBeUsed <- "europeanunion"
 #' wordCombinations <- AddWordCombinations(originalCombination, toBeUsed, nameOfProject = NULL)
-AddWordCombinations <- function(originalCombination = "", toBeUsed = "", nameOfProject = NULL, dfedit = FALSE, importExport = FALSE) {
+AddWordCombinations <- function(wordCombinations = NULL, originalCombination = NULL, toBeUsed = "", nameOfProject = NULL, dfedit = FALSE, importExport = FALSE) {
     if (importExport == TRUE & file.exists(file.path(nameOfProject, paste(nameOfProject, "wordCombinations.csv"))) == TRUE) {
         wordCombinations <- read.csv(file = file.path(nameOfProject, paste(nameOfProject, "wordCombinations.csv")), header = TRUE, quote = "", stringsAsFactors = FALSE)
     } else {
-        wordCombinations <- data.frame(originalCombination = character(0), toBeUsed = character(0))
+        if (is.null(wordCombinations) == TRUE) {
+            wordCombinations <- data.frame(originalCombination = character(0), toBeUsed = character(0))
+        }
     }
-    if (originalCombination != "") {
+    if (is.null(originalCombination) == FALSE) {
         wordCombinations <- rbind(wordCombinations, c(originalCombination, toBeUsed))
     }
     wordCombinations <- unique(wordCombinations)
