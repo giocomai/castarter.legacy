@@ -2,17 +2,17 @@
 #' 
 #' Prepares combinations of words to be changed.
 #'  
-#' @param newStopwords A character vector of words. 
-#' @return originalCombination, toBeUsed A character vector.of length 1.
+#' @param originalCombination, toBeUsed A character vector.of length 1.
+#' @param importExport Defaults to FALSE. If TRUE, saves stopwords in a txt file in the project folder, and imports changes made in the txt file.
+#' @return .A data.frame of word combinations. 
 #' @export
 #' @examples
 #' originalCombination <- "European Union"
 #' toBeUsed <- "europeanunion"
-#' wordCombinations <- AddWordCombinations(originalCombination, toBeUsed, nameOfProject)
-AddWordCombinations <- function(originalCombination = "", toBeUsed = "", nameOfProject = "", dfedit = FALSE) {
-    if (file.exists(file.path(nameOfProject, paste(nameOfProject, "wordCombinations.csv"))) == TRUE) {
-        wordCombinations <- read.csv(file = file.path(nameOfProject, paste(nameOfProject, "wordCombinations.csv")), header = TRUE, quote = "", 
-            stringsAsFactors = FALSE)
+#' wordCombinations <- AddWordCombinations(originalCombination, toBeUsed, nameOfProject = NULL)
+AddWordCombinations <- function(originalCombination = "", toBeUsed = "", nameOfProject = NULL, dfedit = FALSE, importExport = FALSE) {
+    if (importExport == TRUE & file.exists(file.path(nameOfProject, paste(nameOfProject, "wordCombinations.csv"))) == TRUE) {
+        wordCombinations <- read.csv(file = file.path(nameOfProject, paste(nameOfProject, "wordCombinations.csv")), header = TRUE, quote = "", stringsAsFactors = FALSE)
     } else {
         wordCombinations <- data.frame(originalCombination = character(0), toBeUsed = character(0))
     }
@@ -26,7 +26,9 @@ AddWordCombinations <- function(originalCombination = "", toBeUsed = "", nameOfP
     names(wordCombinations) <- c("originalCombination", "toBeUsed")
     wordCombinations <- unique(wordCombinations)
     wordCombinations <- data.frame(lapply(wordCombinations, as.character), stringsAsFactors = FALSE)
-    write.csv(wordCombinations, file = file.path(nameOfProject, paste(nameOfProject, "wordCombinations.csv")), row.names = FALSE, quote = FALSE)
+    if (importExport == TRUE) {
+        write.csv(wordCombinations, file = file.path(nameOfProject, paste(nameOfProject, "wordCombinations.csv")), row.names = FALSE, quote = FALSE)
+    }
     wordCombinations
 }
 
@@ -55,12 +57,14 @@ CombineWords <- function(corpus, wordCombinations) {
 #' Adds stopwords to the default list.
 #'  
 #' @param newStopwords A character vector of words.
+#' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
 #' @param importExport Defaults to FALSE. If TRUE, saves stopwords in a txt file in the project folder, and imports changes made in the txt file.
+#' @param includeDefaultStopwords Includes default list of stopwords included in the 'tm' package. 
 #' @return A character vector.
 #' @export
 #' @examples
 #' newStopwords <- c("will", "also", "can")
-#' stopwords <- AddStopwords(newStopwords, nameOfProject, includeDefaultList = TRUE, language = "en")
+#' stopwords <- AddStopwords(newStopwords, nameOfProject, includeDefaultStopwords = TRUE, language = "en")
 
 AddStopwords <- function(newStopwords = NULL, nameOfProject = NULL, includeDefaultList = FALSE, language = "en", importExport = FALSE) {
     if (is.null(nameOfProject)==FALSE & importExport == TRUE) {
@@ -79,7 +83,7 @@ AddStopwords <- function(newStopwords = NULL, nameOfProject = NULL, includeDefau
             stopwords <- newStopwords
         }
     }
-    if (includeDefaultList == TRUE) {
+    if (includeDefaultStopwords == TRUE) {
         if (exists("stopwords") == TRUE) {
             if (class(stopwords)=="character") {
                 stopwords <- c(stopwords, stopwords(language))
@@ -184,8 +188,9 @@ StemCorpusDtm <- function(corpusDtm, stemmingDictionary) {
 #' @export
 #' @examples
 #' dtm <- CreateDtm(corpus)
-CreateDtm <- function(corpus, removeSparseTerms = ""){
-    if (removeSparseTerms != "") {
-        corpus <- removeSparseTerms(dtm, removeSparseTerms)
+CreateDtm <- function(corpus, removeSparseTerms = NULL){
+    corpusDtm <- DocumentTermMatrix(corpus)
+    if (is.null(removeSparseTerms) == FALSE) {
+        corpusDtm <- removeSparseTerms(corpusDtm, removeSparseTerms)
     }
 }

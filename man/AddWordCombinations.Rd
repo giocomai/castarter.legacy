@@ -5,13 +5,15 @@
 \title{Prepares combinations of words to be changed}
 \usage{
 AddWordCombinations(originalCombination = "", toBeUsed = "",
-  nameOfProject = "", dfedit = FALSE)
+  nameOfProject = NULL, dfedit = FALSE, importExport = FALSE)
 }
 \arguments{
-\item{newStopwords}{A character vector of words.}
+\item{originalCombination,}{toBeUsed A character vector.of length 1.}
+
+\item{importExport}{Defaults to FALSE. If TRUE, saves stopwords in a txt file in the project folder, and imports changes made in the txt file.}
 }
 \value{
-originalCombination, toBeUsed A character vector.of length 1.
+.A data.frame of word combinations.
 }
 \description{
 Prepares combinations of words to be changed.
@@ -19,6 +21,6 @@ Prepares combinations of words to be changed.
 \examples{
 originalCombination <- "European Union"
 toBeUsed <- "europeanunion"
-wordCombinations <- AddWordCombinations(originalCombination, toBeUsed, nameOfProject)
+wordCombinations <- AddWordCombinations(originalCombination, toBeUsed, nameOfProject = NULL)
 }
 

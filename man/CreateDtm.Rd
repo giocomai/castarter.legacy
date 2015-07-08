@@ -4,7 +4,7 @@
 \alias{CreateDtm}
 \title{Creates a Document Term Matrix (DTM).}
 \usage{
-CreateDtm(corpus, removeSparseTerms = "")
+CreateDtm(corpus, removeSparseTerms = NULL)
 }
 \arguments{
 \item{corpus}{A corpus as created by the 'tm' package including metadata.}
