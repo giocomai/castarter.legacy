@@ -5,9 +5,9 @@
 #' @param corpusDtm A document term matrix.
 #' @param mode Defines the type of output. Can be
 ##' \itemize{
-##'  \item{"vector"}{Outputs a named character vector.}
-##'  \item{"barchart"}{Outputs a ggplot2 barchart. This is the default option.}
-##'  \item{"wordcloud"}{Outputs a wordcloud.}
+##'  \item{"vector"}{: Outputs a named character vector. This is the default option.}
+##'  \item{"barchart"}{: Outputs a ggplot2 barchart.}
+##'  \item{"wordcloud"}{: Outputs a wordcloud.}
 ##' }
 ##'
 #' @return A vector, barchart, or wordcloud as defined with the 'mode' parameter.
@@ -17,7 +17,7 @@
 #' mostFrequent <- ShowMostFrequent(corpusDtm)
 
 ShowMostFrequent <- function(corpusDtm, mode = "vector", number = 10, stemCompletion = FALSE, corpusOriginal = "", minFrequency = 0) {
-    freq <- sort(colSums(as.matrix(corpusDtm)), decreasing = TRUE)
+    freq <- sort(col_sums(corpusDtm, na.rm = TRUE), decreasing = TRUE)
     if (number == "all") {
         number <- length(freq)
     }

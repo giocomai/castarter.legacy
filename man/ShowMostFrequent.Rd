@@ -12,9 +12,9 @@ ShowMostFrequent(corpusDtm, mode = "vector", number = 10,
 
 \item{mode}{Defines the type of output. Can be
 \itemize{
- \item{"vector"}{Outputs a named character vector.}
- \item{"barchart"}{Outputs a ggplot2 barchart. This is the default option.}
- \item{"wordcloud"}{Outputs a wordcloud.}
+ \item{"vector"}{: Outputs a named character vector. This is the default option.}
+ \item{"barchart"}{: Outputs a ggplot2 barchart.}
+ \item{"wordcloud"}{: Outputs a wordcloud.}
 }}
 }
 \value{
