@@ -1,6 +1,22 @@
+#' Shows most frequent terms in a corpus
+#' 
+#' Shows most frequent terms in a corpus starting from a document term matrix.
+#'  
+#' @param corpusDtm A document term matrix.
+#' @param mode Defines the type of output. Can be
+##' \itemize{
+##'  \item{"vector"}{Outputs a named character vector.}
+##'  \item{"barchart"}{Outputs a ggplot2 barchart. This is the default option.}
+##'  \item{"wordcloud"}{Outputs a wordcloud.}
+##' }
+##'
+#' @return A vector, barchart, or wordcloud as defined with the 'mode' parameter.
+#' @export
+#' @examples
+#' corpusDtm <- DocumentTermMatrix(corpus).
+#' mostFrequent <- ShowMostFrequent(corpusDtm)
 
-ShowMostFrequent <- function(corpus, mode = "graph", number = 10, stemCompletion = FALSE, corpusOriginal = "", minFrequency = 0) {
-    corpusDtm <- DocumentTermMatrix(corpus)
+ShowMostFrequent <- function(corpusDtm, mode = "vector", number = 10, stemCompletion = FALSE, corpusOriginal = "", minFrequency = 0) {
     freq <- sort(colSums(as.matrix(corpusDtm)), decreasing = TRUE)
     if (number == "all") {
         number <- length(freq)
@@ -14,7 +30,7 @@ ShowMostFrequent <- function(corpus, mode = "graph", number = 10, stemCompletion
             }
         }
     }
-    if (mode == "barchart") {
+    if (mode == "barchart" | mode == "graph") {
         ggplot(data = wordFrequency, aes(x = reorder(word, -freq), y = freq)) + geom_bar(stat = "identity") + coord_flip()
     } else if (mode == "wordcloud") {
         wordcloud(rownames(wordFrequency), wordFrequency$freq, min.freq = minFrequency, colors = brewer.pal(6, "Dark2"))
