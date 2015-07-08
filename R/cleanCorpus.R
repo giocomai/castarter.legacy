@@ -62,7 +62,7 @@ CombineWords <- function(corpus, wordCombinations) {
 #' newStopwords <- c("will", "also", "can")
 #' stopwords <- AddStopwords(newStopwords, nameOfProject, includeDefaultList = TRUE, language = "en")
 
-AddStopwords <- function(newStopwords, nameOfProject = NULL, includeDefaultList = FALSE, language = "en", importExport = FALSE) {
+AddStopwords <- function(newStopwords = NULL, nameOfProject = NULL, includeDefaultList = FALSE, language = "en", importExport = FALSE) {
     if (is.null(nameOfProject)==FALSE & importExport == TRUE) {
         if (file.exists(file.path(nameOfProject, paste(nameOfProject, "stopwords.txt")))) {
             stopwords <- as.vector(readLines(con = file.path(nameOfProject, paste(nameOfProject, "stopwords.txt"))))
@@ -70,13 +70,23 @@ AddStopwords <- function(newStopwords, nameOfProject = NULL, includeDefaultList 
             writeLines(newStopwords, con = file.path(nameOfProject, paste(nameOfProject, "stopwords.txt")))
         }
     }
-    if (exists("stopwords") == FALSE) {
-        stopwords <- newStopwords
-    } else {
-        stopwords <- c(stopwords, newStopwords)
+    if (is.null(newStopwords) == FALSE) {
+        if (exists("stopwords") == TRUE) {
+            if (class(stopwords)=="character") {
+                stopwords <- c(stopwords, newStopwords)
+            }
+        } else {
+            stopwords <- newStopwords
+        }
     }
     if (includeDefaultList == TRUE) {
-        stopwords <- c(stopwords, stopwords(language))
+        if (exists("stopwords") == TRUE) {
+            if (class(stopwords)=="character") {
+                stopwords <- c(stopwords, stopwords(language))
+            }
+        } else {
+            stopwords <- stopwords(language)
+        }
     }
     stopwords <- unique(as.character(stopwords[stopwords != ""]))
     if (is.null(nameOfProject)==FALSE & importExport == TRUE) {
