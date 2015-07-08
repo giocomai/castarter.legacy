@@ -1,3 +1,14 @@
+#' Prepares combinations of words to be changed
+#' 
+#' Prepares combinations of words to be changed.
+#'  
+#' @param newStopwords A character vector of words. 
+#' @return originalCombination, toBeUsed A character vector.of length 1.
+#' @export
+#' @examples
+#' originalCombination <- "European Union"
+#' toBeUsed <- "europeanunion"
+#' wordCombinations <- AddWordCombinations(originalCombination, toBeUsed, nameOfProject)
 AddWordCombinations <- function(originalCombination = "", toBeUsed = "", nameOfProject = "", dfedit = FALSE) {
     if (file.exists(file.path(nameOfProject, paste(nameOfProject, "wordCombinations.csv"))) == TRUE) {
         wordCombinations <- read.csv(file = file.path(nameOfProject, paste(nameOfProject, "wordCombinations.csv")), header = TRUE, quote = "", 
@@ -19,20 +30,36 @@ AddWordCombinations <- function(originalCombination = "", toBeUsed = "", nameOfP
     wordCombinations
 }
 
+#' Combine words in a corpus
+#' 
+#' Combine words in a corpus according to word combinations provided by the user..
+#'  
+#' @param corpus A corpus created with the 'tm' package.
+#' @return A corpus with words combined.
+#' @export
+#' @examples
+#' corpus <- CombineWords(corpus, wordCombinations)
 CombineWords <- function(corpus, wordCombinations) {
     for (i in 1:length(wordCombinations[, 2])) {
         wordCombinations[i, 1] <- paste0("\\<", wordCombinations[i, 1], "\\>")
     }
-    # ## Export word combinations allowing editing in an external editor if (!file.exists(file.path(nameOfProject, paste(nameOfProject,
-    # 'wordCombinations.csv')))) { write.csv(wordCombinations, file = file.path(nameOfProject, paste(nameOfProject, 'wordCombinations.csv')),
-    # row.names = FALSE) } ## Import back word combinations wordCombinations <- read.csv(file = file.path(nameOfProject, paste(nameOfProject,
-    # 'wordCombinations.csv')), header = TRUE, stringsAsFactors = FALSE)
     Combine <- content_transformer(function(x, originalCombination, toBeUsed) gsub(originalCombination, toBeUsed, x))
     for (i in 1:length(wordCombinations[, 1])) {
         corpus <- tm_map(corpus, Combine, wordCombinations$originalCombination[i], wordCombinations$toBeUsed[i])
     }
     corpus
 }
+
+#' Adds stopwords to the default list 
+#' 
+#' Adds stopwords to the default list.
+#'  
+#' @param newStopwords A character vector of words. 
+#' @return A character vector.
+#' @export
+#' @examples
+#' newStopwords <- c("will", "also", "can")
+#' stopwords <- AddStopwords(newStopwords, nameOfProject, includeDefaultList = TRUE, language = "en")
 
 AddStopwords <- function(newStopwords, nameOfProject, includeDefaultList = FALSE, language = "en") {
     if (file.exists(file.path(nameOfProject, paste(nameOfProject, "stopwords.txt")))) {
@@ -53,6 +80,15 @@ AddStopwords <- function(newStopwords, nameOfProject, includeDefaultList = FALSE
     stopwords
 }
 
+#' Remove stopwords from corpus
+#' 
+#' Remove stopwords from corpus.
+#'  
+#' @param corpus A corpus created with the 'tm' package.
+#' @return A corpus without stopwords.
+#' @export
+#' @examples
+#' corpus <- RemoveStopwords(corpus, stopwords)
 RemoveStopwords <- function(corpus, stopwords) {
     corpus <- tm_map(corpus, removeWords, stopwords)
     corpus
