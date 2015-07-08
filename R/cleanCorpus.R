@@ -54,18 +54,21 @@ CombineWords <- function(corpus, wordCombinations) {
 #' 
 #' Adds stopwords to the default list.
 #'  
-#' @param newStopwords A character vector of words. 
+#' @param newStopwords A character vector of words.
+#' @param importExport Defaults to FALSE. If TRUE, saves stopwords in a txt file in the project folder, and imports changes made in the txt file.
 #' @return A character vector.
 #' @export
 #' @examples
 #' newStopwords <- c("will", "also", "can")
 #' stopwords <- AddStopwords(newStopwords, nameOfProject, includeDefaultList = TRUE, language = "en")
 
-AddStopwords <- function(newStopwords, nameOfProject, includeDefaultList = FALSE, language = "en") {
-    if (file.exists(file.path(nameOfProject, paste(nameOfProject, "stopwords.txt")))) {
-        stopwords <- as.vector(readLines(con = file.path(nameOfProject, paste(nameOfProject, "stopwords.txt"))))
-    } else {
-        writeLines(newStopwords, con = file.path(nameOfProject, paste(nameOfProject, "stopwords.txt")))
+AddStopwords <- function(newStopwords, nameOfProject = NULL, includeDefaultList = FALSE, language = "en", importExport = FALSE) {
+    if (is.null(nameOfProject)==FALSE & importExport == TRUE) {
+        if (file.exists(file.path(nameOfProject, paste(nameOfProject, "stopwords.txt")))) {
+            stopwords <- as.vector(readLines(con = file.path(nameOfProject, paste(nameOfProject, "stopwords.txt"))))
+        } else {
+            writeLines(newStopwords, con = file.path(nameOfProject, paste(nameOfProject, "stopwords.txt")))
+        }
     }
     if (exists("stopwords") == FALSE) {
         stopwords <- newStopwords
@@ -76,7 +79,9 @@ AddStopwords <- function(newStopwords, nameOfProject, includeDefaultList = FALSE
         stopwords <- c(stopwords, stopwords(language))
     }
     stopwords <- unique(as.character(stopwords[stopwords != ""]))
-    writeLines(stopwords, con = file.path(nameOfProject, paste(nameOfProject, "stopwords.txt")))
+    if (is.null(nameOfProject)==FALSE & importExport == TRUE) {
+        writeLines(stopwords, con = file.path(nameOfProject, paste(nameOfProject, "stopwords.txt")))
+    }
     stopwords
 }
 

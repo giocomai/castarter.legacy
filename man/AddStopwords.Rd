@@ -4,11 +4,13 @@
 \alias{AddStopwords}
 \title{Adds stopwords to the default list}
 \usage{
-AddStopwords(newStopwords, nameOfProject, includeDefaultList = FALSE,
-  language = "en")
+AddStopwords(newStopwords, nameOfProject = NULL, includeDefaultList = FALSE,
+  language = "en", importExport = FALSE)
 }
 \arguments{
 \item{newStopwords}{A character vector of words.}
+
+\item{importExport}{Defaults to FALSE. If TRUE, saves stopwords in a txt file in the project folder, and imports changes made in the txt file.}
 }
 \value{
 A character vector.
