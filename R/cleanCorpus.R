@@ -90,8 +90,9 @@ AddStopwords <- function(newStopwords = NULL, nameOfProject = NULL, includeDefau
             if (class(stopwords)=="character") {
                 stopwords <- c(stopwords, stopwords(language))
             }
-        } 
-        stopwords <- stopwords(language)
+        } else {
+            stopwords <- stopwords(language)
+        }
     }
     stopwords <- unique(as.character(stopwords[stopwords != ""]))
     if (is.null(nameOfProject)==FALSE & importExport == TRUE) {
