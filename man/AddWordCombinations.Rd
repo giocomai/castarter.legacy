@@ -5,7 +5,7 @@
 \title{Prepares combinations of words to be changed}
 \usage{
 AddWordCombinations(wordCombinations = NULL, originalCombination = NULL,
-  toBeUsed = "", nameOfProject = NULL, dfedit = FALSE,
+  toBeUsed = NULL, nameOfProject = NULL, dfedit = FALSE,
   importExport = FALSE)
 }
 \arguments{
@@ -22,6 +22,6 @@ Prepares combinations of words to be changed.
 \examples{
 originalCombination <- "European Union"
 toBeUsed <- "europeanunion"
-wordCombinations <- AddWordCombinations(originalCombination, toBeUsed, nameOfProject = NULL)
+wordCombinations <- AddWordCombinations(originalCombination, toBeUsed, nameOfProject = "")
 }
 

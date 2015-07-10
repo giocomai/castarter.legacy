@@ -9,8 +9,8 @@
 #' @examples
 #' originalCombination <- "European Union"
 #' toBeUsed <- "europeanunion"
-#' wordCombinations <- AddWordCombinations(originalCombination, toBeUsed, nameOfProject = NULL)
-AddWordCombinations <- function(wordCombinations = NULL, originalCombination = NULL, toBeUsed = "", nameOfProject = NULL, dfedit = FALSE, importExport = FALSE) {
+#' wordCombinations <- AddWordCombinations(originalCombination, toBeUsed, nameOfProject = "")
+AddWordCombinations <- function(wordCombinations = NULL, originalCombination = NULL, toBeUsed = NULL, nameOfProject = NULL, dfedit = FALSE, importExport = FALSE) {
     if (importExport == TRUE & file.exists(file.path(nameOfProject, paste(nameOfProject, "wordCombinations.csv"))) == TRUE) {
         wordCombinations <- read.csv(file = file.path(nameOfProject, paste(nameOfProject, "wordCombinations.csv")), header = TRUE, quote = "", stringsAsFactors = FALSE)
     } else {
