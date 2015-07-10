@@ -29,20 +29,20 @@ ExportArticlesWith <- function(dataset, term, nameOfProject, nameOfWebsite = NUL
     }
     if (xlsx == TRUE) {
         if (is.null(nameOfWebsite) == TRUE) {
-            write.xlsx(tempDataset, file.path(nameOfProject, "Outputs", paste(word, " in ", nameOfWebsite, ".xlsx", sep = "")))
-            print(paste("File .xlsx exported to:", file.path(nameOfProject, "Outputs", paste(word, " in ", nameOfWebsite, ".xlsx", sep = ""))))     
+            write.xlsx(tempDataset, file.path(nameOfProject, "Outputs", paste(term, " in ", nameOfWebsite, ".xlsx", sep = "")))
+            print(paste("File .xlsx exported to:", file.path(nameOfProject, "Outputs", paste(term, " in ", nameOfWebsite, ".xlsx", sep = ""))))     
         } else {
-            write.xlsx(tempDataset, file.path(nameOfProject, nameOfWebsite, "Outputs", paste(word, " in ", nameOfWebsite, ".xlsx", sep = "")))
-            print(paste("File .xlsx exported to:", file.path(nameOfProject, nameOfWebsite, "Outputs", paste(word, " in ", nameOfWebsite, ".xlsx", sep = ""))))     
+            write.xlsx(tempDataset, file.path(nameOfProject, nameOfWebsite, "Outputs", paste(term, " in ", nameOfWebsite, ".xlsx", sep = "")))
+            print(paste("File .xlsx exported to:", file.path(nameOfProject, nameOfWebsite, "Outputs", paste(term, " in ", nameOfWebsite, ".xlsx", sep = ""))))     
         }
     }
     if (txt == TRUE) {
         if (is.null(nameOfWebsite) == TRUE) {
-            writeLines(paste(paste("Date:", tempDataset$date), paste("Title:", tempDataset$titles), paste("Link:", tempDataset$articlesLinks), paste("ID:", tempDataset$articlesId), tempDataset$articlesTxt, " ___  ______  ______  ______  ______  ______  ______  ______  ______  ___\n  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__\n (______)(______)(______)(______)(______)(______)(______)(______)(______)\n", sep = "\n"), file.path(nameOfProject, "Outputs", paste(word, " in ", ".txt", sep = "")))
-            print(paste("File .txt exported to:", file.path(nameOfProject, "Outputs", paste(word, " in ", nameOfProject, ".txt", sep = ""))))
+            writeLines(paste(paste("Date:", tempDataset$date), paste("Title:", tempDataset$titles), paste("Link:", tempDataset$articlesLinks), paste("ID:", tempDataset$articlesId), tempDataset$articlesTxt, " ___  ______  ______  ______  ______  ______  ______  ______  ______  ___\n  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__\n (______)(______)(______)(______)(______)(______)(______)(______)(______)\n", sep = "\n"), file.path(nameOfProject, "Outputs", paste(term, " in ", ".txt", sep = "")))
+            print(paste("File .txt exported to:", file.path(nameOfProject, "Outputs", paste(term, " in ", nameOfProject, ".txt", sep = ""))))
         } else {
-            writeLines(paste(paste("Date:", tempDataset$date), paste("Title:", tempDataset$titles), paste("Link:", tempDataset$articlesLinks), paste("ID:", tempDataset$articlesId), tempDataset$articlesTxt, " ___  ______  ______  ______  ______  ______  ______  ______  ______  ___\n  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__\n (______)(______)(______)(______)(______)(______)(______)(______)(______)\n", sep = "\n"), file.path(nameOfProject, nameOfWebsite, "Outputs", paste(word, " in ", nameOfWebsite, ".txt", sep = "")))
-            print(paste("File .txt exported to:", file.path(nameOfProject, nameOfWebsite, "Outputs", paste(word, " in ", nameOfWebsite, ".txt", sep = ""))))
+            writeLines(paste(paste("Date:", tempDataset$date), paste("Title:", tempDataset$titles), paste("Link:", tempDataset$articlesLinks), paste("ID:", tempDataset$articlesId), tempDataset$articlesTxt, " ___  ______  ______  ______  ______  ______  ______  ______  ______  ___\n  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__\n (______)(______)(______)(______)(______)(______)(______)(______)(______)\n", sep = "\n"), file.path(nameOfProject, nameOfWebsite, "Outputs", paste(term, " in ", nameOfWebsite, ".txt", sep = "")))
+            print(paste("File .txt exported to:", file.path(nameOfProject, nameOfWebsite, "Outputs", paste(term, " in ", nameOfWebsite, ".txt", sep = ""))))
         }
     }
     if (data.frame == TRUE) {
