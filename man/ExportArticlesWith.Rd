@@ -11,7 +11,7 @@ ExportArticlesWith(dataset, term, nameOfProject, nameOfWebsite = NULL,
 \arguments{
 \item{dataset}{A dataset created with 'castarter'.}
 
-\item{term}{The term that determines which articles are exported.}
+\item{term}{The term that determines which articles are exported.Must be a character vector of length = 1.}
 
 \item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
 

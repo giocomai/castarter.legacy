@@ -1,7 +1,7 @@
 #' Exports all articles that contain a given term.
 #'
 #' @param dataset A dataset created with 'castarter'.
-#' @param term The term that determines which articles are exported.
+#' @param term The term that determines which articles are exported.Must be a character vector of length = 1.
 #' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
 #' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.Defaults to NULL. If no nameOfWebsite is provided, exported files are saved in the nameOfProject/Outputs folder.
 #' @export
@@ -11,7 +11,7 @@
 ExportArticlesWith <- function(dataset, term, nameOfProject, nameOfWebsite = NULL, txt = TRUE, csv = FALSE, xlsx = FALSE, data.frame = FALSE, includeOnly = NULL, 
     sortBy = "date") {
     # Export only items that include...
-    tempDataset <- dataset[grep(word, dataset$articlesTxt, ignore.case = TRUE), ]
+    tempDataset <- dataset[grep(term, dataset$articlesTxt, ignore.case = TRUE), ]
     if (is.null(includeOnly) == FALSE) {
         tempDataset <- tempDataset[tempDataset$nameOfWebsite == includeOnly, ]
     }

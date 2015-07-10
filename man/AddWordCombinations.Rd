@@ -5,7 +5,7 @@
 \title{Prepares combinations of words to be changed}
 \usage{
 AddWordCombinations(wordCombinations = NULL, originalCombination = NULL,
-  toBeUsed = NULL, nameOfProject = NULL, dfedit = FALSE,
+  toBeUsed = NULL, nameOfProject = "", dfedit = FALSE,
   importExport = FALSE)
 }
 \arguments{
