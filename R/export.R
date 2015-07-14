@@ -8,8 +8,7 @@
 #' @examples
 #' ExportArticlesWith(dataset, "example", nameOfProject, nameOfWebsite)
 
-ExportArticlesWith <- function(dataset, term, nameOfProject, nameOfWebsite = NULL, txt = TRUE, csv = FALSE, xlsx = FALSE, data.frame = FALSE, includeOnly = NULL, 
-    sortBy = "date") {
+ExportArticlesWith <- function(dataset, term, nameOfProject, nameOfWebsite = NULL, txt = TRUE, csv = FALSE, xlsx = FALSE, data.frame = FALSE, includeOnly = NULL, sortBy = "date") {
     # Export only items that include...
     tempDataset <- dataset[grep(term, dataset$articlesTxt, ignore.case = TRUE), ]
     if (is.null(includeOnly) == FALSE) {

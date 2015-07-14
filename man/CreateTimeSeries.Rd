@@ -4,20 +4,18 @@
 \alias{CreateTimeSeries}
 \title{Creates time series of the frequency of specific terms.}
 \usage{
-CreateTimeSeries(dataset, corpus, specificTerms, specificWebsites = "",
-  startDate = "", rollingAverage = 30)
+CreateTimeSeries(corpus, specificTerms, specificWebsites = "",
+  startDate = NULL, rollingAverage = 30)
 }
 \arguments{
-\item{dataset}{A dataset of one or more websites created with 'castarter'.}
-
-\item{corpus}{TM corpus with the same contents of the dataset.}
-
 \item{specificTerms}{Character vector with one or more words to be analysed.}
+
+\item{corpusDtm}{A document term matrix.}
 }
 \description{
 It creates time series with the frequency of one or more terms, in one or more websites.
 }
 \examples{
-CreateTimeSeries(dataset, corpus, specificTerms = c("word1", "word2"))
+CreateTimeSeries(corpus, specificTerms = c("word1", "word2"))
 }
 

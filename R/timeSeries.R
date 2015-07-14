@@ -1,16 +1,18 @@
 #' Creates time series of the frequency of specific terms.
 #'
 #' It creates time series with the frequency of one or more terms, in one or more websites. 
-#' @param dataset A dataset of one or more websites created with 'castarter'.
-#' @param corpus TM corpus with the same contents of the dataset.
+#' @param corpusDtm A document term matrix.
 #' @param specificTerms Character vector with one or more words to be analysed. 
 #' @export
 #' @examples
-#' CreateTimeSeries(dataset, corpus, specificTerms = c("word1", "word2"))
+#' CreateTimeSeries(corpus, specificTerms = c("word1", "word2"))
 
-CreateTimeSeries <- function(dataset, corpus, specificTerms, specificWebsites = "", startDate = "", rollingAverage = 30) {
-    time <- as.character(strptime(dataset$dates, "%Y-%m-%d"))
-    nameOfWebsite <- as.character(dataset$nameOfWebsite)
+CreateTimeSeries <- function(corpus, specificTerms, specificWebsites = "", startDate = NULL, rollingAverage = 30) {
+    if (is.null(startDate)==FALSE) {
+        corpus <- corpus[meta(corpus, "datetimestamp") > as.POSIXct(startDate)]
+    }
+    time <- as.character(strptime(as.POSIXct(unlist(meta(corpus, "datetimestamp")), origin = "1970-01-01"), "%Y-%m-%d"))
+    nameOfWebsite <- as.character(unlist(meta(corpus, "author")))
     corpusDtm <- DocumentTermMatrix(corpus)
     if (length(specificTerms>1)) {
         frequencyOfSpecificTerms <- as.table(rollup(corpusDtm[, specificTerms], 1, time))
