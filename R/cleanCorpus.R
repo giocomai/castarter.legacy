@@ -62,6 +62,8 @@ CombineWords <- function(corpus, wordCombinations) {
 #' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
 #' @param importExport Defaults to FALSE. If TRUE, saves stopwords in a txt file in the project folder, and imports changes made in the txt file.
 #' @param includeDefaultStopwords Includes default list of stopwords included in the 'tm' package. 
+#' @param language Passed to the stopwords function of the TM package to provide a default list of stopwords. 
+#' @param importExport If TRUE exports the stopword list to a txt file in the project folder. The txt can be edited and re-imported re-running the function. 
 #' @return A character vector.
 #' @export
 #' @examples
@@ -89,9 +91,9 @@ AddStopwords <- function(newStopwords = NULL, nameOfProject = NULL, includeDefau
         if (exists("stopwords") == TRUE) {
             if (class(stopwords)=="character") {
                 stopwords <- c(stopwords, stopwords(language))
-            }
-        } else {
-            stopwords <- stopwords(language)
+            } else {
+                stopwords <- stopwords(language)
+            } 
         }
     }
     stopwords <- unique(as.character(stopwords[stopwords != ""]))

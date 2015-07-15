@@ -14,7 +14,11 @@ AddStopwords(newStopwords = NULL, nameOfProject = NULL,
 
 \item{includeDefaultStopwords}{Includes default list of stopwords included in the 'tm' package.}
 
+\item{language}{Passed to the stopwords function of the TM package to provide a default list of stopwords.}
+
 \item{importExport}{Defaults to FALSE. If TRUE, saves stopwords in a txt file in the project folder, and imports changes made in the txt file.}
+
+\item{importExport}{If TRUE exports the stopword list to a txt file in the project folder. The txt can be edited and re-imported re-running the function.}
 }
 \value{
 A character vector.
