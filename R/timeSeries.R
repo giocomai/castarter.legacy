@@ -3,13 +3,17 @@
 #' It creates time series with the frequency of one or more terms, in one or more websites. 
 #' @param corpusDtm A document term matrix.
 #' @param specificTerms Character vector with one or more words to be analysed. 
+#' @param startDate, endDate Character vector with date in the format year-month-date, e.g. "2015-07-14".
 #' @export
 #' @examples
 #' CreateTimeSeries(corpus, specificTerms = c("word1", "word2"))
 
-CreateTimeSeries <- function(corpus, specificTerms, specificWebsites = "", startDate = NULL, rollingAverage = 30) {
+CreateTimeSeries <- function(corpus, specificTerms, specificWebsites = "", startDate = NULL, endDate = NULL, rollingAverage = 30) {
     if (is.null(startDate)==FALSE) {
         corpus <- corpus[meta(corpus, "datetimestamp") > as.POSIXct(startDate)]
+    }
+    if (is.null(endDate)==FALSE) {
+        corpus <- corpus[meta(corpus, "datetimestamp") < as.POSIXct(endDate)]
     }
     time <- as.character(strptime(as.POSIXct(unlist(meta(corpus, "datetimestamp")), origin = "1970-01-01"), "%Y-%m-%d"))
     nameOfWebsite <- as.character(unlist(meta(corpus, "author")))

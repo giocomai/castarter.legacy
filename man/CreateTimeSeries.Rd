@@ -5,10 +5,12 @@
 \title{Creates time series of the frequency of specific terms.}
 \usage{
 CreateTimeSeries(corpus, specificTerms, specificWebsites = "",
-  startDate = NULL, rollingAverage = 30)
+  startDate = NULL, endDate = NULL, rollingAverage = 30)
 }
 \arguments{
 \item{specificTerms}{Character vector with one or more words to be analysed.}
+
+\item{startDate,}{endDate Character vector with date in the format year-month-date, e.g. "2015-07-14".}
 
 \item{corpusDtm}{A document term matrix.}
 }
