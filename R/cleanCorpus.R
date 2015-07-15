@@ -151,7 +151,16 @@ CleanCorpus <- function(corpus, stripWhitespace = TRUE, toLowerCase = TRUE, remo
     corpus
 }
 
-EditStemmingDictionary <- function(corpus, nameOfProject, stemmingEditMode = "fromCsv") {
+#' Exports the stemming dictionary
+#' 
+#' Allows to export a stemming dictionary in csv format.
+#'  
+#' @param corpus A corpus as created by the 'tm' package including metadata.
+#' @return .A data.frame with words before and after stemming.
+#' @export
+#' @examples
+#' stemmingDictionary <- ExportStemmingDictionary(corpus, nameOfProject)
+ExportStemmingDictionary <- function(corpus, nameOfProject, stemmingEditMode = "fromCsv") {
     dtm <- DocumentTermMatrix(corpus)
     stemmingDictionary <- data.frame(row.names = colnames(dtm), occurrences = col_sums(dtm), stemmedTerm = wordStem(colnames(dtm), language), 
         stopword = ifelse(colnames(dtm) %in% stopwords, "stopword", ""), stringsAsFactors = FALSE)
