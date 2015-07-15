@@ -1,8 +1,9 @@
 #' Creates time series of the frequency of specific terms.
 #'
 #' It creates time series with the frequency of one or more terms, in one or more websites. 
-#' @param corpusDtm A document term matrix.
+#' @param corpus A corpus created by the TM package..
 #' @param specificTerms Character vector with one or more words to be analysed. 
+#' @param specificWebsites Character vector of the names of one or more websites included in the corpus. Only selected websites will be included in the analysis.
 #' @param startDate, endDate Character vector with date in the format year-month-date, e.g. "2015-07-14".
 #' @export
 #' @examples
@@ -34,9 +35,9 @@ CreateTimeSeries <- function(corpus, specificTerms, specificWebsites = "", start
         termSeries <- rollapply(termSeries, rollingAverage, align = "left", mean, na.rm = TRUE)
     }
     autoplot(termSeries, facets = NULL) +
-        ggtitle(paste("Time series of references to", dQuote(specificTerms))) +
+        ggtitle(paste("Time series of references to", paste(dQuote(specificTerms), collapse = ", "))) +
         scale_x_datetime("Date") +
-        theme(plot.title = element_text(size = rel(1.8)),
+        theme(plot.title = element_text(size = rel(1.5)),
               legend.title = element_text(size = rel(1.5)),
               legend.text = element_text(size = rel(1))) +
         scale_colour_brewer(type = "qual", palette = 6)

@@ -8,11 +8,13 @@ CreateTimeSeries(corpus, specificTerms, specificWebsites = "",
   startDate = NULL, endDate = NULL, rollingAverage = 30)
 }
 \arguments{
+\item{corpus}{A corpus created by the TM package..}
+
 \item{specificTerms}{Character vector with one or more words to be analysed.}
 
-\item{startDate,}{endDate Character vector with date in the format year-month-date, e.g. "2015-07-14".}
+\item{specificWebsites}{Character vector of the names of one or more websites included in the corpus. Only selected websites will be included in the analysis.}
 
-\item{corpusDtm}{A document term matrix.}
+\item{startDate,}{endDate Character vector with date in the format year-month-date, e.g. "2015-07-14".}
 }
 \description{
 It creates time series with the frequency of one or more terms, in one or more websites.
