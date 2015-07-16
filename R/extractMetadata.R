@@ -170,13 +170,13 @@ MergeDates <- function(dates1, dates2, dates3 = "", firstPossibleDate = "", last
 ##'  \item{"customXpath"}{: Allows to input a custom Xpath to extract the title.}
 ##'  \item{"beginning"}{: Outputs as title the first textual elements found in the html file. Title lenght can be defined with the 'maximumNumberOfCharactersInTitle' option.}
 ##' }
-##' @param maximumNumberOfCharactersInTitle An integer. Defines the maximum number of characters to be kept in the output for each title. 
+#' @param removeEverythingAfter Removes everything after given string. 
+#' @param maximumNumberOfCharactersInTitle An integer. Defines the maximum number of characters to be kept in the output for each title. 
 #' @return A character vector of article titles.
 #' @export
 #' @examples
 #' titles <- ExtractTitles(articlesHtml)
-ExtractTitles <- function(articlesHtml, articlesLinks = "", titlesExtractMethod = "indexLink", removePunctuationInFilename = TRUE, remove = "", 
-    removeString = "", customXpath = "", maximumNumberOfCharactersInTitle = "") {
+ExtractTitles <- function(articlesHtml, articlesLinks = "", titlesExtractMethod = "indexLink", removePunctuationInFilename = TRUE, remove = "", removeString = "", removeEverythingAfter = NULL, customXpath = "", maximumNumberOfCharactersInTitle = "") {
     titles <- vector()
     numberOfArticles <- length(articlesHtml)
     if (titlesExtractMethod == "htmlTitle") {
@@ -206,6 +206,9 @@ ExtractTitles <- function(articlesHtml, articlesLinks = "", titlesExtractMethod 
     }
     if (removeString[1] != "") {
         titles <- gsub(paste(removeString, collapse = "|"), replacement = "", x = titles)
+    }
+    if (is.null(removeEverythingAfter) == FALSE) {
+        titles <- gsub(paste0(removeEverythingAfter, ".*"), replacement = "", x = titles)
     }
     if (remove == "onlyStandardCharacters") {
         titles <- gsub("[^A-Za-z0-9 ]", "-", titles)

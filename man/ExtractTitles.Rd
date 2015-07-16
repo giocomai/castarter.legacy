@@ -6,8 +6,8 @@
 \usage{
 ExtractTitles(articlesHtml, articlesLinks = "",
   titlesExtractMethod = "indexLink", removePunctuationInFilename = TRUE,
-  remove = "", removeString = "", customXpath = "",
-  maximumNumberOfCharactersInTitle = "")
+  remove = "", removeString = "", removeEverythingAfter = NULL,
+  customXpath = "", maximumNumberOfCharactersInTitle = "")
 }
 \arguments{
 \item{articlesHtml}{A character vector of html files.}
@@ -25,6 +25,8 @@ ExtractTitles(articlesHtml, articlesLinks = "",
 }}
 
 \item{removeString}{A character vector of one or more strings to be removed from the extracted title.}
+
+\item{removeEverythingAfter}{Removes everything after given string.}
 
 \item{maximumNumberOfCharactersInTitle}{An integer. Defines the maximum number of characters to be kept in the output for each title.}
 }
