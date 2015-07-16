@@ -230,7 +230,17 @@ ExtractTitles <- function(articlesHtml, articlesLinks = "", titlesExtractMethod 
     titles
 }
 
-ExtractArticleId <- function(nameOfProject, nameOfWebsite, accordingToDate = FALSE) {
+#' Extracts articlesId from filename
+#' 
+#' Extracts articlesId from filename-
+#'  
+#' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
+#' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.Defaults to NULL. If no nameOfWebsite is provided, exported files are saved in the nameOfProject/Outputs folder.
+#' @return A vector of the integer class. 
+#' @export
+#' @examples
+#' articlesId <- ExtractArticleId(nameOfProject, nameOfWebsite)
+ExtractArticleId <- function(nameOfProject, nameOfWebsite, accordingToDate = FALSE, dates = NULL) {
     htmlFilesList <- list.files(file.path(nameOfProject, nameOfWebsite, "Html"))
     htmlFilesList <- mixedsort(htmlFilesList)
     if (accordingToDate == TRUE) {
