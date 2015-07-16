@@ -195,8 +195,10 @@ ExtractTitles <- function(articlesHtml, articlesLinks = "", titlesExtractMethod 
             titles[i] <- xpathSApply(articleHtmlParsed, "//h1", xmlValue)
         }
     } else if (titlesExtractMethod == "customXpath") {
+        for (i in 1:numberOfArticles) {
         articleHtmlParsed <- htmlTreeParse(articlesHtml[i], useInternalNodes = T)
         titles[i] <- xpathSApply(articleHtmlParsed, customXpath, xmlValue)
+        }
     } else if (titlesExtractMethod == "indexLink") {
         titles <- names(articlesLinks)
     } else if (titlesExtractMethod == "beginning") {
