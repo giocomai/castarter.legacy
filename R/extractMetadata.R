@@ -31,7 +31,7 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", language = "en", cust
                 datesTxt[i] <- dateTxt
             }
         }
-    } else if (dateFormat == "eb.'y") {
+    } else if (dateFormat == "db.'y") {
         for (i in 1:numberOfArticles) {
             dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]]?[[:digit:]][[:space:]][[:alpha:]]*.'[[:digit:]][[:digit:]][[:digit:]]?", 
                                                            articlesHtml[i]))
