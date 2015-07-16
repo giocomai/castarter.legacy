@@ -5,12 +5,14 @@
 \title{Extracts dates from a vector of html files}
 \usage{
 ExtractDates(articlesHtml, dateFormat = "dmY", language = "en",
-  customString = "")
+  customString = "", minDate = NULL, maxDate = NULL)
 }
 \arguments{
 \item{articlesHtml}{A character vector of html files.}
 
 \item{dateFormat}{A string used to extract the date. Available date formats options include dmY, dby, dBy, dBY, dbY, etc.}
+
+\item{minDate,}{maxDate Minimum and maximum possible dates in the format year-month-date, e.g. "2007-06-24". Introduces NA in the place of impossibly high or low dates.}
 }
 \value{
 A vector of the POSIXct class.

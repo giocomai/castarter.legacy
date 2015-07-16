@@ -4,11 +4,12 @@
 #'  
 #' @param articlesHtml A character vector of html files.
 #' @param dateFormat A string used to extract the date. Available date formats options include dmY, dby, dBy, dBY, dbY, etc.
+#' @param minDate, maxDate Minimum and maximum possible dates in the format year-month-date, e.g. "2007-06-24". Introduces NA in the place of impossibly high or low dates.
 #' @return A vector of the POSIXct class. 
 #' @export
 #' @examples
 #' dates <- ExtractDates(articlesHtml)
-ExtractDates <- function(articlesHtml, dateFormat = "dmY", language = "en", customString = "") {
+ExtractDates <- function(articlesHtml, dateFormat = "dmY", language = "en", customString = "", minDate = NULL, maxDate = NULL) {
     numberOfArticles <- length(articlesHtml)
     datesTxt <- rep(NA, numberOfArticles)
     if (dateFormat == "dby" | dateFormat == "dBy" | dateFormat == "dBY" | dateFormat == "dbY") {
@@ -99,6 +100,12 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", language = "en", cust
         }
     }
     dates <- parse_date_time(datesTxt, dateFormat)
+    if (is.null(minDate) == FALSE) {
+    dates[dates < as.POSIXct(minDate)] <- NA
+    }
+    if (is.null(maxDate) == FALSE) {
+        dates[dates > as.POSIXct(maxDate)] <- NA
+    }
     dates
 }
 
@@ -171,12 +178,12 @@ MergeDates <- function(dates1, dates2, dates3 = "", firstPossibleDate = "", last
 ##'  \item{"beginning"}{: Outputs as title the first textual elements found in the html file. Title lenght can be defined with the 'maximumNumberOfCharactersInTitle' option.}
 ##' }
 #' @param removeEverythingAfter Removes everything after given string. 
-#' @param maximumNumberOfCharactersInTitle An integer. Defines the maximum number of characters to be kept in the output for each title. 
+#' @param maxCharacters An integer. Defines the maximum number of characters to be kept in the output for each title. 
 #' @return A character vector of article titles.
 #' @export
 #' @examples
 #' titles <- ExtractTitles(articlesHtml)
-ExtractTitles <- function(articlesHtml, articlesLinks = "", titlesExtractMethod = "indexLink", removePunctuationInFilename = TRUE, remove = "", removeString = "", removeEverythingAfter = NULL, customXpath = "", maximumNumberOfCharactersInTitle = "") {
+ExtractTitles <- function(articlesHtml, articlesLinks = "", titlesExtractMethod = "indexLink", removePunctuationInFilename = TRUE, remove = "", removeString = "", removeEverythingAfter = NULL, customXpath = "", maxCharacters = "") {
     titles <- vector()
     numberOfArticles <- length(articlesHtml)
     if (titlesExtractMethod == "htmlTitle") {
@@ -219,7 +226,7 @@ ExtractTitles <- function(articlesHtml, articlesLinks = "", titlesExtractMethod 
         titles <- gsub("  ", " ", titles)
         titles <- gsub("--", "-", titles)
     }
-    titles <- substring(titles, 1, maximumNumberOfCharactersInTitle)
+    titles <- substring(titles, 1, maxCharacters)
     titles
 }
 
