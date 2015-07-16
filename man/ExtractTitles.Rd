@@ -14,7 +14,19 @@ ExtractTitles(articlesHtml, articlesLinks = "",
 
 \item{articlesLinks}{A named character vector, typically created by the ExtractArticlesLinks function.}
 
+\item{titlesExtractMethod}{Title extract method, to be given as a text string. Available options are:
+\itemize{
+ \item{"indexLink"}{: Default. Extract the title from articlesLinks (required). Titles are taken from the textual element of the link taken from the index pages. }
+ \item{"htmlTitle"}{: Extract the title from the Html <title> field, usually shown on the top bar of web browsers.}
+ \item{"htmlH1"}{: Extract the title from the first occurence of text that has heading 1, the <h1> html tag, as its style.}
+ \item{"htmlH2"}{: Extract the title from the first occurence of text that has heading 2, the <h2> html tag, as its style.}
+ \item{"customXpath"}{: Allows to input a custom Xpath to extract the title.}
+ \item{"beginning"}{: Outputs as title the first textual elements found in the html file. Title lenght can be defined with the 'maximumNumberOfCharactersInTitle' option.}
+}}
+
 \item{removeString}{A character vector of one or more strings to be removed from the extracted title.}
+
+\item{maximumNumberOfCharactersInTitle}{An integer. Defines the maximum number of characters to be kept in the output for each title.}
 }
 \value{
 A character vector of article titles.
