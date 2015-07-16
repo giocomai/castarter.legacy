@@ -31,6 +31,16 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", language = "en", cust
                 datesTxt[i] <- dateTxt
             }
         }
+    } else if (dateFormat == "eb.'y") {
+        for (i in 1:numberOfArticles) {
+            dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]]?[[:digit:]][[:space:]][[:alpha:]]*.'[[:digit:]][[:digit:]][[:digit:]]?", 
+                                                           articlesHtml[i]))
+            if (length(dateTxt) == 0) {
+                datesTxt[i] <- NA
+            } else {
+                datesTxt[i] <- dateTxt
+            }
+        }
     } else if (dateFormat == "Bd,Y") {
         for (i in 1:numberOfArticles) {
             dateTxt <- regmatches(articlesHtml[i], regexpr("[[:space:]][[:alpha:]]*[[:space:]][[:digit:]]?[[:digit:]],[[:space:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]?", 
