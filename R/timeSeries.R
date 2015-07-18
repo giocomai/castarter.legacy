@@ -36,10 +36,10 @@ CreateTimeSeries <- function(corpus, specificTerms, specificWebsites = "", start
         termSeries <- rollapply(termSeries, rollingAverage, align = "left", mean, na.rm = TRUE)
     }
     timeSeries <- autoplot(termSeries, facets = NULL) +
-        ggtitle(paste("Time series of references to", paste(dQuote(specificTerms), collapse = ", "))) +
+        if (is.null(nameOfWebsite) == TRUE) {ggtitle(paste("Time series of references to", paste(dQuote(specificTerms), collapse = ", ")))} else {ggtitle(paste("Time series of references to", paste(dQuote(specificTerms), collapse = ", "), "in", nameOfWebsite))} +
         scale_x_datetime("Date") +
-        theme(plot.title = element_text(size = rel(1.5)),
-              legend.title = element_text(size = rel(1.5)),
+        theme(plot.title = element_text(size = rel(1.2)),
+              legend.title = element_text(size = rel(1.2)),
               legend.text = element_text(size = rel(1))) +
         scale_colour_brewer(type = "qual", palette = 6)
     if (save == TRUE) {
