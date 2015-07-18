@@ -5,7 +5,8 @@
 \title{Creates time series of the frequency of specific terms.}
 \usage{
 CreateTimeSeries(corpus, specificTerms, specificWebsites = "",
-  startDate = NULL, endDate = NULL, rollingAverage = 30)
+  startDate = NULL, endDate = NULL, rollingAverage = 30, save = TRUE,
+  nameOfProject = NULL, nameOfWebsite = NULL)
 }
 \arguments{
 \item{corpus}{A corpus created by the TM package..}
@@ -15,6 +16,8 @@ CreateTimeSeries(corpus, specificTerms, specificWebsites = "",
 \item{specificWebsites}{Character vector of the names of one or more websites included in the corpus. Only selected websites will be included in the analysis.}
 
 \item{startDate,}{endDate Character vector with date in the format year-month-date, e.g. "2015-07-14".}
+
+\item{save}{Logical. If true, saves the time series in png format. If nameOfProject and nameOfWebsite are provided, in saves the timeseries in the "Outputs" subfolder.}
 }
 \description{
 It creates time series with the frequency of one or more terms, in one or more websites.

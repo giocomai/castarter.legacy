@@ -5,11 +5,12 @@
 #' @param specificTerms Character vector with one or more words to be analysed. 
 #' @param specificWebsites Character vector of the names of one or more websites included in the corpus. Only selected websites will be included in the analysis.
 #' @param startDate, endDate Character vector with date in the format year-month-date, e.g. "2015-07-14".
+#' @param save Logical. If true, saves the time series in png format. If nameOfProject and nameOfWebsite are provided, in saves the timeseries in the "Outputs" subfolder. 
 #' @export
 #' @examples
 #' CreateTimeSeries(corpus, specificTerms = c("word1", "word2"))
 
-CreateTimeSeries <- function(corpus, specificTerms, specificWebsites = "", startDate = NULL, endDate = NULL, rollingAverage = 30) {
+CreateTimeSeries <- function(corpus, specificTerms, specificWebsites = "", startDate = NULL, endDate = NULL, rollingAverage = 30, save = TRUE, nameOfProject = NULL, nameOfWebsite = NULL) {
     if (is.null(startDate)==FALSE) {
         corpus <- corpus[meta(corpus, "datetimestamp") > as.POSIXct(startDate)]
     }
@@ -41,4 +42,22 @@ CreateTimeSeries <- function(corpus, specificTerms, specificWebsites = "", start
               legend.title = element_text(size = rel(1.5)),
               legend.text = element_text(size = rel(1))) +
         scale_colour_brewer(type = "qual", palette = 6)
+    if (save == TRUE) {
+        if (is.null(nameOfProject) == FALSE & is.null(nameOfWebsite) == FALSE) {
+            if (!file.exists(file.path(nameOfProject, nameOfWebsite, "Outputs"))) {
+                dir.create(file.path(nameOfProject, nameOfWebsite, "Outputs"))
+            }
+            ggsave(file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste("timeseries", nameOfProject, nameOfWebsite, paste(specificTerms, collapse = " - "), sep = " - "), ".png")))
+            print(paste("File saved in", file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste("timeseries", nameOfProject, nameOfWebsite, paste(specificTerms, collapse = " - "), sep = " - "), ".png"))))
+        } else if (is.null(nameOfProject) == TRUE & is.null(nameOfWebsite) == FALSE) {
+            ggsave(file.path("Outputs", paste0(paste("timeseries", nameOfProject, paste(specificTerms, collapse = " - "), sep = " - "), ".png")))
+            print(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", nameOfProject, paste(specificTerms, collapse = " - "), sep = " - "), ".png"))))
+        } else {
+            if (!file.exists(file.path("Outputs"))) {
+                dir.create(file.path("Outputs"))
+            }
+            ggsave(file.path("Outputs", paste0(paste("timeseries", paste(specificTerms, collapse = " - "), sep = " - "), ".png")))
+            print(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", nameOfProject, paste(specificTerms, collapse = " - "), sep = " - "), ".png"))))
+        }
+    }
 } 
