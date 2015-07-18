@@ -5,14 +5,14 @@
 \title{Adds stopwords to the default list}
 \usage{
 AddStopwords(newStopwords = NULL, nameOfProject = NULL,
-  includeDefaultStopwords = FALSE, language = "en", importExport = FALSE)
+  includeDefault = TRUE, language = "en", importExport = FALSE)
 }
 \arguments{
 \item{newStopwords}{A character vector of words.}
 
 \item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
 
-\item{includeDefaultStopwords}{Includes default list of stopwords included in the 'tm' package.}
+\item{includeDefault}{Logical, defaults to TRUE. Includes default list of stopwords included in the 'tm' package.}
 
 \item{language}{Passed to the stopwords function of the TM package to provide a default list of stopwords.}
 
