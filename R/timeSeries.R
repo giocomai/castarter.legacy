@@ -35,7 +35,7 @@ CreateTimeSeries <- function(corpus, specificTerms, specificWebsites = "", start
     if (rollingAverage != "") {
         termSeries <- rollapply(termSeries, rollingAverage, align = "left", mean, na.rm = TRUE)
     }
-    autoplot(termSeries, facets = NULL) +
+    timeSeries <- autoplot(termSeries, facets = NULL) +
         ggtitle(paste("Time series of references to", paste(dQuote(specificTerms), collapse = ", "))) +
         scale_x_datetime("Date") +
         theme(plot.title = element_text(size = rel(1.5)),
@@ -43,13 +43,14 @@ CreateTimeSeries <- function(corpus, specificTerms, specificWebsites = "", start
               legend.text = element_text(size = rel(1))) +
         scale_colour_brewer(type = "qual", palette = 6)
     if (save == TRUE) {
+        timeSeries
         if (is.null(nameOfProject) == FALSE & is.null(nameOfWebsite) == FALSE) {
             if (!file.exists(file.path(nameOfProject, nameOfWebsite, "Outputs"))) {
                 dir.create(file.path(nameOfProject, nameOfWebsite, "Outputs"))
             }
             ggsave(file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste("timeseries", nameOfProject, nameOfWebsite, paste(specificTerms, collapse = " - "), sep = " - "), ".png")))
             print(paste("File saved in", file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste("timeseries", nameOfProject, nameOfWebsite, paste(specificTerms, collapse = " - "), sep = " - "), ".png"))))
-        } else if (is.null(nameOfProject) == TRUE & is.null(nameOfWebsite) == FALSE) {
+        } else if (is.null(nameOfProject) == FALSE & is.null(nameOfWebsite) == TRUE) {
             ggsave(file.path("Outputs", paste0(paste("timeseries", nameOfProject, paste(specificTerms, collapse = " - "), sep = " - "), ".png")))
             print(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", nameOfProject, paste(specificTerms, collapse = " - "), sep = " - "), ".png"))))
         } else {
@@ -57,7 +58,8 @@ CreateTimeSeries <- function(corpus, specificTerms, specificWebsites = "", start
                 dir.create(file.path("Outputs"))
             }
             ggsave(file.path("Outputs", paste0(paste("timeseries", paste(specificTerms, collapse = " - "), sep = " - "), ".png")))
-            print(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", nameOfProject, paste(specificTerms, collapse = " - "), sep = " - "), ".png"))))
+            print(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", paste(specificTerms, collapse = " - "), sep = " - "), ".png"))))
         }
     }
+    timeSeries
 } 
