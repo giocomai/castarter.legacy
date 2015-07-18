@@ -10,7 +10,7 @@
 #' @examples
 #' CreateTimeSeries(corpus, specificTerms = c("word1", "word2"))
 
-CreateTimeSeries <- function(corpus, specificTerms, specificWebsites = "", startDate = NULL, endDate = NULL, rollingAverage = 30, save = TRUE, nameOfProject = NULL, nameOfWebsite = NULL) {
+CreateTimeSeries <- function(corpus, specificTerms, specificWebsites = "", startDate = NULL, endDate = NULL, rollingAverage = 30, export = TRUE, nameOfProject = NULL, nameOfWebsite = NULL) {
     if (is.null(startDate)==FALSE) {
         corpus <- corpus[meta(corpus, "datetimestamp") > as.POSIXct(startDate)]
     }
@@ -42,7 +42,7 @@ CreateTimeSeries <- function(corpus, specificTerms, specificWebsites = "", start
               legend.title = element_text(size = rel(1.2)),
               legend.text = element_text(size = rel(1))) +
         scale_colour_brewer(type = "qual", palette = 6)
-    if (save == TRUE) {
+    if (export == TRUE) {
         timeSeries
         if (is.null(nameOfProject) == FALSE & is.null(nameOfWebsite) == FALSE) {
             if (!file.exists(file.path(nameOfProject, nameOfWebsite, "Outputs"))) {
