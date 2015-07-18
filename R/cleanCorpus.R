@@ -61,7 +61,7 @@ CombineWords <- function(corpus, wordCombinations) {
 #' @param newStopwords A character vector of words.
 #' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
 #' @param importExport Defaults to FALSE. If TRUE, saves stopwords in a txt file in the project folder, and imports changes made in the txt file.
-#' @param includeDefaultStopwords Includes default list of stopwords included in the 'tm' package. 
+#' @param includeDefault Logical, defaults to TRUE. Includes default list of stopwords included in the 'tm' package. 
 #' @param language Passed to the stopwords function of the TM package to provide a default list of stopwords. 
 #' @param importExport If TRUE exports the stopword list to a txt file in the project folder. The txt can be edited and re-imported re-running the function. 
 #' @return A character vector.
@@ -70,7 +70,7 @@ CombineWords <- function(corpus, wordCombinations) {
 #' newStopwords <- c("will", "also", "can")
 #' stopwords <- AddStopwords(newStopwords, nameOfProject, includeDefaultStopwords = TRUE, language = "en")
 
-AddStopwords <- function(newStopwords = NULL, nameOfProject = NULL, includeDefaultStopwords = FALSE, language = "en", importExport = FALSE) {
+AddStopwords <- function(newStopwords = NULL, nameOfProject = NULL, includeDefault = TRUE, language = "en", importExport = FALSE) {
     if (is.null(nameOfProject)==FALSE & importExport == TRUE) {
         if (file.exists(file.path(nameOfProject, paste(nameOfProject, "stopwords.txt")))) {
             stopwords <- as.vector(readLines(con = file.path(nameOfProject, paste(nameOfProject, "stopwords.txt"))))
