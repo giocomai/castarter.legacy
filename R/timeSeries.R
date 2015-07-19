@@ -18,12 +18,12 @@ CreateTimeSeries <- function(corpus, specificTerms, specificWebsites = "", start
         corpus <- corpus[meta(corpus, "datetimestamp") < as.POSIXct(endDate)]
     }
     time <- as.character(strptime(as.POSIXct(unlist(meta(corpus, "datetimestamp")), origin = "1970-01-01"), "%Y-%m-%d"))
-    nameOfWebsite <- as.character(unlist(meta(corpus, "author")))
+    nameOfWebsitesIncluded <- as.character(unlist(meta(corpus, "author")))
     corpusDtm <- DocumentTermMatrix(corpus)
     if (length(specificTerms>1)) {
         frequencyOfSpecificTerms <- as.table(rollup(corpusDtm[, specificTerms], 1, time))
     } else {
-        frequencyOfSpecificTerms <- as.table(tapply(as.numeric(as.matrix(corpusDtm[, specificTerms])), list(time, nameOfWebsite), sum))
+        frequencyOfSpecificTerms <- as.table(tapply(as.numeric(as.matrix(corpusDtm[, specificTerms])), list(time, nameOfWebsitesIncluded), sum))
     }
     # to filter specific websites
     if (specificWebsites != "") {
