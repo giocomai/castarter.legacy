@@ -193,7 +193,7 @@ MergeDates <- function(dates1, dates2, dates3 = "", firstPossibleDate = "", last
 #' @export
 #' @examples
 #' titles <- ExtractTitles(articlesHtml)
-ExtractTitles <- function(articlesHtml, articlesLinks = "", titlesExtractMethod = "indexLink", removePunctuation = TRUE, onlyStandardCharacters = FALSE, removeString = "", removeEverythingAfter = NULL, customXpath = "", maxCharacters = "") {
+ExtractTitles <- function(articlesHtml, articlesLinks = "", titlesExtractMethod = "indexLink", removePunctuation = TRUE, onlyStandardCharacters = FALSE, removeString = "", removeEverythingAfter = NULL, customXpath = "", maxCharacters = NULL) {
     titles <- vector()
     numberOfArticles <- length(articlesHtml)
     if (titlesExtractMethod == "htmlTitle") {
@@ -231,18 +231,21 @@ ExtractTitles <- function(articlesHtml, articlesLinks = "", titlesExtractMethod 
         titles <- gsub("[^A-Za-z0-9 ]", "-", titles)
         titles <- gsub("  ", " ", titles)
         titles <- gsub("--", "-", titles)
-    } else if (removePunctuation == TRUE) {
+    }
+    if (removePunctuation == TRUE) {
         titles <- gsub("[[:punct:]]", "-", titles)
         titles <- gsub("  ", " ", titles)
         titles <- gsub("--", "-", titles)
     }
+    if (is.null(maxCharacters) == FALSE) {
     titles <- substring(titles, 1, maxCharacters)
+    }
     titles
 }
 
 #' Extracts articlesId from filename
 #' 
-#' Extracts articlesId from filename-
+#' Extracts articlesId from filename
 #'  
 #' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
 #' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.Defaults to NULL. If no nameOfWebsite is provided, exported files are saved in the nameOfProject/Outputs folder.

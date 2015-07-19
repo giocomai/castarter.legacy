@@ -16,7 +16,7 @@ ExtractArticleId(nameOfProject, nameOfWebsite, accordingToDate = FALSE,
 A vector of the integer class.
 }
 \description{
-Extracts articlesId from filename-
+Extracts articlesId from filename
 }
 \examples{
 articlesId <- ExtractArticleId(nameOfProject, nameOfWebsite)
