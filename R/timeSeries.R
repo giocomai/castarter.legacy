@@ -36,12 +36,15 @@ CreateTimeSeries <- function(corpus, specificTerms, specificWebsites = "", start
         termSeries <- rollapply(termSeries, rollingAverage, align = "left", mean, na.rm = TRUE)
     }
     timeSeries <- autoplot(termSeries, facets = NULL) +
-        if (is.null(nameOfWebsite) == TRUE) {ggtitle(paste("Time series of references to", paste(dQuote(specificTerms), collapse = ", ")))} else {ggtitle(paste("Time series of references to", paste(dQuote(specificTerms), collapse = ", "), "in", nameOfWebsite))} +
+        ggtitle(paste("Time series of references to", paste(dQuote(specificTerms), collapse = ", "))) +
         scale_x_datetime("Date") +
         theme(plot.title = element_text(size = rel(1.2)),
               legend.title = element_text(size = rel(1.2)),
               legend.text = element_text(size = rel(1))) +
         scale_colour_brewer(type = "qual", palette = 6)
+    if (is.null(nameOfWebsite) == FALSE) {
+        timeSeries <- timeSeries + ggtitle(paste("Time series of references to", paste(dQuote(specificTerms), collapse = ", "), "in", nameOfWebsite))
+        }
     if (export == TRUE) {
         timeSeries
         if (is.null(nameOfProject) == FALSE & is.null(nameOfWebsite) == FALSE) {
