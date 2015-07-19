@@ -48,7 +48,7 @@ CreateTimeSeries <- function(corpus, specificTerms, specificWebsites = "", start
     if (export == TRUE) {
         timeSeries
         if (is.null(nameOfProject) == FALSE & is.null(nameOfWebsite) == FALSE) {
-            if (!file.exists(file.path(nameOfProject, nameOfWebsite, "Outputs"))) {
+            if (file.exists(file.path(nameOfProject, nameOfWebsite, "Outputs")) == FALSE) {
                 dir.create(file.path(nameOfProject, nameOfWebsite, "Outputs"))
             }
             ggsave(file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste("timeseries", nameOfProject, nameOfWebsite, paste(specificTerms, collapse = " - "), sep = " - "), ".png")))

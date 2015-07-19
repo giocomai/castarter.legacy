@@ -108,8 +108,18 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", language = "en", cust
     }
     dates
 }
-
-ExtractDatesXpath <- function(articlesHtml, dateFormat = "dmy", divClass = "", spanClass = "", customXpath = "", language = "en", customString = "") {
+#' Extracts dates from a vector of html files
+#' 
+#' Extracts dates from a vector of html files.
+#'  
+#' @param articlesHtml A character vector of html files.
+#' @param dateFormat A string used to extract the date. Available date formats options include dmY, dby, dBy, dBY, dbY, etc.
+#' @param minDate, maxDate Minimum and maximum possible dates in the format year-month-date, e.g. "2007-06-24". Introduces NA in the place of impossibly high or low dates.
+#' @return A vector of the POSIXct class. 
+#' @export
+#' @examples
+#' dates <- ExtractDatesXpath(articlesHtml)
+ExtractDatesXpath <- function(articlesHtml, dateFormat = "dmy", divClass = "", spanClass = "", customXpath = "", language = "en", customString = "", minDate = NULL, maxDate = NULL) {
     numberOfArticles <- length(articlesHtml)
     datesTxt <- rep(NA, numberOfArticles)
     if (divClass != "") {
