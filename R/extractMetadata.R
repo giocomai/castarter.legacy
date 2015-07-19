@@ -193,7 +193,7 @@ MergeDates <- function(dates1, dates2, dates3 = "", firstPossibleDate = "", last
 #' @export
 #' @examples
 #' titles <- ExtractTitles(articlesHtml)
-ExtractTitles <- function(articlesHtml, articlesLinks = "", titlesExtractMethod = "indexLink", removePunctuationInFilename = TRUE, remove = "", removeString = "", removeEverythingAfter = NULL, customXpath = "", maxCharacters = "") {
+ExtractTitles <- function(articlesHtml, articlesLinks = "", titlesExtractMethod = "indexLink", removePunctuation = TRUE, onlyStandardCharacters = FALSE, removeString = "", removeEverythingAfter = NULL, customXpath = "", maxCharacters = "") {
     titles <- vector()
     numberOfArticles <- length(articlesHtml)
     if (titlesExtractMethod == "htmlTitle") {
@@ -227,11 +227,11 @@ ExtractTitles <- function(articlesHtml, articlesLinks = "", titlesExtractMethod 
     if (is.null(removeEverythingAfter) == FALSE) {
         titles <- gsub(paste0(removeEverythingAfter, ".*"), replacement = "", x = titles)
     }
-    if (remove == "onlyStandardCharacters") {
+    if (onlyStandardCharacters == TRUE) {
         titles <- gsub("[^A-Za-z0-9 ]", "-", titles)
         titles <- gsub("  ", " ", titles)
         titles <- gsub("--", "-", titles)
-    } else if (removePunctuationInFilename == TRUE) {
+    } else if (removePunctuation == TRUE) {
         titles <- gsub("[[:punct:]]", "-", titles)
         titles <- gsub("  ", " ", titles)
         titles <- gsub("--", "-", titles)

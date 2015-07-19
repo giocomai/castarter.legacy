@@ -5,9 +5,9 @@
 \title{Extracts titles of individual pages}
 \usage{
 ExtractTitles(articlesHtml, articlesLinks = "",
-  titlesExtractMethod = "indexLink", removePunctuationInFilename = TRUE,
-  remove = "", removeString = "", removeEverythingAfter = NULL,
-  customXpath = "", maxCharacters = "")
+  titlesExtractMethod = "indexLink", removePunctuation = TRUE,
+  onlyStandardCharacters = FALSE, removeString = "",
+  removeEverythingAfter = NULL, customXpath = "", maxCharacters = "")
 }
 \arguments{
 \item{articlesHtml}{A character vector of html files.}
