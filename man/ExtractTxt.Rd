@@ -5,7 +5,7 @@
 \title{Extracts textual contents from a vector of html files}
 \usage{
 ExtractTxt(articlesHtml, metadata = "", export = TRUE,
-  maximumNumberOfCharactersInTitle = 80, textToBeRemoved = "",
+  maxTitleCharacters = 80, textToBeRemoved = "",
   removeEverythingAfter = "", removePunctuationInFilename = TRUE,
   keepEverything = FALSE)
 }
