@@ -5,7 +5,7 @@
 \title{Creates time series of the frequency of specific terms.}
 \usage{
 CreateTimeSeries(corpus, specificTerms, specificWebsites = "",
-  startDate = NULL, endDate = NULL, rollingAverage = 30, save = TRUE,
+  startDate = NULL, endDate = NULL, rollingAverage = 30, export = TRUE,
   nameOfProject = NULL, nameOfWebsite = NULL)
 }
 \arguments{

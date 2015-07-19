@@ -28,6 +28,6 @@ Adds stopwords to the default list.
 }
 \examples{
 newStopwords <- c("will", "also", "can")
-stopwords <- AddStopwords(newStopwords, nameOfProject, includeDefaultStopwords = TRUE, language = "en")
+stopwords <- AddStopwords(newStopwords, nameOfProject, includeDefault = TRUE, language = "en")
 }
 

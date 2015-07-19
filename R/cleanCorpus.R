@@ -68,7 +68,7 @@ CombineWords <- function(corpus, wordCombinations) {
 #' @export
 #' @examples
 #' newStopwords <- c("will", "also", "can")
-#' stopwords <- AddStopwords(newStopwords, nameOfProject, includeDefaultStopwords = TRUE, language = "en")
+#' stopwords <- AddStopwords(newStopwords, nameOfProject, includeDefault = TRUE, language = "en")
 
 AddStopwords <- function(newStopwords = NULL, nameOfProject = NULL, includeDefault = TRUE, language = "en", importExport = FALSE) {
     if (is.null(nameOfProject)==FALSE & importExport == TRUE) {
@@ -87,7 +87,7 @@ AddStopwords <- function(newStopwords = NULL, nameOfProject = NULL, includeDefau
             stopwords <- newStopwords
         }
     }
-    if (includeDefaultStopwords == TRUE) {
+    if (includeDefault == TRUE) {
         if (exists("stopwords") == TRUE) {
             if (class(stopwords)=="character") {
                 stopwords <- c(stopwords, stopwords(language))
