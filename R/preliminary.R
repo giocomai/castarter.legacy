@@ -73,7 +73,7 @@ LoadLatestWebsite <- function(nameOfProject, nameOfWebsite) {
 #' @export
 #' @examples
 #' LoadLatestWebsite(nameOfProject, nameOfWebsite)
-SaveAndExportWebsite <- function(nameOfProject, nameOfWebsite, exportXlsx = TRUE) {
+SaveAndExportWebsite <- function(nameOfProject, nameOfWebsite, exportXlsx = FALSE) {
     ## Save environment
     save.image(file = file.path(nameOfProject, nameOfWebsite, paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, sep = " - "), ".RData")))
     print(paste("Environment saved in", file.path(nameOfProject, nameOfWebsite, paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, sep = " - "), ".RData"))))

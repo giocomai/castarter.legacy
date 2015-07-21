@@ -50,10 +50,13 @@ DownloadArticles <- function(nameOfProject, nameOfWebsite, articlesLinks, extrac
 #' @examples
 #' ReDownloadMissingArticles(nameOfProject, nameOfWebsite, articlesLinks)
 
-ReDownloadMissingArticles <- function(nameOfProject, nameOfWebsite, links = articlesLinks, size = 500, htmlFilesToDownload = "", wget = FALSE, 
-    wait = 3) {
+ReDownloadMissingArticles <- function(nameOfProject, nameOfWebsite, links = articlesLinks, size = 500, htmlFilesToDownload = "", wget = FALSE, missingArticles = FALSE, wait = 3) {
     htmlFilesList <- mixedsort(list.files(file.path(nameOfProject, nameOfWebsite, "Html"), full.names = TRUE))
     htmlFileSize <- file.info(htmlFilesList)["size"]
+    if (missingArticles == TRUE) {
+        articlesHtmlFilenamesInTheory <- file.path(nameOfProject, nameOfWebsite, "Html", paste0(articlesId, ".html"))
+        htmlFilesToDownload <- is.element(articlesHtmlFilenamesInTheory, htmlFilesList)
+    }
     if (htmlFilesToDownload == "") {
         htmlFilesToDownload <- htmlFileSize < size
     }
