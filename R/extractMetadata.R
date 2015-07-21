@@ -125,7 +125,7 @@ ExtractDatesXpath <- function(articlesHtml, dateFormat = "dmy", divClass = "", s
     if (divClass != "") {
         for (i in 1:numberOfArticles) {
             if (articlesHtml[i] != "") {
-                articleHtmlParsed <- htmlTreeParse(articlesHtml[i], useInternalNodes = T)
+                articleHtmlParsed <- htmlTreeParse(articlesHtml[i], useInternalNodes = T, encoding = "UTF-8")
                 if (length(xpathSApply(articleHtmlParsed, paste0("//div[@class='", divClass, "']"), xmlValue)) == 0) {
                   datesTxt[i] <- NA
                   print(paste("Date in article with ID", i, "could not be extracted."))
