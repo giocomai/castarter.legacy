@@ -149,9 +149,7 @@ ExtractDatesXpath <- function(articlesHtml, dateFormat = "dmy", divClass = NULL,
             }
         }
     }
-    if (length(datesTxt) == 1) {
-        if (is.na(datesTxt) == TRUE) { 
-        }
+    if (length(datesTxt) == 1 & is.na(datesTxt) == TRUE) {
     } else {
     ExtractDates(datesTxt, dateFormat, language)
     }
