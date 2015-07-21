@@ -119,10 +119,10 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", language = "en", cust
 #' @export
 #' @examples
 #' dates <- ExtractDatesXpath(articlesHtml)
-ExtractDatesXpath <- function(articlesHtml, dateFormat = "dmy", divClass = "", spanClass = "", customXpath = "", language = "en", customString = "", minDate = NULL, maxDate = NULL) {
+ExtractDatesXpath <- function(articlesHtml, dateFormat = "dmy", divClass = NULL, spanClass = "", customXpath = "", language = "en", customString = "", minDate = NULL, maxDate = NULL) {
     numberOfArticles <- length(articlesHtml)
     datesTxt <- rep(NA, numberOfArticles)
-    if (divClass != "") {
+    if (is.null(divClass) == FALSE) {
         for (i in 1:numberOfArticles) {
             if (articlesHtml[i] != "") {
                 articleHtmlParsed <- htmlTreeParse(articlesHtml[i], useInternalNodes = T, encoding = "UTF-8")
@@ -149,7 +149,12 @@ ExtractDatesXpath <- function(articlesHtml, dateFormat = "dmy", divClass = "", s
             }
         }
     }
+    if (length(datesTxt) == 1) {
+        if (is.na(datesTxt) == TRUE) { 
+        }
+    } else {
     ExtractDates(datesTxt, dateFormat, language)
+    }
 }
 
 MergeDates <- function(dates1, dates2, dates3 = "", firstPossibleDate = "", lastPossibleDate = "") {

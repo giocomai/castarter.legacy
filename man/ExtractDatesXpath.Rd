@@ -4,7 +4,7 @@
 \alias{ExtractDatesXpath}
 \title{Extracts dates from a vector of html files}
 \usage{
-ExtractDatesXpath(articlesHtml, dateFormat = "dmy", divClass = "",
+ExtractDatesXpath(articlesHtml, dateFormat = "dmy", divClass = NULL,
   spanClass = "", customXpath = "", language = "en", customString = "",
   minDate = NULL, maxDate = NULL)
 }
