@@ -46,39 +46,42 @@ DownloadArticles <- function(nameOfProject, nameOfWebsite, articlesLinks, extrac
 #' Probably needs to be deleted, and integrated into DownloadArticles
 #' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
 #' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
+#' @param links A character vector of links, tipically either articlesLinks or indexPagesLinks.
+#' @param linksToDownload A logical vector of the same length as the links vector. Links that correspond to TRUE in linksToDownload will be downloaded, and overwrite previous files by default.
 #' @export
 #' @examples
 #' ReDownloadMissingArticles(nameOfProject, nameOfWebsite, articlesLinks)
 
-ReDownloadMissingArticles <- function(nameOfProject, nameOfWebsite, links = articlesLinks, size = 500, htmlFilesToDownload = "", wget = FALSE, missingArticles = FALSE, wait = 3) {
+ReDownloadMissingArticles <- function(nameOfProject, nameOfWebsite, links = articlesLinks, size = 500, linksToDownload = "", wget = FALSE, missingArticles = FALSE, wait = 3) {
     htmlFilesList <- mixedsort(list.files(file.path(nameOfProject, nameOfWebsite, "Html"), full.names = TRUE))
     htmlFileSize <- file.info(htmlFilesList)["size"]
+    articlesId <- 1:length(articlesLinks)
     if (missingArticles == TRUE) {
         articlesHtmlFilenamesInTheory <- file.path(nameOfProject, nameOfWebsite, "Html", paste0(articlesId, ".html"))
-        htmlFilesToDownload <- is.element(articlesHtmlFilenamesInTheory, htmlFilesList)
+        linksToDownload <- !is.element(articlesHtmlFilenamesInTheory, htmlFilesList)
     }
-    if (htmlFilesToDownload == "") {
-        htmlFilesToDownload <- htmlFileSize < size
+    if (linksToDownload == "") {
+        linksToDownload <- htmlFileSize < size
     }
     articlesId <- as.integer(regmatches(htmlFilesList, regexpr("[[:digit:]]+", htmlFilesList)))
     temp <- 1
     if (wget == TRUE) {
         options(useFancyQuotes = FALSE)
-        for (i in articlesLinks[htmlFilesToDownload]) {
-            articleId <- articlesId[htmlFilesToDownload][temp]
+        for (i in articlesLinks[linksToDownload]) {
+            articleId <- articlesId[linksToDownload][temp]
             system(paste("wget", sQuote(i), "-O", file.path(nameOfProject, nameOfWebsite, "Html", paste0(articleId, ".html"))))
             print(paste("Downloading article", i, "of", length(articlesLinks[htmlFileSize < size])), quote = FALSE)
             htmlFile <- readLines(file.path(nameOfProject, nameOfWebsite, "Html", paste0(articleId, ".html")))
             htmlFile <- paste(htmlFile, collapse = "\n")
-            articlesHtml[htmlFilesToDownload][temp] <- htmlFile
+            articlesHtml[linksToDownload][temp] <- htmlFile
             temp <- temp + 1
             Sys.sleep(wait)
         }
     } else {
-        for (i in articlesLinks[htmlFilesToDownload]) {
+        for (i in articlesLinks[linksToDownload]) {
             htmlFile <- getURL(i, timeout = 20)
             print(paste("Downloading article", temp, "of", length(articlesLinks[htmlFileSize < size])), quote = FALSE)
-            articleId <- articlesId[htmlFilesToDownload][temp]
+            articleId <- articlesId[linksToDownload][temp]
             write(htmlFile, file = file.path(nameOfProject, nameOfWebsite, "Html", paste0(articleId, ".html")))
             temp <- temp + 1
             Sys.sleep(wait)

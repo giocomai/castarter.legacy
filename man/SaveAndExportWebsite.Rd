@@ -4,7 +4,7 @@
 \alias{SaveAndExportWebsite}
 \title{Saves working environment and dataset.}
 \usage{
-SaveAndExportWebsite(nameOfProject, nameOfWebsite, exportXlsx = TRUE)
+SaveAndExportWebsite(nameOfProject, nameOfWebsite, exportXlsx = FALSE)
 }
 \arguments{
 \item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}

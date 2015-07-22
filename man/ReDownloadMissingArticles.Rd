@@ -5,12 +5,17 @@
 \title{ReDownloads missing articles.}
 \usage{
 ReDownloadMissingArticles(nameOfProject, nameOfWebsite, links = articlesLinks,
-  size = 500, htmlFilesToDownload = "", wget = FALSE, wait = 3)
+  size = 500, linksToDownload = "", wget = FALSE,
+  missingArticles = FALSE, wait = 3)
 }
 \arguments{
 \item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
 
 \item{nameOfWebsite}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
+
+\item{links}{A character vector of links, tipically either articlesLinks or indexPagesLinks.}
+
+\item{linksToDownload}{A logical vector of the same length as the links vector. Links that correspond to TRUE in linksToDownload will be downloaded, and overwrite previous files by default.}
 }
 \description{
 Probably needs to be deleted, and integrated into DownloadArticles
