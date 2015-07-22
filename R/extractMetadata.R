@@ -266,6 +266,42 @@ ExtractArticleId <- function(nameOfProject, nameOfWebsite, accordingToDate = FAL
     articlesId
 }
 
+#' Extracts metadata and text from local html files
+#' 
+#' Extracts metadata and text from local html files.
+#'  
+#' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
+#' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.Defaults to NULL. If no nameOfWebsite is provided, exported files are saved in the nameOfProject/Outputs folder.
+#' @return A data.frame with the complete dataset. 
+#' @export
+#' @examples
+#' dataset <- CreateDatasetFromHtml(nameOfProject, nameOfWebsite)
+CreateDatasetFromHtml <- function(nameOfProject, nameOfWebsite, language, ExtractDatesXpath = FALSE, titlesExtractMethod = "htmlTitle", ...) {
+    htmlFilesList <- mixedsort(list.files(file.path(nameOfProject, nameOfWebsite, "Html"), pattern = "\\.html$", full.names = TRUE))
+    numberOfArticles <- length(htmlFilesList)
+    dates <- as.POSIXct(rep(NA, numberOfArticles))
+    articlesTxt <- rep(NA, numberOfArticles)
+    titles <- rep(NA, numberOfArticles)
+    x <- 1
+    xlist <- seq(0,numberOfArticles,by=100)
+    for (i in 1:numberOfArticles) {
+        htmlFile <- readLines(htmlFilesList[i])
+        htmlFile <- paste(htmlFile, collapse = "\n")
+        dates[i] <- ExtractDates(htmlFile, ...)
+        if (ExtractDatesXpath == TRUE) {
+        dates[i] <- ExtractDatesXpath(htmlFile, ...)
+        }
+        articlesTxt[i] <- ExtractTxt(articlesHtml = htmlFile, export = FALSE, ...)
+        titles[i] <- ExtractTitles(articlesHtml = htmlFile, titlesExtractMethod = titlesExtractMethod, ...)
+        x <- x + 1
+        if (is.element(x, xlist)) {
+            print(paste("Processed", x, "of", numberOfArticles, "articles."))
+        }
+    }
+    articlesId <- ExtractArticleId(nameOfProject, nameOfWebsite)
+    dataset <- data.frame(nameOfProject, nameOfWebsite, dates, articlesId, titles, language, articlesLinks, articlesTxt, check.names = FALSE, stringsAsFactors = FALSE)
+}
+
 #' Exports metadata
 #' 
 #' Exports metadata to a csv file.
@@ -294,3 +330,4 @@ ExportMetadata <- function(nameOfProject, nameOfWebsite, dates, articlesId, titl
     }
     metadata
 } 
+
