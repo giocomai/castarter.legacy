@@ -257,8 +257,7 @@ ExtractTitles <- function(articlesHtml = NULL, articlesLinks = "", titlesExtract
 #' @examples
 #' articlesId <- ExtractArticleId(nameOfProject, nameOfWebsite)
 ExtractArticleId <- function(nameOfProject, nameOfWebsite, accordingToDate = FALSE, dates = NULL) {
-    htmlFilesList <- list.files(file.path(nameOfProject, nameOfWebsite, "Html"))
-    htmlFilesList <- mixedsort(htmlFilesList)
+    htmlFilesList <- mixedsort(list.files(file.path(nameOfProject, nameOfWebsite, "Html")))
     if (accordingToDate == TRUE) {
         htmlFilesList <- htmlFilesList[order(dates)]
     }
@@ -313,7 +312,17 @@ CreateDatasetFromHtml <- function(nameOfProject, nameOfWebsite, language, Extrac
 #' @export
 #' @examples
 #' metadata <- ExportMetadata(nameOfProject, nameOfWebsite, dates, articlesId, titles, language, articlesLinks)
-ExportMetadata <- function(nameOfProject, nameOfWebsite, dates, articlesId, titles, language, articlesLinks, exportXlsx = FALSE, accordingToDate = FALSE, ignoreNAdates = FALSE) {
+ExportMetadata <- function(nameOfProject, nameOfWebsite, dates, articlesId, titles, language, articlesLinks, exportXlsx = FALSE, accordingToDate = FALSE, ignoreNAdates = FALSE, onlyExistingHtmlFiles = FALSE) {
+    if (onlyExistingHtmlFiles == TRUE) {
+        htmlFilesList <- mixedsort(list.files(file.path(nameOfProject, nameOfWebsite, "Html"), full.names = TRUE))
+        articlesId <- as.integer(regmatches(htmlFilesList, regexpr("[[:digit:]]+", htmlFilesList)))
+        articlesIdInTheory <- 1:length(articlesLinks)
+        ignoreVector <- !is.element(articlesId, articlesIdInTheory)
+    }
+    if (ignoreNAdates == TRUE) {
+        ignoreVector <- is.na(dates)
+    }
+    articlesLinks <- articlesLinks[ignoreVector]
     metadata <- data.frame(nameOfProject, nameOfWebsite, dates, articlesId, titles, language, articlesLinks, check.names = FALSE, stringsAsFactors = FALSE)
     if (accordingToDate == TRUE) {
         metadata <- metadata[order(metadata$dates), ]
