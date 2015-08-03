@@ -313,16 +313,10 @@ CreateDatasetFromHtml <- function(nameOfProject, nameOfWebsite, language, Extrac
 #' @export
 #' @examples
 #' metadata <- ExportMetadata(nameOfProject, nameOfWebsite, dates, articlesId, titles, language, articlesLinks)
-ExportMetadata <- function(nameOfProject, nameOfWebsite, dates, articlesId, titles, language, articlesLinks, exportXlsx = FALSE, accordingToDate = FALSE) {
+ExportMetadata <- function(nameOfProject, nameOfWebsite, dates, articlesId, titles, language, articlesLinks, exportXlsx = FALSE, accordingToDate = FALSE, ignoreNAdates = FALSE) {
     metadata <- data.frame(nameOfProject, nameOfWebsite, dates, articlesId, titles, language, articlesLinks, check.names = FALSE, stringsAsFactors = FALSE)
     if (accordingToDate == TRUE) {
         metadata <- metadata[order(metadata$dates), ]
-        metadata$articlesId <- 1:length(metadata$articlesId)
-        htmlFilesList <- list.files(file.path(nameOfProject, nameOfWebsite, "Html"), full.names = TRUE)
-        htmlFilesList <- mixedsort(htmlFilesList)
-        for (i in 1:length(htmlFilesList)) {
-            file.rename(htmlFilesList[i], paste0(file.path(nameOfProject, nameOfWebsite, "Html", paste0(metadata$articlesId[i], ".html"))))
-        }
     }
     write.csv(metadata, file = file.path(nameOfProject, nameOfWebsite, paste(nameOfWebsite, "metadata.csv")), row.names = FALSE)
     if (exportXlsx == TRUE) {
