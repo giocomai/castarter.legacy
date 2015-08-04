@@ -313,6 +313,7 @@ CreateDatasetFromHtml <- function(nameOfProject, nameOfWebsite, language, Extrac
 #' @examples
 #' metadata <- ExportMetadata(nameOfProject, nameOfWebsite, dates, articlesId, titles, language, articlesLinks)
 ExportMetadata <- function(nameOfProject, nameOfWebsite, dates, articlesId, titles, language, articlesLinks, exportXlsx = FALSE, accordingToDate = FALSE, ignoreNAdates = FALSE, onlyExistingHtmlFiles = FALSE) {
+    ignoreVector <- NULL
     if (onlyExistingHtmlFiles == TRUE) {
         htmlFilesList <- mixedsort(list.files(file.path(nameOfProject, nameOfWebsite, "Html"), full.names = TRUE))
         articlesId <- as.integer(regmatches(htmlFilesList, regexpr("[[:digit:]]+", htmlFilesList)))
@@ -322,7 +323,9 @@ ExportMetadata <- function(nameOfProject, nameOfWebsite, dates, articlesId, titl
     if (ignoreNAdates == TRUE) {
         ignoreVector <- is.na(dates)
     }
-    articlesLinks <- articlesLinks[ignoreVector]
+    if (is.null(ignoreVector) == FALSE) {
+        articlesLinks <- articlesLinks[ignoreVector]
+    }
     metadata <- data.frame(nameOfProject, nameOfWebsite, dates, articlesId, titles, language, articlesLinks, check.names = FALSE, stringsAsFactors = FALSE)
     if (accordingToDate == TRUE) {
         metadata <- metadata[order(metadata$dates), ]
