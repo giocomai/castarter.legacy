@@ -5,7 +5,8 @@
 \title{Exports metadata}
 \usage{
 ExportMetadata(nameOfProject, nameOfWebsite, dates, articlesId, titles,
-  language, articlesLinks, exportXlsx = FALSE, accordingToDate = FALSE)
+  language, articlesLinks, exportXlsx = FALSE, accordingToDate = FALSE,
+  ignoreNAdates = FALSE, onlyExistingHtmlFiles = FALSE)
 }
 \arguments{
 \item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
