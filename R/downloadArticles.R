@@ -70,7 +70,7 @@ ReDownloadMissingArticles <- function(nameOfProject, nameOfWebsite, links = arti
         for (i in articlesLinks[linksToDownload]) {
             articleId <- articlesId[linksToDownload][temp]
             system(paste("wget", sQuote(i), "-O", file.path(nameOfProject, nameOfWebsite, "Html", paste0(articleId, ".html"))))
-            print(paste("Downloaded article", temp, "of", length(articlesLinks[linksToDownload]), ". ArticleID: ", articleId, quote = FALSE)
+            print(paste("Downloaded article", temp, "of", length(articlesLinks[linksToDownload]), ". ArticleID: ", articleId, quote = FALSE))
             htmlFile <- readLines(file.path(nameOfProject, nameOfWebsite, "Html", paste0(articleId, ".html")))
             htmlFile <- paste(htmlFile, collapse = "\n")
             articlesHtml[linksToDownload][temp] <- htmlFile
@@ -82,7 +82,7 @@ ReDownloadMissingArticles <- function(nameOfProject, nameOfWebsite, links = arti
             articleId <- articlesId[linksToDownload][temp]
             htmlFile <- getURL(i, timeout = 20)
             write(htmlFile, file = file.path(nameOfProject, nameOfWebsite, "Html", paste0(articleId, ".html")))
-            print(paste("Downloaded article", temp, "of", length(articlesLinks[linksToDownload]), ". ArticleID: ", articleId, quote = FALSE)
+            print(paste("Downloaded article", temp, "of", length(articlesLinks[linksToDownload]), ". ArticleID: ", articleId, quote = FALSE))
             temp <- temp + 1
             Sys.sleep(wait)
         }
