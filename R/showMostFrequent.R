@@ -33,7 +33,7 @@ ShowMostFrequent <- function(corpusDtm, mode = "vector", number = 10, stemComple
     if (mode == "barchart" | mode == "graph") {
         ggplot(data = wordFrequency, aes(x = reorder(word, -freq), y = freq)) + geom_bar(stat = "identity") + coord_flip()
     } else if (mode == "wordcloud") {
-        wordcloud(rownames(wordFrequency), wordFrequency$freq, min.freq = minFrequency, colors = brewer.pal(6, "Dark2"))
+        wordcloud(rownames(wordFrequency), wordFrequency$freq, min.freq = minFrequency, colors = "black")
     } else if (mode == "vector") {
         wordFrequency
     }
