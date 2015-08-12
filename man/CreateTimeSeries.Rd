@@ -5,7 +5,7 @@
 \title{Creates time series of the frequency of specific terms.}
 \usage{
 CreateTimeSeries(corpus, specificTerms, specificWebsites = "",
-  startDate = NULL, endDate = NULL, rollingAverage = 30, export = TRUE,
+  startDate = NULL, endDate = NULL, rollingAverage = 30, export = FALSE,
   nameOfProject = NULL, nameOfWebsite = NULL)
 }
 \arguments{
@@ -17,7 +17,13 @@ CreateTimeSeries(corpus, specificTerms, specificWebsites = "",
 
 \item{startDate,}{endDate Character vector with date in the format year-month-date, e.g. "2015-07-14".}
 
-\item{save}{Logical. If true, saves the time series in png format. If nameOfProject and nameOfWebsite are provided, in saves the timeseries in the "Outputs" subfolder.}
+\item{rollingAverage}{Integer, defaults to 30. Number of days used to calculate word frequency as shown in the time series. Time series shows word frequency for each date as an average of the N number of days (N=rollingAverage) following the correspondent date.}
+
+\item{export}{Logical, defaults to FALSE. If TRUE, saves the time series in both png and pdf format. If nameOfProject and nameOfWebsite are provided, in saves the timeseries in the "Outputs" subfolder.}
+
+\item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
+
+\item{nameOfWebsite}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
 }
 \description{
 It creates time series with the frequency of one or more terms, in one or more websites.
