@@ -12,9 +12,9 @@
 #' @return A ggplot2 barchart showing shares of articles including reference to a specific term.
 #' @export
 #' @examples
-#' showShare(dataset, breaks = "months", nameOfProject, nameOfWebsite)
+#' ShowShare(dataset, breaks = "months", nameOfProject, nameOfWebsite)
 
-showShare <- function(dataset, term, breaks = "years", startDate = NULL, export = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
+ShowShare <- function(dataset, term, breaks = "years", startDate = NULL, export = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
     DTdataset <- data.table::as.data.table(dataset)
     DTdataset$dates <- base::cut(DTdataset$dates, breaks = breaks)
     DTdataset <- DTdataset[base::is.na(DTdataset$dates)==FALSE]
