@@ -103,5 +103,5 @@ CreateDistributionTimeSeries <- function(dataset, specificWebsites = NULL, rolli
     docSeries <- base::merge(docSeries, zoo::zoo(, seq(start(docSeries), end(docSeries), "DSTday")), fill=0)
     docSeries <- zoo::rollapply(docSeries, rollingAverage, align="left", mean, na.rm=TRUE)
     distributionOfCorpus <- zoo::autoplot.zoo(docSeries, facets = NULL)
-    distributionOfCorpus + ggtitle("Number of publications per day") + scale_x_datetime("Date")
+    distributionOfCorpus + ggplot2::ggtitle("Number of publications per day") + scale_x_datetime("Date")
 }
