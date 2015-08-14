@@ -39,13 +39,14 @@ ShowShare <- function(dataset, term, breaks = "years", startDate = NULL, export 
     bm$variable <- base::factor(bm$variable, levels=levels(bm$variable)[order(bm$variable, decreasing = TRUE)])
     bm <- bm[order(bm$variable, decreasing = TRUE), ]
     graph <- ggplot2::ggplot(bm,ggplot2::aes(x = dates, y = value, fill = variable)) + 
+        ggplot2::scale_fill_discrete("") +
         ggplot2::geom_bar(position = "fill",stat = "identity") + 
         ggplot2::scale_y_continuous(labels = scales::percent_format()) +
         ggplot2::ggtitle(paste("Share of press releases including reference to", base::sQuote(term))) +
         ggplot2::xlab("") +
         ggplot2::ylab("") +
-        ggplot2::theme(axis.text.x = ggplot2::element_text(size = ggplot2::rel(0.8), angle = 90, hjust = 1, vjust = 0.5), 
-                       plot.title = ggplot2::element_text(size = ggplot2::rel(0.8)))
+        ggplot2::theme(axis.text.x = ggplot2::element_text(size = ggplot2::rel(1.4), angle = 90, hjust = 1, vjust = 0.5), 
+                       plot.title = ggplot2::element_text(size = ggplot2::rel(1.2)), legend.text = ggplot2::element_text(size = ggplot2::rel(1)))
     if (breaks == "years") {
         graph <- graph + ggplot2::scale_x_discrete(labels = lubridate::year(DTterm$dates))
     }
