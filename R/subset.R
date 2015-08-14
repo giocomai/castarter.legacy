@@ -1,3 +1,17 @@
+#' Subsets a 'castarter' dataset
+#' 
+#' @param dataset A dataset created with 'castarter'.
+#' @param terms A character vector. Only articles including these terms are included in the output.
+#' @return A dataset in the 'castarter' format. 
+#' @export
+#' @examples
+#' SubsetDataset(dataset, terms)
+
+SubsetDataset <- function(dataset, terms) {
+    terms <- base::paste(terms,collapse="|")
+    dataset <- dataset[base::grep(terms, dataset$articlesTxt, ignore.case = TRUE), ]
+}
+
 
 DivideByWebsite <- function(corpus, nameOfProject) {
     listOfWebsites <- gsub(paste0(nameOfProject, "/"), "", list.dirs(file.path(nameOfProject), recursive = FALSE), fixed = TRUE)
