@@ -75,3 +75,33 @@ CreateTimeSeries <- function(corpus, specificTerms, specificWebsites = "", start
     }
     timeSeries
 } 
+
+#' Creates a time series graph showing the distribution of documents by date
+#' 
+#' Creates a time series graph showing the distribution of documents by date.
+#'  
+#' @param dataset A dataset created with 'castarter'.
+#' @param specificWebsites Character vector indicating which websites (defined by relative nameOfWebsite) have to be included in graph. If left to default, includes all websites present in the dataset.
+#' @param rollingAverage Integer, defaults to 30. Number of days used to calculate word frequency as shown in the time series. Time series shows word frequency for each date as an average of the N number of days (N=rollingAverage) following the correspondent date.
+#' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
+#' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
+#' @param startDate, endDate Character vector with date in the format year-month-date, e.g. "2015-07-14".
+#' @param export Logical, defaults to FALSE. If TRUE, saves the graph in both png and pdf format. If nameOfProject and nameOfWebsite are provided, in saves the timeseries in the correspondent "Outputs" subfolder. 
+#' @return A ggplot2 time series showing number of articles published each day. 
+#' @export
+#' @examples
+#' CreateDistributionTimeSeries(dataset)
+
+CreateDistributionTimeSeries <- function(dataset, specificWebsites = NULL, rollingAverage = 30, nameOfProject = NULL, nameOfWebsite = NULL) {
+    tab <- base::table(dataset$dates, dataset$nameOfWebsite)
+    dates <- base::as.POSIXct(base::rownames(tab))
+    if (base::is.null(specificWebsites) == FALSE) {
+        docSeries <- zoo::zoo(tab[,specificWebsites], order.by=dates)
+    } else {
+        docSeries <- zoo::zoo(tab, order.by=dates)
+    }
+    docSeries <- base::merge(docSeries, zoo::zoo(, seq(start(docSeries), end(docSeries), "DSTday")), fill=0)
+    docSeries <- zoo::rollapply(docSeries, rollingAverage, align="left", mean, na.rm=TRUE)
+    distributionOfCorpus <- ggplot2::autoplot(docSeries, facets = NULL)
+    distributionOfCorpus + ggtitle("Number of publications per day") + scale_x_datetime("Date")
+}
