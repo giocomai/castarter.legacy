@@ -44,7 +44,7 @@ ShowShare <- function(dataset, term, breaks = "years", startDate = NULL, export 
         ggplot2::ggtitle(paste("Share of press releases including reference to", base::sQuote(term))) +
         ggplot2::xlab("") +
         ggplot2::ylab("") +
-        ggplot2::theme(axis.text.x = ggplot2::element_text(size = ggplot2::rel(0.8), angle = 90), 
+        ggplot2::theme(axis.text.x = ggplot2::element_text(size = ggplot2::rel(0.8), angle = 90, hjust = 1, vjust = 0.5), 
                        plot.title = ggplot2::element_text(size = ggplot2::rel(0.8)))
     if (breaks == "years") {
         graph <- graph + ggplot2::scale_x_discrete(labels = lubridate::year(DTterm$dates))
