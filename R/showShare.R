@@ -46,6 +46,9 @@ ShowShare <- function(dataset, term, breaks = "years", startDate = NULL, export 
         ggplot2::ylab("") +
         ggplot2::theme(axis.text.x = ggplot2::element_text(size = ggplot2::rel(0.8), angle = 90), 
                        plot.title = ggplot2::element_text(size = ggplot2::rel(0.8)))
+    if (breaks == "years") {
+        graph <- graph + ggplot2::scale_x_discrete(labels = lubridate::year(DTterm$dates))
+    }
     if (export == TRUE) {
         graph
         if (is.null(nameOfProject) == FALSE & is.null(nameOfWebsite) == FALSE) {
