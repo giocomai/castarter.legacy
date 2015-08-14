@@ -26,12 +26,11 @@ ShowShare <- function(dataset, term, breaks = "years", startDate = NULL, export 
     if (base::is.null(startDate) == FALSE) {
         DTbyBreaks <- DTbyBreaks[base::as.POSIXct(dates)>base::as.POSIXct(startDate)]
     }
-    DTbyBreaks <- reshape2::melt(DTbyBreaks)
+    DTbyBreaks <- reshape2::melt(DTbyBreaks, id.vars = "dates")
     bm <- base::as.data.frame(DTbyBreaks, stringsAsFactors = FALSE)
     if (base::is.null(startDate) == FALSE) {
         bm <- bm[as.POSIXct(bm$dates)>as.POSIXct(startDate),]
     }
-    bm[is.na(bm)] <- 0
     bm$variable <- as.character(bm$variable)
     bm$variable[bm$variable=="N.x"] <- base::paste("Does not mention", base::sQuote(term))
     bm$variable[bm$variable=="N.y"] <- base::paste("Mentions", base::sQuote(term))
