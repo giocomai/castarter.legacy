@@ -9,7 +9,7 @@
 #' @export
 #' @examples
 #' articlesTxt <- ExtractTxt(articlesHtml, metadata)
-ExtractTxt <- function(articlesHtml, metadata = "", export = TRUE, maxTitleCharacters = 80, textToBeRemoved = "", removeEverythingAfter = "", removePunctuationInFilename = TRUE, keepEverything = FALSE) {
+ExtractTxt <- function(articlesHtml, metadata = "", export = TRUE, maxTitleCharacters = 80, textToBeRemoved = "", removeEverythingAfter = "", removeEverythingBefore = "", removePunctuationInFilename = TRUE, keepEverything = FALSE) {
     numberOfArticles <- length(articlesHtml)
     articlesTxt <- rep(NA, numberOfArticles)
     if (export == TRUE) {
@@ -29,6 +29,9 @@ ExtractTxt <- function(articlesHtml, metadata = "", export = TRUE, maxTitleChara
         }
         if (removeEverythingAfter != "") {
             articleTxt <- sub(paste0(removeEverythingAfter, ".*"), "", articleTxt)
+        }
+        if (removeEverythingBefore != "") {
+            articleTxt <- sub(paste0("*.", removeEverythingBefore), "", articleTxt)
         }
         articlesTxt[i] <- articleTxt
         if (export == TRUE) {

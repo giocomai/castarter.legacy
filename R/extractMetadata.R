@@ -284,7 +284,7 @@ ExtractArticleId <- function(nameOfProject, nameOfWebsite, accordingToDate = FAL
 #' @export
 #' @examples
 #' dataset <- CreateDatasetFromHtml(nameOfProject, nameOfWebsite)
-CreateDatasetFromHtml <- function(nameOfProject, nameOfWebsite, language, ExtractDatesXpath = FALSE, titlesExtractMethod = "htmlTitle", ...) {
+CreateDatasetFromHtml <- function(nameOfProject, nameOfWebsite, articlesLinks = NULL, ExtractDatesXpath = FALSE, titlesExtractMethod = "htmlTitle", divClass = NULL, language = NULL, removeString = NULL, encoding = NULL) {
     htmlFilesList <- mixedsort(list.files(file.path(nameOfProject, nameOfWebsite, "Html"), pattern = "\\.html$", full.names = TRUE))
     numberOfArticles <- length(htmlFilesList)
     dates <- as.POSIXct(rep(NA, numberOfArticles))
@@ -295,19 +295,26 @@ CreateDatasetFromHtml <- function(nameOfProject, nameOfWebsite, language, Extrac
     for (i in 1:numberOfArticles) {
         htmlFile <- readLines(htmlFilesList[i])
         htmlFile <- paste(htmlFile, collapse = "\n")
-        dates[i] <- ExtractDates(htmlFile, ...)
-        if (ExtractDatesXpath == TRUE) {
-        dates[i] <- ExtractDatesXpath(htmlFile, ...)
+        if (is.null(encoding) == FALSE) {
+            htmlFile <- iconv(htmlFile, from = encoding, to = "utf8")
         }
-        articlesTxt[i] <- ExtractTxt(articlesHtml = htmlFile, export = FALSE, ...)
-        titles[i] <- ExtractTitles(articlesHtml = htmlFile, titlesExtractMethod = titlesExtractMethod, ...)
+        dates[i] <- ExtractDates(htmlFile, dateFormat = dateFormat, language = language)
+        if (ExtractDatesXpath == TRUE) {
+        dates[i] <- ExtractDatesXpath(articlesHtml = htmlFile, dateFormat = dateFormat, divClass = divClass, language = language)
+        }
+        articlesTxt[i] <- ExtractTxt(articlesHtml = htmlFile, export = FALSE)
+        titles[i] <- ExtractTitles(articlesHtml = htmlFile, titlesExtractMethod = titlesExtractMethod, removeString = removeString)
         x <- x + 1
         if (is.element(x, xlist)) {
             print(paste("Processed", x, "of", numberOfArticles, "articles."))
         }
     }
     articlesId <- ExtractArticleId(nameOfProject, nameOfWebsite)
-    dataset <- data.frame(nameOfProject, nameOfWebsite, dates, articlesId, titles, language, articlesLinks, articlesTxt, check.names = FALSE, stringsAsFactors = FALSE)
+    if (is.null(articlesLinks == FALSE)) {
+        dataset <- data.frame(nameOfProject, nameOfWebsite, dates, articlesId, titles, language, articlesLinks, articlesTxt, check.names = FALSE, stringsAsFactors = FALSE)
+    } else {
+        dataset <- data.frame(nameOfProject, nameOfWebsite, dates, articlesId, titles, language, articlesTxt, check.names = FALSE, stringsAsFactors = FALSE)        
+    }
 }
 
 #' Exports metadata
