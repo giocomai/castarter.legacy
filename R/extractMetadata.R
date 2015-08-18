@@ -158,7 +158,7 @@ ExtractDatesXpath <- function(articlesHtml, dateFormat = "dmy", divClass = NULL,
             }
         }
     }
-    if (length(datesTxt) == 1 & is.na(datesTxt) == TRUE) {
+    if (length(datesTxt) == 1 & is.na(datesTxt[1]) == TRUE) {
     } else {
     ExtractDates(datesTxt, dateFormat, language)
     }
@@ -210,22 +210,22 @@ ExtractTitles <- function(articlesHtml = NULL, articlesLinks = "", titlesExtract
     numberOfArticles <- length(articlesHtml)
     if (titlesExtractMethod == "htmlTitle") {
         for (i in 1:numberOfArticles) {
-            articleHtmlParsed <- htmlTreeParse(articlesHtml[i], useInternalNodes = T)
+            articleHtmlParsed <- htmlTreeParse(articlesHtml[i], useInternalNodes = T, encoding = "UTF-8")
             titles[i] <- xpathSApply(articleHtmlParsed, "//title", xmlValue)
         }
     } else if (titlesExtractMethod == "htmlH2") {
         for (i in 1:numberOfArticles) {
-            articleHtmlParsed <- htmlTreeParse(articlesHtml[i], useInternalNodes = T)
+            articleHtmlParsed <- htmlTreeParse(articlesHtml[i], useInternalNodes = T, encoding = "UTF-8")
             titles[i] <- xpathSApply(articleHtmlParsed, "//h2", xmlValue)
         }
     } else if (titlesExtractMethod == "htmlH1") {
         for (i in 1:numberOfArticles) {
-            articleHtmlParsed <- htmlTreeParse(articlesHtml[i], useInternalNodes = T)
+            articleHtmlParsed <- htmlTreeParse(articlesHtml[i], useInternalNodes = T, encoding = "UTF-8")
             titles[i] <- xpathSApply(articleHtmlParsed, "//h1", xmlValue)
         }
     } else if (titlesExtractMethod == "customXpath") {
         for (i in 1:numberOfArticles) {
-        articleHtmlParsed <- htmlTreeParse(articlesHtml[i], useInternalNodes = T)
+        articleHtmlParsed <- htmlTreeParse(articlesHtml[i], useInternalNodes = T, encoding = "UTF-8")
         titles[i] <- xpathSApply(articleHtmlParsed, customXpath, xmlValue)
         }
     } else if (titlesExtractMethod == "indexLink") {
