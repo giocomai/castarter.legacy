@@ -120,13 +120,17 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", language = "en", cust
 #' @param articlesHtml A character vector of html files.
 #' @param dateFormat A string used to extract the date. Available date formats options include dmY, dby, dBy, dBY, dbY, etc.
 #' @param minDate, maxDate Minimum and maximum possible dates in the format year-month-date, e.g. "2007-06-24". Introduces NA in the place of impossibly high or low dates.
+#' @param encoding Defaults to NULL. If source is not in UTF, encoding can be specified here for conversion. A list of valid values can be found using iconvlist().
 #' @return A vector of the POSIXct class. 
 #' @export
 #' @examples
 #' dates <- ExtractDatesXpath(articlesHtml)
-ExtractDatesXpath <- function(articlesHtml, dateFormat = "dmy", divClass = NULL, spanClass = "", customXpath = "", language = "en", customString = "", minDate = NULL, maxDate = NULL) {
+ExtractDatesXpath <- function(articlesHtml, dateFormat = "dmy", divClass = NULL, spanClass = "", customXpath = "", language = "en", customString = "", minDate = NULL, maxDate = NULL, encoding = NULL) {
     numberOfArticles <- length(articlesHtml)
     datesTxt <- rep(NA, numberOfArticles)
+    if (is.null(encoding) == FALSE) {
+        articlesHtml <- iconv(articlesHtml, from = encoding, to = "utf8")
+    }
     if (is.null(divClass) == FALSE) {
         for (i in 1:numberOfArticles) {
             if (articlesHtml[i] != "") {
