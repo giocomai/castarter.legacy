@@ -9,7 +9,7 @@
 #' @export
 #' @examples
 #' articlesTxt <- ExtractTxt(articlesHtml, metadata)
-ExtractTxt <- function(articlesHtml, metadata = "", export = TRUE, maxTitleCharacters = 80, textToBeRemoved = "", removeEverythingAfter = "", removeEverythingBefore = "", removePunctuationInFilename = TRUE, keepEverything = FALSE) {
+ExtractTxt <- function(articlesHtml, metadata = "", export = TRUE, maxTitleCharacters = 80, textToBeRemoved = "", removeEverythingAfter = NULL, removeEverythingBefore = NULL, removePunctuationInFilename = TRUE, keepEverything = FALSE) {
     numberOfArticles <- length(articlesHtml)
     articlesTxt <- rep(NA, numberOfArticles)
     if (export == TRUE) {
@@ -27,15 +27,15 @@ ExtractTxt <- function(articlesHtml, metadata = "", export = TRUE, maxTitleChara
                 articleTxt <- gsub(textToBeRemoved[j], "", articleTxt, fixed = TRUE)
             }
         }
-        if (removeEverythingAfter != "") {
-            articleTxt <- sub(paste0(removeEverythingAfter, ".*"), "", articleTxt)
+        if (is.null(removeEverythingAfter) == FALSE) {
+            articleTxt <- base::sub(base::paste0(removeEverythingAfter, ".*"), "", articleTxt)
         }
-        if (removeEverythingBefore != "") {
-            articleTxt <- sub(paste0("*.", removeEverythingBefore), "", articleTxt)
+        if (is.null(removeEverythingBefore) == FALSE) {
+            articleTxt <- base::sub(base::paste0("*.", removeEverythingBefore), "", articleTxt)
         }
         articlesTxt[i] <- articleTxt
         if (export == TRUE) {
-        write(articleTxt, file = txtFilenames[i])
+            base::write(articleTxt, file = txtFilenames[i])
         }
     }
     articlesTxt

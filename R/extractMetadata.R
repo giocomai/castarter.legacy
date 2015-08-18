@@ -284,7 +284,7 @@ ExtractArticleId <- function(nameOfProject, nameOfWebsite, accordingToDate = FAL
 #' @export
 #' @examples
 #' dataset <- CreateDatasetFromHtml(nameOfProject, nameOfWebsite)
-CreateDatasetFromHtml <- function(nameOfProject, nameOfWebsite, articlesLinks = NULL, ExtractDatesXpath = FALSE, titlesExtractMethod = "htmlTitle", divClass = NULL, language = NULL, removeString = NULL, encoding = NULL) {
+CreateDatasetFromHtml <- function(nameOfProject, nameOfWebsite, articlesLinks = NULL, ExtractDatesXpath = FALSE, titlesExtractMethod = "htmlTitle", divClass = NULL, language = NULL, removeString = NULL, encoding = NULL, removeEverythingAfter = NULL, removeEverythingBefore = NULL) {
     htmlFilesList <- mixedsort(list.files(file.path(nameOfProject, nameOfWebsite, "Html"), pattern = "\\.html$", full.names = TRUE))
     numberOfArticles <- length(htmlFilesList)
     dates <- as.POSIXct(rep(NA, numberOfArticles))
@@ -302,7 +302,7 @@ CreateDatasetFromHtml <- function(nameOfProject, nameOfWebsite, articlesLinks = 
         if (ExtractDatesXpath == TRUE) {
         dates[i] <- ExtractDatesXpath(articlesHtml = htmlFile, dateFormat = dateFormat, divClass = divClass, language = language)
         }
-        articlesTxt[i] <- ExtractTxt(articlesHtml = htmlFile, export = FALSE)
+        articlesTxt[i] <- ExtractTxt(articlesHtml = htmlFile, export = FALSE, removeEverythingAfter = removeEverythingAfter, removeEverythingBefore = removeEverythingBefore)
         titles[i] <- ExtractTitles(articlesHtml = htmlFile, titlesExtractMethod = titlesExtractMethod, removeString = removeString)
         x <- x + 1
         if (is.element(x, xlist)) {
