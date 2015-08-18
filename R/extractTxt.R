@@ -28,10 +28,10 @@ ExtractTxt <- function(articlesHtml, metadata = "", export = TRUE, maxTitleChara
             }
         }
         if (is.null(removeEverythingAfter) == FALSE) {
-            articleTxt <- base::sub(base::paste0(removeEverythingAfter, ".*"), "", articleTxt)
+            articleTxt <- base::gsub(base::paste0(removeEverythingAfter, ".*"), "", articleTxt, fixed = FALSE)
         }
         if (is.null(removeEverythingBefore) == FALSE) {
-            articleTxt <- base::sub(base::paste0("*.", removeEverythingBefore), "", articleTxt)
+            articleTxt <- base::gsub(base::paste0(".*", removeEverythingBefore), "", articleTxt, fixed = FALSE)
         }
         articlesTxt[i] <- articleTxt
         if (export == TRUE) {

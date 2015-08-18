@@ -4,8 +4,11 @@
 \alias{CreateDatasetFromHtml}
 \title{Extracts metadata and text from local html files}
 \usage{
-CreateDatasetFromHtml(nameOfProject, nameOfWebsite, language,
-  ExtractDatesXpath = FALSE, titlesExtractMethod = "htmlTitle", ...)
+CreateDatasetFromHtml(nameOfProject, nameOfWebsite, articlesLinks = NULL,
+  ExtractDatesXpath = FALSE, titlesExtractMethod = "htmlTitle",
+  divClass = NULL, language = NULL, removeString = NULL,
+  encoding = NULL, removeEverythingAfter = NULL,
+  removeEverythingBefore = NULL)
 }
 \arguments{
 \item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
