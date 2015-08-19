@@ -1,0 +1,15 @@
+---
+title: "An introduction to 'castarter' - content analysis starter toolkit for R"
+author: "Giorgio Comai"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+bibliography: how-to.bib
+vignette: >
+  %\VignetteIndexEntry{An introduction to 'castarter' - content analysis starter toolkit for R}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+Books dedicated to content analysis typically assume that the researcher has already created, has access or may buy access to a structured dataset.They may include sections on sampling [@krippendorff_content_2004; @riffe_analyzing_2005], but they do not debate explicitly how new datasets can be built. Software packages such as NVivo share the same expectation. In the R ecosystem, there are a number of packages that can be used to access existing datasets (e.g. [tm.plugin.lexisnexis](https://cran.r-project.org/web/packages/tm.plugin.lexisnexis/), [manifestoR](https://cran.r-project.org/web/packages/manifestoR/)) or import into R textual content from social media through their APIs (e.g. [twitteR](https://cran.r-project.org/web/packages/twitteR/)). However, there is no package dedicated to getting into R the textual contents of regular websites and extracting key metadata (date and title) in order to populate a corpus that can be analysed in R or with other software packages. 'castarter - content analysis starter toolkit for R' aims to accomplish just that, offering to moderately incompetent users the opportunity to extract textual contents from websites and prepare them for content analysis. 
+
+## References
