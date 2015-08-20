@@ -42,13 +42,13 @@ ShowShare <- function(dataset, term, breaks = "years", startDate = NULL, export 
         ggplot2::scale_fill_discrete("") +
         ggplot2::geom_bar(position = "fill",stat = "identity") + 
         ggplot2::scale_y_continuous(labels = scales::percent_format()) +
-        ggplot2::ggtitle(paste("Share of press releases including reference to", base::sQuote(term))) +
+        ggplot2::ggtitle(paste("Share of articles including reference to", base::sQuote(term))) +
         ggplot2::xlab("") +
         ggplot2::ylab("") +
         ggplot2::theme(axis.text.x = ggplot2::element_text(size = ggplot2::rel(1.4), angle = 90, hjust = 1, vjust = 0.5), 
                        plot.title = ggplot2::element_text(size = ggplot2::rel(1.2)), legend.text = ggplot2::element_text(size = ggplot2::rel(1)))
     if (breaks == "years") {
-        graph <- graph + ggplot2::scale_x_discrete(labels = lubridate::year(DTterm$dates))
+        graph <- graph + ggplot2::scale_x_discrete(labels = lubridate::year(DTterm$dates)[order(lubridate::year)])
     }
     if (export == TRUE) {
         graph
