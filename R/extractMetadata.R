@@ -24,8 +24,7 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", language = "en", cust
         }
     } else if (dateFormat == "YBd" | dateFormat == "ybd") {
         for (i in 1:numberOfArticles) {
-            dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]]?[[:digit:]]?[[:digit:]][[:digit:]][[:space:]]?[[:punct:]]?[[:alpha:]]*[[:space:]]?[[:punct:]]?[[:digit:]][[:digit:]][[:digit:]]?", 
-                articlesHtml[i]))
+            dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]]?[[:digit:]]?[[:digit:]][[:digit:]][[:space:]]?[[:punct:]]?[[:alpha:]]*[[:space:]]?[[:punct:]]?[[:digit:]][[:digit:]]?", articlesHtml[i]))
             if (length(dateTxt) == 0) {
                 datesTxt[i] <- NA
             } else {
