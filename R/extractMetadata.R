@@ -115,7 +115,7 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", language = "en", cust
         for (i in 1:12) {
             datesTxt <- gsub(monthsRu[i], monthsEn[i], datesTxt)
         }
-        Sys.setlocale(category = "LC_TIME", locale = "en_US.UTF-8")
+        Sys.setlocale(category = "LC_TIME", locale = "en_GB.UTF-8")
     }
     dates <- parse_date_time(datesTxt, dateFormat)
     if (is.null(minDate) == FALSE) {
