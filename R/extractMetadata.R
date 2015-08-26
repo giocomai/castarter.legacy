@@ -10,6 +10,7 @@
 #' @examples
 #' dates <- ExtractDates(articlesHtml)
 ExtractDates <- function(articlesHtml, dateFormat = "dmY", language = "en", customString = "", minDate = NULL, maxDate = NULL) {
+    originalLocale <- base::Sys.getlocale(category = "LC_TIME")
     if (language == "en") {
         base::Sys.setlocale(category = "LC_TIME", locale = "en_GB.UTF-8")
     }
@@ -123,6 +124,7 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", language = "en", cust
     if (is.null(maxDate) == FALSE) {
         dates[dates > as.POSIXct(maxDate)] <- NA
     }
+    base::Sys.setlocale(category = "LC_TIME", locale = originalLocale)
     dates
 }
 #' Extracts dates from a vector of html files
