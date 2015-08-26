@@ -10,7 +10,7 @@
 #' @examples
 #' dates <- ExtractDates(articlesHtml)
 ExtractDates <- function(articlesHtml, dateFormat = "dmY", language = "en", customString = "", minDate = NULL, maxDate = NULL) {
-    if (language = "en") {
+    if (language == "en") {
         base::Sys.setlocale(category = "LC_TIME", locale = "en_GB.UTF-8")
     }
     numberOfArticles <- length(articlesHtml)
