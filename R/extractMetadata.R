@@ -22,10 +22,20 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", language = "en", cust
                 datesTxt[i] <- dateTxt
             }
         }
+    } else if (dateFormat == "YBd" | dateFormat == "ybd") {
+        for (i in 1:numberOfArticles) {
+            dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]]?[[:digit:]]?[[:digit:]][[:digit:]][[:space:]]?[[:punct:]]?[[:alpha:]]*[[:space:]]?[[:punct:]]?[[:digit:]][[:digit:]][[:digit:]]?", 
+                articlesHtml[i]))
+            if (length(dateTxt) == 0) {
+                datesTxt[i] <- NA
+            } else {
+                datesTxt[i] <- dateTxt
+            }
+        }
     } else if (dateFormat == "dB,Y") {
         for (i in 1:numberOfArticles) {
             dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]]?[[:digit:]][[:space:]][[:alpha:]]*,[[:space:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]?", 
-                articlesHtml[i]))
+                                                           articlesHtml[i]))
             if (length(dateTxt) == 0) {
                 datesTxt[i] <- NA
             } else {

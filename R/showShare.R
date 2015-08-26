@@ -48,7 +48,7 @@ ShowShare <- function(dataset, term, breaks = "years", startDate = NULL, export 
         ggplot2::theme(axis.text.x = ggplot2::element_text(size = ggplot2::rel(1.4), angle = 90, hjust = 1, vjust = 0.5), 
                        plot.title = ggplot2::element_text(size = ggplot2::rel(1.2)), legend.text = ggplot2::element_text(size = ggplot2::rel(1)))
     if (breaks == "years") {
-        graph <- graph + ggplot2::scale_x_discrete(labels = lubridate::year(DTterm$dates)[order(lubridate::year)])
+        graph <- graph + ggplot2::scale_x_discrete(labels = lubridate::year(DTterm$dates)[order(lubridate::year(DTterm$dates))])
     }
     if (export == TRUE) {
         graph
