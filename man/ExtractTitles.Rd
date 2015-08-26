@@ -21,7 +21,7 @@ ExtractTitles(articlesHtml = NULL, articlesLinks = "",
  \item{"htmlH1"}{: Extract the title from the first occurence of text that has heading 1, the <h1> html tag, as its style.}
  \item{"htmlH2"}{: Extract the title from the first occurence of text that has heading 2, the <h2> html tag, as its style.}
  \item{"customXpath"}{: Allows to input a custom Xpath to extract the title.}
- \item{"beginning"}{: Outputs as title the first textual elements found in the html file. Title lenght can be defined with the 'maximumNumberOfCharactersInTitle' option.}
+ \item{"beginning"}{: Outputs as title the first textual elements found in the html file. Title length can be defined with the 'maxCharacters' option.}
 }}
 
 \item{removeString}{A character vector of one or more strings to be removed from the extracted title.}

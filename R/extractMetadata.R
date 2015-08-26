@@ -211,7 +211,7 @@ MergeDates <- function(dates1, dates2, dates3 = "", firstPossibleDate = "", last
 ##'  \item{"htmlH1"}{: Extract the title from the first occurence of text that has heading 1, the <h1> html tag, as its style.}
 ##'  \item{"htmlH2"}{: Extract the title from the first occurence of text that has heading 2, the <h2> html tag, as its style.}
 ##'  \item{"customXpath"}{: Allows to input a custom Xpath to extract the title.}
-##'  \item{"beginning"}{: Outputs as title the first textual elements found in the html file. Title lenght can be defined with the 'maximumNumberOfCharactersInTitle' option.}
+##'  \item{"beginning"}{: Outputs as title the first textual elements found in the html file. Title length can be defined with the 'maxCharacters' option.}
 ##' }
 #' @param removeEverythingAfter Removes everything after given string. 
 #' @param maxCharacters An integer. Defines the maximum number of characters to be kept in the output for each title. 
