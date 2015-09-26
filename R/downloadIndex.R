@@ -2,67 +2,69 @@
 #' 
 #' Generates links to index pages listing individual articles.
 #'  
-#' @param linkFirstChunkIndex First part of index link that does not change in other index pages.
-#' @param linkSecondChunkIndex Part of index link appneded after the part of the link that varies. If not relevant, may be left empty. 
+#' @param linkFirstChunk First part of index link that does not change in other index pages.
+#' @param linkSecondChunk Part of index link appneded after the part of the link that varies. If not relevant, may be left empty. 
+#' @param startPage, endPage If the links include a numerical component, define first and last number of the sequence.startPage defaults to 1, endPage defaults to 10.
+#' @param increaseBy Defines by how much the number in the link should be increased in the numerical sequence. Defaults to 1.
 #' @return A character vector of links to index pages. 
 #' @export
 #' @examples
-#' CreateIndexPagesLinks <- CreateIndexPagesLinks("http://www.example.com/news/")
-CreateIndexPagesLinks <- function(linkFirstChunkIndex, linkSecondChunkIndex = "", firstIndexPage = 1, lastIndexPage = 10, increaseBy = 1, dateStyle = "", 
+#' indexPagesLinks <- CreateLinks("http://www.example.com/news/")
+CreateLinks <- function(linkFirstChunk, linkSecondChunk = NULL, startPage = 1, endPage = 10, increaseBy = 1, dateStyle = "", 
     firstYear = "", lastYear = "", leadingZero = TRUE, startDate = "", endDate = "", sortIndexPagesLinks = TRUE, dateSeparator = "/", export = FALSE, 
     reversedOrder = FALSE) {
-    numberOfIndexPages <- lastIndexPage - firstIndexPage + 1
+    numberOfIndexPages <- endPage - startPage + 1
     if (dateStyle == "ym" | dateStyle == "Ym") {
         years <- firstYear:lastYear
         dates <- vector()
         for (i in years) {
             if (leadingZero == TRUE) {
-                newDates <- paste(rep(i, 12), sprintf("%02d", 1:12), sep = dateSeparator)
+                newDates <- base::paste(base::rep(i, 12), base::sprintf("%02d", 1:12), sep = dateSeparator)
             } else {
-                newDates <- paste(rep(i, 12), 1:12, sep = dateSeparator)
+                newDates <-base:: paste(rep(i, 12), 1:12, sep = dateSeparator)
             }
-            dates <- c(dates, newDates)
+            dates <- base::c(dates, newDates)
         }
-        indexPagesLinks <- paste0(linkFirstChunkIndex, dates)
+        indexPagesLinks <- base::paste0(linkFirstChunk, dates)
     } else if (dateStyle == "Y") {
         years <- firstYear:lastYear
-        indexPagesLinks <- paste0(linkFirstChunkIndex, years)
+        indexPagesLinks <- paste0(linkFirstChunk, years)
     } else if (dateStyle == "ymd") {
         years <- firstYear:lastYear
         datesTemp <- vector()
         for (i in years) {
-            newDatesTemp <- paste(rep(i, 12), 1:12, sep = dateSeparator)
-            datesTemp <- c(datesTemp, newDatesTemp)
+            newDatesTemp <- base::paste(rep(i, 12), 1:12, sep = dateSeparator)
+            datesTemp <- base::c(datesTemp, newDatesTemp)
         }
         dates <- vector()
         for (i in 1:length(datesTemp)) {
-            newDates <- paste(rep(datesTemp[i], 31), 1:31, sep = dateSeparator)
-            dates <- c(dates, newDates)
+            newDates <- base::paste(rep(datesTemp[i], 31), 1:31, sep = dateSeparator)
+            dates <- base::c(dates, newDates)
         }
-        indexPagesLinks <- paste0(linkFirstChunkIndex, dates)
+        indexPagesLinks <- base::paste0(linkFirstChunk, dates)
     } else if (dateStyle == "dmY") {
-        dates <- seq(as.Date(startDate), as.Date(endDate), by = "day")
-        dates <- format(as.Date(dates), paste("%d", "%m", "%Y", sep = dateSeparator))
-        indexPagesLinks <- paste0(linkFirstChunkIndex, dates)
-    } else if (linkSecondChunkIndex == "") {
-        listOfNumbers <- seq(firstIndexPage, lastIndexPage, increaseBy)
-        indexPagesLinks <- cbind(rep(linkFirstChunkIndex, length(listOfNumbers)), listOfNumbers)
-        indexPagesLinks <- paste0(indexPagesLinks[, 1], indexPagesLinks[, 2])
+        dates <- base::seq(as.Date(startDate), as.Date(endDate), by = "day")
+        dates <- base::format(as.Date(dates), paste("%d", "%m", "%Y", sep = dateSeparator))
+        indexPagesLinks <- paste0(linkFirstChunk, dates)
+    } else if (base::is.null(linkSecondChunk) == TRUE) {
+        listOfNumbers <- base::seq(startPage, endPage, increaseBy)
+        indexPagesLinks <- base::cbind(rep(linkFirstChunk, length(listOfNumbers)), listOfNumbers)
+        indexPagesLinks <- base::paste0(indexPagesLinks[, 1], indexPagesLinks[, 2])
     }
-    if (linkSecondChunkIndex != "") {
-        listOfNumbers <- seq(firstIndexPage, lastIndexPage, increaseBy)
-        indexPagesLinks <- cbind(rep(linkFirstChunkIndex, length(listOfNumbers)), listOfNumbers)
-        indexPagesLinks <- paste0(indexPagesLinks[, 1], indexPagesLinks[, 2])
-        indexPagesLinks <- paste0(indexPagesLinks, linkSecondChunkIndex)
+    if (base::is.null(linkSecondChunk) == FALSE) {
+        listOfNumbers <- base::seq(startPage, endPage, increaseBy)
+        indexPagesLinks <- base::cbind(base::rep(linkFirstChunk, base::length(listOfNumbers)), listOfNumbers)
+        indexPagesLinks <- base::paste0(indexPagesLinks[, 1], indexPagesLinks[, 2])
+        indexPagesLinks <- base::paste0(indexPagesLinks, linkSecondChunk)
     }
     if (sortIndexPagesLinks == TRUE) {
-        indexPagesLinks <- mixedsort(indexPagesLinks)
+        indexPagesLinks <- gtools::mixedsort(indexPagesLinks)
     }
     if (export == TRUE) {
-        writeLines(indexPagesLinks, file.path(nameOfProject, nameOfWebsite, paste0(nameOfWebsite, "indexPagesLinks.txt")))
+        base::writeLines(indexPagesLinks, base::file.path(nameOfProject, nameOfWebsite, paste0(nameOfWebsite, "indexPagesLinks.txt")))
     }
     if (reversedOrder == TRUE) {
-        rev(indexPagesLinks)
+        base::rev(indexPagesLinks)
     } else {
         indexPagesLinks
     }
@@ -161,7 +163,7 @@ ReDownloadMissingIndexPages <- function(nameOfProject, nameOfWebsite, links = in
 }
 
 
-DownloadIndexPagesForm <- function(nameOfProject, nameOfWebsite, linkFirstChunkIndex, firstYear = "", lastYear = "", dateSeparator = "/", dateBy = "months", 
+DownloadIndexPagesForm <- function(nameOfProject, nameOfWebsite, linkFirstChunk, firstYear = "", lastYear = "", dateSeparator = "/", dateBy = "months", 
     start = 1) {
     startDate <- paste(firstYear, "01", "01", sep = dateSeparator)
     endDate <- paste(lastYear, "12", "31", sep = dateSeparator)
@@ -172,7 +174,7 @@ DownloadIndexPagesForm <- function(nameOfProject, nameOfWebsite, linkFirstChunkI
     indexHtmlFilenames <- file.path(nameOfProject, nameOfWebsite, "IndexHtml", paste0(listOfnumberOfIndexPages, ".html"))
     indexPagesHtml <- vector()
     for (i in start:numberOfIndexPages) {
-        indexPagesHtml[i] <- postForm(linkFirstChunkIndex, datefrom = listOfDates[i], dateto = listOfDates[i + 1])
+        indexPagesHtml[i] <- postForm(linkFirstChunk, datefrom = listOfDates[i], dateto = listOfDates[i + 1])
         print(paste("Downloading index page", i, "of", numberOfIndexPages), quote = FALSE)
         write(indexPagesHtml[i], file = indexHtmlFilenames[i])
     }
