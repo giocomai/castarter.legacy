@@ -14,6 +14,13 @@ vignette: >
 Books dedicated to content analysis typically assume that the researcher has already created, has access or may buy access to a structured dataset.They may include sections on sampling [@krippendorff_content_2004; @riffe_analyzing_2005], but they do not debate explicitly how new datasets can be built. Commercial software packages generally share the same expectation. In the R ecosystem, there are a number of packages that can be used to access existing datasets (e.g. [tm.plugin.lexisnexis](https://cran.r-project.org/web/packages/tm.plugin.lexisnexis/), [manifestoR](https://cran.r-project.org/web/packages/manifestoR/)) or import into R textual content from social media through their APIs (e.g. [twitteR](https://cran.r-project.org/web/packages/twitteR/)). However, there is no package dedicated to getting into R the textual contents of regular websites and extracting key metadata (date and title) in order to populate a corpus that can be analysed in R or with other software packages. 'castarter - content analysis starter toolkit for R' aims to accomplish just that, offering to moderately incompetent users the opportunity to extract textual contents from websites and prepare them for content analysis. 
 
 ## Installation
-castarter is hosted on GitHub. In order to install castarter in your system
+`castarter` is hosted on GitHub. The easiest way to install it on your system, is to run the following commands in R:
+
+```
+install.packages("devtools")
+library("devtools")
+install_github("giocomai/castarter")
+library("castarter")
+```
 
 ## References
