@@ -13,7 +13,6 @@
 CreateLinks <- function(linkFirstChunk, linkSecondChunk = NULL, startPage = 1, endPage = 10, increaseBy = 1, dateStyle = "", 
     firstYear = "", lastYear = "", leadingZero = TRUE, startDate = "", endDate = "", sortIndexPagesLinks = TRUE, dateSeparator = "/", export = FALSE, 
     reversedOrder = FALSE) {
-    numberOfIndexPages <- endPage - startPage + 1
     if (dateStyle == "ym" | dateStyle == "Ym") {
         years <- firstYear:lastYear
         dates <- vector()
@@ -48,6 +47,9 @@ CreateLinks <- function(linkFirstChunk, linkSecondChunk = NULL, startPage = 1, e
         indexPagesLinks <- paste0(linkFirstChunk, dates)
     } else if (base::is.null(linkSecondChunk) == TRUE) {
         listOfNumbers <- base::seq(startPage, endPage, increaseBy)
+        if (base::is.element(endPage, listOfNumbers) == FALSE) {
+            listOfNumbers <- base::c(listOfNumbers, endPage)
+        }
         indexPagesLinks <- base::cbind(rep(linkFirstChunk, length(listOfNumbers)), listOfNumbers)
         indexPagesLinks <- base::paste0(indexPagesLinks[, 1], indexPagesLinks[, 2])
     }
