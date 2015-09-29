@@ -2,12 +2,12 @@
 #' 
 #' Extracts direct links to individual articles from index pages according to a selcted pattern.
 #'  
-#' @param domain Web domain of the website. Will be added at the beginning of each link found.
+#' @param domain Web domain of the website. Will be added at the beginning of each link found.If links in the page already include the full web address this should be ignored. Defaults to "".
 #' @return A named character vector of links to articles. Name of the link may be the article title. 
 #' @export
 #' @examples
-#' articlesLinks <- ExtractArticlesLinks(domain = "http://www.example.com/", partOfDirectLink = "news/", indexPagesHtml)
-ExtractArticlesLinks <- function(domain, partOfDirectLink, indexPagesHtml, containerType = "", containerClass = "", divClass = "", partOfDirectLinkToExclude = "", 
+#' articlesLinks <- ExtractLinks(domain = "http://www.example.com/", partOfDirectLink = "news/", indexPagesHtml)
+ExtractLinks <- function(domain, partOfDirectLink, indexPagesHtml, containerType = "", containerClass = "", divClass = "", partOfDirectLinkToExclude = "", 
     sort = TRUE, export = FALSE) {
     numberOfIndexPages <- length(indexPagesHtml)
     allLinks <- data.frame()
