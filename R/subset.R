@@ -1,15 +1,22 @@
 #' Subsets a 'castarter' dataset
 #' 
 #' @param dataset A dataset created with 'castarter'.
-#' @param terms A character vector. Only articles including these terms are included in the output.
+#' @param terms A character vector. Only articles including these one of these terms are included in the output.
+#' @param startDate, endDate A date in the format YYYY-MM-DD.
 #' @return A dataset in the 'castarter' format. 
 #' @export
 #' @examples
 #' SubsetDataset(dataset, terms)
 
-SubsetDataset <- function(dataset, terms) {
+SubsetDataset <- function(dataset, terms, startDate = NULL, endDate = NULL) {
     terms <- base::paste(terms,collapse="|")
     dataset <- dataset[base::grep(terms, dataset$articlesTxt, ignore.case = TRUE), ]
+    if (is.null(startDate) == FALSE) {
+        dataset <- dataset[dataset$date > as.POSIXct(startDate)]
+    }
+    if (is.null(endDate) == FALSE) {
+        dataset <- dataset[dataset$date < as.POSIXct(endDate)]
+    }
 }
 
 

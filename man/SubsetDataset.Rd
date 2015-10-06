@@ -4,12 +4,14 @@
 \alias{SubsetDataset}
 \title{Subsets a 'castarter' dataset}
 \usage{
-SubsetDataset(dataset, terms)
+SubsetDataset(dataset, terms, startDate = NULL, endDate = NULL)
 }
 \arguments{
 \item{dataset}{A dataset created with 'castarter'.}
 
-\item{terms}{A character vector. Only articles including these terms are included in the output.}
+\item{terms}{A character vector. Only articles including these one of these terms are included in the output.}
+
+\item{startDate,}{endDate A date in the format YYYY-MM-DD.}
 }
 \value{
 A dataset in the 'castarter' format.
