@@ -14,11 +14,12 @@ SubsetDataset <- function(dataset, terms = NULL, startDate = NULL, endDate = NUL
         dataset <- dataset[base::grep(terms, dataset$articlesTxt, ignore.case = TRUE), ]
     }
     if (is.null(startDate) == FALSE) {
-        dataset <- dataset[, dataset$date > as.POSIXct(startDate)]
+        dataset <- dataset[dataset$dates > as.POSIXct(startDate), ]
     }
     if (is.null(endDate) == FALSE) {
-        dataset <- dataset[, dataset$date < as.POSIXct(endDate)]
+        dataset <- dataset[dataset$dates < as.POSIXct(endDate), ]
     }
+    dataset
 }
 
 
