@@ -115,7 +115,7 @@ DownloadIndexPages <- function(nameOfProject, nameOfWebsite, indexPagesLinks, st
         }
     } else {
         for (i in start:numberOfIndexPages) {
-            indexPagesHtml[i] <- getURL(indexPagesLinks[i], timeout = 20)
+            indexPagesHtml[i] <- RCurl::getURL(indexPagesLinks[i], timeout = 20)
             print(paste("Downloading index page", i, "of", numberOfIndexPages), quote = FALSE)
             write(indexPagesHtml[i], file = indexHtmlFilenames[i])
             Sys.sleep(wait)
@@ -153,7 +153,7 @@ ReDownloadMissingIndexPages <- function(nameOfProject, nameOfWebsite, links = in
         }
     } else {
         for (i in links[htmlFilesToDownload]) {
-            htmlFile <- getURL(i, timeout = 20)
+            htmlFile <- RCurl::getURL(i, timeout = 20)
             print(paste("Downloading index page", temp, "of", length(links[htmlFileSize < size])), quote = FALSE)
             articleId <- articlesId[htmlFilesToDownload][temp]
             write(htmlFile, file = file.path(nameOfProject, nameOfWebsite, "IndexHtml", paste0(articleId, ".html")))
