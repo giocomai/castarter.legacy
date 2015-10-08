@@ -280,7 +280,7 @@ ExtractTitles <- function(articlesHtml = NULL, articlesLinks = "", titlesExtract
 #' @examples
 #' articlesId <- ExtractArticleId(nameOfProject, nameOfWebsite)
 ExtractArticleId <- function(nameOfProject, nameOfWebsite, accordingToDate = FALSE, dates = NULL) {
-    htmlFilesList <- mixedsort(list.files(file.path(nameOfProject, nameOfWebsite, "Html")))
+    htmlFilesList <- gtools::mixedsort(list.files(file.path(nameOfProject, nameOfWebsite, "Html")))
     if (accordingToDate == TRUE) {
         htmlFilesList <- htmlFilesList[order(dates)]
     }
@@ -299,7 +299,7 @@ ExtractArticleId <- function(nameOfProject, nameOfWebsite, accordingToDate = FAL
 #' @examples
 #' dataset <- CreateDatasetFromHtml(nameOfProject, nameOfWebsite)
 CreateDatasetFromHtml <- function(nameOfProject, nameOfWebsite, articlesLinks = NULL, ExtractDatesXpath = FALSE, titlesExtractMethod = "htmlTitle", divClass = NULL, language = NULL, removeString = NULL, encoding = NULL, removeEverythingAfter = NULL, removeEverythingBefore = NULL) {
-    htmlFilesList <- mixedsort(list.files(file.path(nameOfProject, nameOfWebsite, "Html"), pattern = "\\.html$", full.names = TRUE))
+    htmlFilesList <- gtools::mixedsort(list.files(file.path(nameOfProject, nameOfWebsite, "Html"), pattern = "\\.html$", full.names = TRUE))
     numberOfArticles <- length(htmlFilesList)
     dates <- as.POSIXct(rep(NA, numberOfArticles))
     articlesTxt <- rep(NA, numberOfArticles)
@@ -345,7 +345,7 @@ CreateDatasetFromHtml <- function(nameOfProject, nameOfWebsite, articlesLinks = 
 ExportMetadata <- function(nameOfProject, nameOfWebsite, dates, articlesId, titles, language, articlesLinks, exportXlsx = FALSE, accordingToDate = FALSE, ignoreNAdates = FALSE, onlyExistingHtmlFiles = FALSE) {
     ignoreVector <- NULL
     if (onlyExistingHtmlFiles == TRUE) {
-        htmlFilesList <- mixedsort(list.files(file.path(nameOfProject, nameOfWebsite, "Html"), full.names = TRUE))
+        htmlFilesList <- gtools::mixedsort(list.files(file.path(nameOfProject, nameOfWebsite, "Html"), full.names = TRUE))
         articlesId <- as.integer(regmatches(htmlFilesList, regexpr("[[:digit:]]+", htmlFilesList)))
         articlesIdInTheory <- 1:length(articlesLinks)
         ignoreVector <- !is.element(articlesId, articlesIdInTheory)
