@@ -9,12 +9,12 @@
 #' projectsAndWebsites <- c("ProjectX/Website1", "ProjectY/Website3", "ProjectZ/Website2")
 #' allDatasets <- LoadDatasets(projectsAndWebsites)
 LoadDatasets <- function(projectsAndWebsites) {
-    projectsAndWebsites <- strsplit(projectsAndWebsites, "/")
+    projectsAndWebsites <- base::strsplit(projectsAndWebsites, "/")
     lastSavedDatasets <- vector()
     for (i in 1:length(projectsAndWebsites)) {
         nameOfProject <- projectsAndWebsites[[i]][1]
         nameOfWebsite <- projectsAndWebsites[[i]][2]
-        datasetFilename <- sort(list.files(file.path(nameOfProject, nameOfWebsite, "Dataset"))[str_extract(list.files(file.path(nameOfProject, nameOfWebsite, "Dataset")), "dataset.RData") == "dataset.RData"], decreasing = TRUE)[1]
+        datasetFilename <- sort(list.files(file.path(nameOfProject, nameOfWebsite, "Dataset"))[stringr::str_extract(list.files(file.path(nameOfProject, nameOfWebsite, "Dataset")), "dataset.RData") == "dataset.RData"], decreasing = TRUE)[1]
         if (is.na(datasetFilename) == FALSE) {
             lastSavedDataset <- file.path(file.path(nameOfProject, nameOfWebsite, "Dataset"), datasetFilename)
             lastSavedDatasets[i] <- lastSavedDataset
@@ -46,7 +46,7 @@ LoadAllDatasets <- function(nameOfProject) {
     lastSavedDatasets <- vector()
     for (i in 1:length(listOfWebsites)) {
         nameOfWebsite <- listOfWebsites[i]
-        datasetFilename <- sort(list.files(file.path(nameOfProject, nameOfWebsite, "Dataset"))[str_extract(list.files(file.path(nameOfProject, 
+        datasetFilename <- sort(list.files(file.path(nameOfProject, nameOfWebsite, "Dataset"))[stringr::str_extract(list.files(file.path(nameOfProject, 
             nameOfWebsite, "Dataset")), "dataset.RData") == "dataset.RData"], decreasing = TRUE)[1]
         if (is.na(datasetFilename) == FALSE) {
             lastSavedDataset <- file.path(file.path(nameOfProject, nameOfWebsite, "Dataset"), datasetFilename)
