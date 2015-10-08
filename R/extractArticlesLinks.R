@@ -13,19 +13,19 @@ ExtractLinks <- function(domain, partOfDirectLink, indexPagesHtml, containerType
     allLinks <- data.frame()
     for (i in 1:numberOfIndexPages) {
         if (indexPagesHtml[i] != "") {
-            indexPageHtmlParsed <- htmlTreeParse(indexPagesHtml[i], useInternalNodes = T, encoding = "UTF-8")
+            indexPageHtmlParsed <- XML::htmlTreeParse(indexPagesHtml[i], useInternalNodes = T, encoding = "UTF-8")
             if (divClass != "") {
-                links <- xpathSApply(indexPageHtmlParsed, paste0("//div[@class='", divClass, "']", "//a/@href"))
-                titles <- xpathSApply(indexPageHtmlParsed, paste0("//div[@class='", divClass, "']", "//a"), xmlValue)
+                links <- XML::xpathSApply(indexPageHtmlParsed, paste0("//div[@class='", divClass, "']", "//a/@href"))
+                titles <- XML::xpathSApply(indexPageHtmlParsed, paste0("//div[@class='", divClass, "']", "//a"), xmlValue)
             } else if (containerType == "ul") {
                 if (containerClass == "") {
                   stop("containerClass must be defined for containerType = 'ul'")
                 }
-                links <- xpathSApply(indexPageHtmlParsed, paste0("//ul[@class='", containerClass, "']", "//a/@href"))
-                titles <- xpathSApply(indexPageHtmlParsed, paste0("//ul[@class='", containerClass, "']", "//a"), xmlValue)
+                links <- XML::xpathSApply(indexPageHtmlParsed, paste0("//ul[@class='", containerClass, "']", "//a/@href"))
+                titles <- XML::xpathSApply(indexPageHtmlParsed, paste0("//ul[@class='", containerClass, "']", "//a"), xmlValue)
             } else {
-                links <- xpathSApply(indexPageHtmlParsed, "//a/@href")
-                titles <- xpathSApply(indexPageHtmlParsed, "//a", xmlValue)
+                links <- XML::xpathSApply(indexPageHtmlParsed, "//a/@href")
+                titles <- XML::xpathSApply(indexPageHtmlParsed, "//a", xmlValue)
             }
             links <- cbind(links, titles)
             allLinks <- rbind(links, allLinks)
@@ -37,7 +37,7 @@ ExtractLinks <- function(domain, partOfDirectLink, indexPagesHtml, containerType
     if (partOfDirectLinkToExclude != "") {
         allLinks <- allLinks[!grepl(partOfDirectLinkToExclude, allLinks$links, fixed = TRUE), ]
     }
-    allLinks <- allLinks[mixedorder(nchar(as.character(allLinks$titles))), ]
+    allLinks <- allLinks[gtools::mixedorder(nchar(as.character(allLinks$titles))), ]
     allLinks$links <- as.character(allLinks$links)
     allLinks$links <- paste0(domain, allLinks$links)
     allLinks$links <- gsub("//", "/", allLinks$links, fixed = TRUE)
@@ -45,7 +45,7 @@ ExtractLinks <- function(domain, partOfDirectLink, indexPagesHtml, containerType
     allLinks$links <- gsub("https:/", "https://", allLinks$links, fixed = TRUE)
     allLinks <- allLinks[!duplicated(allLinks[, "links"], fromLast = TRUE), ]
     if (sort == TRUE) {
-        allLinks <- allLinks[mixedorder(allLinks$links), ]
+        allLinks <- allLinks[gtools::mixedorder(allLinks$links), ]
     }
     links <- as.character(allLinks$links)
     titles <- as.character(allLinks$titles)
