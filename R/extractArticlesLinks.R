@@ -16,16 +16,16 @@ ExtractLinks <- function(domain, partOfDirectLink, indexPagesHtml, containerType
             indexPageHtmlParsed <- XML::htmlTreeParse(indexPagesHtml[i], useInternalNodes = T, encoding = "UTF-8")
             if (divClass != "") {
                 links <- XML::xpathSApply(indexPageHtmlParsed, paste0("//div[@class='", divClass, "']", "//a/@href"))
-                titles <- XML::xpathSApply(indexPageHtmlParsed, paste0("//div[@class='", divClass, "']", "//a"), xmlValue)
+                titles <- XML::xpathSApply(indexPageHtmlParsed, paste0("//div[@class='", divClass, "']", "//a"), XML::xmlValue)
             } else if (containerType == "ul") {
                 if (containerClass == "") {
                   stop("containerClass must be defined for containerType = 'ul'")
                 }
                 links <- XML::xpathSApply(indexPageHtmlParsed, paste0("//ul[@class='", containerClass, "']", "//a/@href"))
-                titles <- XML::xpathSApply(indexPageHtmlParsed, paste0("//ul[@class='", containerClass, "']", "//a"), xmlValue)
+                titles <- XML::xpathSApply(indexPageHtmlParsed, paste0("//ul[@class='", containerClass, "']", "//a"), XML::xmlValue)
             } else {
                 links <- XML::xpathSApply(indexPageHtmlParsed, "//a/@href")
-                titles <- XML::xpathSApply(indexPageHtmlParsed, "//a", xmlValue)
+                titles <- XML::xpathSApply(indexPageHtmlParsed, "//a", XML::xmlValue)
             }
             links <- cbind(links, titles)
             allLinks <- rbind(links, allLinks)
