@@ -14,7 +14,9 @@ ExtractTxt(articlesHtml, metadata = "", export = TRUE,
 
 \item{export}{Logical, defaults to TRUE. If TRUE, textual contents are saved as individual txt files in a dedicated folder. Filename is based on the medatadata.}
 
-\item{keepEverything}{Logical. If TRUE, the functions calls the KeepEverythingExtractor from boilerpipeR, instead of ArticleExtractor.}
+\item{maxTitleCharacters}{Maximum number of characters allowed in the title. Defaults to 80.}
+
+\item{keepEverything}{Logical. If TRUE, the functions calls the boilerpipeR::KeepEverythingExtractor from boilerpipeR, instead of boilerpipeR::ArticleExtractor.}
 }
 \value{
 A character vector of txt files, and individual articles saved as txt files in a dedicated folder if 'export' is set to TRUE.
