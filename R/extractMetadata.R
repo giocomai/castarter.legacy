@@ -362,7 +362,7 @@ ExportMetadata <- function(nameOfProject, nameOfWebsite, dates, articlesId, titl
     }
     write.csv(metadata, file = file.path(nameOfProject, nameOfWebsite, paste(nameOfWebsite, "metadata.csv")), row.names = FALSE)
     if (exportXlsx == TRUE) {
-        write.xlsx(metadata, file = file.path(nameOfProject, nameOfWebsite, paste(nameOfWebsite, "metadata.xlsx")), row.names = FALSE)
+        xlsx::write.xlsx(metadata, file = file.path(nameOfProject, nameOfWebsite, paste(nameOfWebsite, "metadata.xlsx")), row.names = FALSE)
     }
     metadata
 } 
