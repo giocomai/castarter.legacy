@@ -31,7 +31,7 @@ DownloadArticles <- function(nameOfProject, nameOfWebsite, articlesLinks, extrac
         }
     } else {
         for (i in start:numberOfArticles) {
-            articlesHtml[i] <- getURL(articlesLinks[i], timeout = 20)
+            articlesHtml[i] <- RCurl::getURL(articlesLinks[i], timeout = 20)
             print(paste("Downloading article", i, "of", numberOfArticles), quote = FALSE)
             write(articlesHtml[i], file = articlesHtmlFilenames[i])
             Sys.sleep(wait)
@@ -80,7 +80,7 @@ ReDownloadMissingArticles <- function(nameOfProject, nameOfWebsite, links = arti
     } else {
         for (i in articlesLinks[linksToDownload]) {
             articleId <- articlesId[linksToDownload][temp]
-            htmlFile <- getURL(i, timeout = 20)
+            htmlFile <- RCurl::getURL(i, timeout = 20)
             write(htmlFile, file = file.path(nameOfProject, nameOfWebsite, "Html", paste0(articleId, ".html")))
             print(paste("Downloaded article", temp, "of", length(articlesLinks[linksToDownload]), ". ArticleID: ", articleId, quote = FALSE))
             temp <- temp + 1
