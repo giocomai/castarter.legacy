@@ -82,8 +82,8 @@ SaveAndExportWebsite <- function(nameOfProject, nameOfWebsite, exportXlsx = FALS
         print("Metadata not available, the dataset has not been saved separately.")
     } else {
     dataset <- cbind(metadata, articlesTxt, stringsAsFactors = FALSE)
-    save(dataset, file = file.path(nameOfProject, nameOfWebsite, "Dataset", paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "dataset", 
-        sep = " - "), ".RData")))
+    save(dataset, file = file.path(nameOfProject, nameOfWebsite, "Dataset", paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "dataset", sep = " - "), ".RData")))
+    print(paste("Dataset saved in", file.path(nameOfProject, nameOfWebsite, paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "dataset", sep = " - "), ".RData"))))
     }
     # export all as xlsx
     if (exportXlsx == TRUE) {
