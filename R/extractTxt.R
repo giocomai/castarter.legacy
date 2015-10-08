@@ -3,8 +3,9 @@
 #' Extracts textual contents from a vector of html files. 
 #'  
 #' @param articlesHtml A character vector of html files.
-#' @param keepEverything Logical. If TRUE, the functions calls the KeepEverythingExtractor from boilerpipeR, instead of ArticleExtractor.
+#' @param keepEverything Logical. If TRUE, the functions calls the boilerpipeR::KeepEverythingExtractor from boilerpipeR, instead of boilerpipeR::ArticleExtractor.
 #' @param export Logical, defaults to TRUE. If TRUE, textual contents are saved as individual txt files in a dedicated folder. Filename is based on the medatadata.
+#' @param maxTitleCharacters Maximum number of characters allowed in the title. Defaults to 80. 
 #' @return A character vector of txt files, and individual articles saved as txt files in a dedicated folder if 'export' is set to TRUE.
 #' @export
 #' @examples
@@ -18,9 +19,9 @@ ExtractTxt <- function(articlesHtml, metadata = "", export = TRUE, maxTitleChara
     }
     for (i in 1:numberOfArticles) {
         if (keepEverything == TRUE) {
-            articleTxt <- KeepEverythingExtractor(articlesHtml[i])
+            articleTxt <- boilerpipeR::KeepEverythingExtractor(articlesHtml[i])
         } else {
-            articleTxt <- ArticleExtractor(articlesHtml[i])
+            articleTxt <- boilerpipeR::ArticleExtractor(articlesHtml[i])
         }
         if (textToBeRemoved != "") {
             for (j in 1:length(textToBeRemoved)) {
