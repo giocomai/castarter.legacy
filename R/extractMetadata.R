@@ -117,7 +117,7 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", language = "en", cust
         }
         Sys.setlocale(category = "LC_TIME", locale = "en_GB.UTF-8")
     }
-    dates <- parse_date_time(datesTxt, dateFormat)
+    dates <- lubridate::parse_date_time(datesTxt, dateFormat)
     if (is.null(minDate) == FALSE) {
     dates[dates < as.POSIXct(minDate)] <- NA
     }
