@@ -157,6 +157,65 @@ metadata <- ExportMetadata(nameOfProject = "EU",
                            exportXlsx = TRUE)
 ```
 
-Metadata are also used to create relevant filenames for storing individual articles in textual format. 
+Metadata are also used to create relevant filenames for storing individual articles in textual format. The following command calls the `boilerpipeR` library and allows to extract only the main contents of each page, removing menus and other html clutter. 
+```{r}
+articlesTxt <- ExtractTxt(articlesHtml, metadata)
+```
+Text extraction works well in most cases. However, at this stage it is generally a good idea to have a quick look at the extracted textual contents and remove easy-to-spot glitches. The following command prints on the terminal five random articles among all those extracted. 
+```
+articlesTxt[sample(1:length(articlesTxt), 5)]
+```
+At this stage, `castarter` has generated a folder of txt files and has exported relevant metadata. These can be imported and used in other software for quantitative or qualitative content analysis. The following command saves the current workspace in the working directory, stores the dataset in a dedicated folder for easy retrieval and allows to export both metadata and textual contents in a single spreadsheet. 
+
+```
+SaveAndExportWebsite(nameOfProject = "EU", 
+                     nameOfWebsite = "EuropeanParliament", 
+                     exportXlsx = TRUE)
+```
+
+## Creating and polishing a corpus
+For further analysis in `castarter`, it is useful to convert the data to a corpus of the `tm` package. Most of the functions offered by `castarter` are simply wrappers of `tm` functions. 
+```{r}
+corpus <- ConvertToCorpus(dataset)
+```
+The following  command allows to conduct a number of common operation on the corpus, such as transforming all text to lowercase, removing punctuation and removing numbers. These operations are enabled by default, but depending on the users needs can easily be disabled (e.g. by adding the paramater `removePunctuation = FALSE`)
+```{r}
+corpus <- CleanCorpus(corpus)
+```
+
+When two or more separate words express a specific concept that is relevant to our research, we might want to combine those words and analyse them as one in following phases. For example, we might want to consider "European Union", and "EU" asone and the same word, "EuropeanUnion".
+```{r}
+originalCombination <- "european union"
+toBeUsed <- "EuropeanUnion"
+wordCombinations <- AddWordCombinations(wordCombinations = NULL,
+                                        originalCombination = originalCombination,
+                                        toBeUsed = toBeUsed)
+originalCombination <- "eu"
+toBeUsed <- "EuropeanUnion"
+wordCombinations <- AddWordCombinations(wordCombinations = wordCombinations,
+                                        originalCombination = originalCombination,
+                                        toBeUsed = toBeUsed)
+wordCombinations
+```
+We can then apply these word combinations to the corpus. 
+```{r}
+corpus <- CombineWords(corpus, wordCombinations)
+```
+It is common to remove stopwords, i.e. commonly used words that are substantially relevant to our research. The `tm` package provides a default list of stopwords, and we can add our own. However, such steps must be carefully supervisioned. "will" may be substantially irrelvant, unless we are interested, for example, in "political will"; "can" may be substantially irrelevant, unless, for example, we are interested in recycling, etc. 
+```{r}
+stopwords <- c("will", "also", "can")
+stopwords <- AddStopwords(newStopwords = stopwords,
+                          nameOfProject = "EU", 
+                          includeDefault = TRUE, 
+                          language = "ru")
+corpus <- RemoveStopwords(corpus, stopwords)
+```
+A common next step is that of document stemming.
+```{r}
+corpus <- tm_map(corpus, stemDocument)
+```
+Depending on the language and the desired result, word combinations may be better applied after stemming. 
+
+
 
 ## References
