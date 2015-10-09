@@ -6,14 +6,14 @@
 #' @return A named character vector of links to articles. Name of the link may be the article title. 
 #' @export
 #' @examples
-#' articlesLinks <- ExtractLinks(domain = "http://www.example.com/", partOfLink = "news/", indexPagesHtml)
-ExtractLinks <- function(domain, partOfLink, indexPagesHtml, containerType = "", containerClass = "", divClass = "", partOfLinkToExclude = "", 
+#' articlesLinks <- ExtractLinks(domain = "http://www.example.com/", partOfLink = "news/", indexHtml)
+ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = "", containerClass = "", divClass = "", partOfLinkToExclude = "", 
     sort = TRUE, export = FALSE) {
-    numberOfIndexPages <- length(indexPagesHtml)
+    numberOfIndexPages <- length(indexHtml)
     allLinks <- data.frame()
     for (i in 1:numberOfIndexPages) {
-        if (indexPagesHtml[i] != "") {
-            indexPageHtmlParsed <- XML::htmlTreeParse(indexPagesHtml[i], useInternalNodes = T, encoding = "UTF-8")
+        if (indexHtml[i] != "") {
+            indexPageHtmlParsed <- XML::htmlTreeParse(indexHtml[i], useInternalNodes = T, encoding = "UTF-8")
             if (divClass != "") {
                 links <- XML::xpathSApply(indexPageHtmlParsed, paste0("//div[@class='", divClass, "']", "//a/@href"))
                 titles <- XML::xpathSApply(indexPageHtmlParsed, paste0("//div[@class='", divClass, "']", "//a"), XML::xmlValue)

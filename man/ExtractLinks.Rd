@@ -4,7 +4,7 @@
 \alias{ExtractLinks}
 \title{Extracts direct links to individual articles from index pages.}
 \usage{
-ExtractLinks(domain, partOfLink, indexPagesHtml, containerType = "",
+ExtractLinks(domain, partOfLink, indexHtml, containerType = "",
   containerClass = "", divClass = "", partOfLinkToExclude = "",
   sort = TRUE, export = FALSE)
 }
@@ -18,6 +18,6 @@ A named character vector of links to articles. Name of the link may be the artic
 Extracts direct links to individual articles from index pages according to a selcted pattern.
 }
 \examples{
-articlesLinks <- ExtractLinks(domain = "http://www.example.com/", partOfLink = "news/", indexPagesHtml)
+articlesLinks <- ExtractLinks(domain = "http://www.example.com/", partOfLink = "news/", indexHtml)
 }
 
