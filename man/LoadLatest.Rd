@@ -2,7 +2,7 @@
 % Please edit documentation in R/preliminary.R
 \name{LoadLatest}
 \alias{LoadLatest}
-\title{Loads latest saved workspace for selected website.}
+\title{Finds the full path of the latest saved workspace for selected website.}
 \usage{
 LoadLatest(nameOfProject, nameOfWebsite)
 }
@@ -12,9 +12,9 @@ LoadLatest(nameOfProject, nameOfWebsite)
 \item{nameOfWebsite}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
 }
 \description{
-It loads the most recent workspace saved for a given website based on the date included in the filename of the .Rdata file.
+Used in combination with load, it loads the most recent workspace saved for a given website based on the date included in the filename of the .Rdata file.
 }
 \examples{
-LoadLatest(nameOfProject, nameOfWebsite)
+load(LoadLatest(nameOfProject, nameOfWebsite))
 }
 
