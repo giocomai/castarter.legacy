@@ -6,8 +6,8 @@
 #' @return A named character vector of links to articles. Name of the link may be the article title. 
 #' @export
 #' @examples
-#' articlesLinks <- ExtractLinks(domain = "http://www.example.com/", partOfDirectLink = "news/", indexPagesHtml)
-ExtractLinks <- function(domain, partOfDirectLink, indexPagesHtml, containerType = "", containerClass = "", divClass = "", partOfDirectLinkToExclude = "", 
+#' articlesLinks <- ExtractLinks(domain = "http://www.example.com/", partOfLink = "news/", indexPagesHtml)
+ExtractLinks <- function(domain, partOfLink, indexPagesHtml, containerType = "", containerClass = "", divClass = "", partOfLinkToExclude = "", 
     sort = TRUE, export = FALSE) {
     numberOfIndexPages <- length(indexPagesHtml)
     allLinks <- data.frame()
@@ -33,9 +33,9 @@ ExtractLinks <- function(domain, partOfDirectLink, indexPagesHtml, containerType
     }
     allLinks <- as.data.frame(allLinks, stringsAsFactors = FALSE)
     allLinks <- unique(allLinks)
-    allLinks <- allLinks[grepl(partOfDirectLink, allLinks$links, fixed = TRUE), ]
-    if (partOfDirectLinkToExclude != "") {
-        allLinks <- allLinks[!grepl(partOfDirectLinkToExclude, allLinks$links, fixed = TRUE), ]
+    allLinks <- allLinks[grepl(partOfLink, allLinks$links, fixed = TRUE), ]
+    if (partOfLinkToExclude != "") {
+        allLinks <- allLinks[!grepl(partOfLinkToExclude, allLinks$links, fixed = TRUE), ]
     }
     allLinks <- allLinks[gtools::mixedorder(nchar(as.character(allLinks$titles))), ]
     allLinks$links <- as.character(allLinks$links)
