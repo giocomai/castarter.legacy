@@ -49,7 +49,7 @@ CombineWords <- function(corpus, wordCombinations) {
     }
     Combine <- content_transformer(function(x, originalCombination, toBeUsed) gsub(originalCombination, toBeUsed, x))
     for (i in 1:length(wordCombinations[, 1])) {
-        corpus <- tm_map(corpus, Combine, wordCombinations$originalCombination[i], wordCombinations$toBeUsed[i])
+        corpus <- tm::tm_map(corpus, Combine, wordCombinations$originalCombination[i], wordCombinations$toBeUsed[i])
     }
     corpus
 }
@@ -113,7 +113,7 @@ AddStopwords <- function(newStopwords = NULL, nameOfProject = NULL, includeDefau
 #' @examples
 #' corpus <- RemoveStopwords(corpus, stopwords)
 RemoveStopwords <- function(corpus, stopwords) {
-    corpus <- tm_map(corpus, removeWords, stopwords)
+    corpus <- tm::tm_map(corpus, removeWords, stopwords)
     corpus
 }
 
@@ -129,23 +129,23 @@ RemoveStopwords <- function(corpus, stopwords) {
 CleanCorpus <- function(corpus, stripWhitespace = TRUE, toLowerCase = TRUE, removeNumbers = TRUE, removePunctuation = TRUE, removeControlCharacters = TRUE, 
     removeCharacter = "") {
     if (toLowerCase == TRUE) {
-        corpus <- tm_map(corpus, content_transformer(tolower))
+        corpus <- tm::tm_map(corpus, content_transformer(tolower))
     }
     if (removeNumbers == TRUE) {
-        corpus <- tm_map(corpus, content_transformer(function(x) gsub("[[:digit:]]", " ", x)))
+        corpus <- tm::tm_map(corpus, content_transformer(function(x) gsub("[[:digit:]]", " ", x)))
     }
     if (removePunctuation == TRUE) {
-        corpus <- tm_map(corpus, content_transformer(function(x) gsub("[[:punct:]]", " ", x)))
+        corpus <- tm::tm_map(corpus, content_transformer(function(x) gsub("[[:punct:]]", " ", x)))
     }
     if (removeControlCharacters == TRUE) {
-        corpus <- tm_map(corpus, content_transformer(function(x) gsub("[[:cntrl:]]", " ", x)))
+        corpus <- tm::tm_map(corpus, content_transformer(function(x) gsub("[[:cntrl:]]", " ", x)))
     }
     if (stripWhitespace == TRUE) {
-        corpus <- tm_map(corpus, content_transformer(function(x) gsub("[[:space:]]+", " ", x)))
+        corpus <- tm::tm_map(corpus, content_transformer(function(x) gsub("[[:space:]]+", " ", x)))
     }
     if (removeCharacter[1] != "") {
         for (i in 1:length(removeCharacter)) {
-            corpus <- tm_map(corpus, content_transformer(function(x) gsub(removeCharacter[i], "", x)))
+            corpus <- tm::tm_map(corpus, content_transformer(function(x) gsub(removeCharacter[i], "", x)))
         }
     }
     corpus
@@ -161,7 +161,7 @@ CleanCorpus <- function(corpus, stripWhitespace = TRUE, toLowerCase = TRUE, remo
 #' @examples
 #' stemmingDictionary <- ExportStemmingDictionary(corpus, nameOfProject)
 ExportStemmingDictionary <- function(corpus, nameOfProject, stemmingEditMode = "fromCsv") {
-    dtm <- DocumentTermMatrix(corpus)
+    dtm <- tm::DocumentTermMatrix(corpus)
     stemmingDictionary <- data.frame(row.names = colnames(dtm), occurrences = col_sums(dtm), stemmedTerm = wordStem(colnames(dtm), language), 
         stopword = ifelse(colnames(dtm) %in% stopwords, "stopword", ""), stringsAsFactors = FALSE)
     stemmingDictionary[Terms(dtm) %in% stopwords, "stemmedTerm"] <- ""
@@ -186,7 +186,7 @@ ExportStemmingDictionary <- function(corpus, nameOfProject, stemmingEditMode = "
 }
 
 StemCorpusDtm <- function(corpusDtm, stemmingDictionary) {
-    dtm <- DocumentTermMatrix(corpus)
+    dtm <- tm::DocumentTermMatrix(corpus)
     dtm <- rollup(dtm, 2, stemmingDictionary[["stemmedTerm"]])
     dtm <- dtm[, Terms(dtm) != ""]
     dtm
@@ -202,8 +202,8 @@ StemCorpusDtm <- function(corpusDtm, stemmingDictionary) {
 #' @examples
 #' dtm <- CreateDtm(corpus)
 CreateDtm <- function(corpus, removeSparseTerms = NULL){
-    corpusDtm <- DocumentTermMatrix(corpus)
+    corpusDtm <- tm::DocumentTermMatrix(corpus)
     if (is.null(removeSparseTerms) == FALSE) {
-        corpusDtm <- removeSparseTerms(corpusDtm, removeSparseTerms)
+        corpusDtm <- tm::removeSparseTerms(corpusDtm, removeSparseTerms)
     }
 }
