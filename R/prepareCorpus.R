@@ -74,7 +74,7 @@ LoadAllDatasets <- function(nameOfProject) {
 #' @examples
 #' corpus <- ConvertToCorpus(dataset)
 ConvertToCorpus <- function(dataset) {
-    corpus <- VCorpus(VectorSource(dataset$articlesTxt))
+    corpus <- tm::VCorpus(tm::VectorSource(dataset$articlesTxt))
     for (i in 1:length(dataset$articlesTxt)) {
         meta(corpus[[i]], tag = "author") <- dataset$nameOfWebsite[i]
         meta(corpus[[i]], tag = "datetimestamp") <- dataset$dates[i]
