@@ -87,7 +87,7 @@ SaveAndExportWebsite <- function(nameOfProject, nameOfWebsite, exportXlsx = FALS
     }
     # export all as xlsx
     if (exportXlsx == TRUE) {
-        write.xlsx(cbind(metadata, articlesTxt), file.path(nameOfProject, nameOfWebsite, "Dataset", paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, 
+        xlsx::write.xlsx(cbind(metadata, articlesTxt), file.path(nameOfProject, nameOfWebsite, "Dataset", paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, 
             "metadata and txt", sep = " - "), ".xlsx")))
     }
 } 
