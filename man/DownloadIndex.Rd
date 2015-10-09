@@ -4,7 +4,7 @@
 \alias{DownloadIndex}
 \title{Downloads index pages of a website.}
 \usage{
-DownloadIndex(nameOfProject, nameOfWebsite, indexPagesLinks, start = 1,
+DownloadIndex(nameOfProject, nameOfWebsite, indexLinks, start = 1,
   wget = FALSE, phantomjs = FALSE, wait = 0, update = FALSE)
 }
 \arguments{
@@ -12,7 +12,7 @@ DownloadIndex(nameOfProject, nameOfWebsite, indexPagesLinks, start = 1,
 
 \item{nameOfWebsite}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
 
-\item{indexPagesLinks}{A character vector of index pages, possibly generated with the function CreateIndexPagesLinks.}
+\item{indexLinks}{A character vector of index pages, possibly generated with the function CreateindexLinks.}
 }
 \value{
 A character vector of html files.
@@ -21,6 +21,6 @@ A character vector of html files.
 Downloads index pages of a website.
 }
 \examples{
-indexPagesHtml <- DownloadIndex(nameOfProject, nameOfWebsite, indexPagesLinks)
+indexPagesHtml <- DownloadIndex(nameOfProject, nameOfWebsite, indexLinks)
 }
 

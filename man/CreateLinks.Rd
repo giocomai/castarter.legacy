@@ -7,7 +7,7 @@
 CreateLinks(linkFirstChunk, linkSecondChunk = NULL, startPage = 1,
   endPage = 10, increaseBy = 1, dateStyle = "", firstYear = "",
   lastYear = "", leadingZero = TRUE, startDate = "", endDate = "",
-  sortIndexPagesLinks = TRUE, dateSeparator = "/", export = FALSE,
+  sortindexLinks = TRUE, dateSeparator = "/", export = FALSE,
   reversedOrder = FALSE)
 }
 \arguments{
@@ -26,6 +26,6 @@ A character vector of links to index pages.
 Generates links to index pages listing individual articles.
 }
 \examples{
-indexPagesLinks <- CreateLinks("http://www.example.com/news/")
+indexLinks <- CreateLinks("http://www.example.com/news/")
 }
 

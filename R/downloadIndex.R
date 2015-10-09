@@ -9,9 +9,9 @@
 #' @return A character vector of links to index pages. 
 #' @export
 #' @examples
-#' indexPagesLinks <- CreateLinks("http://www.example.com/news/")
+#' indexLinks <- CreateLinks("http://www.example.com/news/")
 CreateLinks <- function(linkFirstChunk, linkSecondChunk = NULL, startPage = 1, endPage = 10, increaseBy = 1, dateStyle = "", 
-    firstYear = "", lastYear = "", leadingZero = TRUE, startDate = "", endDate = "", sortIndexPagesLinks = TRUE, dateSeparator = "/", export = FALSE, 
+    firstYear = "", lastYear = "", leadingZero = TRUE, startDate = "", endDate = "", sortindexLinks = TRUE, dateSeparator = "/", export = FALSE, 
     reversedOrder = FALSE) {
     if (dateStyle == "ym" | dateStyle == "Ym") {
         years <- firstYear:lastYear
@@ -24,10 +24,10 @@ CreateLinks <- function(linkFirstChunk, linkSecondChunk = NULL, startPage = 1, e
             }
             dates <- base::c(dates, newDates)
         }
-        indexPagesLinks <- base::paste0(linkFirstChunk, dates)
+        indexLinks <- base::paste0(linkFirstChunk, dates)
     } else if (dateStyle == "Y") {
         years <- firstYear:lastYear
-        indexPagesLinks <- paste0(linkFirstChunk, years)
+        indexLinks <- paste0(linkFirstChunk, years)
     } else if (dateStyle == "ymd") {
         years <- firstYear:lastYear
         datesTemp <- vector()
@@ -40,35 +40,35 @@ CreateLinks <- function(linkFirstChunk, linkSecondChunk = NULL, startPage = 1, e
             newDates <- base::paste(rep(datesTemp[i], 31), 1:31, sep = dateSeparator)
             dates <- base::c(dates, newDates)
         }
-        indexPagesLinks <- base::paste0(linkFirstChunk, dates)
+        indexLinks <- base::paste0(linkFirstChunk, dates)
     } else if (dateStyle == "dmY") {
         dates <- base::seq(as.Date(startDate), as.Date(endDate), by = "day")
         dates <- base::format(as.Date(dates), paste("%d", "%m", "%Y", sep = dateSeparator))
-        indexPagesLinks <- paste0(linkFirstChunk, dates)
+        indexLinks <- paste0(linkFirstChunk, dates)
     } else if (base::is.null(linkSecondChunk) == TRUE) {
         listOfNumbers <- base::seq(startPage, endPage, increaseBy)
         if (base::is.element(endPage, listOfNumbers) == FALSE) {
             listOfNumbers <- base::c(listOfNumbers, endPage)
         }
-        indexPagesLinks <- base::cbind(rep(linkFirstChunk, length(listOfNumbers)), listOfNumbers)
-        indexPagesLinks <- base::paste0(indexPagesLinks[, 1], indexPagesLinks[, 2])
+        indexLinks <- base::cbind(rep(linkFirstChunk, length(listOfNumbers)), listOfNumbers)
+        indexLinks <- base::paste0(indexLinks[, 1], indexLinks[, 2])
     }
     if (base::is.null(linkSecondChunk) == FALSE) {
         listOfNumbers <- base::seq(startPage, endPage, increaseBy)
-        indexPagesLinks <- base::cbind(base::rep(linkFirstChunk, base::length(listOfNumbers)), listOfNumbers)
-        indexPagesLinks <- base::paste0(indexPagesLinks[, 1], indexPagesLinks[, 2])
-        indexPagesLinks <- base::paste0(indexPagesLinks, linkSecondChunk)
+        indexLinks <- base::cbind(base::rep(linkFirstChunk, base::length(listOfNumbers)), listOfNumbers)
+        indexLinks <- base::paste0(indexLinks[, 1], indexLinks[, 2])
+        indexLinks <- base::paste0(indexLinks, linkSecondChunk)
     }
-    if (sortIndexPagesLinks == TRUE) {
-        indexPagesLinks <- gtools::mixedsort(indexPagesLinks)
+    if (sortindexLinks == TRUE) {
+        indexLinks <- gtools::mixedsort(indexLinks)
     }
     if (export == TRUE) {
-        base::writeLines(indexPagesLinks, base::file.path(nameOfProject, nameOfWebsite, paste0(nameOfWebsite, "indexPagesLinks.txt")))
+        base::writeLines(indexLinks, base::file.path(nameOfProject, nameOfWebsite, paste0(nameOfWebsite, "indexLinks.txt")))
     }
     if (reversedOrder == TRUE) {
-        base::rev(indexPagesLinks)
+        base::rev(indexLinks)
     } else {
-        indexPagesLinks
+        indexLinks
     }
 }
 
@@ -78,13 +78,13 @@ CreateLinks <- function(linkFirstChunk, linkSecondChunk = NULL, startPage = 1, e
 #'  
 #' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
 #' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
-#' @param indexPagesLinks A character vector of index pages, possibly generated with the function CreateIndexPagesLinks.
+#' @param indexLinks A character vector of index pages, possibly generated with the function CreateindexLinks.
 #' @return A character vector of html files.
 #' @export
 #' @examples
-#' indexPagesHtml <- DownloadIndex(nameOfProject, nameOfWebsite, indexPagesLinks)
-DownloadIndex <- function(nameOfProject, nameOfWebsite, indexPagesLinks, start = 1, wget = FALSE, phantomjs = FALSE, wait = 0, update = FALSE) {
-    numberOfIndexPages <- length(indexPagesLinks)
+#' indexPagesHtml <- DownloadIndex(nameOfProject, nameOfWebsite, indexLinks)
+DownloadIndex <- function(nameOfProject, nameOfWebsite, indexLinks, start = 1, wget = FALSE, phantomjs = FALSE, wait = 0, update = FALSE) {
+    numberOfIndexPages <- length(indexLinks)
     listOfnumberOfIndexPages <- 1:numberOfIndexPages
     indexPagesHtml <- rep(NA, numberOfIndexPages)
     if (update == TRUE) {
@@ -96,7 +96,7 @@ DownloadIndex <- function(nameOfProject, nameOfWebsite, indexPagesLinks, start =
     if (wget == TRUE) {
         options(useFancyQuotes = FALSE)
         for (i in start:numberOfIndexPages) {
-            system(paste("wget", sQuote(indexPagesLinks[i]), "-O", indexHtmlFilenames[i]))
+            system(paste("wget", sQuote(indexLinks[i]), "-O", indexHtmlFilenames[i]))
             print(paste("Downloading index page", i, "of", numberOfIndexPages), quote = FALSE)
             htmlFile <- readLines(indexHtmlFilenames[i])
             htmlFile <- paste(htmlFile, collapse = "\n")
@@ -106,7 +106,7 @@ DownloadIndex <- function(nameOfProject, nameOfWebsite, indexPagesLinks, start =
     } else if (phantomjs == TRUE) {
         options(useFancyQuotes = FALSE)
         for (i in start:numberOfIndexPages) {
-            system(paste("phantomjs save.js", sQuote(indexPagesLinks[i]), indexHtmlFilenames[i]))
+            system(paste("phantomjs save.js", sQuote(indexLinks[i]), indexHtmlFilenames[i]))
             print(paste("Downloading index page", i, "of", numberOfIndexPages), quote = FALSE)
             htmlFile <- readLines(indexHtmlFilenames[i])
             htmlFile <- paste(htmlFile, collapse = "\n")
@@ -115,7 +115,7 @@ DownloadIndex <- function(nameOfProject, nameOfWebsite, indexPagesLinks, start =
         }
     } else {
         for (i in start:numberOfIndexPages) {
-            indexPagesHtml[i] <- RCurl::getURL(indexPagesLinks[i], timeout = 20)
+            indexPagesHtml[i] <- RCurl::getURL(indexLinks[i], timeout = 20)
             print(paste("Downloading index page", i, "of", numberOfIndexPages), quote = FALSE)
             write(indexPagesHtml[i], file = indexHtmlFilenames[i])
             Sys.sleep(wait)
@@ -127,7 +127,7 @@ DownloadIndex <- function(nameOfProject, nameOfWebsite, indexPagesLinks, start =
 }
 
 
-ReDownloadMissingIndexPages <- function(nameOfProject, nameOfWebsite, links = indexPagesLinks, size = 500, wget = FALSE, phantomjs = FALSE, wait = 0) {
+ReDownloadMissingIndexPages <- function(nameOfProject, nameOfWebsite, links = indexLinks, size = 500, wget = FALSE, phantomjs = FALSE, wait = 0) {
     htmlFilesList <- mixedsort(list.files(file.path(nameOfProject, nameOfWebsite, "IndexHtml"), full.names = TRUE))
     htmlFileSize <- file.info(htmlFilesList)["size"]
     htmlFilesToDownload <- htmlFileSize < size
