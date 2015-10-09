@@ -90,9 +90,9 @@ AddStopwords <- function(newStopwords = NULL, nameOfProject = NULL, includeDefau
     if (includeDefault == TRUE) {
         if (exists("stopwords") == TRUE) {
             if (class(stopwords)=="character") {
-                stopwords <- c(stopwords, stopwords(language))
+                stopwords <- c(stopwords, tm::stopwords(language))
             } else {
-                stopwords <- stopwords(language)
+                stopwords <- tm::stopwords(language)
             } 
         }
     }
