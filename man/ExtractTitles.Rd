@@ -5,7 +5,7 @@
 \title{Extracts titles of individual pages}
 \usage{
 ExtractTitles(articlesHtml = NULL, articlesLinks = "",
-  titlesExtractMethod = "indexLink", removePunctuation = TRUE,
+  titlesExtractMethod = "indexLink", removePunctuation = FALSE,
   onlyStandardCharacters = FALSE, removeString = "",
   removeEverythingAfter = NULL, customXpath = "", maxCharacters = NULL)
 }
