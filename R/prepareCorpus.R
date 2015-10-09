@@ -76,12 +76,12 @@ LoadAllDatasets <- function(nameOfProject) {
 ConvertToCorpus <- function(dataset) {
     corpus <- tm::VCorpus(tm::VectorSource(dataset$articlesTxt))
     for (i in 1:length(dataset$articlesTxt)) {
-        meta(corpus[[i]], tag = "author") <- dataset$nameOfWebsite[i]
-        meta(corpus[[i]], tag = "datetimestamp") <- dataset$dates[i]
-        meta(corpus[[i]], tag = "heading") <- dataset$titles[i]
-        meta(corpus[[i]], tag = "id") <- dataset$articlesId[i]
-        meta(corpus[[i]], tag = "language") <- dataset$language[i]
-        meta(corpus[[i]], tag = "origin") <- dataset$articlesLinks[i]
+        NLP::meta(corpus[[i]], tag = "author") <- dataset$nameOfWebsite[i]
+        NLP::meta(corpus[[i]], tag = "datetimestamp") <- dataset$dates[i]
+        NLP::meta(corpus[[i]], tag = "heading") <- dataset$titles[i]
+        NLP::meta(corpus[[i]], tag = "id") <- dataset$articlesId[i]
+        NLP::meta(corpus[[i]], tag = "language") <- dataset$language[i]
+        NLP::meta(corpus[[i]], tag = "origin") <- dataset$articlesLinks[i]
     }
     corpus
 } 

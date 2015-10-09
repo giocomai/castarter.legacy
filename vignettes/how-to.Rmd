@@ -181,7 +181,7 @@ ArchiveFolders(nameOfProject = "EU",
 ## Creating and polishing a corpus
 For further analysis in `castarter`, it is useful to convert the data to a corpus of the `tm` package. Most of the functions offered by `castarter` are simply wrappers of `tm` functions. At this stage, it is possible to start a completely new R session, and simply load the dataset into the current workspace. All relevant information is effectively stored in the dataset. 
 ```{r}
-dataset <- LoadDatasets(projectsAndWebsites = "EU/EuropeaParliament")
+dataset <- LoadDatasets(projectsAndWebsites = "EU/EuropeaneParliament")
 corpus <- ConvertToCorpus(dataset)
 ```
 The following  command allows to conduct a number of common operation on the corpus, such as transforming all text to lowercase, removing punctuation and removing numbers. These operations are enabled by default, but depending on the users needs can easily be disabled (e.g. by adding the paramater `removePunctuation = FALSE`)
