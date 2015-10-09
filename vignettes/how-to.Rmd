@@ -22,14 +22,10 @@ library("devtools")
 install_github("giocomai/castarter")
 ```
 Load `castarter` with:
-```
-library("castarter")
-```
-While `castarter` is in early development, you may need to run the following function to load all dependencies. This function will eventually become obsolete and will be removed.
 ```{r}
 library("castarter")
-LoadRequiredPackages()
 ```
+
 ## Using castarter
 `castarter` facilitates downloading and extracting textual contents from a given section of a website. `castarter` can be used to analyse one single website, or more websites as part of a project, facilitating comparison among cases. In order to smoothen replication and prevent data losses, by default `castarter` stores a copy of downloaded web pages in .html format, and of the extracted textual contents in .txt format (other export possibilities are available and presented below). To do so, it includes a function that creates the relevant folder structure.
 First, you may want to set the root working folder, if you do not wish to use R's default, with:
@@ -54,6 +50,13 @@ This creates the following folders
         + Txt
         
 In order to clarify the functioning of `castarter`, I will now show how to extract and prepare for content analysis all press releases currently available on the European Parliament's website. As will be shown, `castarter` takes advantage of the fact that most modern content management systems consistently generate URLs to present the contents of a website.
+Before we start, we need to create the folders where files downloaded will be stored for reference
+
+```{r}
+nameOfProject <- "EU"
+nameOfWebsite <- "EuropeanParliament"
+CreateFolderStructure(nameOfProject, nameOfWebsite)
+```
 From the home page of the European Parliament, we can easily reach the main page dedicated to press releases clicking on 'News', and then on 'Press releases' on the top of the page: [http://www.europarl.europa.eu/news/en/news-room/press-release](http://www.europarl.europa.eu/news/en/news-room/press-release)
 At the bottom of this page, as it is customary, the user is given the possibility to see older press released by clicking on the 'Next page' link. There is also the possibility to go back in time quicker, or seeing directly the oldest press release. Let's have a look at the URL's of these pages:
 Clicking subsequent times on the 'next page' link, these are the URLs that we obtain:
@@ -73,20 +76,33 @@ There is clearly a pattern: each page shows 10 press releases, and as we go back
 indexLinks <- CreateLinks(
 linkFirstChunk = "http://www.europarl.europa.eu/news/en/news-room/press-release?start=",
 startPage = 0,
-endPage = 100,
+endPage = 50,
 increaseBy = 10)
 ```
 This command creates a vector (`indexLinks`) including direct links to the index pages:
 ```{r}
-library("castarter")
 indexLinks <- CreateLinks(linkFirstChunk = "http://www.europarl.europa.eu/news/en/news-room/press-release?start=",
             startPage = 0,
-            endPage = 100,
+            endPage = 40,
             increaseBy = 10)
 print(indexLinks)
 ```
 
-For this example, we will download only the first ten index pages, including links to 100 press releases. In order to download all of the press releases available, it is only necessary to change the `endPage` parameter, by changing the relevant parameter (at the time of this writing, this would be `endPage = 4600` instead of `endPage = 100`). 
+For this example, we will download only the first five index pages, including links to 50 press releases. In order to download all of the press releases available, it is only necessary to change the `endPage` parameter, by changing the relevant parameter (at the time of this writing, this would be `endPage = 4600` instead of `endPage = 40`).
+The following command downloads the relevant index pages, stores them in a vector, and saves them in .html format in the /EU/EUparliament/IndexHtml folder. 
+
+```{r}
+indexHtml <- DownloadIndex(nameOfProject = "EU",
+                           nameOfWebsite = "EuropeanParliament",
+                           indexLinks = indexLinks)
+```
+Now that we have the index pages, we need to extract direct links to the individual articles. There are various ways to do this, but the easiest approach is looking at the URLs of individual articles, and see if there is a pattern (this is usually the case in most modern websites). Hovering over the titles of an index page, it is easy to see the links to indivudal news items. In this case, we see that the URL to each news item includes in the URL the following string: "/news/en/news-room/content/". We use this to extract relevant links, and discard all links to other pages or sections of the website scattered around that we are not interested in. The following command extracts links and article titles from the index pages.
+```{r}
+articlesLinks <- ExtractLinks(domain = "http://www.europarl.europa.eu/",
+                              partOfLink = "/news/en/news-room/content/",
+                              indexHtml = indexHtml)
+head(articlesLinks)
+```
 
 
 
