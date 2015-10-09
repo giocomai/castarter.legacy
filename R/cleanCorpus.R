@@ -47,7 +47,7 @@ CombineWords <- function(corpus, wordCombinations) {
     for (i in 1:length(wordCombinations[, 2])) {
         wordCombinations[i, 1] <- paste0("\\<", wordCombinations[i, 1], "\\>")
     }
-    Combine <- content_transformer(function(x, originalCombination, toBeUsed) gsub(originalCombination, toBeUsed, x))
+    Combine <- tm::content_transformer(function(x, originalCombination, toBeUsed) gsub(originalCombination, toBeUsed, x))
     for (i in 1:length(wordCombinations[, 1])) {
         corpus <- tm::tm_map(corpus, Combine, wordCombinations$originalCombination[i], wordCombinations$toBeUsed[i])
     }
@@ -129,23 +129,23 @@ RemoveStopwords <- function(corpus, stopwords) {
 CleanCorpus <- function(corpus, stripWhitespace = TRUE, toLowerCase = TRUE, removeNumbers = TRUE, removePunctuation = TRUE, removeControlCharacters = TRUE, 
     removeCharacter = "") {
     if (toLowerCase == TRUE) {
-        corpus <- tm::tm_map(corpus, content_transformer(tolower))
+        corpus <- tm::tm_map(corpus, tm::content_transformer(tolower))
     }
     if (removeNumbers == TRUE) {
-        corpus <- tm::tm_map(corpus, content_transformer(function(x) gsub("[[:digit:]]", " ", x)))
+        corpus <- tm::tm_map(corpus, tm::content_transformer(function(x) gsub("[[:digit:]]", " ", x)))
     }
     if (removePunctuation == TRUE) {
-        corpus <- tm::tm_map(corpus, content_transformer(function(x) gsub("[[:punct:]]", " ", x)))
+        corpus <- tm::tm_map(corpus, tm::content_transformer(function(x) gsub("[[:punct:]]", " ", x)))
     }
     if (removeControlCharacters == TRUE) {
-        corpus <- tm::tm_map(corpus, content_transformer(function(x) gsub("[[:cntrl:]]", " ", x)))
+        corpus <- tm::tm_map(corpus, tm::content_transformer(function(x) gsub("[[:cntrl:]]", " ", x)))
     }
     if (stripWhitespace == TRUE) {
-        corpus <- tm::tm_map(corpus, content_transformer(function(x) gsub("[[:space:]]+", " ", x)))
+        corpus <- tm::tm_map(corpus, tm::content_transformer(function(x) gsub("[[:space:]]+", " ", x)))
     }
     if (removeCharacter[1] != "") {
         for (i in 1:length(removeCharacter)) {
-            corpus <- tm::tm_map(corpus, content_transformer(function(x) gsub(removeCharacter[i], "", x)))
+            corpus <- tm::tm_map(corpus, tm::content_transformer(function(x) gsub(removeCharacter[i], "", x)))
         }
     }
     corpus
