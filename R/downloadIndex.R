@@ -82,8 +82,8 @@ CreateLinks <- function(linkFirstChunk, linkSecondChunk = NULL, startPage = 1, e
 #' @return A character vector of html files.
 #' @export
 #' @examples
-#' indexPagesHtml <- DownloadIndexPages(nameOfProject, nameOfWebsite, indexPagesLinks)
-DownloadIndexPages <- function(nameOfProject, nameOfWebsite, indexPagesLinks, start = 1, wget = FALSE, phantomjs = FALSE, wait = 0, update = FALSE) {
+#' indexPagesHtml <- DownloadIndex(nameOfProject, nameOfWebsite, indexPagesLinks)
+DownloadIndex <- function(nameOfProject, nameOfWebsite, indexPagesLinks, start = 1, wget = FALSE, phantomjs = FALSE, wait = 0, update = FALSE) {
     numberOfIndexPages <- length(indexPagesLinks)
     listOfnumberOfIndexPages <- 1:numberOfIndexPages
     indexPagesHtml <- rep(NA, numberOfIndexPages)
