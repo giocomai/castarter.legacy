@@ -167,15 +167,21 @@ articlesTxt[sample(1:length(articlesTxt), 5)]
 ```
 At this stage, `castarter` has generated a folder of txt files and has exported relevant metadata. These can be imported and used in other software for quantitative or qualitative content analysis. The following command saves the current workspace in the working directory, stores the dataset in a dedicated folder for easy retrieval and allows to export both metadata and textual contents in a single spreadsheet. 
 
-```
+```{r}
 SaveAndExportWebsite(nameOfProject = "EU", 
                      nameOfWebsite = "EuropeanParliament", 
                      exportXlsx = TRUE)
 ```
-
-## Creating and polishing a corpus
-For further analysis in `castarter`, it is useful to convert the data to a corpus of the `tm` package. Most of the functions offered by `castarter` are simply wrappers of `tm` functions. 
+At this stage, if we are satisified with the data we have, we may want to store all downloaded files in a .zip file and remove the original folders containing the original .html files. This way, we still can recover all of the original files, yet we don't have the thousands (or hundreds of thousands) of .html files that often are created in a `castarter` project, and may unnecessary slow down the backup process. This can easily be done with the following command.
 ```{r}
+ArchiveFolders(nameOfProject = "EU", 
+               nameOfWebsite = "EuropeanParliament", 
+               removeArchivedFolders = TRUE)
+```
+## Creating and polishing a corpus
+For further analysis in `castarter`, it is useful to convert the data to a corpus of the `tm` package. Most of the functions offered by `castarter` are simply wrappers of `tm` functions. At this stage, it is possible to start a completely new R session, and simply load the dataset into the current workspace. All relevant information is effectively stored in the dataset. 
+```{r}
+dataset <- LoadDatasets(projectsAndWebsites = "EU/EuropeaParliament")
 corpus <- ConvertToCorpus(dataset)
 ```
 The following  command allows to conduct a number of common operation on the corpus, such as transforming all text to lowercase, removing punctuation and removing numbers. These operations are enabled by default, but depending on the users needs can easily be disabled (e.g. by adding the paramater `removePunctuation = FALSE`)
