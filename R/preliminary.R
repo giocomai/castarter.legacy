@@ -47,17 +47,16 @@ CreateFolderStructure <- function(nameOfProject, nameOfWebsite) {
     }
 }
 
-#' Loads last saved workspace for selected website. 
+#' Loads latest saved workspace for selected website. 
 #'
 #' It loads the most recent workspace saved for a given website based on the date included in the filename of the .Rdata file. 
 #' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
 #' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
 #' @export
 #' @examples
-#' LoadLatestWebsite(nameOfProject, nameOfWebsite)
-LoadLatestWebsite <- function(nameOfProject, nameOfWebsite) {
-    lastSavedFile <- file.path(file.path(nameOfProject, nameOfWebsite), sort(list.files(file.path(nameOfProject, nameOfWebsite))[str_extract(list.files(file.path(nameOfProject, 
-        nameOfWebsite)), "RData") == "RData"], decreasing = TRUE)[1])
+#' LoadLatest(nameOfProject, nameOfWebsite)
+LoadLatest <- function(nameOfProject, nameOfWebsite) {
+    lastSavedFile <- file.path(file.path(nameOfProject, nameOfWebsite), sort(list.files(file.path(nameOfProject, nameOfWebsite))[stringr::str_extract(list.files(file.path(nameOfProject, nameOfWebsite)), "RData") == "RData"], decreasing = TRUE)[1])
     if (file.exists(lastSavedFile)) {
         load(file = lastSavedFile)
     }
