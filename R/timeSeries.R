@@ -22,9 +22,9 @@ CreateTimeSeries <- function(corpus, specificTerms, specificWebsites = "", start
     }
     time <- as.character(strptime(as.POSIXct(unlist(meta(corpus, "datetimestamp")), origin = "1970-01-01"), "%Y-%m-%d"))
     nameOfWebsitesIncluded <- as.character(unlist(meta(corpus, "author")))
-    corpusDtm <- DocumentTermMatrix(corpus)
+    corpusDtm <- tm::DocumentTermMatrix(corpus)
     if (length(specificTerms>1)) {
-        frequencyOfSpecificTerms <- as.table(rollup(corpusDtm[, specificTerms], 1, time))
+        frequencyOfSpecificTerms <- as.table(zoo::rollup(corpusDtm[, specificTerms], 1, time))
     } else {
         frequencyOfSpecificTerms <- as.table(tapply(as.numeric(as.matrix(corpusDtm[, specificTerms])), list(time, nameOfWebsitesIncluded), sum))
     }
@@ -33,20 +33,20 @@ CreateTimeSeries <- function(corpus, specificTerms, specificWebsites = "", start
         frequencyOfSpecificTerms <- as.table(frequencyOfSpecificTerms[, specificWebsites])
     }
     names(dimnames(frequencyOfSpecificTerms)) <- NULL
-    termSeries <- zoo(frequencyOfSpecificTerms/c(tapply(row_sums(corpusDtm), time, sum)), order.by = as.POSIXct(rownames(frequencyOfSpecificTerms)))
+    termSeries <- zoo::zoo(frequencyOfSpecificTerms/c(tapply(row_sums(corpusDtm), time, sum)), order.by = as.POSIXct(rownames(frequencyOfSpecificTerms)))
     termSeries <- merge(termSeries, zoo(, seq(start(termSeries), end(termSeries), "DSTday")), fill = NaN)
     if (rollingAverage != "") {
-        termSeries <- rollapply(termSeries, rollingAverage, align = "left", mean, na.rm = TRUE)
+        termSeries <- zoo::rollapply(termSeries, rollingAverage, align = "left", mean, na.rm = TRUE)
     }
-    timeSeries <- autoplot(termSeries, facets = NULL) +
-        ggtitle(paste("Time series of references to", paste(dQuote(specificTerms), collapse = ", "))) +
-        scale_x_datetime("Date") +
-        theme(plot.title = element_text(size = rel(1.2)),
+    timeSeries <- ggplot2::autoplot(termSeries, facets = NULL) +
+        ggplot2::ggtitle(paste("Time series of references to", paste(dQuote(specificTerms), collapse = ", "))) +
+        ggplot2::scale_x_datetime("Date") +
+        ggplot2::theme(plot.title = element_text(size = rel(1.2)),
               legend.title = element_text(size = rel(1.2)),
               legend.text = element_text(size = rel(1))) +
-        scale_colour_brewer(type = "qual", palette = 6)
+        ggplot2::scale_colour_brewer(type = "qual", palette = 6)
     if (is.null(nameOfWebsite) == FALSE) {
-        timeSeries <- timeSeries + ggtitle(paste("Time series of references to", paste(dQuote(specificTerms), collapse = ", "), "in", nameOfWebsite))
+        timeSeries <- timeSeries + ggplot2::ggtitle(paste("Time series of references to", paste(dQuote(specificTerms), collapse = ", "), "in", nameOfWebsite))
         }
     if (export == TRUE) {
         timeSeries
@@ -54,22 +54,22 @@ CreateTimeSeries <- function(corpus, specificTerms, specificWebsites = "", start
             if (file.exists(file.path(nameOfProject, nameOfWebsite, "Outputs")) == FALSE) {
                 dir.create(file.path(nameOfProject, nameOfWebsite, "Outputs"))
             }
-            ggsave(file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste("timeseries", nameOfProject, nameOfWebsite, paste(specificTerms, collapse = " - "), sep = " - "), ".png")))
+            ggplot2::ggsave(file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste("timeseries", nameOfProject, nameOfWebsite, paste(specificTerms, collapse = " - "), sep = " - "), ".png")))
             print(paste("File saved in", file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste("timeseries", nameOfProject, nameOfWebsite, paste(specificTerms, collapse = " - "), sep = " - "), ".png"))))
-            ggsave(file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste("timeseries", nameOfProject, nameOfWebsite, paste(specificTerms, collapse = " - "), sep = " - "), ".pdf")))
+            ggplot2::ggsave(file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste("timeseries", nameOfProject, nameOfWebsite, paste(specificTerms, collapse = " - "), sep = " - "), ".pdf")))
             print(paste("File saved in", file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste("timeseries", nameOfProject, nameOfWebsite, paste(specificTerms, collapse = " - "), sep = " - "), ".pdf"))))
         } else if (is.null(nameOfProject) == FALSE & is.null(nameOfWebsite) == TRUE) {
-            ggsave(file.path("Outputs", paste0(paste("timeseries", nameOfProject, paste(specificTerms, collapse = " - "), sep = " - "), ".png")))
+            ggplot2::ggsave(file.path("Outputs", paste0(paste("timeseries", nameOfProject, paste(specificTerms, collapse = " - "), sep = " - "), ".png")))
             print(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", nameOfProject, paste(specificTerms, collapse = " - "), sep = " - "), ".png"))))
-            ggsave(file.path("Outputs", paste0(paste("timeseries", nameOfProject, paste(specificTerms, collapse = " - "), sep = " - "), ".pdf")))
+            ggplot2::ggsave(file.path("Outputs", paste0(paste("timeseries", nameOfProject, paste(specificTerms, collapse = " - "), sep = " - "), ".pdf")))
             print(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", nameOfProject, paste(specificTerms, collapse = " - "), sep = " - "), ".pdf"))))
         } else {
             if (!file.exists(file.path("Outputs"))) {
                 dir.create(file.path("Outputs"))
             }
-            ggsave(file.path("Outputs", paste0(paste("timeseries", paste(specificTerms, collapse = " - "), sep = " - "), ".png")))
+            ggplot2::ggsave(file.path("Outputs", paste0(paste("timeseries", paste(specificTerms, collapse = " - "), sep = " - "), ".png")))
             print(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", paste(specificTerms, collapse = " - "), sep = " - "), ".png"))))
-            ggsave(file.path("Outputs", paste0(paste("timeseries", paste(specificTerms, collapse = " - "), sep = " - "), ".pdf")))
+            ggplot2::ggsave(file.path("Outputs", paste0(paste("timeseries", paste(specificTerms, collapse = " - "), sep = " - "), ".pdf")))
             print(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", paste(specificTerms, collapse = " - "), sep = " - "), ".pdf"))))
         }
     }
