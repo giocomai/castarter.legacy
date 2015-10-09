@@ -213,12 +213,12 @@ stopwords <- c("will", "also", "can")
 stopwords <- AddStopwords(newStopwords = stopwords,
                           nameOfProject = "EU", 
                           includeDefault = TRUE, 
-                          language = "ru")
+                          language = "en")
 corpus <- RemoveStopwords(corpus, stopwords)
 ```
 A common next step is that of document stemming.
 ```{r}
-corpus <- tm_map(corpus, stemDocument)
+corpus <- tm::tm_map(corpus, tm::stemDocument)
 ```
 Depending on the language and the desired result, word combinations may be better applied after stemming. 
 
