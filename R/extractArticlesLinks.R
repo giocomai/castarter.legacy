@@ -24,8 +24,9 @@ ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = "", cont
                 links <- XML::xpathSApply(indexPageHtmlParsed, paste0("//ul[@class='", containerClass, "']", "//a/@href"))
                 titles <- XML::xpathSApply(indexPageHtmlParsed, paste0("//ul[@class='", containerClass, "']", "//a"), XML::xmlValue)
             } else {
-                links <- XML::xpathSApply(indexPageHtmlParsed, "//a/@href")
-                titles <- XML::xpathSApply(indexPageHtmlParsed, "//a", XML::xmlValue)
+                XMLnodes <- XML::getNodeSet(indexPageHtmlParsed, "//a")
+                links <- as.character(sapply(XMLnodes, XML::xmlGetAttr, "href"))
+                titles <- sapply(XMLnodes, XML::xmlValue)
             }
             links <- cbind(links, titles)
             allLinks <- rbind(links, allLinks)
