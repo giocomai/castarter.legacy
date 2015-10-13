@@ -28,7 +28,7 @@ DivideByWebsite <- function(corpus, nameOfProject) {
     byWebsite <- data.frame(matrix(NA, nrow = length(corpus), ncol = length(listOfWebsites)))
     names(byWebsite) <- listOfWebsites
     for (i in 1:length(listOfWebsites)) {
-        byWebsite[, i] <- meta(corpus, "author") == listOfWebsites[i]
+        byWebsite[, i] <- NLP::meta(corpus, "author") == listOfWebsites[i]
     }
     byWebsite
 }

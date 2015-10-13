@@ -54,17 +54,17 @@ AnalyseTerms <- function(corpus, nameOfProject, specificTerms, mode = "graph", i
     }
     if (mode == "graph") {
         if (tipology != "") {
-            mostFrequentByWebsiteLong <- melt(mostFrequentByWebsite, id.vars = c("nameOfWebsite", "typeOfWebsite"), measure.vars = specificTerms, 
+            mostFrequentByWebsiteLong <- reshape2::melt(mostFrequentByWebsite, id.vars = c("nameOfWebsite", "typeOfWebsite"), measure.vars = specificTerms, 
                 value.name = "frequency")
         } else {
-            mostFrequentByWebsiteLong <- melt(mostFrequentByWebsite, id.vars = "nameOfWebsite", measure.vars = specificTerms, value.name = "frequency")
+            mostFrequentByWebsiteLong <- reshape2::melt(mostFrequentByWebsite, id.vars = "nameOfWebsite", measure.vars = specificTerms, value.name = "frequency")
         }
         names(mostFrequentByWebsiteLong)[names(mostFrequentByWebsiteLong) == "variable"] <- "Term"
         mostFrequentByWebsiteLong$nameOfWebsite <- as.factor(mostFrequentByWebsiteLong$nameOfWebsite)
         # mostFrequentByWebsiteLong$typeOfWebsite <- as.factor(mostFrequentByWebsiteLong$typeOfWebsite)
         # factor(mostFrequentByWebsiteLong$nameOfWebsite, levels = rev(levels(mostFrequentByWebsiteLong$typeOfWebsite)))
         mentionSpecificTerms <- paste(dQuote(rev(specificTerms)), collapse = ", ")
-        mostFrequentByWebsite <- ggplot(mostFrequentByWebsiteLong, aes(x = nameOfWebsite, y = frequency, fill = Term)) + geom_bar(stat = "identity", 
+        mostFrequentByWebsite <- ggplot2::ggplot(mostFrequentByWebsiteLong, aes(x = nameOfWebsite, y = frequency, fill = Term)) + geom_bar(stat = "identity", 
             position = "dodge", colour = "black") + ggtitle(paste("Frequency of", mentionSpecificTerms)) + scale_x_discrete(name = "") + scale_y_continuous(name = "Frequency of term as % of all words", 
             labels = percent) + guides(fill = guide_legend(reverse = TRUE)) + coord_flip()
         if (order == "frequency") {
