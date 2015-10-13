@@ -2,15 +2,15 @@
 % Please edit documentation in R/showShare.R
 \name{ShowShare}
 \alias{ShowShare}
-\title{Shows share of articles including reference to a specific term}
+\title{Shows share of articles including reference to a specific terms}
 \usage{
-ShowShare(dataset, term, breaks = "years", startDate = NULL,
+ShowShare(dataset, terms, breaks = "years", startDate = NULL,
   export = FALSE, nameOfProject = NULL, nameOfWebsite = NULL)
 }
 \arguments{
 \item{dataset}{A dataset created with 'castarter'.}
 
-\item{term}{The specific term to be analysed.}
+\item{terms}{The specific terms to be analysed.}
 
 \item{breaks}{Deafaults to "years". Parameter is passed to base::cut, and specifies how the dataset should be divided temporally. Available options include "years", "quarters", "monhts", but can also be a vector of dates of the POSIXct class.}
 
@@ -23,10 +23,10 @@ ShowShare(dataset, term, breaks = "years", startDate = NULL,
 \item{nameOfWebsite}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
 }
 \value{
-A ggplot2 barchart showing shares of articles including reference to a specific term.
+A ggplot2 barchart showing shares of articles including reference to a specific terms.
 }
 \description{
-Shows share of articles including reference to a specific term.Ignores article that don't have a date in the metadata (dates=NA).
+Shows share of articles including reference to a specific terms.Ignores article that don't have a date in the metadata (dates=NA).
 }
 \examples{
 ShowShare(dataset, breaks = "months", nameOfProject, nameOfWebsite)
