@@ -15,13 +15,13 @@
 
 CreateTimeSeries <- function(corpus, specificTerms, specificWebsites = "", startDate = NULL, endDate = NULL, rollingAverage = 30, export = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
     if (is.null(startDate)==FALSE) {
-        corpus <- corpus[meta(corpus, "datetimestamp") > as.POSIXct(startDate)]
+        corpus <- corpus[NLP::meta(corpus, "datetimestamp") > as.POSIXct(startDate)]
     }
     if (is.null(endDate)==FALSE) {
-        corpus <- corpus[meta(corpus, "datetimestamp") < as.POSIXct(endDate)]
+        corpus <- corpus[NLP::meta(corpus, "datetimestamp") < as.POSIXct(endDate)]
     }
-    time <- as.character(strptime(as.POSIXct(unlist(meta(corpus, "datetimestamp")), origin = "1970-01-01"), "%Y-%m-%d"))
-    nameOfWebsitesIncluded <- as.character(unlist(meta(corpus, "author")))
+    time <- as.character(strptime(as.POSIXct(unlist(NLP::meta(corpus, "datetimestamp")), origin = "1970-01-01"), "%Y-%m-%d"))
+    nameOfWebsitesIncluded <- as.character(unlist(NLP::meta(corpus, "author")))
     corpusDtm <- tm::DocumentTermMatrix(corpus)
     if (length(specificTerms>1)) {
         frequencyOfSpecificTerms <- as.table(zoo::rollup(corpusDtm[, specificTerms], 1, time))
