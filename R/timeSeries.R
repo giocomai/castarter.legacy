@@ -24,7 +24,7 @@ CreateTimeSeries <- function(corpus, specificTerms, specificWebsites = "", start
     nameOfWebsitesIncluded <- as.character(unlist(NLP::meta(corpus, "author")))
     corpusDtm <- tm::DocumentTermMatrix(corpus)
     if (length(specificTerms>1)) {
-        frequencyOfSpecificTerms <- as.table(zoo::rollup(corpusDtm[, specificTerms], 1, time))
+        frequencyOfSpecificTerms <- as.table(slam::rollup(corpusDtm[, specificTerms], 1, time))
     } else {
         frequencyOfSpecificTerms <- as.table(tapply(as.numeric(as.matrix(corpusDtm[, specificTerms])), list(time, nameOfWebsitesIncluded), sum))
     }
