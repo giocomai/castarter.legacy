@@ -15,6 +15,7 @@
 #' ShowShare(dataset, breaks = "months", nameOfProject, nameOfWebsite)
 
 ShowShare <- function(dataset, term, breaks = "years", startDate = NULL, export = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
+    library(data.table)
     DTdataset <- data.table::as.data.table(dataset)
     DTdataset$dates <- base::cut(DTdataset$dates, breaks = breaks)
     DTdataset <- DTdataset[base::is.na(DTdataset$dates)==FALSE]
