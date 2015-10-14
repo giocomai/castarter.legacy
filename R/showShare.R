@@ -15,7 +15,6 @@
 #' ShowShare(dataset, breaks = "months", nameOfProject, nameOfWebsite)
 
 ShowShare <- function(dataset, terms, breaks = "years", startDate = NULL, export = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
-    library(data.table)
     if (length(terms) > 1) {
         terms <- paste(tolower(terms), collapse = "\\b|")
     }
