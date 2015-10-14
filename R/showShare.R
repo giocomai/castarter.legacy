@@ -26,6 +26,7 @@ ShowShare <- function(dataset, terms, breaks = "years", startDate = NULL, export
     DTterms <- DTdataset[base::regexpr(terms, DTdataset$articlesTxt, ignore.case = TRUE)>0, .N, by=.(dates)]
     data.table::setkey(DTdatasetFreq, dates)
     DTbyBreaks <- merge(DTdatasetFreq, DTterms, all = TRUE)
+    DTbyBreaks$N.y[is.na(DTbyBreaks$N.y)==TRUE] <- 0
     DTbyBreaks$N.x <- DTbyBreaks$N.x-DTbyBreaks$N.y
     if (base::is.null(startDate) == FALSE) {
         DTbyBreaks <- DTbyBreaks[base::as.POSIXct(dates)>base::as.POSIXct(startDate)]
