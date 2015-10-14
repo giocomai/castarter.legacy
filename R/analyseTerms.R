@@ -8,6 +8,13 @@
 #' AnalyseTerms(corpus, nameOfProject, specificTerms)
 
 AnalyseTerms <- function(corpus, nameOfProject, specificTerms, mode = "graph", includeOnly = "", order = "", tipology = "", frequency = "relative") {
+    namesOfWebsites <- as.factor(unlist(NLP::meta(corpus, "author")))
+    if (length(levels(namesOfWebsites)) > 1) {
+        
+    }
+    else {
+        
+    }
     byWebsiteAll <- DivideByWebsite(corpus, nameOfProject)
     if (includeOnly[1] != "") {
         byWebsite <- byWebsiteAll[, includeOnly]
