@@ -22,7 +22,13 @@ SubsetDataset <- function(dataset, terms = NULL, startDate = NULL, endDate = NUL
     dataset
 }
 
-
+#' Divide corpus by website
+#' 
+#' @param corpus A corpus as created by the 'tm' package including metadata.
+#' @return A data.frame
+#' @export
+#' @examples
+#' DivideByWebsite(corpus, nameOfProject)
 DivideByWebsite <- function(corpus, nameOfProject) {
     listOfWebsites <- gsub(paste0(nameOfProject, "/"), "", list.dirs(file.path(nameOfProject), recursive = FALSE), fixed = TRUE)
     byWebsite <- data.frame(matrix(NA, nrow = length(corpus), ncol = length(listOfWebsites)))
