@@ -7,8 +7,7 @@ Author: Giorgio Comai <giorgio.comai@dcu.ie>
 Maintainer: Giorgio Comai <giorgio.comai@dcu.ie>
 Description: castarter is an R package that smooths the process of extracting text and metadata from online websites and of preparing them for quantitative or qualitative content analysis.
 License: GPL-3
-Depends: data.table, NLP
+Depends: data.table, tm, NLP
 Imports: stringr, gtools, boilerpipeR, lubridate, tm, SnowballC, ggplot2, wordcloud, dplyr, xlsx, slam, zoo
-Suggests: RCurl, XML,
-    knitr
+Suggests: RCurl, XML, knitr
 VignetteBuilder: knitr
