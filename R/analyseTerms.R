@@ -2,12 +2,12 @@
 #' 
 #' @param corpus A TM corpus. 
 #' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.
-#' @param specificTerms Character vector of terms to be compared. 
+#' @param terms Character vector of terms to be compared. 
 #' @export
 #' @examples
-#' AnalyseTerms(corpus, nameOfProject, specificTerms)
+#' AnalyseTerms(corpus, nameOfProject, terms)
 
-AnalyseTerms <- function(corpus, nameOfProject, specificTerms, mode = "graph", includeOnly = "", order = "", tipology = "", frequency = "relative") {
+AnalyseTerms <- function(corpus, nameOfProject, terms, mode = "graph", includeOnly = "", order = "", tipology = "", frequency = "relative") {
     namesOfWebsites <- as.factor(unlist(NLP::meta(corpus, "author")))
     if (length(levels(namesOfWebsites)) > 1) {
         
@@ -21,17 +21,17 @@ AnalyseTerms <- function(corpus, nameOfProject, specificTerms, mode = "graph", i
     } else {
         byWebsite <- byWebsiteAll
     }
-    mostFrequentByWebsite <- as.data.frame(matrix(nrow = length(byWebsite), ncol = length(specificTerms) + 1))
+    mostFrequentByWebsite <- as.data.frame(matrix(nrow = length(byWebsite), ncol = length(terms) + 1))
     colnames(mostFrequentByWebsite)[1] <- "nameOfWebsite"
-    for (i in 1:length(specificTerms)) {
-        colnames(mostFrequentByWebsite)[i + 1] <- specificTerms[i]
+    for (i in 1:length(terms)) {
+        colnames(mostFrequentByWebsite)[i + 1] <- terms[i]
     }
     for (i in 1:length(byWebsite)) {
         mostFrequent <- ShowMostFrequent(corpus[byWebsite[, i]], mode = "vector", number = "all")
         totalWords <- sum(mostFrequent$freq)
         mostFrequentByWebsite[i, 1] <- names(byWebsite)[i]
-        for (j in 1:length(specificTerms)) {
-            value <- mostFrequent$freq[mostFrequent$word == specificTerms[j]]
+        for (j in 1:length(terms)) {
+            value <- mostFrequent$freq[mostFrequent$word == terms[j]]
             if (length(value) == 0) {
                 value <- 0
             } else {
@@ -61,18 +61,18 @@ AnalyseTerms <- function(corpus, nameOfProject, specificTerms, mode = "graph", i
     }
     if (mode == "graph") {
         if (tipology != "") {
-            mostFrequentByWebsiteLong <- reshape2::melt(mostFrequentByWebsite, id.vars = c("nameOfWebsite", "typeOfWebsite"), measure.vars = specificTerms, 
+            mostFrequentByWebsiteLong <- reshape2::melt(mostFrequentByWebsite, id.vars = c("nameOfWebsite", "typeOfWebsite"), measure.vars = terms, 
                 value.name = "frequency")
         } else {
-            mostFrequentByWebsiteLong <- reshape2::melt(mostFrequentByWebsite, id.vars = "nameOfWebsite", measure.vars = specificTerms, value.name = "frequency")
+            mostFrequentByWebsiteLong <- reshape2::melt(mostFrequentByWebsite, id.vars = "nameOfWebsite", measure.vars = terms, value.name = "frequency")
         }
         names(mostFrequentByWebsiteLong)[names(mostFrequentByWebsiteLong) == "variable"] <- "Term"
         mostFrequentByWebsiteLong$nameOfWebsite <- as.factor(mostFrequentByWebsiteLong$nameOfWebsite)
         # mostFrequentByWebsiteLong$typeOfWebsite <- as.factor(mostFrequentByWebsiteLong$typeOfWebsite)
         # factor(mostFrequentByWebsiteLong$nameOfWebsite, levels = rev(levels(mostFrequentByWebsiteLong$typeOfWebsite)))
-        mentionSpecificTerms <- paste(dQuote(rev(specificTerms)), collapse = ", ")
+        mentionterms <- paste(dQuote(rev(terms)), collapse = ", ")
         mostFrequentByWebsite <- ggplot2::ggplot(mostFrequentByWebsiteLong, aes(x = nameOfWebsite, y = frequency, fill = Term)) + geom_bar(stat = "identity", 
-            position = "dodge", colour = "black") + ggtitle(paste("Frequency of", mentionSpecificTerms)) + scale_x_discrete(name = "") + scale_y_continuous(name = "Frequency of term as % of all words", 
+            position = "dodge", colour = "black") + ggtitle(paste("Frequency of", mentionterms)) + scale_x_discrete(name = "") + scale_y_continuous(name = "Frequency of term as % of all words", 
             labels = percent) + guides(fill = guide_legend(reverse = TRUE)) + coord_flip()
         if (order == "frequency") {
             mostFrequentByWebsite <- mostFrequentByWebsite + scale_x_discrete(limits = dataframeMostFrequentByWebsite$nameOfWebsite)
