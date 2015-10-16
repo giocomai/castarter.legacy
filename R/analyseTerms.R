@@ -7,16 +7,15 @@
 #' @examples
 #' AnalyseTerms(corpus, nameOfProject, terms)
 
-AnalyseTerms <- function(corpus, nameOfProject, terms, mode = "graph", includeOnly = "", order = "", tipology = "", frequency = "relative") {
+AnalyseTerms <- function(corpus, nameOfProject, terms, mode = "graph", includeOnly = NULL, order = "", tipology = "", frequency = "relative") {
     namesOfWebsites <- as.factor(unlist(NLP::meta(corpus, "author")))
     if (length(levels(namesOfWebsites)) > 1) {
         
-    }
-    else {
+    } else {
         
     }
-    byWebsiteAll <- DivideByWebsite(corpus, nameOfProject)
-    if (includeOnly[1] != "") {
+    byWebsiteAll <- castarter::DivideByWebsite(corpus, nameOfProject)
+    if (is.null(includeOnly) == FALSE) {
         byWebsite <- byWebsiteAll[, includeOnly]
     } else {
         byWebsite <- byWebsiteAll
@@ -27,7 +26,10 @@ AnalyseTerms <- function(corpus, nameOfProject, terms, mode = "graph", includeOn
         colnames(mostFrequentByWebsite)[i + 1] <- terms[i]
     }
     for (i in 1:length(byWebsite)) {
-        mostFrequent <- ShowMostFrequent(corpus[byWebsite[, i]], mode = "vector", number = "all")
+        corpusTemp <- corpus[byWebsite[, i]]
+        corpusTemp <- tm::tm_map(corpusTemp, PlainTextDocument)
+        dtmTemp <- tm::DocumentTermMatrix(corpusTemp)
+        mostFrequent <- castarter::ShowMostFrequent(dtmTemp, mode = "vector", number = "all")
         totalWords <- sum(mostFrequent$freq)
         mostFrequentByWebsite[i, 1] <- names(byWebsite)[i]
         for (j in 1:length(terms)) {
