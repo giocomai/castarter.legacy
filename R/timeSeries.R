@@ -13,7 +13,7 @@
 #' @examples
 #' CreateTimeSeries(corpus, terms = c("word1", "word2"))
 
-CreateTimeSeries <- function(corpus, terms, specificWebsites = "", startDate = NULL, endDate = NULL, rollingAverage = 30, export = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
+CreateTimeSeries <- function(corpus, terms, specificWebsites = NULL, startDate = NULL, endDate = NULL, rollingAverage = 30, export = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
     if (is.null(startDate)==FALSE) {
         corpus <- corpus[NLP::meta(corpus, "datetimestamp") > as.POSIXct(startDate)]
     }
@@ -23,13 +23,13 @@ CreateTimeSeries <- function(corpus, terms, specificWebsites = "", startDate = N
     time <- as.character(strptime(as.POSIXct(unlist(NLP::meta(corpus, "datetimestamp")), origin = "1970-01-01"), "%Y-%m-%d"))
     nameOfWebsitesIncluded <- as.character(unlist(NLP::meta(corpus, "author")))
     corpusDtm <- tm::DocumentTermMatrix(corpus)
-    if (length(terms>1)) {
+    if (length(terms)>1) {
         frequencyOfterms <- as.table(slam::rollup(corpusDtm[, terms], 1, time))
     } else {
         frequencyOfterms <- as.table(tapply(as.numeric(as.matrix(corpusDtm[, terms])), list(time, nameOfWebsitesIncluded), sum))
     }
     # to filter specific websites
-    if (specificWebsites != "") {
+    if (is.null(specificWebsites) == FALSE) {
         frequencyOfterms <- as.table(frequencyOfterms[, specificWebsites])
     }
     names(dimnames(frequencyOfterms)) <- NULL
