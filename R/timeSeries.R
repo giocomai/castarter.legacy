@@ -34,7 +34,7 @@ CreateTimeSeries <- function(corpus, specificTerms, specificWebsites = "", start
     }
     names(dimnames(frequencyOfSpecificTerms)) <- NULL
     termSeries <- zoo::zoo(frequencyOfSpecificTerms/c(tapply(slam::row_sums(corpusDtm), time, sum)), order.by = as.POSIXct(rownames(frequencyOfSpecificTerms)))
-    termSeries <- merge(termSeries, zoo(, seq(start(termSeries), end(termSeries), "DSTday")), fill = NaN)
+    termSeries <- merge(termSeries, zoo::zoo(, seq(start(termSeries), end(termSeries), "DSTday")), fill = NaN)
     if (rollingAverage != "") {
         termSeries <- zoo::rollapply(termSeries, rollingAverage, align = "left", mean, na.rm = TRUE)
     }
