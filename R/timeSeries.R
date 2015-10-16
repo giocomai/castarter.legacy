@@ -38,7 +38,7 @@ CreateTimeSeries <- function(corpus, specificTerms, specificWebsites = "", start
     if (rollingAverage != "") {
         termSeries <- zoo::rollapply(termSeries, rollingAverage, align = "left", mean, na.rm = TRUE)
     }
-    timeSeries <- ggplot2::autoplot(termSeries, facets = NULL) +
+    timeSeries <- zoo::autoplot.zoo(termSeries, facets = NULL) +
         ggplot2::ggtitle(paste("Time series of references to", paste(dQuote(specificTerms), collapse = ", "))) +
         ggplot2::scale_x_datetime("Date") +
         ggplot2::theme(plot.title = element_text(size = rel(1.2)),
