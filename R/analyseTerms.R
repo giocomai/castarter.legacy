@@ -18,8 +18,8 @@ AnalyseTerms <- function(corpus, nameOfProject, terms, mode = "graph", includeOn
     if (is.null(includeOnly) == FALSE) {
         byWebsite <- byWebsiteAll[, includeOnly]
     } else {
-        for (i in 1:length(levels(namesOfWebsites))){
-            if ()
+        for (i in 1:length(levels(namesOfWebsites))) {
+            
         }
         byWebsite <- byWebsiteAll
     }
