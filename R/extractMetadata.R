@@ -9,13 +9,16 @@
 #' @export
 #' @examples
 #' dates <- ExtractDates(articlesHtml)
-ExtractDates <- function(articlesHtml, dateFormat = "dmY", language = "en", customString = "", minDate = NULL, maxDate = NULL) {
+ExtractDates <- function(articlesHtml, dateFormat = "dmY", language = "en", customString = "", minDate = NULL, maxDate = NULL, removeEverythingBefore = NULL) {
     originalLocale <- base::Sys.getlocale(category = "LC_TIME")
     if (language == "en") {
         base::Sys.setlocale(category = "LC_TIME", locale = "en_GB.UTF-8")
     }
     numberOfArticles <- length(articlesHtml)
     datesTxt <- rep(NA, numberOfArticles)
+    if (is.null(removeEverythingBefore) == FALSE) {
+        articlesHtml <- base::gsub(base::paste0(".*", removeEverythingBefore), "", articlesHtml, fixed = FALSE)
+    }
     if (dateFormat == "dby" | dateFormat == "dBy" | dateFormat == "dBY" | dateFormat == "dbY") {
         for (i in 1:numberOfArticles) {
             dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]]?[[:digit:]][[:space:]]?[[:space:]][[:alpha:]]*[[:space:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]", 

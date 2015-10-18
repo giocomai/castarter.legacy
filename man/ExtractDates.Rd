@@ -5,7 +5,8 @@
 \title{Extracts dates from a vector of html files}
 \usage{
 ExtractDates(articlesHtml, dateFormat = "dmY", language = "en",
-  customString = "", minDate = NULL, maxDate = NULL)
+  customString = "", minDate = NULL, maxDate = NULL,
+  removeEverythingBefore = NULL)
 }
 \arguments{
 \item{articlesHtml}{A character vector of html files.}
