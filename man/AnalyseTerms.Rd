@@ -4,8 +4,8 @@
 \alias{AnalyseTerms}
 \title{Compares frequency of specific words across websites.}
 \usage{
-AnalyseTerms(corpus, nameOfProject, terms, mode = "graph", includeOnly = "",
-  order = "", tipology = "", frequency = "relative")
+AnalyseTerms(corpus, nameOfProject, terms, mode = "graph",
+  includeOnly = NULL, order = "", tipology = "", frequency = "relative")
 }
 \arguments{
 \item{corpus}{A TM corpus.}

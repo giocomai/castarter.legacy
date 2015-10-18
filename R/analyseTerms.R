@@ -18,6 +18,9 @@ AnalyseTerms <- function(corpus, nameOfProject, terms, mode = "graph", includeOn
     if (is.null(includeOnly) == FALSE) {
         byWebsite <- byWebsiteAll[, includeOnly]
     } else {
+        for (i in 1:length(levels(namesOfWebsites))){
+            if ()
+        }
         byWebsite <- byWebsiteAll
     }
     mostFrequentByWebsite <- as.data.frame(matrix(nrow = length(byWebsite), ncol = length(terms) + 1))
