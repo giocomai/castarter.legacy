@@ -31,7 +31,7 @@ ShowMostFrequent <- function(corpusDtm, mode = "vector", number = 10, stemComple
         }
     }
     if (mode == "barchart" | mode == "graph") {
-        ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = reorder(word, -freq), y = freq)) + ggplot2::geom_bar(stat = "identity") + coord_flip()
+        ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = reorder(word, -freq), y = freq)) + ggplot2::geom_bar(stat = "identity") + ggplot2::coord_flip()
     } else if (mode == "wordcloud") {
         wordcloud::wordcloud(rownames(wordFrequency), wordFrequency$freq, min.freq = minFrequency, colors = "black")
     } else if (mode == "vector") {
