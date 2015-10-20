@@ -21,6 +21,7 @@ ShowMostFrequent <- function(corpusDtm, mode = "vector", number = 10, specificTe
     freq <- sort(slam::col_sums(corpusDtm, na.rm = TRUE), decreasing = TRUE)
     if (is.null(specificTerms) == FALSE) {
         freq <- freq[base::match(specificTerms, names(freq))]
+        number <- length(specificTerms)
     }
     if (number == "all") {
         number <- length(freq)
@@ -35,7 +36,7 @@ ShowMostFrequent <- function(corpusDtm, mode = "vector", number = 10, specificTe
         }
     }
     if (mode == "barchart" | mode == "graph") {
-        ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = reorder(word, -freq), y = freq)) + ggplot2::geom_bar(stat = "identity") + ggplot2::coord_flip()
+        ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = reorder(word, -freq), y = freq)) + ggplot2::geom_bar(stat = "identity") + ggplot2::coord_flip() + ggplot2::ylab("Word frequency") + ggplot2::xlab("")
     } else if (mode == "wordcloud") {
         wordcloud::wordcloud(rownames(wordFrequency), wordFrequency$freq, min.freq = minFrequency, colors = "black")
     } else if (mode == "vector") {
