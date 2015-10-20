@@ -162,7 +162,7 @@ CleanCorpus <- function(corpus, stripWhitespace = TRUE, toLowerCase = TRUE, remo
 #' stemmingDictionary <- ExportStemmingDictionary(corpus, nameOfProject)
 ExportStemmingDictionary <- function(corpus, nameOfProject, stemmingEditMode = "fromCsv") {
     dtm <- tm::DocumentTermMatrix(corpus)
-    stemmingDictionary <- data.frame(row.names = colnames(dtm), occurrences = col_sums(dtm), stemmedTerm = wordStem(colnames(dtm), language), 
+    stemmingDictionary <- data.frame(row.names = colnames(dtm), occurrences = slam::col_sums(dtm), stemmedTerm = wordStem(colnames(dtm), language), 
         stopword = ifelse(colnames(dtm) %in% stopwords, "stopword", ""), stringsAsFactors = FALSE)
     stemmingDictionary[Terms(dtm) %in% stopwords, "stemmedTerm"] <- ""
     if (!file.exists(file.path(nameOfProject, paste(nameOfProject, "stemmingDictionary.csv")))) {
