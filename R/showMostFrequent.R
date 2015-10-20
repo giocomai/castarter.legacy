@@ -21,6 +21,8 @@ ShowMostFrequent <- function(corpusDtm, mode = "vector", number = 10, specificTe
     freq <- sort(slam::col_sums(corpusDtm, na.rm = TRUE), decreasing = TRUE)
     if (is.null(specificTerms) == FALSE) {
         freq <- freq[base::match(specificTerms, names(freq))]
+        freq <- freq[is.na(freq)==FALSE]
+        freq <- sort(freq, decreasing = TRUE)
     }
     if (number == "all") {
         number <- length(freq)
