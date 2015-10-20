@@ -10,14 +10,18 @@
 ##'  \item{"wordcloud"}{: Outputs a wordcloud.}
 ##' }
 ##'
+#' @param specificTerms A character vector, defaults to NULL. If specificTerms is provided, only terms included in this vector will be included in the output.
 #' @return A vector, barchart, or wordcloud as defined with the 'mode' parameter.
 #' @export
 #' @examples
 #' corpusDtm <- DocumentTermMatrix(corpus).
 #' mostFrequent <- ShowMostFrequent(corpusDtm)
 
-ShowMostFrequent <- function(corpusDtm, mode = "vector", number = 10, stemCompletion = FALSE, corpusOriginal = "", minFrequency = 0) {
+ShowMostFrequent <- function(corpusDtm, mode = "vector", number = 10, specificTerms = NULL, stemCompletion = FALSE, corpusOriginal = "", minFrequency = 0) {
     freq <- sort(slam::col_sums(corpusDtm, na.rm = TRUE), decreasing = TRUE)
+    if (is.null(specificTerms) == FALSE) {
+        freq <- freq[base::match(specificTerms, names(freq))]
+    }
     if (number == "all") {
         number <- length(freq)
     }

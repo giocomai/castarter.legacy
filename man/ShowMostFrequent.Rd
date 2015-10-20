@@ -5,7 +5,8 @@
 \title{Shows most frequent terms in a corpus}
 \usage{
 ShowMostFrequent(corpusDtm, mode = "vector", number = 10,
-  stemCompletion = FALSE, corpusOriginal = "", minFrequency = 0)
+  specificTerms = NULL, stemCompletion = FALSE, corpusOriginal = "",
+  minFrequency = 0)
 }
 \arguments{
 \item{corpusDtm}{A document term matrix.}
@@ -16,6 +17,8 @@ ShowMostFrequent(corpusDtm, mode = "vector", number = 10,
  \item{"barchart"}{: Outputs a ggplot2 barchart.}
  \item{"wordcloud"}{: Outputs a wordcloud.}
 }}
+
+\item{specificTerms}{A character vector, defaults to NULL. If specificTerms is provided, only terms included in this vector will be included in the output.}
 }
 \value{
 A vector, barchart, or wordcloud as defined with the 'mode' parameter.
