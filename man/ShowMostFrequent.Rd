@@ -4,7 +4,7 @@
 \alias{ShowMostFrequent}
 \title{Shows most frequent terms in a corpus}
 \usage{
-ShowMostFrequent(corpusDtm, mode = "vector", number = 10,
+ShowMostFrequent(corpusDtm, mode = "data.frame", number = 10,
   specificTerms = NULL, stemCompletion = FALSE, corpusOriginal = "",
   minFrequency = 0)
 }

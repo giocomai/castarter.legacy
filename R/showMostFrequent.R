@@ -17,7 +17,7 @@
 #' corpusDtm <- DocumentTermMatrix(corpus).
 #' mostFrequent <- ShowMostFrequent(corpusDtm)
 
-ShowMostFrequent <- function(corpusDtm, mode = "vector", number = 10, specificTerms = NULL, stemCompletion = FALSE, corpusOriginal = "", minFrequency = 0) {
+ShowMostFrequent <- function(corpusDtm, mode = "data.frame", number = 10, specificTerms = NULL, stemCompletion = FALSE, corpusOriginal = "", minFrequency = 0) {
     freq <- sort(slam::col_sums(corpusDtm, na.rm = TRUE), decreasing = TRUE)
     if (is.null(specificTerms) == FALSE) {
         freq <- freq[base::match(specificTerms, names(freq))]
