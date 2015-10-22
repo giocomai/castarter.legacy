@@ -5,13 +5,13 @@
 #' @param corpusDtm A document term matrix.
 #' @param mode Defines the type of output. Can be
 ##' \itemize{
-##'  \item{"vector"}{: Outputs a named character vector. This is the default option.}
+##'  \item{"data.frame"}{: Outputs a data.frame This is the default option.}
 ##'  \item{"barchart"}{: Outputs a ggplot2 barchart.}
 ##'  \item{"wordcloud"}{: Outputs a wordcloud.}
 ##' }
 ##'
 #' @param specificTerms A character vector, defaults to NULL. If specificTerms is provided, only terms included in this vector will be included in the output.
-#' @return A vector, barchart, or wordcloud as defined with the 'mode' parameter.
+#' @return A data.frame, barchart, or wordcloud as defined with the 'mode' parameter.
 #' @export
 #' @examples
 #' corpusDtm <- DocumentTermMatrix(corpus).
@@ -27,12 +27,12 @@ ShowMostFrequent <- function(corpusDtm, mode = "vector", number = 10, specificTe
     if (number == "all") {
         number <- length(freq)
     }
-    wordFrequency <- data.frame(word = names(freq), freq = freq)[1:number, ]
+    wordFrequency <- data.frame(term = names(freq), freq = freq)[1:number, ]
     if (stemCompletion == TRUE) {
-        wordFrequency$word <- tm::stemCompletion(wordFrequency$word, corpusOriginal)
-        for (i in 1:length(wordFrequency$word)) {
-            if (wordFrequency$word[i] == "") {
-                wordFrequency$word[i] <- row.names(wordFrequency)[i]
+        wordFrequency$term <- tm::stemCompletion(wordFrequency$term, corpusOriginal)
+        for (i in 1:length(wordFrequency$term)) {
+            if (wordFrequency$term[i] == "") {
+                wordFrequency$term[i] <- row.names(wordFrequency)[i]
             }
         }
     }
@@ -40,7 +40,7 @@ ShowMostFrequent <- function(corpusDtm, mode = "vector", number = 10, specificTe
         ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = reorder(word, -freq), y = freq)) + ggplot2::geom_bar(stat = "identity") + ggplot2::coord_flip() + ggplot2::ylab("Word frequency") + ggplot2::xlab("")
     } else if (mode == "wordcloud") {
         wordcloud::wordcloud(rownames(wordFrequency), wordFrequency$freq, min.freq = minFrequency, colors = "black")
-    } else if (mode == "vector") {
+    } else if (mode == "data.frame") {
         wordFrequency
     }
 } 

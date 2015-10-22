@@ -13,7 +13,7 @@ ShowMostFrequent(corpusDtm, mode = "vector", number = 10,
 
 \item{mode}{Defines the type of output. Can be
 \itemize{
- \item{"vector"}{: Outputs a named character vector. This is the default option.}
+ \item{"data.frame"}{: Outputs a data.frame This is the default option.}
  \item{"barchart"}{: Outputs a ggplot2 barchart.}
  \item{"wordcloud"}{: Outputs a wordcloud.}
 }}
@@ -21,7 +21,7 @@ ShowMostFrequent(corpusDtm, mode = "vector", number = 10,
 \item{specificTerms}{A character vector, defaults to NULL. If specificTerms is provided, only terms included in this vector will be included in the output.}
 }
 \value{
-A vector, barchart, or wordcloud as defined with the 'mode' parameter.
+A data.frame, barchart, or wordcloud as defined with the 'mode' parameter.
 }
 \description{
 Shows most frequent terms in a corpus starting from a document term matrix.
