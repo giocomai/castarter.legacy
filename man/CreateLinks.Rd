@@ -19,6 +19,8 @@ CreateLinks(linkFirstChunk, linkSecondChunk = NULL, startPage = 1,
 \item{startPage,}{endPage If the links include a numerical component, define first and last number of the sequence.startPage defaults to 1, endPage defaults to 10.}
 
 \item{increaseBy}{Defines by how much the number in the link should be increased in the numerical sequence. Defaults to 1.}
+
+\item{exportParameters}{Defaults to FALSE. If TRUE, function parameters are exported in the nameOfProject/nameOfWebsite folder. They can be used to update the corpus.}
 }
 \value{
 A character vector of links to index pages.

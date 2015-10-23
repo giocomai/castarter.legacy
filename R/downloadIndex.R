@@ -6,6 +6,7 @@
 #' @param linkSecondChunk Part of index link appneded after the part of the link that varies. If not relevant, may be left empty. 
 #' @param startPage, endPage If the links include a numerical component, define first and last number of the sequence.startPage defaults to 1, endPage defaults to 10.
 #' @param increaseBy Defines by how much the number in the link should be increased in the numerical sequence. Defaults to 1.
+#' @param exportParameters Defaults to FALSE. If TRUE, function parameters are exported in the nameOfProject/nameOfWebsite folder. They can be used to update the corpus. 
 #' @return A character vector of links to index pages. 
 #' @export
 #' @examples
