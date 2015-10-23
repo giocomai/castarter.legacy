@@ -6,7 +6,7 @@
 \usage{
 ShowMostFrequent(corpusDtm, mode = "data.frame", number = 10,
   specificTerms = NULL, stemCompletion = FALSE, corpusOriginal = "",
-  minFrequency = 0)
+  minFrequency = 0, export = FALSE, filename = NULL)
 }
 \arguments{
 \item{corpusDtm}{A document term matrix.}
@@ -19,6 +19,12 @@ ShowMostFrequent(corpusDtm, mode = "data.frame", number = 10,
 }}
 
 \item{specificTerms}{A character vector, defaults to NULL. If specificTerms is provided, only terms included in this vector will be included in the output.}
+
+\item{export}{Logical, defaults to FALSE. If TRUE, saves the time series in both png and pdf format. If nameOfProject and nameOfWebsite are provided, in saves the barchart in the "Outputs" subfolder.}
+
+\item{filename}{A character vector, defaults to NULL.It allows to customize the filename of the exported barchart file.}
+
+\item{corpusDtm}{A document-term matrix. Can be obtained with 'DocumentTermMatrix(corpus)'}
 }
 \value{
 A data.frame, barchart, or wordcloud as defined with the 'mode' parameter.
