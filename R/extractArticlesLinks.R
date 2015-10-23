@@ -65,9 +65,16 @@ ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = "", cont
             }
         }
         param <- unlist(param)
-        updateParameters <- data.frame(args, param)
+        updateParametersTemp <- data.frame(args, param, stringsAsFactors = FALSE)
+        if (file.exists(base::file.path(nameOfProject, nameOfWebsite, paste(nameOfWebsite, "updateParameters.csv", sep = "-"))) == TRUE) {
+            updateParameters <- utils::read.table(base::file.path(nameOfProject, nameOfWebsite, paste(nameOfWebsite, "updateParameters.csv", sep = "-")), stringsAsFactors = FALSE)
+            for (i in 1:length(updateParametersTemp$args)) {
+                updateParameters$param[updateParameters$args == updateParametersTemp$args[i]] <- updateParametersTemp$param[i]
+            }
+        } else {
+            updateParameters <- updateParametersTemp 
+        }
         write.table(updateParameters, file = base::file.path(nameOfProject, nameOfWebsite, paste(nameOfWebsite, "updateParameters.csv", sep = "-")))
     }
-    
     links
 } 

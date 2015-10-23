@@ -84,7 +84,8 @@ CreateLinks <- function(linkFirstChunk, linkSecondChunk = NULL, startPage = 1, e
         } else {
             updateParameters <- updateParametersTemp 
         }
-        write.table(updateParameters, file = base::file.path(nameOfProject, nameOfWebsite, paste(nameOfWebsite, "updateParameters.csv", sep = "-")))    }
+        write.table(updateParameters, file = base::file.path(nameOfProject, nameOfWebsite, paste(nameOfWebsite, "updateParameters.csv", sep = "-")))
+    }
     if (reversedOrder == TRUE) {
         base::rev(indexLinks)
     } else {
