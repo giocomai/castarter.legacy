@@ -20,7 +20,7 @@
 #' corpusDtm <- DocumentTermMatrix(corpus).
 #' mostFrequent <- ShowMostFrequent(corpusDtm)
 
-ShowMostFrequent <- function(corpusDtm, mode = "data.frame", number = 10, specificTerms = NULL, stemCompletion = FALSE, corpusOriginal = "", minFrequency = 0, export = FALSE, title = NULL, nameOfProject, nameOfWebsite) {
+ShowMostFrequent <- function(corpusDtm, mode = "data.frame", number = 10, specificTerms = NULL, stemCompletion = FALSE, corpusOriginal = "", minFrequency = 0, export = FALSE, title = NULL, nameOfProject = NULL, nameOfWebsite = NULL) {
     freq <- sort(slam::col_sums(corpusDtm, na.rm = TRUE), decreasing = TRUE)
     if (is.null(specificTerms) == FALSE) {
         freq <- freq[base::match(specificTerms, names(freq))]
@@ -70,7 +70,7 @@ ShowMostFrequent <- function(corpusDtm, mode = "data.frame", number = 10, specif
                 print(paste("File saved in", file.path("Outputs", paste0(paste(title, sep = " - "), ".pdf"))))
             }
         }
-        barchart
+        barchart + ggplot2::ggtitle(title)
     } else if (mode == "wordcloud") {
         wordcloud::wordcloud(rownames(wordFrequency), wordFrequency$freq, min.freq = minFrequency, colors = "black")
     } else if (mode == "data.frame") {

@@ -6,8 +6,8 @@
 \usage{
 ShowMostFrequent(corpusDtm, mode = "data.frame", number = 10,
   specificTerms = NULL, stemCompletion = FALSE, corpusOriginal = "",
-  minFrequency = 0, export = FALSE, title = NULL, nameOfProject,
-  nameOfWebsite)
+  minFrequency = 0, export = FALSE, title = NULL, nameOfProject = NULL,
+  nameOfWebsite = NULL)
 }
 \arguments{
 \item{corpusDtm}{A document term matrix.}
