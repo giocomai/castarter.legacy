@@ -13,9 +13,11 @@ ReDownloadMissingArticles(nameOfProject, nameOfWebsite, links = articlesLinks,
 
 \item{nameOfWebsite}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
 
-\item{links}{A character vector of links, tipically either articlesLinks or indexPagesLinks.}
+\item{links}{A character vector of links, tipically articlesLinks.}
 
 \item{linksToDownload}{A logical vector of the same length as the links vector. Links that correspond to TRUE in linksToDownload will be downloaded, and overwrite previous files by default.}
+
+\item{missingArticles}{Logical, defaults to FALSE. If TRUE, verifies if a downloaded html file exists for each element in articlesLinks; when there is no such file, it downloads it.}
 }
 \description{
 Probably needs to be deleted, and integrated into DownloadArticles

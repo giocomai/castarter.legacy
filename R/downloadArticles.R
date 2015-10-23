@@ -46,8 +46,9 @@ DownloadArticles <- function(nameOfProject, nameOfWebsite, articlesLinks, extrac
 #' Probably needs to be deleted, and integrated into DownloadArticles
 #' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
 #' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
-#' @param links A character vector of links, tipically either articlesLinks or indexPagesLinks.
+#' @param links A character vector of links, tipically articlesLinks. 
 #' @param linksToDownload A logical vector of the same length as the links vector. Links that correspond to TRUE in linksToDownload will be downloaded, and overwrite previous files by default.
+#' @param missingArticles Logical, defaults to FALSE. If TRUE, verifies if a downloaded html file exists for each element in articlesLinks; when there is no such file, it downloads it.
 #' @export
 #' @examples
 #' ReDownloadMissingArticles(nameOfProject, nameOfWebsite, articlesLinks)
