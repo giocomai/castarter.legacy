@@ -58,7 +58,7 @@ ReDownloadMissingArticles <- function(nameOfProject, nameOfWebsite, links = arti
     htmlFileSize <- file.info(htmlFilesList)["size"]
     articlesId <- 1:length(articlesLinks)
     if (missingArticles == TRUE) {
-        articlesId <- as.integer(regmatches(htmlFilesList, regexpr("[[:digit:]]+", htmlFilesList)))
+        # articlesId <- as.integer(regmatches(htmlFilesList, regexpr("[[:digit:]]+", htmlFilesList)))
         articlesHtmlFilenamesInTheory <- file.path(nameOfProject, nameOfWebsite, "Html", paste0(articlesId, ".html"))
         linksToDownload <- !is.element(articlesHtmlFilenamesInTheory, htmlFilesList)
     }
