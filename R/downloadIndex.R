@@ -12,7 +12,7 @@
 #' indexLinks <- CreateLinks("http://www.example.com/news/")
 CreateLinks <- function(linkFirstChunk, linkSecondChunk = NULL, startPage = 1, endPage = 10, increaseBy = 1, dateStyle = "", 
     firstYear = "", lastYear = "", leadingZero = TRUE, startDate = "", endDate = "", sortindexLinks = TRUE, dateSeparator = "/", export = FALSE, 
-    reversedOrder = FALSE) {
+    reversedOrder = FALSE, exportParameters = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
     if (dateStyle == "ym" | dateStyle == "Ym") {
         years <- firstYear:lastYear
         dates <- vector()
@@ -64,6 +64,12 @@ CreateLinks <- function(linkFirstChunk, linkSecondChunk = NULL, startPage = 1, e
     }
     if (export == TRUE) {
         base::writeLines(indexLinks, base::file.path(nameOfProject, nameOfWebsite, paste0(nameOfWebsite, "indexLinks.txt")))
+    }
+    if (exportParameters == TRUE) {
+        args <- c("linkFirstChunk", "linkSecondChunk", "startPage", "endPage", "increaseBy", "dateStyle", "firstYear", "lastYear", "leadingZero", "startDate", "endDate", "sortindexLinks", "dateSeparator", "export", "reversedOrder", "exportParameters", "nameOfProject", "nameOfWebsite")
+        param <-c(linkFirstChunk, linkSecondChunk, startPage, endPage, increaseBy, dateStyle, firstYear, lastYear, leadingZero, startDate, endDate, sortindexLinks, dateSeparator, export, reversedOrder, exportParameters, nameOfProject, nameOfWebsite)
+        updateParameters <- data.frame(args, param)
+        write.table(updateParameters, file = base::file.path(nameOfProject, nameOfWebsite, paste(nameOfWebsite, "updateParameters.tsv", sep = "-")))
     }
     if (reversedOrder == TRUE) {
         base::rev(indexLinks)
