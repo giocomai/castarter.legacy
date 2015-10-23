@@ -75,7 +75,7 @@ CreateLinks <- function(linkFirstChunk, linkSecondChunk = NULL, startPage = 1, e
         }
         param <- unlist(param)
         updateParameters <- data.frame(args, param)
-        write.table(updateParameters, file = base::file.path(nameOfProject, nameOfWebsite, paste(nameOfWebsite, "updateParameters.tsv", sep = "-")))
+        write.table(updateParameters, file = base::file.path(nameOfProject, nameOfWebsite, paste(nameOfWebsite, "updateParameters.csv", sep = "-")))
     }
     if (reversedOrder == TRUE) {
         base::rev(indexLinks)
