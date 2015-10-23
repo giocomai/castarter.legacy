@@ -67,7 +67,13 @@ CreateLinks <- function(linkFirstChunk, linkSecondChunk = NULL, startPage = 1, e
     }
     if (exportParameters == TRUE) {
         args <- c("linkFirstChunk", "linkSecondChunk", "startPage", "endPage", "increaseBy", "dateStyle", "firstYear", "lastYear", "leadingZero", "startDate", "endDate", "sortindexLinks", "dateSeparator", "export", "reversedOrder", "exportParameters", "nameOfProject", "nameOfWebsite")
-        param <-c(linkFirstChunk, linkSecondChunk, startPage, endPage, increaseBy, dateStyle, firstYear, lastYear, leadingZero, startDate, endDate, sortindexLinks, dateSeparator, export, reversedOrder, exportParameters, nameOfProject, nameOfWebsite)
+        param <- list(linkFirstChunk, linkSecondChunk, startPage, endPage, increaseBy, dateStyle, firstYear, lastYear, leadingZero, startDate, endDate, sortindexLinks, dateSeparator, export, reversedOrder, exportParameters, nameOfProject, nameOfWebsite)
+        for (i in 1:length(param)) {
+            if (is.null(param[[i]])==TRUE) {
+                param[[i]] <- "NULL"
+            }
+        }
+        param <- unlist(param)
         updateParameters <- data.frame(args, param)
         write.table(updateParameters, file = base::file.path(nameOfProject, nameOfWebsite, paste(nameOfWebsite, "updateParameters.tsv", sep = "-")))
     }
