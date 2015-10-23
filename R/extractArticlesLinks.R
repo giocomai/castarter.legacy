@@ -3,12 +3,14 @@
 #' Extracts direct links to individual articles from index pages according to a selcted pattern.
 #'  
 #' @param domain Web domain of the website. Will be added at the beginning of each link found.If links in the page already include the full web address this should be ignored. Defaults to "".
+#' @param partOfLink Part of URL found only in links of individual articles to be downloaded.
+#' @param exportParameters Defaults to FALSE. If TRUE, function parameters are exported in the nameOfProject/nameOfWebsite folder. They can be used to update the corpus. 
 #' @return A named character vector of links to articles. Name of the link may be the article title. 
 #' @export
 #' @examples
 #' articlesLinks <- ExtractLinks(domain = "http://www.example.com/", partOfLink = "news/", indexHtml)
 ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = "", containerClass = "", divClass = "", partOfLinkToExclude = "", 
-    sort = TRUE, export = FALSE) {
+    sort = TRUE, export = FALSE, exportParameters = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
     numberOfIndexPages <- length(indexHtml)
     allLinks <- data.frame()
     for (i in 1:numberOfIndexPages) {
@@ -54,5 +56,18 @@ ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = "", cont
     if (export == TRUE) {
         writeLines(links, file.path(nameOfProject, nameOfWebsite, paste0(nameOfWebsite, "articlesLinks.txt")))
     }
+    if (exportParameters == TRUE) {
+        args <- c("domain", "partOfLink", "indexHtml", "containerType", "containerClass", "divClassExtractLinks", "partOfLinkToExclude", "sort", "export", "exportParameters", "nameOfProject", "nameOfWebsite")
+        param <- list(domain, partOfLink, "indexHtml", containerType, containerClass, divClass, partOfLinkToExclude, sort, export, exportParameters, nameOfProject, nameOfWebsite)
+        for (i in 1:length(param)) {
+            if (is.null(param[[i]])==TRUE) {
+                param[[i]] <- "NULL"
+            }
+        }
+        param <- unlist(param)
+        updateParameters <- data.frame(args, param)
+        write.table(updateParameters, file = base::file.path(nameOfProject, nameOfWebsite, paste(nameOfWebsite, "updateParameters.csv", sep = "-")))
+    }
+    
     links
 } 

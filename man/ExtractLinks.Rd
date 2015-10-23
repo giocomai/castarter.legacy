@@ -6,10 +6,15 @@
 \usage{
 ExtractLinks(domain, partOfLink, indexHtml, containerType = "",
   containerClass = "", divClass = "", partOfLinkToExclude = "",
-  sort = TRUE, export = FALSE)
+  sort = TRUE, export = FALSE, exportParameters = FALSE,
+  nameOfProject = NULL, nameOfWebsite = NULL)
 }
 \arguments{
 \item{domain}{Web domain of the website. Will be added at the beginning of each link found.If links in the page already include the full web address this should be ignored. Defaults to "".}
+
+\item{partOfLink}{Part of URL found only in links of individual articles to be downloaded.}
+
+\item{exportParameters}{Defaults to FALSE. If TRUE, function parameters are exported in the nameOfProject/nameOfWebsite folder. They can be used to update the corpus.}
 }
 \value{
 A named character vector of links to articles. Name of the link may be the article title.
