@@ -54,7 +54,7 @@ DownloadArticles <- function(nameOfProject, nameOfWebsite, articlesLinks, extrac
 #' ReDownloadMissingArticles(nameOfProject, nameOfWebsite, articlesLinks)
 
 ReDownloadMissingArticles <- function(nameOfProject, nameOfWebsite, links = articlesLinks, size = 500, linksToDownload = "", wget = FALSE, missingArticles = FALSE, wait = 3) {
-    htmlFilesList <- mixedsort(list.files(file.path(nameOfProject, nameOfWebsite, "Html"), full.names = TRUE))
+    htmlFilesList <- gtools::mixedsort(list.files(file.path(nameOfProject, nameOfWebsite, "Html"), full.names = TRUE))
     htmlFileSize <- file.info(htmlFilesList)["size"]
     articlesId <- 1:length(articlesLinks)
     if (missingArticles == TRUE) {
