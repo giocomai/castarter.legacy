@@ -5,8 +5,8 @@
 \title{Extracts direct links to individual articles from index pages.}
 \usage{
 ExtractLinks(domain, partOfLink, indexHtml, containerType = "",
-  containerClass = "", divClass = "", partOfLinkToExclude = "",
-  indexLinks = NULL, sort = TRUE, export = FALSE,
+  containerClass = "", divClass = "", partOfLinkToExclude = NULL,
+  minLength = NULL, indexLinks = NULL, sort = TRUE, export = FALSE,
   exportParameters = FALSE, nameOfProject = NULL, nameOfWebsite = NULL)
 }
 \arguments{
@@ -16,7 +16,9 @@ ExtractLinks(domain, partOfLink, indexHtml, containerType = "",
 
 \item{partOfLinkToExclude}{If an URL includes this string, it is excluded from the output. One or more strings may be provided.}
 
-\item{indexLinks}{A character vector, defaults to NULL. If provided, indexLinnks are removed from the extracted articlesLinks.}
+\item{minLength}{If a link is shorter than the number of characters given in minLength, it is excluded from the output.}
+
+\item{indexLinks}{A character vector, defaults to NULL. If provided, indexLinks are removed from the extracted articlesLinks.}
 
 \item{exportParameters}{Defaults to FALSE. If TRUE, function parameters are exported in the nameOfProject/nameOfWebsite folder. They can be used to update the corpus.}
 }

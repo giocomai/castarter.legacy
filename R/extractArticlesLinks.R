@@ -5,13 +5,14 @@
 #' @param domain Web domain of the website. Will be added at the beginning of each link found.If links in the page already include the full web address this should be ignored. Defaults to "".
 #' @param partOfLink Part of URL found only in links of individual articles to be downloaded.
 #' @param partOfLinkToExclude If an URL includes this string, it is excluded from the output. One or more strings may be provided.
-#' @param indexLinks A character vector, defaults to NULL. If provided, indexLinnks are removed from the extracted articlesLinks.
+#' @param indexLinks A character vector, defaults to NULL. If provided, indexLinks are removed from the extracted articlesLinks.
+#' @param minLength If a link is shorter than the number of characters given in minLength, it is excluded from the output.
 #' @param exportParameters Defaults to FALSE. If TRUE, function parameters are exported in the nameOfProject/nameOfWebsite folder. They can be used to update the corpus. 
 #' @return A named character vector of links to articles. Name of the link may be the article title. 
 #' @export
 #' @examples
 #' articlesLinks <- ExtractLinks(domain = "http://www.example.com/", partOfLink = "news/", indexHtml)
-ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = "", containerClass = "", divClass = "", partOfLinkToExclude = NULL, indexLinks = NULL,
+ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = "", containerClass = "", divClass = "", partOfLinkToExclude = NULL, minLength = NULL, indexLinks = NULL,
     sort = TRUE, export = FALSE, exportParameters = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
     numberOfIndexPages <- length(indexHtml)
     allLinks <- data.frame()
@@ -43,6 +44,10 @@ ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = "", cont
         for (i in 1:length(partOfLinkToExclude)) {
             allLinks <- allLinks[!grepl(partOfLinkToExclude[i], allLinks$links, fixed = TRUE), ]
         }
+    }
+    if (is.null(minLength)==FALSE) {
+        allLinks <- allLinks[nchar(allLinks$links) > minLength,  ]
+        
     }
     allLinks <- allLinks[gtools::mixedorder(nchar(as.character(allLinks$titles))), ]
     allLinks$links <- as.character(allLinks$links)
