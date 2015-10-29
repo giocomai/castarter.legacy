@@ -11,7 +11,7 @@
 #' @export
 #' @examples
 #' articlesLinks <- ExtractLinks(domain = "http://www.example.com/", partOfLink = "news/", indexHtml)
-ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = "", containerClass = "", divClass = "", partOfLinkToExclude = "", indexLinks = NULL,
+ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = "", containerClass = "", divClass = "", partOfLinkToExclude = NULL, indexLinks = NULL,
     sort = TRUE, export = FALSE, exportParameters = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
     numberOfIndexPages <- length(indexHtml)
     allLinks <- data.frame()
@@ -39,7 +39,7 @@ ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = "", cont
     allLinks <- as.data.frame(allLinks, stringsAsFactors = FALSE)
     allLinks <- unique(allLinks)
     allLinks <- allLinks[grepl(partOfLink, allLinks$links, fixed = TRUE), ]
-    if (partOfLinkToExclude != "") {
+    if (is.null(partOfLinkToExclude) == FALSE) {
         for (i in 1:length(partOfLinkToExclude)) {
             allLinks <- allLinks[!grepl(partOfLinkToExclude[i], allLinks$links, fixed = TRUE), ]
         }
