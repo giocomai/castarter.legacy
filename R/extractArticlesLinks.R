@@ -4,12 +4,13 @@
 #'  
 #' @param domain Web domain of the website. Will be added at the beginning of each link found.If links in the page already include the full web address this should be ignored. Defaults to "".
 #' @param partOfLink Part of URL found only in links of individual articles to be downloaded.
+#' @param indexLinks A character vector, defaults to NULL. If provided, indexLinnks are removed from the extracted articlesLinks.
 #' @param exportParameters Defaults to FALSE. If TRUE, function parameters are exported in the nameOfProject/nameOfWebsite folder. They can be used to update the corpus. 
 #' @return A named character vector of links to articles. Name of the link may be the article title. 
 #' @export
 #' @examples
 #' articlesLinks <- ExtractLinks(domain = "http://www.example.com/", partOfLink = "news/", indexHtml)
-ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = "", containerClass = "", divClass = "", partOfLinkToExclude = "", 
+ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = "", containerClass = "", divClass = "", partOfLinkToExclude = "", indexLinks = NULL,
     sort = TRUE, export = FALSE, exportParameters = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
     numberOfIndexPages <- length(indexHtml)
     allLinks <- data.frame()
@@ -46,6 +47,9 @@ ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = "", cont
     allLinks$links <- gsub("//", "/", allLinks$links, fixed = TRUE)
     allLinks$links <- gsub("http:/", "http://", allLinks$links, fixed = TRUE)
     allLinks$links <- gsub("https:/", "https://", allLinks$links, fixed = TRUE)
+    if (is.null(indexLinks) == FALSE) {
+        allLinks$links <- allLinks$links[!is.element(allLinks$links, indexLinks)]
+    }
     allLinks <- allLinks[!duplicated(allLinks[, "links"], fromLast = TRUE), ]
     if (sort == TRUE) {
         allLinks <- allLinks[gtools::mixedorder(allLinks$links), ]
@@ -57,8 +61,8 @@ ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = "", cont
         writeLines(links, file.path(nameOfProject, nameOfWebsite, paste0(nameOfWebsite, "articlesLinks.txt")))
     }
     if (exportParameters == TRUE) {
-        args <- c("domain", "partOfLink", "indexHtml", "containerType", "containerClass", "divClassExtractLinks", "partOfLinkToExclude", "sort", "export", "exportParameters", "nameOfProject", "nameOfWebsite")
-        param <- list(domain, partOfLink, "indexHtml", containerType, containerClass, divClass, partOfLinkToExclude, sort, export, exportParameters, nameOfProject, nameOfWebsite)
+        args <- c("domain", "partOfLink", "indexHtml", "containerType", "containerClass", "divClassExtractLinks", "partOfLinkToExclude", "indexLinks","sort", "export", "exportParameters", "nameOfProject", "nameOfWebsite")
+        param <- list(domain, partOfLink, "indexHtml", containerType, containerClass, divClass, indexLinks, partOfLinkToExclude, sort, export, exportParameters, nameOfProject, nameOfWebsite)
         for (i in 1:length(param)) {
             if (is.null(param[[i]])==TRUE) {
                 param[[i]] <- "NULL"
