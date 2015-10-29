@@ -14,6 +14,8 @@ ExtractLinks(domain, partOfLink, indexHtml, containerType = "",
 
 \item{partOfLink}{Part of URL found only in links of individual articles to be downloaded.}
 
+\item{partOfLinkToExclude}{If an URL includes this string, it is excluded from the output. One or more strings may be provided.}
+
 \item{indexLinks}{A character vector, defaults to NULL. If provided, indexLinnks are removed from the extracted articlesLinks.}
 
 \item{exportParameters}{Defaults to FALSE. If TRUE, function parameters are exported in the nameOfProject/nameOfWebsite folder. They can be used to update the corpus.}
