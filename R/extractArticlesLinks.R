@@ -39,7 +39,9 @@ ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = "", cont
     allLinks <- unique(allLinks)
     allLinks <- allLinks[grepl(partOfLink, allLinks$links, fixed = TRUE), ]
     if (partOfLinkToExclude != "") {
-        allLinks <- allLinks[!grepl(partOfLinkToExclude, allLinks$links, fixed = TRUE), ]
+        for (i in 1:length(partOfLinkToExclude)) {
+            allLinks <- allLinks[!grepl(partOfLinkToExclude[i], allLinks$links, fixed = TRUE), ]
+        }
     }
     allLinks <- allLinks[gtools::mixedorder(nchar(as.character(allLinks$titles))), ]
     allLinks$links <- as.character(allLinks$links)
