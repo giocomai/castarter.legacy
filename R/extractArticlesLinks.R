@@ -69,8 +69,8 @@ ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = "", cont
         writeLines(links, file.path(nameOfProject, nameOfWebsite, paste0(nameOfWebsite, "articlesLinks.txt")))
     }
     if (exportParameters == TRUE) {
-        args <- c("domain", "partOfLink", "indexHtml", "containerType", "containerClass", "divClassExtractLinks", "partOfLinkToExclude", "indexLinks","sort", "export", "exportParameters", "nameOfProject", "nameOfWebsite")
-        param <- list(domain, partOfLink, "indexHtml", containerType, containerClass, divClass, indexLinks, partOfLinkToExclude, sort, export, exportParameters, nameOfProject, nameOfWebsite)
+        args <- c("domain", "partOfLink", "indexHtml", "containerType", "containerClass", "divClassExtractLinks", "partOfLinkToExclude", "minLength", "indexLinks","sort", "export", "exportParameters", "nameOfProject", "nameOfWebsite")
+        param <- list(domain, partOfLink, "indexHtml", containerType, containerClass, divClass, indexLinks, partOfLinkToExclude, minLength, indexLinks, sort, export, exportParameters, nameOfProject, nameOfWebsite)
         for (i in 1:length(param)) {
             if (is.null(param[[i]])==TRUE) {
                 param[[i]] <- "NULL"
