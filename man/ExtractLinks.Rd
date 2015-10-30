@@ -7,7 +7,8 @@
 ExtractLinks(domain, partOfLink, indexHtml, containerType = "",
   containerClass = "", divClass = "", partOfLinkToExclude = NULL,
   minLength = NULL, indexLinks = NULL, sort = TRUE, export = FALSE,
-  exportParameters = FALSE, nameOfProject = NULL, nameOfWebsite = NULL)
+  appendString = NULL, exportParameters = FALSE, nameOfProject = NULL,
+  nameOfWebsite = NULL)
 }
 \arguments{
 \item{domain}{Web domain of the website. Will be added at the beginning of each link found.If links in the page already include the full web address this should be ignored. Defaults to "".}
@@ -19,6 +20,8 @@ ExtractLinks(domain, partOfLink, indexHtml, containerType = "",
 \item{minLength}{If a link is shorter than the number of characters given in minLength, it is excluded from the output.}
 
 \item{indexLinks}{A character vector, defaults to NULL. If provided, indexLinks are removed from the extracted articlesLinks.}
+
+\item{appendString}{If provided, appends given string to the extracted articles. Typically used to create links for print or mobile versions of the extracted page.}
 
 \item{exportParameters}{Defaults to FALSE. If TRUE, function parameters are exported in the nameOfProject/nameOfWebsite folder. They can be used to update the corpus.}
 }
