@@ -37,22 +37,22 @@ ExtractTxt <- function(articlesHtml, metadata = "", export = TRUE, maxTitleChara
             } else {
                 articleTxt <- boilerpipeR::ArticleExtractor(articlesHtml[i])
             }
-            if (textToBeRemoved != "") {
-                for (j in 1:length(textToBeRemoved)) {
-                    articleTxt <- gsub(textToBeRemoved[j], "", articleTxt, fixed = TRUE)
-                }
-            }
-            if (is.null(removeEverythingAfter) == FALSE) {
-                articleTxt <- base::gsub(base::paste0(removeEverythingAfter, ".*"), "", articleTxt, fixed = FALSE)
-            }
-            if (is.null(removeEverythingBefore) == FALSE) {
-                articleTxt <- base::gsub(base::paste0(".*", removeEverythingBefore), "", articleTxt, fixed = FALSE)
-            }
-            articlesTxt[i] <- articleTxt
-            if (export == TRUE) {
-                base::write(articleTxt, file = txtFilenames[i])
-            }
         }
+    }
+    if (textToBeRemoved != "") {
+        for (j in 1:length(textToBeRemoved)) {
+            articleTxt <- gsub(textToBeRemoved[j], "", articleTxt, fixed = TRUE)
+        }
+    }
+    if (is.null(removeEverythingAfter) == FALSE) {
+        articleTxt <- base::gsub(base::paste0(removeEverythingAfter, ".*"), "", articleTxt, fixed = FALSE)
+    }
+    if (is.null(removeEverythingBefore) == FALSE) {
+        articleTxt <- base::gsub(base::paste0(".*", removeEverythingBefore), "", articleTxt, fixed = FALSE)
+    }
+    articlesTxt[i] <- articleTxt
+    if (export == TRUE) {
+        base::write(articleTxt, file = txtFilenames[i])
     }
     articlesTxt
 } 
