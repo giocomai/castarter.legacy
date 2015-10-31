@@ -22,7 +22,7 @@ ExtractTxt <- function(articlesHtml, metadata = "", export = TRUE, maxTitleChara
             if (articlesHtml[i] != "") {
                 articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T, encoding = "UTF-8")
                 if (length(XML::xpathSApply(articleHtmlParsed, paste0("//div[@class='", divClass, "']"), XML::xmlValue)) == 0) {
-                    datesTxt[i] <- NA
+                    articlesHtml[i] <- NA
                     print(paste("Text div in article with ID", i, "could not be extracted."))
                 } else {
                     articlesHtml[i] <- XML::xpathSApply(articleHtmlParsed, paste0("//div[@class='", divClass, "']"), XML::xmlValue)
