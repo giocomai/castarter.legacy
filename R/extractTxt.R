@@ -6,6 +6,7 @@
 #' @param keepEverything Logical. If TRUE, the functions calls the boilerpipeR::KeepEverythingExtractor from boilerpipeR, instead of boilerpipeR::ArticleExtractor.
 #' @param export Logical, defaults to TRUE. If TRUE, textual contents are saved as individual txt files in a dedicated folder. Filename is based on the medatadata.
 #' @param maxTitleCharacters Maximum number of characters allowed in the title. Defaults to 80. 
+#' @param divClass If provided, all text included in the chosen div is outputted. 
 #' @return A character vector of txt files, and individual articles saved as txt files in a dedicated folder if 'export' is set to TRUE.
 #' @export
 #' @examples
@@ -25,31 +26,32 @@ ExtractTxt <- function(articlesHtml, metadata = "", export = TRUE, maxTitleChara
                     articlesHtml[i] <- NA
                     print(paste("Text div in article with ID", i, "could not be extracted."))
                 } else {
-                    articlesHtml[i] <- XML::xpathSApply(articleHtmlParsed, paste0("//div[@class='", divClass, "']"), XML::xmlValue)
+                    articlesTxt[i] <- XML::xpathSApply(articleHtmlParsed, paste0("//div[@class='", divClass, "']"), XML::xmlValue)
                 }
             }
         }
-    }
-    for (i in 1:numberOfArticles) {
-        if (keepEverything == TRUE) {
-            articleTxt <- boilerpipeR::KeepEverythingExtractor(articlesHtml[i])
-        } else {
-            articleTxt <- boilerpipeR::ArticleExtractor(articlesHtml[i])
-        }
-        if (textToBeRemoved != "") {
-            for (j in 1:length(textToBeRemoved)) {
-                articleTxt <- gsub(textToBeRemoved[j], "", articleTxt, fixed = TRUE)
+    } else {
+        for (i in 1:numberOfArticles) {
+            if (keepEverything == TRUE) {
+                articleTxt <- boilerpipeR::KeepEverythingExtractor(articlesHtml[i])
+            } else {
+                articleTxt <- boilerpipeR::ArticleExtractor(articlesHtml[i])
             }
-        }
-        if (is.null(removeEverythingAfter) == FALSE) {
-            articleTxt <- base::gsub(base::paste0(removeEverythingAfter, ".*"), "", articleTxt, fixed = FALSE)
-        }
-        if (is.null(removeEverythingBefore) == FALSE) {
-            articleTxt <- base::gsub(base::paste0(".*", removeEverythingBefore), "", articleTxt, fixed = FALSE)
-        }
-        articlesTxt[i] <- articleTxt
-        if (export == TRUE) {
-            base::write(articleTxt, file = txtFilenames[i])
+            if (textToBeRemoved != "") {
+                for (j in 1:length(textToBeRemoved)) {
+                    articleTxt <- gsub(textToBeRemoved[j], "", articleTxt, fixed = TRUE)
+                }
+            }
+            if (is.null(removeEverythingAfter) == FALSE) {
+                articleTxt <- base::gsub(base::paste0(removeEverythingAfter, ".*"), "", articleTxt, fixed = FALSE)
+            }
+            if (is.null(removeEverythingBefore) == FALSE) {
+                articleTxt <- base::gsub(base::paste0(".*", removeEverythingBefore), "", articleTxt, fixed = FALSE)
+            }
+            articlesTxt[i] <- articleTxt
+            if (export == TRUE) {
+                base::write(articleTxt, file = txtFilenames[i])
+            }
         }
     }
     articlesTxt
