@@ -37,22 +37,24 @@ ExtractTxt <- function(articlesHtml, metadata = "", export = TRUE, maxTitleChara
             } else {
                 articleTxt <- boilerpipeR::ArticleExtractor(articlesHtml[i])
             }
-        }
-    }
-    if (textToBeRemoved != "") {
-        for (j in 1:length(textToBeRemoved)) {
-            articleTxt <- gsub(textToBeRemoved[j], "", articleTxt, fixed = TRUE)
+            articlesTxt[i] <- articleTxt
         }
     }
     if (is.null(removeEverythingAfter) == FALSE) {
-        articleTxt <- base::gsub(base::paste0(removeEverythingAfter, ".*"), "", articleTxt, fixed = FALSE)
+        articlesTxt <- base::gsub(base::paste0(removeEverythingAfter, ".*"), "", articlesTxt, fixed = FALSE)
     }
     if (is.null(removeEverythingBefore) == FALSE) {
-        articleTxt <- base::gsub(base::paste0(".*", removeEverythingBefore), "", articleTxt, fixed = FALSE)
+        articlesTxt <- base::gsub(base::paste0(".*", removeEverythingBefore), "", articlesTxt, fixed = FALSE)
     }
-    articlesTxt[i] <- articleTxt
+    if (textToBeRemoved != "") {
+        for (i in 1:length(textToBeRemoved)) {
+            articlesTxt <- gsub(textToBeRemoved[i], "", articlesTxt, fixed = TRUE)
+        }
+    }
     if (export == TRUE) {
-        base::write(articleTxt, file = txtFilenames[i])
+        for (i in 1:length(articlesTxt)) {
+        base::write(articlesTxt[i], file = txtFilenames[i])
+        }
     }
     articlesTxt
 } 
