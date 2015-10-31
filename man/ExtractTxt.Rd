@@ -5,7 +5,7 @@
 \title{Extracts textual contents from a vector of html files}
 \usage{
 ExtractTxt(articlesHtml, metadata = "", export = TRUE,
-  maxTitleCharacters = 80, textToBeRemoved = "", divClass = NULL,
+  maxTitleCharacters = 80, textToBeRemoved = NULL, divClass = NULL,
   removeEverythingAfter = NULL, removeEverythingBefore = NULL,
   removePunctuationInFilename = TRUE, keepEverything = FALSE)
 }
@@ -15,6 +15,8 @@ ExtractTxt(articlesHtml, metadata = "", export = TRUE,
 \item{export}{Logical, defaults to TRUE. If TRUE, textual contents are saved as individual txt files in a dedicated folder. Filename is based on the medatadata.}
 
 \item{maxTitleCharacters}{Maximum number of characters allowed in the title. Defaults to 80.}
+
+\item{textToBeRemoved}{A character vector of one or more strings. Provided strings are removed from each article.}
 
 \item{divClass}{If provided, all text included in the chosen div is outputted.}
 

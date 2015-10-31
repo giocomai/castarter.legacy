@@ -4,6 +4,7 @@
 #'  
 #' @param articlesHtml A character vector of html files.
 #' @param keepEverything Logical. If TRUE, the functions calls the boilerpipeR::KeepEverythingExtractor from boilerpipeR, instead of boilerpipeR::ArticleExtractor.
+#' @param textToBeRemoved A character vector of one or more strings. Provided strings are removed from each article. 
 #' @param export Logical, defaults to TRUE. If TRUE, textual contents are saved as individual txt files in a dedicated folder. Filename is based on the medatadata.
 #' @param maxTitleCharacters Maximum number of characters allowed in the title. Defaults to 80. 
 #' @param divClass If provided, all text included in the chosen div is outputted. 
@@ -11,7 +12,7 @@
 #' @export
 #' @examples
 #' articlesTxt <- ExtractTxt(articlesHtml, metadata)
-ExtractTxt <- function(articlesHtml, metadata = "", export = TRUE, maxTitleCharacters = 80, textToBeRemoved = "", divClass = NULL, removeEverythingAfter = NULL, removeEverythingBefore = NULL, removePunctuationInFilename = TRUE, keepEverything = FALSE) {
+ExtractTxt <- function(articlesHtml, metadata = "", export = TRUE, maxTitleCharacters = 80, textToBeRemoved = NULL, divClass = NULL, removeEverythingAfter = NULL, removeEverythingBefore = NULL, removePunctuationInFilename = TRUE, keepEverything = FALSE) {
     numberOfArticles <- length(articlesHtml)
     articlesTxt <- rep(NA, numberOfArticles)
     if (export == TRUE) {
@@ -46,7 +47,7 @@ ExtractTxt <- function(articlesHtml, metadata = "", export = TRUE, maxTitleChara
     if (is.null(removeEverythingBefore) == FALSE) {
         articlesTxt <- base::gsub(base::paste0(".*", removeEverythingBefore), "", articlesTxt, fixed = FALSE)
     }
-    if (textToBeRemoved != "") {
+    if (is.null(textToBeRemoved) == FALSE) {
         for (i in 1:length(textToBeRemoved)) {
             articlesTxt <- gsub(textToBeRemoved[i], "", articlesTxt, fixed = TRUE)
         }
