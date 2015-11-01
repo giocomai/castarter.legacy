@@ -28,10 +28,10 @@ ExportArticlesWith <- function(dataset, term, nameOfProject, nameOfWebsite = NUL
     }
     if (xlsx == TRUE) {
         if (is.null(nameOfWebsite) == TRUE) {
-            write.xlsx(tempDataset, file.path(nameOfProject, "Outputs", paste(term, " in ", nameOfWebsite, ".xlsx", sep = "")))
+            xlsx::write.xlsx(tempDataset, file.path(nameOfProject, "Outputs", paste(term, " in ", nameOfWebsite, ".xlsx", sep = "")))
             print(paste("File .xlsx exported to:", file.path(nameOfProject, "Outputs", paste(term, " in ", nameOfWebsite, ".xlsx", sep = ""))))     
         } else {
-            write.xlsx(tempDataset, file.path(nameOfProject, nameOfWebsite, "Outputs", paste(term, " in ", nameOfWebsite, ".xlsx", sep = "")))
+            xlsx::write.xlsx(tempDataset, file.path(nameOfProject, nameOfWebsite, "Outputs", paste(term, " in ", nameOfWebsite, ".xlsx", sep = "")))
             print(paste("File .xlsx exported to:", file.path(nameOfProject, nameOfWebsite, "Outputs", paste(term, " in ", nameOfWebsite, ".xlsx", sep = ""))))     
         }
     }
