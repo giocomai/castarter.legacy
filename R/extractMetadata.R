@@ -327,7 +327,7 @@ CreateDatasetFromHtml <- function(nameOfProject, nameOfWebsite, articlesLinks = 
         }
     }
     articlesId <- ExtractArticleId(nameOfProject, nameOfWebsite)
-    if (is.null(articlesLinks == FALSE)) {
+    if (is.null(articlesLinks) == FALSE) {
         dataset <- data.frame(nameOfProject, nameOfWebsite, dates, articlesId, titles, language, articlesLinks, articlesTxt, check.names = FALSE, stringsAsFactors = FALSE)
     } else {
         dataset <- data.frame(nameOfProject, nameOfWebsite, dates, articlesId, titles, language, articlesTxt, check.names = FALSE, stringsAsFactors = FALSE)        
