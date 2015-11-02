@@ -41,10 +41,11 @@ CreateTimeSeries <- function(corpus, terms, specificWebsites = NULL, startDate =
     timeSeries <- zoo::autoplot.zoo(termSeries, facets = NULL) +
         ggplot2::ggtitle(paste("Time series of references to", paste(dQuote(terms), collapse = ", "))) +
         ggplot2::scale_x_datetime("Date") +
-        ggplot2::theme(plot.title = ggplot2::element_text(size = ggplot2::rel(1.2)),
+        ggplot2::theme(plot.title = ggplot2::element_text(size = ggplot2::rel(1.5)),
               legend.title = ggplot2::element_text(size = ggplot2::rel(1.2)),
               legend.text = ggplot2::element_text(size = ggplot2::rel(1))) +
-        ggplot2::scale_colour_brewer(type = "qual", palette = 6)
+        ggplot2::scale_colour_brewer(type = "qual", palette = 6) +
+        ggplot2::labs(color = "Terms")
     if (is.null(nameOfWebsite) == FALSE) {
         timeSeries <- timeSeries + ggplot2::ggtitle(paste("Time series of references to", paste(dQuote(terms), collapse = ", "), "in", nameOfWebsite))
         }
