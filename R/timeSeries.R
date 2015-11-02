@@ -46,7 +46,7 @@ CreateTimeSeries <- function(corpus, terms, specificWebsites = NULL, startDate =
               legend.text = ggplot2::element_text(size = ggplot2::rel(1))) +
         ggplot2::scale_colour_brewer(type = "qual", palette = 6) +
         ggplot2::labs(color = "Terms") +
-        ggplot2::geom_line(size = 1.2)
+        ggplot2::geom_line(size = 1)
     if (is.null(nameOfWebsite) == FALSE) {
         timeSeries <- timeSeries + ggplot2::ggtitle(paste("Time series of references to", paste(dQuote(terms), collapse = ", "), "in", nameOfWebsite))
         }
