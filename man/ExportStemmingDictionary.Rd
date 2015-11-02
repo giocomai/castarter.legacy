@@ -4,10 +4,17 @@
 \alias{ExportStemmingDictionary}
 \title{Exports the stemming dictionary}
 \usage{
-ExportStemmingDictionary(corpus, nameOfProject, stemmingEditMode = "fromCsv")
+ExportStemmingDictionary(corpusDtm, nameOfProject, stopwords = "",
+  language = "english")
 }
 \arguments{
-\item{corpus}{A corpus as created by the 'tm' package including metadata.}
+\item{corpusDtm}{A document-term matrix.}
+
+\item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
+
+\item{stopwords}{A character vector of stopwords.}
+
+\item{nameOfWebsite}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
 }
 \value{
 .A data.frame with words before and after stemming.

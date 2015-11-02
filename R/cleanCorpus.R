@@ -155,33 +155,35 @@ CleanCorpus <- function(corpus, stripWhitespace = TRUE, toLowerCase = TRUE, remo
 #' 
 #' Allows to export a stemming dictionary in csv format.
 #'  
-#' @param corpus A corpus as created by the 'tm' package including metadata.
+#' @param corpusDtm A document-term matrix.
+#' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
+#' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
+#' @param stopwords A character vector of stopwords. 
 #' @return .A data.frame with words before and after stemming.
 #' @export
 #' @examples
 #' stemmingDictionary <- ExportStemmingDictionary(corpus, nameOfProject)
-ExportStemmingDictionary <- function(corpus, nameOfProject, stemmingEditMode = "fromCsv") {
-    dtm <- tm::DocumentTermMatrix(corpus)
-    stemmingDictionary <- data.frame(row.names = colnames(dtm), occurrences = slam::col_sums(dtm), stemmedTerm = SnowballC::wordStem(colnames(dtm), language), 
-        stopword = ifelse(colnames(dtm) %in% stopwords, "stopword", ""), stringsAsFactors = FALSE)
+ExportStemmingDictionary <- function(corpusDtm, nameOfProject, stopwords = "", language = "english") {
+    stemmingDictionary <- data.frame(row.names = colnames(corpusDtm), occurrences = slam::col_sums(corpusDtm), stemmedTerm = SnowballC::wordStem(colnames(corpusDtm), language), 
+                                     stopword = ifelse(colnames(corpusDtm) %in% stopwords, "stopword", ""), stringsAsFactors = FALSE)
     stemmingDictionary[Terms(dtm) %in% stopwords, "stemmedTerm"] <- ""
-    if (!file.exists(file.path(nameOfProject, paste(nameOfProject, "stemmingDictionary.csv")))) {
+    #if (!file.exists(file.path(nameOfProject, paste(nameOfProject, "stemmingDictionary.csv")))) {
         write.csv(stemmingDictionary, file = file.path(nameOfProject, paste(nameOfProject, "stemmingDictionary.csv")), row.names = TRUE)
-    }
-    if (stemmingEditMode != "none") {
-        stemmingDictionary0 <- stemmingDictionary
-        stemmingDictionary1 <- read.csv(file = file.path(nameOfProject, paste(nameOfProject, "stemmingDictionary.csv")), header = TRUE, row.names = 1)
-        stemmingDictionaryMerged <- merge(stemmingDictionary0, stemmingDictionary1, by = "row.names", all.x = TRUE)
-        stemmingDictionaryMissing <- is.na(stemmingDictionaryMerged$stemmedTerm.y)
-        for (i in 1:length(stemmingDictionaryMissing)) {
-            if (stemmingDictionaryMissing[i] == FALSE) 
-                stemmingDictionary$stemmedTerm[i] <- as.character(stemmingDictionaryMerged$stemmedTerm.y[i]) else stemmingDictionary$stemmedTerm[i] <- as.character(stemmingDictionaryMerged$stemmedTerm.x[i])
-        }
-        if (stemmingEditMode == "dfedit") {
-            stemmingDictionary <- dfedit(stemmingDictionary)
-        }
-        write.csv(stemmingDictionary, file = file.path(nameOfProject, paste(nameOfProject, "stemmingDictionary.csv")), row.names = TRUE)
-    }
+    #}
+#     if (stemmingEditMode != "none") {
+#         stemmingDictionary0 <- stemmingDictionary
+#         stemmingDictionary1 <- read.csv(file = file.path(nameOfProject, paste(nameOfProject, "stemmingDictionary.csv")), header = TRUE, row.names = 1)
+#         stemmingDictionaryMerged <- merge(stemmingDictionary0, stemmingDictionary1, by = "row.names", all.x = TRUE)
+#         stemmingDictionaryMissing <- is.na(stemmingDictionaryMerged$stemmedTerm.y)
+#         for (i in 1:length(stemmingDictionaryMissing)) {
+#             if (stemmingDictionaryMissing[i] == FALSE) 
+#                 stemmingDictionary$stemmedTerm[i] <- as.character(stemmingDictionaryMerged$stemmedTerm.y[i]) else stemmingDictionary$stemmedTerm[i] <- as.character(stemmingDictionaryMerged$stemmedTerm.x[i])
+#         }
+#         if (stemmingEditMode == "dfedit") {
+#             stemmingDictionary <- dfedit(stemmingDictionary)
+#         }
+#         write.csv(stemmingDictionary, file = file.path(nameOfProject, paste(nameOfProject, "stemmingDictionary.csv")), row.names = TRUE)
+#     }
     stemmingDictionary
 }
 
