@@ -301,7 +301,7 @@ ExtractArticleId <- function(nameOfProject, nameOfWebsite, accordingToDate = FAL
 #' @export
 #' @examples
 #' dataset <- CreateDatasetFromHtml(nameOfProject, nameOfWebsite)
-CreateDatasetFromHtml <- function(nameOfProject, nameOfWebsite, articlesLinks = NULL, ExtractDatesXpath = FALSE, titlesExtractMethod = "htmlTitle", divClass = NULL, language = NULL, removeString = NULL, encoding = NULL, removeEverythingAfter = NULL, removeEverythingBefore = NULL) {
+CreateDatasetFromHtml <- function(nameOfProject, nameOfWebsite, articlesLinks = NULL, dateFormat = "dBY", ExtractDatesXpath = FALSE, titlesExtractMethod = "htmlTitle", divClass = NULL, language = NULL, removeString = NULL, encoding = NULL, removeEverythingAfter = NULL, removeEverythingBefore = NULL) {
     htmlFilesList <- gtools::mixedsort(list.files(file.path(nameOfProject, nameOfWebsite, "Html"), pattern = "\\.html$", full.names = TRUE))
     numberOfArticles <- length(htmlFilesList)
     dates <- as.POSIXct(rep(NA, numberOfArticles))

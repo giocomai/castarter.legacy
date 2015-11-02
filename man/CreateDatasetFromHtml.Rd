@@ -5,9 +5,9 @@
 \title{Extracts metadata and text from local html files}
 \usage{
 CreateDatasetFromHtml(nameOfProject, nameOfWebsite, articlesLinks = NULL,
-  ExtractDatesXpath = FALSE, titlesExtractMethod = "htmlTitle",
-  divClass = NULL, language = NULL, removeString = NULL,
-  encoding = NULL, removeEverythingAfter = NULL,
+  dateFormat = "dBY", ExtractDatesXpath = FALSE,
+  titlesExtractMethod = "htmlTitle", divClass = NULL, language = NULL,
+  removeString = NULL, encoding = NULL, removeEverythingAfter = NULL,
   removeEverythingBefore = NULL)
 }
 \arguments{
