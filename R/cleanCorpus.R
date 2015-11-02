@@ -166,7 +166,7 @@ CleanCorpus <- function(corpus, stripWhitespace = TRUE, toLowerCase = TRUE, remo
 ExportStemmingDictionary <- function(corpusDtm, nameOfProject, stopwords = "", language = "english") {
     stemmingDictionary <- data.frame(row.names = colnames(corpusDtm), occurrences = slam::col_sums(corpusDtm), stemmedTerm = SnowballC::wordStem(colnames(corpusDtm), language), 
                                      stopword = ifelse(colnames(corpusDtm) %in% stopwords, "stopword", ""), stringsAsFactors = FALSE)
-    stemmingDictionary[Terms(dtm) %in% stopwords, "stemmedTerm"] <- ""
+    stemmingDictionary[Terms(corpusDtm) %in% stopwords, "stemmedTerm"] <- ""
     #if (!file.exists(file.path(nameOfProject, paste(nameOfProject, "stemmingDictionary.csv")))) {
         write.csv(stemmingDictionary, file = file.path(nameOfProject, paste(nameOfProject, "stemmingDictionary.csv")), row.names = TRUE)
     #}
