@@ -54,6 +54,9 @@ ShowShare <- function(dataset, terms, breaks = "years", startDate = NULL, export
     if (breaks == "years") {
         graph <- graph + ggplot2::scale_x_discrete(labels = lubridate::year(DTterms$dates)[order(lubridate::year(DTterms$dates))])
     }
+    if (breaks == "months") {
+        graph <- graph + ggplot2::scale_x_discrete(labels = paste(lubridate::year(DTterms$dates)[order(lubridate::year(DTterms$dates))], lubridate::month(DTterms$dates)[order(lubridate::month(DTterms$dates))], sep = "-"))
+    }
     if (export == TRUE) {
         graph
         if (is.null(nameOfProject) == FALSE & is.null(nameOfWebsite) == FALSE) {
