@@ -49,7 +49,7 @@ ShowShare <- function(dataset, terms, breaks = "years", startDate = NULL, export
         ggplot2::ggtitle(paste("Share of articles including reference to", base::sQuote(terms))) +
         ggplot2::xlab("") +
         ggplot2::ylab("") +
-        ggplot2::theme(axis.text.x = ggplot2::element_text(size = ggplot2::rel(1.4), angle = 90, hjust = 1, vjust = 0.5), 
+        ggplot2::theme(axis.text.x = ggplot2::element_text(size = ggplot2::rel(1.2), angle = 90, hjust = 1, vjust = 0.5), 
                        plot.title = ggplot2::element_text(size = ggplot2::rel(1.2)), legend.text = ggplot2::element_text(size = ggplot2::rel(1)))
     if (breaks == "years") {
         graph <- graph + ggplot2::scale_x_discrete(labels = lubridate::year(DTterms$dates)[order(lubridate::year(DTterms$dates))])
