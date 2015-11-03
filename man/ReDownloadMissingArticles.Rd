@@ -5,7 +5,7 @@
 \title{ReDownloads missing articles.}
 \usage{
 ReDownloadMissingArticles(nameOfProject, nameOfWebsite, links = articlesLinks,
-  size = 500, linksToDownload = NULL, wget = FALSE,
+  articlesHtml = NULL, size = 500, linksToDownload = NULL, wget = FALSE,
   missingArticles = FALSE, wait = 3)
 }
 \arguments{

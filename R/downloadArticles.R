@@ -1,6 +1,6 @@
 #' Downloads files in html format based on list of links. 
 #' 
-#' Downloads files in html format based on list of links.
+#' Downloads files in html format based on list of links. If a vector of articles in html format is provided (typically, articlesHtml), it outputs a character vector including previously and newly downloaded html files. Otherwise, it just downloads html files in the dedicated nameOfProject/nameOfWebsite/Html sub-folder.
 #'  
 #' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
 #' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
@@ -53,7 +53,8 @@ DownloadArticles <- function(nameOfProject, nameOfWebsite, articlesLinks, extrac
 #' @examples
 #' ReDownloadMissingArticles(nameOfProject, nameOfWebsite, articlesLinks)
 
-ReDownloadMissingArticles <- function(nameOfProject, nameOfWebsite, links = articlesLinks, size = 500, linksToDownload = NULL, wget = FALSE, missingArticles = FALSE, wait = 3) {
+ReDownloadMissingArticles <- function(nameOfProject, nameOfWebsite, links = articlesLinks, articlesHtml = NULL, size = 500, linksToDownload = NULL, wget = FALSE, missingArticles = FALSE, wait = 3) {
+    articlesHtmlProvided <- is.null(articlesHtml) == FALSE
     htmlFilesList <- gtools::mixedsort(list.files(file.path(nameOfProject, nameOfWebsite, "Html"), full.names = TRUE))
     htmlFileSize <- file.info(htmlFilesList)["size"]
     articlesId <- 1:length(articlesLinks)
@@ -64,6 +65,9 @@ ReDownloadMissingArticles <- function(nameOfProject, nameOfWebsite, links = arti
     }
     if (is.null(linksToDownload) == TRUE) {
         linksToDownload <- htmlFileSize < size
+    }
+    if (is.null(articlesHtml) == TRUE) {
+        articlesHtml <- rep(NA, length(articlesLinks[linksToDownload]))
     }
     temp <- 1
     if (wget == TRUE) {
@@ -89,4 +93,7 @@ ReDownloadMissingArticles <- function(nameOfProject, nameOfWebsite, links = arti
         }
     }
     file.create(file.path(nameOfProject, nameOfWebsite, "Logs", paste(Sys.Date(), "Missing articles downloaded.txt", sep = " - ")))
+    if (articlesHtmlProvided == TRUE) {
+        articlesHtml
+    }
 } 

@@ -18,7 +18,7 @@ DownloadArticles(nameOfProject, nameOfWebsite, articlesLinks,
 A character vector of html file, and html files saved in dedicated folder.
 }
 \description{
-Downloads files in html format based on list of links.
+Downloads files in html format based on list of links. If a vector of articles in html format is provided (typically, articlesHtml), it outputs a character vector including previously and newly downloaded html files. Otherwise, it just downloads html files in the dedicated nameOfProject/nameOfWebsite/Html sub-folder.
 }
 \examples{
 articlesHtml <- DownloadArticles(nameOfProject, nameOfWebsite, articlesLinks)
