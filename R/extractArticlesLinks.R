@@ -14,7 +14,7 @@
 #' @examples
 #' articlesLinks <- ExtractLinks(domain = "http://www.example.com/", partOfLink = "news/", indexHtml)
 ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = "", containerClass = "", divClass = "", partOfLinkToExclude = NULL, minLength = NULL, indexLinks = NULL,
-    sort = TRUE, export = FALSE, appendString = NULL, exportParameters = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
+    sortLinks = TRUE, export = FALSE, appendString = NULL, exportParameters = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
     numberOfIndexPages <- length(indexHtml)
     allLinks <- data.frame()
     for (i in 1:numberOfIndexPages) {
@@ -59,7 +59,7 @@ ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = "", cont
         allLinks$links <- allLinks$links[!is.element(allLinks$links, indexLinks)]
     }
     allLinks <- allLinks[!duplicated(allLinks[, "links"], fromLast = TRUE), ]
-    if (sort == TRUE) {
+    if (sortLinks == TRUE) {
         allLinks <- allLinks[gtools::mixedorder(allLinks$links), ]
     }
     links <- as.character(allLinks$links)
@@ -70,21 +70,21 @@ ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = "", cont
         writeLines(links, file.path(nameOfProject, nameOfWebsite, paste0(nameOfWebsite, "articlesLinks.txt")))
     }
     if (exportParameters == TRUE) {
-        args <- c("domain", "partOfLink", "indexHtml", "containerType", "containerClass", "divClassExtractLinks", "partOfLinkToExclude", "minLength", "indexLinks","sort", "export", "appendString", "exportParameters", "nameOfProject", "nameOfWebsite")
-        param <- list(domain, partOfLink, "indexHtml", containerType, containerClass, divClass, paste(partOfLinkToExclude, collapse = "|"), minLength, "indexLinks", sort, export, appendString, exportParameters, nameOfProject, nameOfWebsite)
+        args <- c("domain", "partOfLink", "indexHtml", "containerType", "containerClass", "divClassExtractLinks", "partOfLinkToExclude", "minLength", "indexLinks","sortLinks", "export", "appendString", "exportParameters", "nameOfProject", "nameOfWebsite")
+        param <- list(domain, partOfLink, "indexHtml", containerType, containerClass, divClass, paste(partOfLinkToExclude, collapse = "|"), minLength, "indexLinks", sortLinks, export, appendString, exportParameters, nameOfProject, nameOfWebsite)
         for (i in 1:length(param)) {
             if (is.null(param[[i]])==TRUE) {
                 param[[i]] <- "NULL"
             }
         }
         param <- unlist(param)
-        updateParametersTemp <- data.frame(args, param, stringsAsFactors = FALSE)
+        updateParametersTemp <- as.data.frame(cbind(args, param), stringsAsFactors = FALSE)
         if (file.exists(base::file.path(nameOfProject, nameOfWebsite, paste(nameOfWebsite, "updateParameters.csv", sep = "-"))) == TRUE) {
             updateParameters <- utils::read.table(base::file.path(nameOfProject, nameOfWebsite, paste(nameOfWebsite, "updateParameters.csv", sep = "-")), stringsAsFactors = FALSE)
             for (i in 1:length(updateParametersTemp$args)) {
                 updateParameters$param[updateParameters$args == updateParametersTemp$args[i]] <- updateParametersTemp$param[i]
                 if (is.element(updateParametersTemp$args[i], updateParameters$args) == FALSE) {
-                    rbind(updateParameters, updateParametersTemp[i,] )
+                    updateParameters <- rbind(updateParameters, updateParametersTemp[i,] )
                 }
             }
         } else {

@@ -6,7 +6,7 @@
 \usage{
 ExtractLinks(domain, partOfLink, indexHtml, containerType = "",
   containerClass = "", divClass = "", partOfLinkToExclude = NULL,
-  minLength = NULL, indexLinks = NULL, sort = TRUE, export = FALSE,
+  minLength = NULL, indexLinks = NULL, sortLinks = TRUE, export = FALSE,
   appendString = NULL, exportParameters = FALSE, nameOfProject = NULL,
   nameOfWebsite = NULL)
 }
