@@ -46,7 +46,7 @@ CreateLinks <- function(linkFirstChunk, linkSecondChunk = NULL, startPage = 1, e
         dates <- base::seq(as.Date(startDate), as.Date(endDate), by = "day")
         dates <- base::format(as.Date(dates), paste("%d", "%m", "%Y", sep = dateSeparator))
         indexLinks <- paste0(linkFirstChunk, dates)
-    } else if (base::is.null(linkSecondChunk) == TRUE) {
+    } else if (base::is.null(linkSecondChunk) == TRUE | base::is.na(linkSecondChunk) == TRUE) {
         listOfNumbers <- base::seq(startPage, endPage, increaseBy)
         if (base::is.element(endPage, listOfNumbers) == FALSE) {
             listOfNumbers <- base::c(listOfNumbers, endPage)
@@ -81,7 +81,7 @@ CreateLinks <- function(linkFirstChunk, linkSecondChunk = NULL, startPage = 1, e
             for (i in 1:length(updateParametersTemp$args)) {
                 updateParameters$param[updateParameters$args == updateParametersTemp$args[i]] <- updateParametersTemp$param[i]
                 if (is.element(updateParametersTemp$args[i], updateParameters$args) == FALSE) {
-                    rbind(updateParameters, updateParametersTemp[i,] )
+                    updateParameters <- rbind(updateParameters, updateParametersTemp[i,] )
                 }
             }
         } else {
