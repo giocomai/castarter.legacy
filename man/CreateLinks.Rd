@@ -7,7 +7,7 @@
 CreateLinks(linkFirstChunk, linkSecondChunk = NULL, startPage = 1,
   endPage = 10, increaseBy = 1, dateStyle = "", firstYear = "",
   lastYear = "", leadingZero = TRUE, startDate = "", endDate = "",
-  sortindexLinks = TRUE, dateSeparator = "/", export = FALSE,
+  sortIndexLinks = TRUE, dateSeparator = "/", export = FALSE,
   reversedOrder = FALSE, exportParameters = FALSE, nameOfProject = NULL,
   nameOfWebsite = NULL)
 }
