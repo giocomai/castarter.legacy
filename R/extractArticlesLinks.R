@@ -83,7 +83,7 @@ ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = "", cont
             updateParameters <- utils::read.table(base::file.path(nameOfProject, nameOfWebsite, paste(nameOfWebsite, "updateParameters.csv", sep = "-")), stringsAsFactors = FALSE)
             for (i in 1:length(updateParametersTemp$args)) {
                 updateParameters$param[updateParameters$args == updateParametersTemp$args[i]] <- updateParametersTemp$param[i]
-                if (is.element(updateParametersTemp$args[i], updateParameters$args == FALSE)) {
+                if (is.element(updateParametersTemp$args[i], updateParameters$args) == FALSE) {
                     rbind(updateParameters, updateParametersTemp[i,] )
                 }
             }
