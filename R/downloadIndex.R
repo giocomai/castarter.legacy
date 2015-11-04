@@ -54,7 +54,7 @@ CreateLinks <- function(linkFirstChunk, linkSecondChunk = NULL, startPage = 1, e
         indexLinks <- base::cbind(rep(linkFirstChunk, length(listOfNumbers)), listOfNumbers)
         indexLinks <- base::paste0(indexLinks[, 1], indexLinks[, 2])
     }
-    if (base::is.null(linkSecondChunk) == FALSE) {
+    if (base::is.null(linkSecondChunk) == FALSE & base::is.na(linkSecondChunk) == FALSE) {
         listOfNumbers <- base::seq(startPage, endPage, increaseBy)
         indexLinks <- base::cbind(base::rep(linkFirstChunk, base::length(listOfNumbers)), listOfNumbers)
         indexLinks <- base::paste0(indexLinks[, 1], indexLinks[, 2])
