@@ -12,7 +12,7 @@
 #' @examples
 #' indexLinks <- CreateLinks("http://www.example.com/news/")
 CreateLinks <- function(linkFirstChunk, linkSecondChunk = NULL, startPage = 1, endPage = 10, increaseBy = 1, dateStyle = "", 
-    firstYear = "", lastYear = "", leadingZero = TRUE, startDate = "", endDate = "", sortindexLinks = TRUE, dateSeparator = "/", export = FALSE, 
+    firstYear = "", lastYear = "", leadingZero = TRUE, startDate = "", endDate = "", sortIndexLinks = TRUE, dateSeparator = "/", export = FALSE, 
     reversedOrder = FALSE, exportParameters = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
     if (dateStyle == "ym" | dateStyle == "Ym") {
         years <- firstYear:lastYear
@@ -60,15 +60,15 @@ CreateLinks <- function(linkFirstChunk, linkSecondChunk = NULL, startPage = 1, e
         indexLinks <- base::paste0(indexLinks[, 1], indexLinks[, 2])
         indexLinks <- base::paste0(indexLinks, linkSecondChunk)
     }
-    if (sortindexLinks == TRUE) {
+    if (sortIndexLinks == TRUE) {
         indexLinks <- gtools::mixedsort(indexLinks)
     }
     if (export == TRUE) {
         base::writeLines(indexLinks, base::file.path(nameOfProject, nameOfWebsite, paste0(nameOfWebsite, "indexLinks.txt")))
     }
     if (exportParameters == TRUE) {
-        args <- c("linkFirstChunk", "linkSecondChunk", "startPage", "endPage", "increaseBy", "dateStyle", "firstYear", "lastYear", "leadingZero", "startDate", "endDate", "sortindexLinks", "dateSeparator", "export", "reversedOrder", "exportParameters", "nameOfProject", "nameOfWebsite")
-        param <- list(linkFirstChunk, linkSecondChunk, startPage, endPage, increaseBy, dateStyle, firstYear, lastYear, leadingZero, startDate, endDate, sortindexLinks, dateSeparator, export, reversedOrder, exportParameters, nameOfProject, nameOfWebsite)
+        args <- c("linkFirstChunk", "linkSecondChunk", "startPage", "endPage", "increaseBy", "dateStyle", "firstYear", "lastYear", "leadingZero", "startDate", "endDate", "sortIndexLinks", "dateSeparator", "export", "reversedOrder", "exportParameters", "nameOfProject", "nameOfWebsite")
+        param <- list(linkFirstChunk, linkSecondChunk, startPage, endPage, increaseBy, dateStyle, firstYear, lastYear, leadingZero, startDate, endDate, sortIndexLinks, dateSeparator, export, reversedOrder, exportParameters, nameOfProject, nameOfWebsite)
         for (i in 1:length(param)) {
             if (is.null(param[[i]])==TRUE) {
                 param[[i]] <- "NULL"
