@@ -14,7 +14,17 @@ UpdateDataset <- function(dataset, nameOfProject, nameOfWebsite, numberOfIndexPa
     CreateFolderStructure(nameOfProject = nameOfProject, nameOfWebsite = nameOfWebsite)
     indexLinks <- CreateLinks(linkFirstChunk = params$param[params$args=="linkFirstChunk"], linkSecondChunk = params$param[params$args=="linkSecondChunk"], startPage = as.integer(params$param[params$args=="startPage"]), endPage = sum(as.integer(params$param[params$args=="startPage"]), numberOfIndexPages), increaseBy = as.integer(params$param[params$args=="increaseBy"]), sortIndexLinks  = as.logical(params$param[params$args=="sortIndexLinks"]))
     indexHtml <- DownloadIndex(nameOfProject = nameOfProject, nameOfWebsite = nameOfWebsite, indexLinks = indexLinks, wget = wget, wait = wait)
-    ExtractLinks(domain = params$param[params$args=="domain"])
+    articlesLinks <- ExtractLinks(domain = params$param[params$args=="domain"], partOfLink = params$param[params$args=="partOfLink"], indexHtml = indexHtml, containerType = params$param[params$args=="containerType"], containerClass = params$param[params$args=="containerClass"], divClass = params$param[params$args=="divClassExtractLinks"], partOfLinkToExclude = strsplit(params$param[params$args=="divClassExtractLinks"], "§"))
+    articlesLinks <- articlesLinks[is.element(articlesLinks, dataset$articlesLinks)==FALSE]
+    articlesLinks <- c(dataset$articlesLinks, articlesLinks)
+    articlesHtml <- DownloadArticles(nameOfProject, nameOfWebsite, articlesLinks, start = sum(length(dataset$articlesLinks), 1), wait = wait, wget = wget)
+    if (extractDatesXpath == TRUE) {
+        
+    } else {
+        dates <- ExtractDates()
+        }
+    
+    
     
 }
                 
