@@ -71,7 +71,7 @@ ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = "", cont
     }
     if (exportParameters == TRUE) {
         args <- c("domain", "partOfLink", "indexHtml", "containerType", "containerClass", "divClassExtractLinks", "partOfLinkToExclude", "minLength", "indexLinks","sortLinks", "export", "appendString", "exportParameters", "nameOfProject", "nameOfWebsite")
-        param <- list(domain, partOfLink, "indexHtml", containerType, containerClass, divClass, paste(partOfLinkToExclude, collapse = "|"), minLength, "indexLinks", sortLinks, export, appendString, exportParameters, nameOfProject, nameOfWebsite)
+        param <- list(domain, partOfLink, "indexHtml", containerType, containerClass, divClass, paste(partOfLinkToExclude, collapse = "§"), minLength, "indexLinks", sortLinks, export, appendString, exportParameters, nameOfProject, nameOfWebsite)
         for (i in 1:length(param)) {
             if (is.null(param[[i]])==TRUE) {
                 param[[i]] <- "NULL"
