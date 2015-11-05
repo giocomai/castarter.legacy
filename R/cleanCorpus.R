@@ -208,4 +208,5 @@ CreateDtm <- function(corpus, removeSparseTerms = NULL){
     if (is.null(removeSparseTerms) == FALSE) {
         corpusDtm <- tm::removeSparseTerms(corpusDtm, removeSparseTerms)
     }
+    corpusDtm
 }
