@@ -20,6 +20,8 @@ ExtractTxt(articlesHtml, metadata = "", export = TRUE,
 
 \item{divClass}{If provided, all text included in the chosen div is outputted.}
 
+\item{removePunctuationInFilename}{Logical, defaults to TRUE. If TRUE (and export == TRUE), it removes punctuation signs from filemanes to prevent errors in saving files.}
+
 \item{keepEverything}{Logical. If TRUE, the functions calls the boilerpipeR::KeepEverythingExtractor from boilerpipeR, instead of boilerpipeR::ArticleExtractor.}
 }
 \value{

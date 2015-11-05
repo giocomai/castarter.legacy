@@ -6,7 +6,7 @@
 \usage{
 ExtractDates(articlesHtml, dateFormat = "dmY", language = "en",
   customString = "", minDate = NULL, maxDate = NULL,
-  removeEverythingBefore = NULL)
+  removeEverythingBefore = NULL, exportParameters = TRUE)
 }
 \arguments{
 \item{articlesHtml}{A character vector of html files.}

@@ -8,6 +8,7 @@
 #' @param export Logical, defaults to TRUE. If TRUE, textual contents are saved as individual txt files in a dedicated folder. Filename is based on the medatadata.
 #' @param maxTitleCharacters Maximum number of characters allowed in the title. Defaults to 80. 
 #' @param divClass If provided, all text included in the chosen div is outputted. 
+#' @param removePunctuationInFilename Logical, defaults to TRUE. If TRUE (and export == TRUE), it removes punctuation signs from filemanes to prevent errors in saving files.
 #' @return A character vector of txt files, and individual articles saved as txt files in a dedicated folder if 'export' is set to TRUE.
 #' @export
 #' @examples
@@ -17,6 +18,9 @@ ExtractTxt <- function(articlesHtml, metadata = "", export = TRUE, maxTitleChara
     articlesTxt <- rep(NA, numberOfArticles)
     if (export == TRUE) {
         titles <- metadata$titles
+        if (removePunctuationInFilename == TRUE) {
+            titles <- gsub("[[:punct:]]", ' ', titles)
+        }
         txtFilenames <- paste0(file.path(nameOfProject, nameOfWebsite, "Txt", paste0(paste(metadata$dates, metadata$nameOfWebsite, metadata$articlesId, substring(titles, 1, maxTitleCharacters), sep = " - "), ".txt")))
     }
     if (is.null(divClass) == FALSE) {
