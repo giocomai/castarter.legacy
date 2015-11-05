@@ -21,8 +21,8 @@ UpdateDataset <- function(dataset, nameOfProject, nameOfWebsite, numberOfIndexPa
     if (extractDatesXpath == TRUE) {
         
     } else {
-        dates <- ExtractDates()
-        }
+        dates <- ExtractDates(articlesHtml = articlesHtml, dateFormat = params$param[params$args=="dateFormat"], language = dataset$language[1], customString = params$param[params$args=="customStringExtractDates"], minDate = params$param[params$args=="minDate"], maxDate = params$param[params$args=="maxDate"], removeEverythingBefore = params$param[params$args=="removeEverythingBeforeExtractDates"])
+    }
     
     
     

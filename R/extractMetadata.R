@@ -9,7 +9,7 @@
 #' @export
 #' @examples
 #' dates <- ExtractDates(articlesHtml)
-ExtractDates <- function(articlesHtml, dateFormat = "dmY", language = "en", customString = "", minDate = NULL, maxDate = NULL, removeEverythingBefore = NULL) {
+ExtractDates <- function(articlesHtml, dateFormat = "dmY", language = "en", customString = "", minDate = NULL, maxDate = NULL, removeEverythingBefore = NULL, exportParameters = TRUE) {
     articlesHtml <- iconv(articlesHtml, to = "utf8")
     originalLocale <- base::Sys.getlocale(category = "LC_TIME")
     if (language == "en") {
@@ -127,6 +127,29 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", language = "en", cust
     }
     if (is.null(maxDate) == FALSE) {
         dates[dates > as.POSIXct(maxDate)] <- NA
+    }
+    if (exportParameters == TRUE) {
+        args <- c("dateFormat", "customStringExtractDates", "minDate", "maxDate", "removeEverythingBeforeExtractDates")
+        param <- list(dateFormat, customString, minDate, maxDate, removeEverythingBefore)
+        for (i in 1:length(param)) {
+            if (is.null(param[[i]])==TRUE) {
+                param[[i]] <- "NULL"
+            }
+        }
+        param <- unlist(param)
+        updateParametersTemp <- data.frame(args, param, stringsAsFactors = FALSE)
+        if (file.exists(base::file.path(nameOfProject, nameOfWebsite, paste(nameOfWebsite, "updateParameters.csv", sep = "-"))) == TRUE) {
+            updateParameters <- utils::read.table(base::file.path(nameOfProject, nameOfWebsite, paste(nameOfWebsite, "updateParameters.csv", sep = "-")), stringsAsFactors = FALSE)
+            for (i in 1:length(updateParametersTemp$args)) {
+                updateParameters$param[updateParameters$args == updateParametersTemp$args[i]] <- updateParametersTemp$param[i]
+                if (is.element(updateParametersTemp$args[i], updateParameters$args) == FALSE) {
+                    updateParameters <- rbind(updateParameters, updateParametersTemp[i,] )
+                }
+            }
+        } else {
+            updateParameters <- updateParametersTemp 
+        }
+        write.table(updateParameters, file = base::file.path(nameOfProject, nameOfWebsite, paste(nameOfWebsite, "updateParameters.csv", sep = "-")))
     }
     base::Sys.setlocale(category = "LC_TIME", locale = originalLocale)
     dates
