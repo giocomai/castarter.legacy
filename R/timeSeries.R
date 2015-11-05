@@ -39,8 +39,9 @@ CreateTimeSeries <- function(corpus, terms, specificWebsites = NULL, startDate =
         termSeries <- zoo::rollapply(termSeries, rollingAverage, align = "left", mean, na.rm = TRUE)
     }
     timeSeries <- zoo::autoplot.zoo(termSeries, facets = NULL) +
-        ggplot2::ggtitle(paste("Time series of references to", paste(dQuote(terms), collapse = ", "))) +
+        ggplot2::ggtitle(paste("Word frequency of", paste(dQuote(terms), collapse = ", "))) +
         ggplot2::scale_x_datetime("") +
+        ggplot2::scale_y_continuous("") +
         ggplot2::theme(plot.title = ggplot2::element_text(size = ggplot2::rel(1.2)),
               legend.title = ggplot2::element_text(size = ggplot2::rel(1.2)),
               legend.text = ggplot2::element_text(size = ggplot2::rel(1))) +
