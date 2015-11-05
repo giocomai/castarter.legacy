@@ -6,15 +6,16 @@
 #' @param linkSecondChunk Part of index link appneded after the part of the link that varies. If not relevant, may be left empty. 
 #' @param startPage, endPage If the links include a numerical component, define first and last number of the sequence.startPage defaults to 1, endPage defaults to 10.
 #' @param increaseBy Defines by how much the number in the link should be increased in the numerical sequence. Defaults to 1.
+#' @param dateFormat A charachter string that defines the format of the date to incldue in the link. Available options are: "Y" (e.g. 2015), "Ym" (2015-10), "Ymd" (e.g. 2015-10-24).
 #' @param exportParameters Defaults to FALSE. If TRUE, function parameters are exported in the nameOfProject/nameOfWebsite folder. They can be used to update the corpus. 
 #' @return A character vector of links to index pages. 
 #' @export
 #' @examples
 #' indexLinks <- CreateLinks("http://www.example.com/news/")
-CreateLinks <- function(linkFirstChunk, linkSecondChunk = NULL, startPage = 1, endPage = 10, increaseBy = 1, dateStyle = "", 
+CreateLinks <- function(linkFirstChunk, linkSecondChunk = NULL, startPage = 1, endPage = 10, increaseBy = 1, dateFormat = "", 
     firstYear = "", lastYear = "", leadingZero = TRUE, startDate = "", endDate = "", sortIndexLinks = TRUE, dateSeparator = "/", export = FALSE, 
     reversedOrder = FALSE, exportParameters = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
-    if (dateStyle == "ym" | dateStyle == "Ym") {
+    if (dateFormat == "ym" | dateFormat == "Ym") {
         years <- firstYear:lastYear
         dates <- vector()
         for (i in years) {
@@ -26,10 +27,10 @@ CreateLinks <- function(linkFirstChunk, linkSecondChunk = NULL, startPage = 1, e
             dates <- base::c(dates, newDates)
         }
         indexLinks <- base::paste0(linkFirstChunk, dates)
-    } else if (dateStyle == "Y") {
+    } else if (dateFormat == "Y") {
         years <- firstYear:lastYear
         indexLinks <- paste0(linkFirstChunk, years)
-    } else if (dateStyle == "ymd") {
+    } else if (dateFormat == "ymd" | dateFormat == "Ymd" ) {
         years <- firstYear:lastYear
         datesTemp <- vector()
         for (i in years) {
@@ -42,7 +43,7 @@ CreateLinks <- function(linkFirstChunk, linkSecondChunk = NULL, startPage = 1, e
             dates <- base::c(dates, newDates)
         }
         indexLinks <- base::paste0(linkFirstChunk, dates)
-    } else if (dateStyle == "dmY") {
+    } else if (dateFormat == "dmY") {
         dates <- base::seq(as.Date(startDate), as.Date(endDate), by = "day")
         dates <- base::format(as.Date(dates), paste("%d", "%m", "%Y", sep = dateSeparator))
         indexLinks <- paste0(linkFirstChunk, dates)
@@ -67,8 +68,8 @@ CreateLinks <- function(linkFirstChunk, linkSecondChunk = NULL, startPage = 1, e
         base::writeLines(indexLinks, base::file.path(nameOfProject, nameOfWebsite, paste0(nameOfWebsite, "indexLinks.txt")))
     }
     if (exportParameters == TRUE) {
-        args <- c("linkFirstChunk", "linkSecondChunk", "startPage", "endPage", "increaseBy", "dateStyle", "firstYear", "lastYear", "leadingZero", "startDate", "endDate", "sortIndexLinks", "dateSeparator", "export", "reversedOrder", "exportParameters", "nameOfProject", "nameOfWebsite")
-        param <- list(linkFirstChunk, linkSecondChunk, startPage, endPage, increaseBy, dateStyle, firstYear, lastYear, leadingZero, startDate, endDate, sortIndexLinks, dateSeparator, export, reversedOrder, exportParameters, nameOfProject, nameOfWebsite)
+        args <- c("linkFirstChunk", "linkSecondChunk", "startPage", "endPage", "increaseBy", "dateFormatCreateLinks", "firstYear", "lastYear", "leadingZero", "startDate", "endDate", "sortIndexLinks", "dateSeparator", "export", "reversedOrder", "exportParameters", "nameOfProject", "nameOfWebsite")
+        param <- list(linkFirstChunk, linkSecondChunk, startPage, endPage, increaseBy, dateFormat, firstYear, lastYear, leadingZero, startDate, endDate, sortIndexLinks, dateSeparator, export, reversedOrder, exportParameters, nameOfProject, nameOfWebsite)
         for (i in 1:length(param)) {
             if (is.null(param[[i]])==TRUE) {
                 param[[i]] <- "NULL"

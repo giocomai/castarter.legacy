@@ -5,7 +5,7 @@
 \title{Generates links to index pages listing individual articles..}
 \usage{
 CreateLinks(linkFirstChunk, linkSecondChunk = NULL, startPage = 1,
-  endPage = 10, increaseBy = 1, dateStyle = "", firstYear = "",
+  endPage = 10, increaseBy = 1, dateFormat = "", firstYear = "",
   lastYear = "", leadingZero = TRUE, startDate = "", endDate = "",
   sortIndexLinks = TRUE, dateSeparator = "/", export = FALSE,
   reversedOrder = FALSE, exportParameters = FALSE, nameOfProject = NULL,
@@ -19,6 +19,8 @@ CreateLinks(linkFirstChunk, linkSecondChunk = NULL, startPage = 1,
 \item{startPage,}{endPage If the links include a numerical component, define first and last number of the sequence.startPage defaults to 1, endPage defaults to 10.}
 
 \item{increaseBy}{Defines by how much the number in the link should be increased in the numerical sequence. Defaults to 1.}
+
+\item{dateFormat}{A charachter string that defines the format of the date to incldue in the link. Available options are: "Y" (e.g. 2015), "Ym" (2015-10), "Ymd" (e.g. 2015-10-24).}
 
 \item{exportParameters}{Defaults to FALSE. If TRUE, function parameters are exported in the nameOfProject/nameOfWebsite folder. They can be used to update the corpus.}
 }
