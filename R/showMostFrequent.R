@@ -20,7 +20,7 @@
 #' corpusDtm <- DocumentTermMatrix(corpus).
 #' mostFrequent <- ShowMostFrequent(corpusDtm)
 
-ShowMostFrequent <- function(corpusDtm, mode = "data.frame", number = 10, specificTerms = NULL, stemCompletion = FALSE, corpusOriginal = "", minFrequency = 0, export = FALSE, title = NULL, nameOfProject = NULL, nameOfWebsite = NULL) {
+ShowMostFrequent <- function(corpusDtm, mode = "data.frame", number = 10, specificTerms = NULL, stemCompletion = FALSE, corpusOriginal = "", minFrequency = 0, export = FALSE, barchartTitle = NULL, tipology = NULL, nameOfProject = NULL, nameOfWebsite = NULL) {
     freq <- sort(slam::col_sums(corpusDtm, na.rm = TRUE), decreasing = TRUE)
     if (is.null(specificTerms) == FALSE) {
         freq <- freq[base::match(specificTerms, names(freq))]
@@ -41,13 +41,27 @@ ShowMostFrequent <- function(corpusDtm, mode = "data.frame", number = 10, specif
         }
     }
     if (mode == "barchart" | mode == "graph") {
-        barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = reorder(term, -freq), y = freq)) + ggplot2::geom_bar(stat = "identity") + ggplot2::coord_flip() + ggplot2::ylab("Word frequency") + ggplot2::xlab("")
-        barchart + ggplot2::ggtitle(title)
-        if (export == TRUE) {
-            if (is.null(title) == TRUE) {
-                title <- "Word frequency barchart"
+        if (is.null(tipology) == FALSE) {
+            wordFrequency$type <- NA
+            tipology$type <- as.character(tipology$type)
+            for (i in 1:length(wordFrequency[, 1])) {
+                if (is.element(wordFrequency$term[i], tipology$term)) {
+                    wordFrequency$type[i] <- tipology$type[tipology$term == wordFrequency$term[i]]
+                } else {
+                    wordFrequency$type[i] <- NA
+                }
             }
-                if (is.null(nameOfProject) == FALSE & is.null(nameOfWebsite) == FALSE) {
+            # mostFrequentByWebsite$nameOfWebsite <- reorder(mostFrequentByWebsite$nameOfWebsite, mostFrequentByWebsite$nameOfWebsite)
+        } else {
+            barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = reorder(term, -freq), y = freq)) + ggplot2::geom_bar(stat = "identity") + ggplot2::coord_flip() + ggplot2::ylab("Word frequency") + ggplot2::xlab("")
+        }
+        if (is.null(barchartTitle) == FALSE) {
+            barchart <- barchart + ggplot2::ggtitle(barchartTitle)
+        } else {
+            barchart <- barchart + ggplot2::ggtitle("Word frequency barchart")
+        }
+        if (export == TRUE) {
+            if (is.null(nameOfProject) == FALSE & is.null(nameOfWebsite) == FALSE) {
                 if (file.exists(file.path(nameOfProject, nameOfWebsite, "Outputs")) == FALSE) {
                     dir.create(file.path(nameOfProject, nameOfWebsite, "Outputs"))
                 }
@@ -70,7 +84,7 @@ ShowMostFrequent <- function(corpusDtm, mode = "data.frame", number = 10, specif
                 print(paste("File saved in", file.path("Outputs", paste0(paste(title, sep = " - "), ".pdf"))))
             }
         }
-        barchart + ggplot2::ggtitle(title)
+        barchart
     } else if (mode == "wordcloud") {
         wordcloud::wordcloud(rownames(wordFrequency), wordFrequency$freq, min.freq = minFrequency, colors = "black")
     } else if (mode == "data.frame") {
