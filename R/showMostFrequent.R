@@ -43,7 +43,7 @@ ShowMostFrequent <- function(corpusDtm, mode = "data.frame", number = 10, specif
     if (mode == "barchart" | mode == "graph") {
         if (is.null(tipology) == FALSE) {
             wordFrequency$type <- NA
-            tipology$type <- as.character(tipology$type)
+            #tipology$type <- as.character(tipology$type)
             for (i in 1:length(wordFrequency[, 1])) {
                 if (is.element(wordFrequency$term[i], tipology$term)) {
                     wordFrequency$type[i] <- tipology$type[tipology$term == wordFrequency$term[i]]
