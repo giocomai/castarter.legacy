@@ -69,6 +69,7 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", language = "en", cust
                 datesTxt[i] <- dateTxt
             }
         }
+        dateFormat <- "bdY"
     } else if (dateFormat == "xdBY") {
         for (i in 1:numberOfArticles) {
             dateTxt <- regmatches(articlesHtml[i], regexpr(paste0(customString, "[[:digit:]]?[[:digit:]][[:space:]][[:alpha:]]*[[:space:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]?"), 
