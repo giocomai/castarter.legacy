@@ -59,10 +59,10 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", language = "en", cust
                 datesTxt[i] <- dateTxt
             }
         }
-    } else if (dateFormat == "Bd,Y") {
+    } else if (dateFormat == "Bd,Y" | dateFormat == "bd,Y") {
         for (i in 1:numberOfArticles) {
-            dateTxt <- regmatches(articlesHtml[i], regexpr("[[:space:]][[:alpha:]]*[[:space:]][[:digit:]]?[[:digit:]],[[:space:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]?", 
-                articlesHtml[i]))
+            dateTxt <- regmatches(articlesHtml[i], regexpr("[[:alpha:]]*[[:space:]][[:digit:]]?[[:digit:]],[[:space:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]?", 
+                                                           articlesHtml[i]))
             if (length(dateTxt) == 0) {
                 datesTxt[i] <- NA
             } else {
