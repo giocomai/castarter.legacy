@@ -22,7 +22,7 @@ DownloadArticles <- function(nameOfProject, nameOfWebsite, articlesLinks, extrac
     if (wget == TRUE) {
         options(useFancyQuotes = FALSE)
         for (i in start:numberOfArticles) {
-            system(paste("wget", sQuote(articlesLinks[i]), "-O", articlesHtmlFilenames[i]))
+            system(paste("wget", dQuote(articlesLinks[i]), "-O", articlesHtmlFilenames[i]))
             print(paste("Downloading article", i, "of", numberOfArticles), quote = FALSE)
             htmlFile <- readLines(articlesHtmlFilenames[i])
             htmlFile <- paste(htmlFile, collapse = "\n")
