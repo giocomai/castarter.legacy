@@ -13,7 +13,7 @@
 #' @export
 #' @examples
 #' articlesTxt <- ExtractTxt(articlesHtml, metadata)
-ExtractTxt <- function(articlesHtml, metadata = "", export = TRUE, maxTitleCharacters = 80, textToBeRemoved = NULL, divClass = NULL, removeEverythingAfter = NULL, removeEverythingBefore = NULL, removePunctuationInFilename = TRUE, keepEverything = FALSE) {
+ExtractTxt <- function(articlesHtml, metadata = "", export = TRUE, maxTitleCharacters = 80, textToBeRemoved = NULL, divClass = NULL, divID = NULL, removeEverythingAfter = NULL, removeEverythingBefore = NULL, removePunctuationInFilename = TRUE, keepEverything = FALSE) {
     numberOfArticles <- length(articlesHtml)
     articlesTxt <- rep(NA, numberOfArticles)
     if (export == TRUE) {
@@ -32,6 +32,18 @@ ExtractTxt <- function(articlesHtml, metadata = "", export = TRUE, maxTitleChara
                     print(paste("Text div in article with ID", i, "could not be extracted."))
                 } else {
                     articlesTxt[i] <- XML::xpathSApply(articleHtmlParsed, paste0("//div[@class='", divClass, "']"), XML::xmlValue)
+                }
+            }
+        }
+    } else if (is.null(divID) == FALSE) {
+        for (i in 1:numberOfArticles) {
+            if (articlesHtml[i] != "") {
+                articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T, encoding = "UTF-8")
+                if (length(XML::xpathSApply(articleHtmlParsed, paste0("//div[@id='", divID, "']"), XML::xmlValue)) == 0) {
+                    articlesHtml[i] <- NA
+                    print(paste("Text div in article with ID", i, "could not be extracted."))
+                } else {
+                    articlesTxt[i] <- XML::xpathSApply(articleHtmlParsed, paste0("//div[@id='", divID, "']"), XML::xmlValue)
                 }
             }
         }
