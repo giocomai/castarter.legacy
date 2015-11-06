@@ -36,7 +36,7 @@ CreateTimeSeries <- function(corpus, terms, specificWebsites = NULL, startDate =
     termSeries <- zoo::zoo(frequencyOfterms/c(tapply(slam::row_sums(corpusDtm), time, sum)), order.by = as.POSIXct(rownames(frequencyOfterms)))
     termSeries <- merge(termSeries, zoo::zoo(, seq(start(termSeries), end(termSeries), "DSTday")), fill = NaN)
     if (rollingAverage != "") {
-        termSeries <- zoo::rollapply(termSeries, rollingAverage, align = "left", mean, na.rm = TRUE)
+        termSeries <- zoo::rollapply(termSeries, rollingAverage, align = "right", mean, na.rm = TRUE)
     }
     timeSeries <- zoo::autoplot.zoo(termSeries, facets = NULL) +
         ggplot2::ggtitle(paste("Word frequency of", paste(dQuote(terms), collapse = ", "))) +
