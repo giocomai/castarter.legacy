@@ -70,11 +70,15 @@ ShowMostFrequent <- function(corpusDtm, mode = "data.frame", number = 10, specif
                 print(paste("File saved in", file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste(barchartTitle, nameOfProject, nameOfWebsite, sep = " - "), ".png"))))
                 ggplot2::ggsave(file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste(barchartTitle, nameOfProject, nameOfWebsite, sep = " - "), ".pdf")))
                 print(paste("File saved in", file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste(barchartTitle, nameOfProject, nameOfWebsite, sep = " - "), ".pdf"))))
+                ggplot2::ggsave(file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste(barchartTitle, nameOfProject, nameOfWebsite, sep = " - "), ".svg")))
+                print(paste("File saved in", file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste(barchartTitle, nameOfProject, nameOfWebsite, sep = " - "), ".svg"))))
             } else if (is.null(nameOfProject) == FALSE & is.null(nameOfWebsite) == TRUE) {
                 ggplot2::ggsave(file.path("Outputs", paste0(paste(barchartTitle, nameOfProject, sep = " - "), ".png")))
                 print(paste("File saved in", file.path("Outputs", paste0(paste(barchartTitle, nameOfProject, sep = " - "), ".png"))))
                 ggplot2::ggsave(file.path("Outputs", paste0(paste(barchartTitle, nameOfProject, sep = " - "), ".pdf")))
                 print(paste("File saved in", file.path("Outputs", paste0(paste(barchartTitle, nameOfProject, sep = " - "), ".pdf"))))
+                ggplot2::ggsave(file.path("Outputs", paste0(paste(barchartTitle, nameOfProject, sep = " - "), ".svg")))
+                print(paste("File saved in", file.path("Outputs", paste0(paste(barchartTitle, nameOfProject, sep = " - "), ".svg"))))
             } else {
                 if (!file.exists(file.path("Outputs"))) {
                     dir.create(file.path("Outputs"))
@@ -83,6 +87,8 @@ ShowMostFrequent <- function(corpusDtm, mode = "data.frame", number = 10, specif
                 print(paste("File saved in", file.path("Outputs", paste0(paste(barchartTitle, sep = " - "), ".png"))))
                 ggplot2::ggsave(file.path("Outputs", paste0(paste(barchartTitle, sep = " - "), ".pdf")))
                 print(paste("File saved in", file.path("Outputs", paste0(paste(barchartTitle, sep = " - "), ".pdf"))))
+                ggplot2::ggsave(file.path("Outputs", paste0(paste(barchartTitle, sep = " - "), ".svg")))
+                print(paste("File saved in", file.path("Outputs", paste0(paste(barchartTitle, sep = " - "), ".svg"))))
             }
         }
         barchart
