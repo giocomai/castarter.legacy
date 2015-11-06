@@ -66,23 +66,23 @@ ShowMostFrequent <- function(corpusDtm, mode = "data.frame", number = 10, specif
                 if (file.exists(file.path(nameOfProject, nameOfWebsite, "Outputs")) == FALSE) {
                     dir.create(file.path(nameOfProject, nameOfWebsite, "Outputs"))
                 }
-                ggplot2::ggsave(file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste(title, nameOfProject, nameOfWebsite, sep = " - "), ".png")))
-                print(paste("File saved in", file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste(title, nameOfProject, nameOfWebsite, sep = " - "), ".png"))))
-                ggplot2::ggsave(file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste(title, nameOfProject, nameOfWebsite, sep = " - "), ".pdf")))
-                print(paste("File saved in", file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste(title, nameOfProject, nameOfWebsite, sep = " - "), ".pdf"))))
+                ggplot2::ggsave(file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste(barchartTitle, nameOfProject, nameOfWebsite, sep = " - "), ".png")))
+                print(paste("File saved in", file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste(barchartTitle, nameOfProject, nameOfWebsite, sep = " - "), ".png"))))
+                ggplot2::ggsave(file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste(barchartTitle, nameOfProject, nameOfWebsite, sep = " - "), ".pdf")))
+                print(paste("File saved in", file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste(barchartTitle, nameOfProject, nameOfWebsite, sep = " - "), ".pdf"))))
             } else if (is.null(nameOfProject) == FALSE & is.null(nameOfWebsite) == TRUE) {
-                ggplot2::ggsave(file.path("Outputs", paste0(paste(title, nameOfProject, sep = " - "), ".png")))
-                print(paste("File saved in", file.path("Outputs", paste0(paste(title, nameOfProject, sep = " - "), ".png"))))
-                ggplot2::ggsave(file.path("Outputs", paste0(paste(title, nameOfProject, sep = " - "), ".pdf")))
-                print(paste("File saved in", file.path("Outputs", paste0(paste(title, nameOfProject, sep = " - "), ".pdf"))))
+                ggplot2::ggsave(file.path("Outputs", paste0(paste(barchartTitle, nameOfProject, sep = " - "), ".png")))
+                print(paste("File saved in", file.path("Outputs", paste0(paste(barchartTitle, nameOfProject, sep = " - "), ".png"))))
+                ggplot2::ggsave(file.path("Outputs", paste0(paste(barchartTitle, nameOfProject, sep = " - "), ".pdf")))
+                print(paste("File saved in", file.path("Outputs", paste0(paste(barchartTitle, nameOfProject, sep = " - "), ".pdf"))))
             } else {
                 if (!file.exists(file.path("Outputs"))) {
                     dir.create(file.path("Outputs"))
                 }
-                ggplot2::ggsave(file.path("Outputs", paste0(paste(title, sep = " - "), ".png")))
-                print(paste("File saved in", file.path("Outputs", paste0(paste(title, sep = " - "), ".png"))))
-                ggplot2::ggsave(file.path("Outputs", paste0(paste(title, sep = " - "), ".pdf")))
-                print(paste("File saved in", file.path("Outputs", paste0(paste(title, sep = " - "), ".pdf"))))
+                ggplot2::ggsave(file.path("Outputs", paste0(paste(barchartTitle, sep = " - "), ".png")))
+                print(paste("File saved in", file.path("Outputs", paste0(paste(barchartTitle, sep = " - "), ".png"))))
+                ggplot2::ggsave(file.path("Outputs", paste0(paste(barchartTitle, sep = " - "), ".pdf")))
+                print(paste("File saved in", file.path("Outputs", paste0(paste(barchartTitle, sep = " - "), ".pdf"))))
             }
         }
         barchart
