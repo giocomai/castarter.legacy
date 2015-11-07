@@ -18,12 +18,15 @@ UpdateDataset <- function(dataset, nameOfProject, nameOfWebsite, numberOfIndexPa
     articlesLinks <- articlesLinks[is.element(articlesLinks, dataset$articlesLinks)==FALSE]
     articlesLinks <- c(dataset$articlesLinks, articlesLinks)
     articlesHtml <- DownloadArticles(nameOfProject, nameOfWebsite, articlesLinks, start = sum(length(dataset$articlesLinks), 1), wait = wait, wget = wget)
-    titles <- ExtractTitles(articlesHtml = articlesHtml, articlesLinks = articlesLinks)
+    titles <- ExtractTitles(articlesHtml = articlesHtml, articlesLinks = articlesLinks, titlesExtractMethod = params$param[params$args=="titlesExtractMethod"], removePunctuation = params$param[params$args=="removePunctuationExtractTitle"], onlyStandardCharacters = params$param[params$args=="onlyStandardCharactersExtractTitles"], removeString = params$param[params$args=="removeStringExtractTitles"], removeEverythingAfter = params$param[params$args=="removeEverythingAfterExtractTitles"], customXpath = params$param[params$args=="customXpathExtractTitles"], maxCharacters = params$param[params$args=="maxCharactersExtractTitles"])
     if (extractDatesXpath == TRUE) {
         
     } else {
         dates <- ExtractDates(articlesHtml = articlesHtml, dateFormat = params$param[params$args=="dateFormat"], language = dataset$language[1], customString = params$param[params$args=="customStringExtractDates"], minDate = params$param[params$args=="minDate"], maxDate = params$param[params$args=="maxDate"], removeEverythingBefore = params$param[params$args=="removeEverythingBeforeExtractDates"])
     }
+    articlesId <- ExtractArticleId(nameOfProject, nameOfWebsite)
+    language <- dataset$language[1]
+    ExportMetadata(nameOfProject = nameOfProject, nameOfWebsite = nameOfWebsite, dates = dates, articlesId = articlesId, titles = titles, language = language, articlesLinks = articlesLinks)
     
     
     
