@@ -26,9 +26,9 @@ UpdateDataset <- function(dataset, nameOfProject, nameOfWebsite, numberOfIndexPa
     }
     articlesId <- ExtractArticleId(nameOfProject, nameOfWebsite)
     language <- dataset$language[1]
-    ExportMetadata(nameOfProject = nameOfProject, nameOfWebsite = nameOfWebsite, dates = dates, articlesId = articlesId, titles = titles, language = language, articlesLinks = articlesLinks)
-    
-    
-    
+    metadata <- ExportMetadata(nameOfProject = nameOfProject, nameOfWebsite = nameOfWebsite, dates = dates, articlesId = articlesId, titles = titles, language = language, articlesLinks = articlesLinks)
+    articlesTxt <- ExtractTxt(articlesHtml = articlesHtml, metadata = metadata, export = params$param[params$args=="exportExtractTxt"], maxTitleCharacters = params$param[params$args=="maxTitleCharacters"], textToBeRemoved = params$param[params$args=="textToBeRemovedExtractTxt"], divClass = params$param[params$args=="divClassExtractTxt"], divID = params$param[params$args=="divIDExtractTxt"], removeEverythingAfter = params$param[params$args=="removeEverythingAfterExtractTxt"], removeEverythingBefore = params$param[params$args=="removeEverythingBeforeExtractTxt"], removePunctuationInFilename = params$param[params$args=="removePunctuationInFilename"], keepEverything = params$param[params$args=="keepEverything"])
+    dataset <- rbind(dataset, cbind(metadata, articlesTxt, stringsAsFactors = FALSE))
+    dataset
 }
                 
