@@ -13,7 +13,7 @@
 #' @export
 #' @examples
 #' articlesTxt <- ExtractTxt(articlesHtml, metadata)
-ExtractTxt <- function(articlesHtml, metadata = "", export = TRUE, maxTitleCharacters = 80, textToBeRemoved = NULL, divClass = NULL, divID = NULL, removeEverythingAfter = NULL, removeEverythingBefore = NULL, removePunctuationInFilename = TRUE, keepEverything = FALSE) {
+ExtractTxt <- function(articlesHtml, metadata = "", export = TRUE, maxTitleCharacters = 80, textToBeRemoved = NULL, divClass = NULL, divID = NULL, removeEverythingAfter = NULL, removeEverythingBefore = NULL, removePunctuationInFilename = TRUE, keepEverything = FALSE, exportParameters = TRUE) {
     numberOfArticles <- length(articlesHtml)
     articlesTxt <- rep(NA, numberOfArticles)
     if (export == TRUE) {
@@ -72,6 +72,29 @@ ExtractTxt <- function(articlesHtml, metadata = "", export = TRUE, maxTitleChara
         for (i in 1:length(articlesTxt)) {
         base::write(articlesTxt[i], file = txtFilenames[i])
         }
+    }
+    if (exportParameters == TRUE) {
+        args <- c("exportExtractTxt", "maxTitleCharacters", "textToBeRemovedExtractTxt", "divClassExtractTxt", "divIDExtractTxt", "removeEverythingAfterExtractTxt", "removeEverythingBeforeExtractTxt", "removePunctuationInFilename", "keepEverything")
+        param <- list(export, maxTitleCharacters, textToBeRemoved, divClass, divID, removeEverythingAfter, removeEverythingBefore, removePunctuationInFilename, keepEverything)
+        for (i in 1:length(param)) {
+            if (is.null(param[[i]])==TRUE) {
+                param[[i]] <- "NULL"
+            }
+        }
+        param <- unlist(param)
+        updateParametersTemp <- data.frame(args, param, stringsAsFactors = FALSE)
+        if (file.exists(base::file.path(nameOfProject, nameOfWebsite, paste(nameOfWebsite, "updateParameters.csv", sep = "-"))) == TRUE) {
+            updateParameters <- utils::read.table(base::file.path(nameOfProject, nameOfWebsite, paste(nameOfWebsite, "updateParameters.csv", sep = "-")), stringsAsFactors = FALSE)
+            for (i in 1:length(updateParametersTemp$args)) {
+                updateParameters$param[updateParameters$args == updateParametersTemp$args[i]] <- updateParametersTemp$param[i]
+                if (is.element(updateParametersTemp$args[i], updateParameters$args) == FALSE) {
+                    updateParameters <- rbind(updateParameters, updateParametersTemp[i,] )
+                }
+            }
+        } else {
+            updateParameters <- updateParametersTemp 
+        }
+        write.table(updateParameters, file = base::file.path(nameOfProject, nameOfWebsite, paste(nameOfWebsite, "updateParameters.csv", sep = "-")))
     }
     articlesTxt
 } 
