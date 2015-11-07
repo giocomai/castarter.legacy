@@ -18,6 +18,7 @@ UpdateDataset <- function(dataset, nameOfProject, nameOfWebsite, numberOfIndexPa
     articlesLinks <- articlesLinks[is.element(articlesLinks, dataset$articlesLinks)==FALSE]
     articlesLinks <- c(dataset$articlesLinks, articlesLinks)
     articlesHtml <- DownloadArticles(nameOfProject, nameOfWebsite, articlesLinks, start = sum(length(dataset$articlesLinks), 1), wait = wait, wget = wget)
+    titles <- ExtractTitles(articlesHtml = articlesHtml, articlesLinks = articlesLinks)
     if (extractDatesXpath == TRUE) {
         
     } else {
