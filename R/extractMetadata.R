@@ -205,7 +205,17 @@ ExtractDatesXpath <- function(articlesHtml, dateFormat = "dmy", divClass = NULL,
     }
 }
 
-MergeDates <- function(dates1, dates2, dates3 = "", firstPossibleDate = "", lastPossibleDate = "") {
+#' Merge alternative sets of dates for a given dataset
+#' 
+#' Merge alternative sets of dates for a given dataset.
+#'  
+#' @param dates1, dates2, dates3 Vectors of the POSIXct class to be merged. Where a value in dates1 is NA, MergeDates looks for a corresponding value in dates2 and dates3.
+#' @param minDate, maxDate Minimum and maximum possible dates in the format year-month-date, e.g. "2007-06-24". Introduces NA in the place of impossibly high or low dates.
+#' @return A vector of the POSIXct class. . 
+#' @export
+#' @examples
+#' dates <- MergeDates(dates1, dates2)
+MergeDates <- function(dates1, dates2, dates3 = "", minDate = "", maxDate = "") {
     dates <- dates1
     for (i in 1:length(dates)) {
         if (is.na(dates[i])) {
@@ -214,8 +224,8 @@ MergeDates <- function(dates1, dates2, dates3 = "", firstPossibleDate = "", last
         if (is.na(dates[i])) {
             dates[i] <- dates3[i]
         }
-        if (firstPossibleDate != "" & lastPossibleDate != "") {
-            if (is.na(dates[i]) == FALSE & dates[i] < firstPossibleDate | is.na(dates[i]) == FALSE & dates[i] > lastPossibleDate) {
+        if (is.null(minDate) == FALSE & is.null(maxDate) == FALSE) {
+            if (is.na(dates[i]) == FALSE & dates[i] < minDate | is.na(dates[i]) == FALSE & dates[i] > maxDate) {
                 dates[i] <- NA
             }
         }
