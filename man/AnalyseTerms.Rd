@@ -5,7 +5,8 @@
 \title{Compares frequency of specific words across websites.}
 \usage{
 AnalyseTerms(corpus, nameOfProject, specificTerms, mode = "graph",
-  includeOnly = NULL, order = "", tipology = "", frequency = "relative")
+  includeOnly = NULL, order = TRUE, tipology = "",
+  frequency = "relative")
 }
 \arguments{
 \item{corpus}{A TM corpus.}

@@ -7,7 +7,7 @@
 #' @examples
 #' AnalyseTerms(corpus, nameOfProject, specificTerms)
 
-AnalyseTerms <- function(corpus, nameOfProject, specificTerms, mode = "graph", includeOnly = NULL, order = "", tipology = "", frequency = "relative") {
+AnalyseTerms <- function(corpus, nameOfProject, specificTerms, mode = "graph", includeOnly = NULL, order = TRUE, tipology = "", frequency = "relative") {
      namesOfWebsites <- levels(as.factor(unlist(NLP::meta(corpus, "author"))))
      corpusDtm <- CreateDtm(corpus)
      byWebsiteAll <- DivideByWebsite(corpus = corpus, nameOfProject = nameOfProject)
@@ -51,7 +51,7 @@ AnalyseTerms <- function(corpus, nameOfProject, specificTerms, mode = "graph", i
         }
         # mostFrequentByWebsite$nameOfWebsite <- reorder(mostFrequentByWebsite$nameOfWebsite, mostFrequentByWebsite$nameOfWebsite)
     }
-    if (order == "frequency") {
+    if (order == TRUE) {
         mostFrequentByWebsite <- mostFrequentByWebsite[order(mostFrequentByWebsite[, 2]), ]
         dataframeMostFrequentByWebsite <- mostFrequentByWebsite
     }
