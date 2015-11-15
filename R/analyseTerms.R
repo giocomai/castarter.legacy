@@ -40,13 +40,13 @@ AnalyseTerms <- function(corpus, nameOfProject, specificTerms, mode = "graph", i
         }
     }
     if (is.null(tipology) == FALSE) {
-        mostFrequentByWebsite$Tyoe <- NA
+        mostFrequentByWebsite$Type <- NA
         tipology$Type <- as.character(tipology$Type)
         for (i in 1:length(mostFrequentByWebsite[, 1])) {
             if (is.element(mostFrequentByWebsite$nameOfWebsite[i], tipology$nameOfWebsite)) {
-                mostFrequentByWebsite$Type[i] <- tipology$Tyoe[tipology$nameOfWebsite == mostFrequentByWebsite$nameOfWebsite[i]]
+                mostFrequentByWebsite$Type[i] <- tipology$Type[tipology$nameOfWebsite == mostFrequentByWebsite$nameOfWebsite[i]]
             } else {
-                mostFrequentByWebsite$Tyoe[i] <- NA
+                mostFrequentByWebsite$Type[i] <- NA
             }
         }
         # mostFrequentByWebsite$nameOfWebsite <- reorder(mostFrequentByWebsite$nameOfWebsite, mostFrequentByWebsite$nameOfWebsite)
@@ -57,20 +57,20 @@ AnalyseTerms <- function(corpus, nameOfProject, specificTerms, mode = "graph", i
     }
     if (mode == "graph") {
         if (is.null(tipology) == FALSE) {
-            mostFrequentByWebsiteLong <- reshape2::melt(mostFrequentByWebsite, id.vars = c("nameOfWebsite", "Tyoe"), measure.vars = specificTerms, value.name = "frequency")
+            mostFrequentByWebsiteLong <- reshape2::melt(mostFrequentByWebsite, id.vars = c("nameOfWebsite", "Type"), measure.vars = specificTerms, value.name = "frequency")
         } else {
             mostFrequentByWebsiteLong <- reshape2::melt(mostFrequentByWebsite, id.vars = "nameOfWebsite", measure.vars = specificTerms, value.name = "frequency")
         }
         names(mostFrequentByWebsiteLong)[names(mostFrequentByWebsiteLong) == "variable"] <- "Term"
         mostFrequentByWebsiteLong$nameOfWebsite <- as.factor(mostFrequentByWebsiteLong$nameOfWebsite)
-        # mostFrequentByWebsiteLong$Tyoe <- as.factor(mostFrequentByWebsiteLong$Tyoe)
-        # factor(mostFrequentByWebsiteLong$nameOfWebsite, levels = rev(levels(mostFrequentByWebsiteLong$Tyoe)))
+        # mostFrequentByWebsiteLong$Type <- as.factor(mostFrequentByWebsiteLong$Type)
+        # factor(mostFrequentByWebsiteLong$nameOfWebsite, levels = rev(levels(mostFrequentByWebsiteLong$Type)))
         mentionterms <- paste(dQuote(rev(specificTerms)), collapse = ", ")
         if (length(specificTerms)>1) {
             mostFrequentByWebsite <- ggplot2::ggplot(mostFrequentByWebsiteLong, ggplot2::aes(x = nameOfWebsite, y = frequency, fill = Term))
         } else {
             if (is.null(tipology) == FALSE) {
-                mostFrequentByWebsite <- ggplot2::ggplot(mostFrequentByWebsiteLong, ggplot2::aes(x = nameOfWebsite, y = frequency, fill = Tyoe))
+                mostFrequentByWebsite <- ggplot2::ggplot(mostFrequentByWebsiteLong, ggplot2::aes(x = nameOfWebsite, y = frequency, fill = Type))
             } else {
                 mostFrequentByWebsite <- ggplot2::ggplot(mostFrequentByWebsiteLong, ggplot2::aes(x = nameOfWebsite, y = frequency))
             }
@@ -79,9 +79,9 @@ AnalyseTerms <- function(corpus, nameOfProject, specificTerms, mode = "graph", i
             ggplot2::ggtitle(paste("Frequency of", mentionterms)) + 
             ggplot2::scale_x_discrete(name = "")
         if (frequency == "relative") {
-            mostFrequentByWebsite <- mostFrequentByWebsite + ggplot2::scale_y_continuous(name = "Frequency of term as % of all words", labels = percent) + ggplot2::scale_x_continuous(name = "") + ggplot2::guides(fill = ggplot2::guide_legend(reverse = FALSE)) + ggplot2::coord_flip()
+            mostFrequentByWebsite <- mostFrequentByWebsite + ggplot2::scale_y_continuous(name = "Frequency of term as % of all words", labels = percent) + ggplot2::scale_x_discrete(name = "") + ggplot2::guides(fill = ggplot2::guide_legend(reverse = FALSE)) + ggplot2::coord_flip()
         } else if (frequency == "absolute") {
-            mostFrequentByWebsite <- mostFrequentByWebsite + ggplot2::scale_y_continuous(name = "Frequency of term") + ggplot2::scale_y_continuous(name = "") + ggplot2::guides(fill = ggplot2::guide_legend(reverse = FALSE)) + ggplot2::coord_flip()
+            mostFrequentByWebsite <- mostFrequentByWebsite + ggplot2::scale_y_continuous(name = "Frequency of term") + ggplot2::scale_x_discrete(name = "") + ggplot2::guides(fill = ggplot2::guide_legend(reverse = FALSE)) + ggplot2::coord_flip()
         }
         if (order == TRUE) {
             mostFrequentByWebsite <- mostFrequentByWebsite + ggplot2::scale_x_discrete(limits = dataframeMostFrequentByWebsite$nameOfWebsite)
