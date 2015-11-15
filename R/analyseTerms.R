@@ -24,7 +24,7 @@ AnalyseTerms <- function(corpus, nameOfProject, specificTerms, mode = "graph", i
      for (i in 1:length(byWebsite)) {
         dtmTemp <- corpusDtm[byWebsite[, i], ]
         mostFrequent <- castarter::ShowMostFrequent(dtmTemp, mode = "data.frame", number = "all", specificTerms = specificTerms)
-        totalWords <- sum(corpusDtm)
+        totalWords <- sum(dtmTemp)
         mostFrequentByWebsite[i, 1] <- names(byWebsite)[i]
         for (j in 1:length(specificTerms)) {
             value <- mostFrequent$freq[mostFrequent$term == specificTerms[j]]
@@ -76,7 +76,7 @@ AnalyseTerms <- function(corpus, nameOfProject, specificTerms, mode = "graph", i
             }
         }
         mostFrequentByWebsite <- mostFrequentByWebsite + ggplot2::geom_bar(stat = "identity", position = "dodge") +
-            ggplot2::ggtitle(paste("Frequency of", mentionterms)) + 
+            ggplot2::ggtitle(paste("Frequency of", mentionterms))
         if (frequency == "relative") {
             mostFrequentByWebsite <- mostFrequentByWebsite + ggplot2::scale_y_continuous(name = "Frequency of term as % of all words", labels = percent) + ggplot2::guides(fill = ggplot2::guide_legend(reverse = FALSE)) + ggplot2::coord_flip()
         } else if (frequency == "absolute") {
