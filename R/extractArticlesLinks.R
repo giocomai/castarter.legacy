@@ -56,7 +56,7 @@ ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = "", cont
     allLinks$links <- gsub("http:/", "http://", allLinks$links, fixed = TRUE)
     allLinks$links <- gsub("https:/", "https://", allLinks$links, fixed = TRUE)
     if (is.null(indexLinks) == FALSE) {
-        allLinks$links <- allLinks$links[!is.element(allLinks$links, indexLinks)]
+        allLinks <- allLinks[!is.element(allLinks$links, indexLinks), ]
     }
     allLinks <- allLinks[!duplicated(allLinks[, "links"], fromLast = TRUE), ]
     if (sortLinks == TRUE) {
