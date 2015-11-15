@@ -41,7 +41,7 @@ AnalyseTerms <- function(corpus, nameOfProject, specificTerms, mode = "graph", i
     }
     if (is.null(tipology) == FALSE) {
         mostFrequentByWebsite$Tyoe <- NA
-        tipology$Tyoe <- as.character(tipology$Type)
+        tipology$Type <- as.character(tipology$Type)
         for (i in 1:length(mostFrequentByWebsite[, 1])) {
             if (is.element(mostFrequentByWebsite$nameOfWebsite[i], tipology$nameOfWebsite)) {
                 mostFrequentByWebsite$Type[i] <- tipology$Tyoe[tipology$nameOfWebsite == mostFrequentByWebsite$nameOfWebsite[i]]
