@@ -24,7 +24,7 @@ AnalyseTerms <- function(corpus, nameOfProject, specificTerms, mode = "graph", i
      for (i in 1:length(byWebsite)) {
         dtmTemp <- corpusDtm[byWebsite[, i], ]
         mostFrequent <- castarter::ShowMostFrequent(dtmTemp, mode = "data.frame", number = "all", specificTerms = specificTerms)
-        totalWords <- sum(mostFrequent$freq)
+        totalWords <- sum(corpusDtm)
         mostFrequentByWebsite[i, 1] <- names(byWebsite)[i]
         for (j in 1:length(specificTerms)) {
             value <- mostFrequent$freq[mostFrequent$term == specificTerms[j]]
@@ -57,8 +57,7 @@ AnalyseTerms <- function(corpus, nameOfProject, specificTerms, mode = "graph", i
     }
     if (mode == "graph") {
         if (is.null(tipology) == FALSE) {
-            mostFrequentByWebsiteLong <- reshape2::melt(mostFrequentByWebsite, id.vars = c("nameOfWebsite", "type"), measure.vars = specificTerms, 
-                value.name = "frequency")
+            mostFrequentByWebsiteLong <- reshape2::melt(mostFrequentByWebsite, id.vars = c("nameOfWebsite", "type"), measure.vars = specificTerms, value.name = "frequency")
         } else {
             mostFrequentByWebsiteLong <- reshape2::melt(mostFrequentByWebsite, id.vars = "nameOfWebsite", measure.vars = specificTerms, value.name = "frequency")
         }
@@ -67,8 +66,16 @@ AnalyseTerms <- function(corpus, nameOfProject, specificTerms, mode = "graph", i
         # mostFrequentByWebsiteLong$type <- as.factor(mostFrequentByWebsiteLong$type)
         # factor(mostFrequentByWebsiteLong$nameOfWebsite, levels = rev(levels(mostFrequentByWebsiteLong$type)))
         mentionterms <- paste(dQuote(rev(specificTerms)), collapse = ", ")
-        mostFrequentByWebsite <- ggplot2::ggplot(mostFrequentByWebsiteLong, ggplot2::aes(x = nameOfWebsite, y = frequency, fill = Term)) +
-            ggplot2::geom_bar(stat = "identity", position = "dodge") +
+        if (length(specificTerms)>1) {
+            mostFrequentByWebsite <- ggplot2::ggplot(mostFrequentByWebsiteLong, ggplot2::aes(x = nameOfWebsite, y = frequency, fill = Term))
+        } else {
+            if (is.null(tipology) == FALSE) {
+                mostFrequentByWebsite <- ggplot2::ggplot(mostFrequentByWebsiteLong, ggplot2::aes(x = nameOfWebsite, y = frequency, fill = type))
+            } else {
+                mostFrequentByWebsite <- ggplot2::ggplot(mostFrequentByWebsiteLong, ggplot2::aes(x = nameOfWebsite, y = frequency))
+            }
+        }
+        mostFrequentByWebsite <- mostFrequentByWebsite + ggplot2::geom_bar(stat = "identity", position = "dodge") +
             ggplot2::ggtitle(paste("Frequency of", mentionterms)) + 
             ggplot2::scale_x_discrete(name = "")
         if (frequency == "relative") {
