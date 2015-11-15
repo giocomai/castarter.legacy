@@ -7,7 +7,7 @@
 #' @examples
 #' AnalyseTerms(corpus, nameOfProject, specificTerms)
 
-AnalyseTerms <- function(corpus, nameOfProject, specificTerms, mode = "graph", includeOnly = NULL, order = TRUE, tipology = "", frequency = "relative") {
+AnalyseTerms <- function(corpus, nameOfProject, specificTerms, mode = "graph", includeOnly = NULL, order = TRUE, tipology = NULL, frequency = "relative") {
      namesOfWebsites <- levels(as.factor(unlist(NLP::meta(corpus, "author"))))
      corpusDtm <- CreateDtm(corpus)
      byWebsiteAll <- DivideByWebsite(corpus = corpus, nameOfProject = nameOfProject)
@@ -39,14 +39,14 @@ AnalyseTerms <- function(corpus, nameOfProject, specificTerms, mode = "graph", i
             }
         }
     }
-    if (tipology != "") {
-        mostFrequentByWebsite$typeOfWebsite <- NA
-        tipology$typeOfWebsite <- as.character(tipology$typeOfWebsite)
+    if (is.null(tipology) == FALSE) {
+        mostFrequentByWebsite$type <- NA
+        tipology$type <- as.character(tipology$type)
         for (i in 1:length(mostFrequentByWebsite[, 1])) {
             if (is.element(mostFrequentByWebsite$nameOfWebsite[i], tipology$nameOfWebsite)) {
-                mostFrequentByWebsite$typeOfWebsite[i] <- tipology$typeOfWebsite[tipology$nameOfWebsite == mostFrequentByWebsite$nameOfWebsite[i]]
+                mostFrequentByWebsite$type[i] <- tipology$type[tipology$nameOfWebsite == mostFrequentByWebsite$nameOfWebsite[i]]
             } else {
-                mostFrequentByWebsite$typeOfWebsite[i] <- NA
+                mostFrequentByWebsite$type[i] <- NA
             }
         }
         # mostFrequentByWebsite$nameOfWebsite <- reorder(mostFrequentByWebsite$nameOfWebsite, mostFrequentByWebsite$nameOfWebsite)
@@ -57,15 +57,15 @@ AnalyseTerms <- function(corpus, nameOfProject, specificTerms, mode = "graph", i
     }
     if (mode == "graph") {
         if (tipology != "") {
-            mostFrequentByWebsiteLong <- reshape2::melt(mostFrequentByWebsite, id.vars = c("nameOfWebsite", "typeOfWebsite"), measure.vars = specificTerms, 
+            mostFrequentByWebsiteLong <- reshape2::melt(mostFrequentByWebsite, id.vars = c("nameOfWebsite", "type"), measure.vars = specificTerms, 
                 value.name = "frequency")
         } else {
             mostFrequentByWebsiteLong <- reshape2::melt(mostFrequentByWebsite, id.vars = "nameOfWebsite", measure.vars = specificTerms, value.name = "frequency")
         }
         names(mostFrequentByWebsiteLong)[names(mostFrequentByWebsiteLong) == "variable"] <- "Term"
         mostFrequentByWebsiteLong$nameOfWebsite <- as.factor(mostFrequentByWebsiteLong$nameOfWebsite)
-        # mostFrequentByWebsiteLong$typeOfWebsite <- as.factor(mostFrequentByWebsiteLong$typeOfWebsite)
-        # factor(mostFrequentByWebsiteLong$nameOfWebsite, levels = rev(levels(mostFrequentByWebsiteLong$typeOfWebsite)))
+        # mostFrequentByWebsiteLong$type <- as.factor(mostFrequentByWebsiteLong$type)
+        # factor(mostFrequentByWebsiteLong$nameOfWebsite, levels = rev(levels(mostFrequentByWebsiteLong$type)))
         mentionterms <- paste(dQuote(rev(specificTerms)), collapse = ", ")
         mostFrequentByWebsite <- ggplot2::ggplot(mostFrequentByWebsiteLong, ggplot2::aes(x = nameOfWebsite, y = frequency, fill = Term)) +
             ggplot2::geom_bar(stat = "identity", position = "dodge") +

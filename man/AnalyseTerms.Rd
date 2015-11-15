@@ -5,7 +5,7 @@
 \title{Compares frequency of specific words across websites.}
 \usage{
 AnalyseTerms(corpus, nameOfProject, specificTerms, mode = "graph",
-  includeOnly = NULL, order = TRUE, tipology = "",
+  includeOnly = NULL, order = TRUE, tipology = NULL,
   frequency = "relative")
 }
 \arguments{
