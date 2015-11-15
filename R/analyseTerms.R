@@ -56,7 +56,7 @@ AnalyseTerms <- function(corpus, nameOfProject, specificTerms, mode = "graph", i
         dataframeMostFrequentByWebsite <- mostFrequentByWebsite
     }
     if (mode == "graph") {
-        if (tipology != "") {
+        if (is.null(tipology) == FALSE) {
             mostFrequentByWebsiteLong <- reshape2::melt(mostFrequentByWebsite, id.vars = c("nameOfWebsite", "type"), measure.vars = specificTerms, 
                 value.name = "frequency")
         } else {
