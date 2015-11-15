@@ -79,9 +79,9 @@ AnalyseTerms <- function(corpus, nameOfProject, specificTerms, mode = "graph", i
             ggplot2::ggtitle(paste("Frequency of", mentionterms)) + 
             ggplot2::scale_x_discrete(name = "")
         if (frequency == "relative") {
-            mostFrequentByWebsite <- mostFrequentByWebsite + ggplot2::scale_y_continuous(name = "Frequency of term as % of all words", labels = percent) + ggplot2::guides(fill = ggplot2::guide_legend(reverse = FALSE)) + ggplot2::coord_flip()
+            mostFrequentByWebsite <- mostFrequentByWebsite + ggplot2::scale_y_continuous(name = "Frequency of term as % of all words", labels = percent) + ggplot2::scale_x_continuous(name = "") + ggplot2::guides(fill = ggplot2::guide_legend(reverse = FALSE)) + ggplot2::coord_flip()
         } else if (frequency == "absolute") {
-            mostFrequentByWebsite <- mostFrequentByWebsite + ggplot2::scale_y_continuous(name = "Frequency of term") + ggplot2::guides(fill = ggplot2::guide_legend(reverse = FALSE)) + ggplot2::coord_flip()
+            mostFrequentByWebsite <- mostFrequentByWebsite + ggplot2::scale_y_continuous(name = "Frequency of term") + ggplot2::scale_y_continuous(name = "") + ggplot2::guides(fill = ggplot2::guide_legend(reverse = FALSE)) + ggplot2::coord_flip()
         }
         if (order == TRUE) {
             mostFrequentByWebsite <- mostFrequentByWebsite + ggplot2::scale_x_discrete(limits = dataframeMostFrequentByWebsite$nameOfWebsite)
