@@ -6,7 +6,7 @@
 \usage{
 ReDownloadMissingArticles(nameOfProject, nameOfWebsite, links = articlesLinks,
   articlesHtml = NULL, size = 500, linksToDownload = NULL, wget = FALSE,
-  missingArticles = FALSE, wait = 3)
+  missingArticles = FALSE, wait = 3, createScript = FALSE)
 }
 \arguments{
 \item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
