@@ -76,6 +76,7 @@ ReDownloadMissingArticles <- function(nameOfProject, nameOfWebsite, links = arti
             for (i in articlesLinks[linksToDownload]) {
                 articleId <- articlesId[linksToDownload][temp]
                 write(x = paste("wget", sQuote(i), "-O", file.path(nameOfProject, nameOfWebsite, "Html", paste0(articleId, ".html")), "--wait=", wait), file = file.path(nameOfProject, nameOfWebsite, "downloadArticles.sh"), append = TRUE)
+                temp <- temp + 1
             }    
         } else {
             options(useFancyQuotes = FALSE)
