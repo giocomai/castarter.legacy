@@ -53,7 +53,7 @@ DownloadArticles <- function(nameOfProject, nameOfWebsite, articlesLinks, extrac
 #' @examples
 #' ReDownloadMissingArticles(nameOfProject, nameOfWebsite, articlesLinks)
 
-ReDownloadMissingArticles <- function(nameOfProject, nameOfWebsite, links = articlesLinks, articlesHtml = NULL, size = 500, linksToDownload = NULL, wget = FALSE, missingArticles = FALSE, wait = 3) {
+ReDownloadMissingArticles <- function(nameOfProject, nameOfWebsite, links = articlesLinks, articlesHtml = NULL, size = 500, linksToDownload = NULL, wget = FALSE, missingArticles = FALSE, wait = 3, createScript = FALSE) {
     articlesHtmlProvided <- is.null(articlesHtml) == FALSE
     htmlFilesList <- gtools::mixedsort(list.files(file.path(nameOfProject, nameOfWebsite, "Html"), full.names = TRUE))
     htmlFileSize <- file.info(htmlFilesList)["size"]
@@ -71,16 +71,24 @@ ReDownloadMissingArticles <- function(nameOfProject, nameOfWebsite, links = arti
     }
     temp <- 1
     if (wget == TRUE) {
-        options(useFancyQuotes = FALSE)
-        for (i in articlesLinks[linksToDownload]) {
-            articleId <- articlesId[linksToDownload][temp]
-            system(paste("wget", sQuote(i), "-O", file.path(nameOfProject, nameOfWebsite, "Html", paste0(articleId, ".html"))))
-            print(paste("Downloaded article", temp, "of", length(articlesLinks[linksToDownload]), ". ArticleID: ", articleId), quote = FALSE)
-            htmlFile <- readLines(file.path(nameOfProject, nameOfWebsite, "Html", paste0(articleId, ".html")))
-            htmlFile <- paste(htmlFile, collapse = "\n")
-            articlesHtml[linksToDownload][temp] <- htmlFile
-            temp <- temp + 1
-            Sys.sleep(wait)
+        if (createScript == TRUE) {
+            options(useFancyQuotes = FALSE)
+            for (i in articlesLinks[linksToDownload]) {
+                articleId <- articlesId[linksToDownload][temp]
+                write(x = paste("wget", sQuote(i), "-O", file.path(nameOfProject, nameOfWebsite, "Html", paste0(articleId, ".html")), "--wait=", wait), file = file.path(nameOfProject, nameOfWebsite, "downloadArticles.sh"), append = TRUE)
+            }    
+        } else {
+            options(useFancyQuotes = FALSE)
+            for (i in articlesLinks[linksToDownload]) {
+                articleId <- articlesId[linksToDownload][temp]
+                system(paste("wget", sQuote(i), "-O", file.path(nameOfProject, nameOfWebsite, "Html", paste0(articleId, ".html"))))
+                print(paste("Downloaded article", temp, "of", length(articlesLinks[linksToDownload]), ". ArticleID: ", articleId), quote = FALSE)
+                htmlFile <- readLines(file.path(nameOfProject, nameOfWebsite, "Html", paste0(articleId, ".html")))
+                htmlFile <- paste(htmlFile, collapse = "\n")
+                articlesHtml[linksToDownload][temp] <- htmlFile
+                temp <- temp + 1
+                Sys.sleep(wait)
+            }
         }
     } else {
         for (i in articlesLinks[linksToDownload]) {
