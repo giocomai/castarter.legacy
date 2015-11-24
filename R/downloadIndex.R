@@ -13,41 +13,44 @@
 #' @examples
 #' indexLinks <- CreateLinks("http://www.example.com/news/")
 CreateLinks <- function(linkFirstChunk, linkSecondChunk = NULL, startPage = 1, endPage = 10, increaseBy = 1, dateFormat = NULL, 
-    firstYear = "", lastYear = "", leadingZero = TRUE, startDate = "", endDate = "", sortIndexLinks = TRUE, dateSeparator = "/", export = FALSE, 
-    reversedOrder = FALSE, exportParameters = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
-    if (dateFormat == "ym" | dateFormat == "Ym") {
-        years <- firstYear:lastYear
-        dates <- vector()
-        for (i in years) {
-            if (leadingZero == TRUE) {
-                newDates <- base::paste(base::rep(i, 12), base::sprintf("%02d", 1:12), sep = dateSeparator)
-            } else {
-                newDates <-base:: paste(rep(i, 12), 1:12, sep = dateSeparator)
+                        firstYear = "", lastYear = "", leadingZero = TRUE, startDate = "", endDate = "", sortIndexLinks = TRUE, dateSeparator = "/", export = FALSE, 
+                        reversedOrder = FALSE, exportParameters = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
+    if (is.null(dateFormat) == FALSE) {
+        if (dateFormat == "ym" | dateFormat == "Ym") {
+            years <- firstYear:lastYear
+            dates <- vector()
+            for (i in years) {
+                if (leadingZero == TRUE) {
+                    newDates <- base::paste(base::rep(i, 12), base::sprintf("%02d", 1:12), sep = dateSeparator)
+                } else {
+                    newDates <-base:: paste(rep(i, 12), 1:12, sep = dateSeparator)
+                }
+                dates <- base::c(dates, newDates)
             }
-            dates <- base::c(dates, newDates)
-        }
-        indexLinks <- base::paste0(linkFirstChunk, dates)
-    } else if (dateFormat == "Y") {
-        years <- firstYear:lastYear
-        indexLinks <- paste0(linkFirstChunk, years)
-    } else if (dateFormat == "ymd" | dateFormat == "Ymd" ) {
-        years <- firstYear:lastYear
-        datesTemp <- vector()
-        for (i in years) {
-            newDatesTemp <- base::paste(rep(i, 12), 1:12, sep = dateSeparator)
-            datesTemp <- base::c(datesTemp, newDatesTemp)
-        }
-        dates <- vector()
-        for (i in 1:length(datesTemp)) {
-            newDates <- base::paste(rep(datesTemp[i], 31), 1:31, sep = dateSeparator)
-            dates <- base::c(dates, newDates)
-        }
-        indexLinks <- base::paste0(linkFirstChunk, dates)
-    } else if (dateFormat == "dmY") {
-        dates <- base::seq(as.Date(startDate), as.Date(endDate), by = "day")
-        dates <- base::format(as.Date(dates), paste("%d", "%m", "%Y", sep = dateSeparator))
-        indexLinks <- paste0(linkFirstChunk, dates)
-    } else if (base::is.null(linkSecondChunk) == TRUE) {
+            indexLinks <- base::paste0(linkFirstChunk, dates)
+        } else if (dateFormat == "Y") {
+            years <- firstYear:lastYear
+            indexLinks <- paste0(linkFirstChunk, years)
+        } else if (dateFormat == "ymd" | dateFormat == "Ymd" ) {
+            years <- firstYear:lastYear
+            datesTemp <- vector()
+            for (i in years) {
+                newDatesTemp <- base::paste(rep(i, 12), 1:12, sep = dateSeparator)
+                datesTemp <- base::c(datesTemp, newDatesTemp)
+            }
+            dates <- vector()
+            for (i in 1:length(datesTemp)) {
+                newDates <- base::paste(rep(datesTemp[i], 31), 1:31, sep = dateSeparator)
+                dates <- base::c(dates, newDates)
+            }
+            indexLinks <- base::paste0(linkFirstChunk, dates)
+        } else if (dateFormat == "dmY") {
+            dates <- base::seq(as.Date(startDate), as.Date(endDate), by = "day")
+            dates <- base::format(as.Date(dates), paste("%d", "%m", "%Y", sep = dateSeparator))
+            indexLinks <- paste0(linkFirstChunk, dates)
+        } 
+    }
+    if (base::is.null(linkSecondChunk) == TRUE) {
         listOfNumbers <- base::seq(startPage, endPage, increaseBy)
         if (base::is.element(endPage, listOfNumbers) == FALSE) {
             listOfNumbers <- base::c(listOfNumbers, endPage)
