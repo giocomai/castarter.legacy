@@ -72,10 +72,14 @@ ReDownloadMissingArticles <- function(nameOfProject, nameOfWebsite, links = arti
     temp <- 1
     if (wget == TRUE) {
         if (createScript == TRUE) {
+            if (file.exists(file.path(nameOfProject, nameOfWebsite, "downloadArticles.sh")) == TRUE) {
+                file.remove(file.path(nameOfProject, nameOfWebsite, "downloadArticles.sh"))
+            }
             options(useFancyQuotes = FALSE)
             for (i in articlesLinks[linksToDownload]) {
                 articleId <- articlesId[linksToDownload][temp]
                 write(x = paste("wget", sQuote(i), "-O", file.path(nameOfProject, nameOfWebsite, "Html", paste0(articleId, ".html")), "--wait=", wait), file = file.path(nameOfProject, nameOfWebsite, "downloadArticles.sh"), append = TRUE)
+                write(x = paste("sleep", wait), file = file.path(nameOfProject, nameOfWebsite, "downloadArticles.sh"), append = TRUE)
                 temp <- temp + 1
             }    
         } else {
