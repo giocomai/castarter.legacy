@@ -5,7 +5,7 @@
 \title{Generates links to index pages listing individual articles..}
 \usage{
 CreateLinks(linkFirstChunk, linkSecondChunk = NULL, startPage = 1,
-  endPage = 10, increaseBy = 1, dateFormat = "", firstYear = "",
+  endPage = 10, increaseBy = 1, dateFormat = NULL, firstYear = "",
   lastYear = "", leadingZero = TRUE, startDate = "", endDate = "",
   sortIndexLinks = TRUE, dateSeparator = "/", export = FALSE,
   reversedOrder = FALSE, exportParameters = FALSE, nameOfProject = NULL,

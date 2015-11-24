@@ -12,7 +12,7 @@
 #' @export
 #' @examples
 #' indexLinks <- CreateLinks("http://www.example.com/news/")
-CreateLinks <- function(linkFirstChunk, linkSecondChunk = NULL, startPage = 1, endPage = 10, increaseBy = 1, dateFormat = "", 
+CreateLinks <- function(linkFirstChunk, linkSecondChunk = NULL, startPage = 1, endPage = 10, increaseBy = 1, dateFormat = NULL, 
     firstYear = "", lastYear = "", leadingZero = TRUE, startDate = "", endDate = "", sortIndexLinks = TRUE, dateSeparator = "/", export = FALSE, 
     reversedOrder = FALSE, exportParameters = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
     if (dateFormat == "ym" | dateFormat == "Ym") {
@@ -56,10 +56,14 @@ CreateLinks <- function(linkFirstChunk, linkSecondChunk = NULL, startPage = 1, e
         indexLinks <- base::paste0(indexLinks[, 1], indexLinks[, 2])
     }
     if (base::is.null(linkSecondChunk) == FALSE) {
-        listOfNumbers <- base::seq(startPage, endPage, increaseBy)
-        indexLinks <- base::cbind(base::rep(linkFirstChunk, base::length(listOfNumbers)), listOfNumbers)
-        indexLinks <- base::paste0(indexLinks[, 1], indexLinks[, 2])
-        indexLinks <- base::paste0(indexLinks, linkSecondChunk)
+        if (is.null(dateFormat) == FALSE) {
+            indexLinks <- base::paste0(indexLinks, linkSecondChunk)
+        } else {
+            listOfNumbers <- base::seq(startPage, endPage, increaseBy)
+            indexLinks <- base::cbind(base::rep(linkFirstChunk, base::length(listOfNumbers)), listOfNumbers)
+            indexLinks <- base::paste0(indexLinks[, 1], indexLinks[, 2])
+            indexLinks <- base::paste0(indexLinks, linkSecondChunk)
+        }
     }
     if (sortIndexLinks == TRUE) {
         indexLinks <- gtools::mixedsort(indexLinks)
