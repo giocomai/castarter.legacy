@@ -32,18 +32,9 @@ CreateLinks <- function(linkFirstChunk, linkSecondChunk = NULL, startPage = 1, e
             years <- firstYear:lastYear
             indexLinks <- paste0(linkFirstChunk, years)
         } else if (dateFormat == "ymd" | dateFormat == "Ymd" ) {
-            years <- firstYear:lastYear
-            datesTemp <- vector()
-            for (i in years) {
-                newDatesTemp <- base::paste(rep(i, 12), 1:12, sep = dateSeparator)
-                datesTemp <- base::c(datesTemp, newDatesTemp)
-            }
-            dates <- vector()
-            for (i in 1:length(datesTemp)) {
-                newDates <- base::paste(rep(datesTemp[i], 31), 1:31, sep = dateSeparator)
-                dates <- base::c(dates, newDates)
-            }
-            indexLinks <- base::paste0(linkFirstChunk, dates)
+            dates <- base::seq(as.Date(startDate), as.Date(endDate), by = "day")
+            dates <- base::format(as.Date(dates), paste("%Y", "%m", "%d", sep = dateSeparator))
+            indexLinks <- paste0(linkFirstChunk, dates)
         } else if (dateFormat == "dmY") {
             dates <- base::seq(as.Date(startDate), as.Date(endDate), by = "day")
             dates <- base::format(as.Date(dates), paste("%d", "%m", "%Y", sep = dateSeparator))
