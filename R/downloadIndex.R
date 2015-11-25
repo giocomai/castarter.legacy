@@ -42,12 +42,16 @@ CreateLinks <- function(linkFirstChunk, linkSecondChunk = NULL, startPage = 1, e
         } 
     }
     if (base::is.null(linkSecondChunk) == TRUE) {
-        listOfNumbers <- base::seq(startPage, endPage, increaseBy)
-        if (base::is.element(endPage, listOfNumbers) == FALSE) {
-            listOfNumbers <- base::c(listOfNumbers, endPage)
+        if (is.null(dateFormat) == FALSE) {
+            indexLinks <- base::paste0(indexLinks, linkSecondChunk)
+        } else {
+            listOfNumbers <- base::seq(startPage, endPage, increaseBy)
+            if (base::is.element(endPage, listOfNumbers) == FALSE) {
+                listOfNumbers <- base::c(listOfNumbers, endPage)
+            }
+            indexLinks <- base::cbind(rep(linkFirstChunk, length(listOfNumbers)), listOfNumbers)
+            indexLinks <- base::paste0(indexLinks[, 1], indexLinks[, 2])
         }
-        indexLinks <- base::cbind(rep(linkFirstChunk, length(listOfNumbers)), listOfNumbers)
-        indexLinks <- base::paste0(indexLinks[, 1], indexLinks[, 2])
     }
     if (base::is.null(linkSecondChunk) == FALSE) {
         if (is.null(dateFormat) == FALSE) {
