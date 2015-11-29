@@ -389,6 +389,9 @@ CreateDatasetFromHtml <- function(nameOfProject, nameOfWebsite, articlesLinks = 
     } else {
         dataset <- data.frame(nameOfProject, nameOfWebsite, dates, articlesId, titles, language, articlesTxt, check.names = FALSE, stringsAsFactors = FALSE)        
     }
+    save(dataset, file = file.path(nameOfProject, nameOfWebsite, "Dataset", paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "dataset", sep = " - "), ".RData")))
+    print(paste("Dataset saved in", file.path(nameOfProject, nameOfWebsite, paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "dataset", sep = " - "), ".RData"))))
+    dataset
 }
 
 #' Exports metadata
