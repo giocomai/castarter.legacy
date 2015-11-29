@@ -363,7 +363,11 @@ CreateDatasetFromHtml <- function(nameOfProject, nameOfWebsite, articlesLinks = 
     numberOfArticles <- length(htmlFilesList)
     dates <- as.POSIXct(rep(NA, numberOfArticles))
     articlesTxt <- rep(NA, numberOfArticles)
-    titles <- rep(NA, numberOfArticles)
+    if (titlesExtractMethod == "indexLinks") {
+        titles <- ExtractTitles(articlesHtml = NA, articlesLinks = articlesLinks, titlesExtractMethod = "indexLinks", removeString = removeString)
+    } else {
+        titles <- rep(NA, numberOfArticles)
+    }
     x <- 1
     xlist <- seq(0,numberOfArticles,by=100)
     for (i in 1:numberOfArticles) {
@@ -381,7 +385,9 @@ CreateDatasetFromHtml <- function(nameOfProject, nameOfWebsite, articlesLinks = 
         dates[i] <- ExtractDatesXpath(articlesHtml = htmlFile, dateFormat = dateFormat, divClass = divClass, language = language)
         }
         articlesTxt[i] <- ExtractTxt(articlesHtml = htmlFile, export = FALSE, removeEverythingAfter = removeEverythingAfter, removeEverythingBefore = removeEverythingBefore)
-        titles[i] <- ExtractTitles(articlesHtml = htmlFile, titlesExtractMethod = titlesExtractMethod, removeString = removeString)
+        if (titlesExtractMethod != "indexLinks") {
+            titles[i] <- ExtractTitles(articlesHtml = htmlFile, titlesExtractMethod = titlesExtractMethod, removeString = removeString)
+        }
         x <- x + 1
         if (is.element(x, xlist)) {
             print(paste("Processed", x, "of", numberOfArticles, "articles."))
