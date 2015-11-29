@@ -4,7 +4,7 @@
 \alias{LoadDatasets}
 \title{Loads a specific set of datasets from existings 'castarter' projects.}
 \usage{
-LoadDatasets(projectsAndWebsites)
+LoadDatasets(projectsAndWebsites, removeNAdates = TRUE)
 }
 \arguments{
 \item{projectsAndWebsites}{A character vector listing websites to be loaded in the format "nameOfProject/nameOfWebsite".}

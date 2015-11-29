@@ -4,7 +4,7 @@
 \alias{LoadAllDatasets}
 \title{Loads all datasets of a 'castarter' project.}
 \usage{
-LoadAllDatasets(nameOfProject)
+LoadAllDatasets(nameOfProject, removeNAdates = TRUE)
 }
 \arguments{
 \item{nameOfProject}{The name of the project whose datasets are to be imported.}

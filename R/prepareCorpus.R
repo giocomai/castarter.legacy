@@ -8,7 +8,7 @@
 #' @examples
 #' projectsAndWebsites <- c("ProjectX/Website1", "ProjectY/Website3", "ProjectZ/Website2")
 #' allDatasets <- LoadDatasets(projectsAndWebsites)
-LoadDatasets <- function(projectsAndWebsites) {
+LoadDatasets <- function(projectsAndWebsites, removeNAdates = TRUE) {
     projectsAndWebsites <- base::strsplit(projectsAndWebsites, "/")
     lastSavedDatasets <- vector()
     for (i in 1:length(projectsAndWebsites)) {
@@ -27,6 +27,9 @@ LoadDatasets <- function(projectsAndWebsites) {
         allDatasets <- rbind(allDatasets, dataset)
         rm(dataset)
     }
+    if (removeNAdates == TRUE) {
+        allDatasets <- allDatasets[is.na(allDatasets$dates) == FALSE, ]
+    }
     allDatasets
 }
 
@@ -41,7 +44,7 @@ LoadDatasets <- function(projectsAndWebsites) {
 #' @examples
 #' allDatasets <- LoadAllDatasets(nameOfProject)
 
-LoadAllDatasets <- function(nameOfProject) {
+LoadAllDatasets <- function(nameOfProject, removeNAdates = TRUE) {
     listOfWebsites <- gsub(paste0(nameOfProject, "/"), "", list.dirs(file.path(nameOfProject), recursive = FALSE), fixed = TRUE)
     lastSavedDatasets <- vector()
     for (i in 1:length(listOfWebsites)) {
@@ -59,6 +62,9 @@ LoadAllDatasets <- function(nameOfProject) {
         load(lastSavedDatasets[i])
         allDatasets <- rbind(allDatasets, dataset)
         rm(dataset)
+    }
+    if (removeNAdates == TRUE) {
+        allDatasets <- allDatasets[is.na(allDatasets$dates) == FALSE, ]
     }
     allDatasets
 }
