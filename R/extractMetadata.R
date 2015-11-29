@@ -363,8 +363,8 @@ CreateDatasetFromHtml <- function(nameOfProject, nameOfWebsite, articlesLinks = 
     numberOfArticles <- length(htmlFilesList)
     dates <- as.POSIXct(rep(NA, numberOfArticles))
     articlesTxt <- rep(NA, numberOfArticles)
-    if (titlesExtractMethod == "indexLinks") {
-        titles <- ExtractTitles(articlesHtml = NA, articlesLinks = articlesLinks, titlesExtractMethod = "indexLinks", removeString = removeString)
+    if (titlesExtractMethod == "indexLink") {
+        titles <- ExtractTitles(articlesHtml = NULL, articlesLinks = articlesLinks, titlesExtractMethod = "indexLink", removeString = removeString)
     } else {
         titles <- rep(NA, numberOfArticles)
     }
@@ -385,7 +385,7 @@ CreateDatasetFromHtml <- function(nameOfProject, nameOfWebsite, articlesLinks = 
         dates[i] <- ExtractDatesXpath(articlesHtml = htmlFile, dateFormat = dateFormat, divClass = divClass, language = language)
         }
         articlesTxt[i] <- ExtractTxt(articlesHtml = htmlFile, export = FALSE, removeEverythingAfter = removeEverythingAfter, removeEverythingBefore = removeEverythingBefore)
-        if (titlesExtractMethod != "indexLinks") {
+        if (titlesExtractMethod != "indexLink") {
             titles[i] <- ExtractTitles(articlesHtml = htmlFile, titlesExtractMethod = titlesExtractMethod, removeString = removeString)
         }
         x <- x + 1
