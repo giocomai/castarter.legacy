@@ -386,7 +386,12 @@ CreateDatasetFromHtml <- function(nameOfProject, nameOfWebsite, articlesLinks = 
         }
         articlesTxt[i] <- ExtractTxt(articlesHtml = htmlFile, export = FALSE, removeEverythingAfter = removeEverythingAfter, removeEverythingBefore = removeEverythingBefore)
         if (titlesExtractMethod != "indexLink") {
-            titles[i] <- ExtractTitles(articlesHtml = htmlFile, titlesExtractMethod = titlesExtractMethod, removeString = removeString)
+            titleTemp <- ExtractTitles(articlesHtml = htmlFile, titlesExtractMethod = titlesExtractMethod, removeString = removeString)
+            if (length(titleTemp) == 1) {
+                titles[i] <- titleTemp
+            } else {
+                titles[i] <- NA
+            }
         }
         x <- x + 1
         if (is.element(x, xlist)) {
