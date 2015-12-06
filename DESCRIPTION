@@ -1,8 +1,8 @@
 Package: castarter
 Type: Package
 Title: Content Analysis Starter toolkit for R
-Version: 0.0.0.9026
-Date: 2015-11-13
+Version: 0.0.0.9027
+Date: 2015-12-06
 Author: Giorgio Comai <giorgio.comai@dcu.ie>
 Maintainer: Giorgio Comai <giorgio.comai@dcu.ie>
 Description: castarter is an R package that smooths the process of extracting
@@ -32,4 +32,4 @@ Imports:
 Suggests:
     knitr
 VignetteBuilder: knitr
-RoxygenNote: 5.0.0
+RoxygenNote: 5.0.1
