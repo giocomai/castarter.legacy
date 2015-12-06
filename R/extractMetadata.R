@@ -166,7 +166,7 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", language = "en", cust
 #' @export
 #' @examples
 #' dates <- ExtractDatesXpath(articlesHtml)
-ExtractDatesXpath <- function(articlesHtml, dateFormat = "dmy", divClass = NULL, spanClass = "", customXpath = "", language = "en", customString = "", minDate = NULL, maxDate = NULL, encoding = NULL) {
+ExtractDatesXpath <- function(articlesHtml, dateFormat = "dmy", divClass = NULL, spanClass = NULL, customXpath = "", language = "en", customString = "", minDate = NULL, maxDate = NULL, encoding = NULL) {
     numberOfArticles <- length(articlesHtml)
     datesTxt <- rep(NA, numberOfArticles)
     if (is.null(encoding) == FALSE) {
@@ -185,10 +185,10 @@ ExtractDatesXpath <- function(articlesHtml, dateFormat = "dmy", divClass = NULL,
             }
         }
     }
-    if (spanClass != "") {
+    if (is.null(spanClass)==FALSE) {
         for (i in 1:numberOfArticles) {
             articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T)
-            tempStringXml <- XML::xpathSApply(articleHtmlParsed, paste0("//div[@class='", divClass, "']"), XML::xmlValue)
+            tempStringXml <- XML::xpathSApply(articleHtmlParsed, paste0("//span[@class='", spanClass, "']"), XML::xmlValue)
             if (length(tempStringXml) == 0) {
                 datesTxt[i] <- NA
                 print(paste("Date in article with ID", i, "could not be extracted."))

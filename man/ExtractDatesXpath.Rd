@@ -5,8 +5,8 @@
 \title{Extracts dates from a vector of html files}
 \usage{
 ExtractDatesXpath(articlesHtml, dateFormat = "dmy", divClass = NULL,
-  spanClass = "", customXpath = "", language = "en", customString = "",
-  minDate = NULL, maxDate = NULL, encoding = NULL)
+  spanClass = NULL, customXpath = "", language = "en",
+  customString = "", minDate = NULL, maxDate = NULL, encoding = NULL)
 }
 \arguments{
 \item{articlesHtml}{A character vector of html files.}
