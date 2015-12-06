@@ -382,7 +382,12 @@ CreateDatasetFromHtml <- function(nameOfProject, nameOfWebsite, articlesLinks = 
             dates[i] <- ExtractDates(htmlFile, dateFormat = dateFormat, language = language, removeEverythingBefore = removeEverythingBeforeDate)
         }
         if (ExtractDatesXpath == TRUE) {
-        dates[i] <- ExtractDatesXpath(articlesHtml = htmlFile, dateFormat = dateFormat, divClass = divClass, spanClass = spanClass, language = language)
+            dateTemp <- ExtractDatesXpath(articlesHtml = htmlFile, dateFormat = dateFormat, divClass = divClass, spanClass = spanClass, language = language)
+            if (length(dateTemp) == 1) {
+                dates[i] <- dateTemp
+            } else {
+                dates[i] <- NA
+            }
         }
         articlesTxt[i] <- ExtractTxt(articlesHtml = htmlFile, export = FALSE, removeEverythingAfter = removeEverythingAfter, removeEverythingBefore = removeEverythingBefore)
         if (titlesExtractMethod != "indexLink") {
