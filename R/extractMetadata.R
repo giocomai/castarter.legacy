@@ -188,7 +188,13 @@ ExtractDatesXpath <- function(articlesHtml, dateFormat = "dmy", divClass = NULL,
     if (spanClass != "") {
         for (i in 1:numberOfArticles) {
             articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T)
-            datesTxt[i] <- XML::xpathSApply(articleHtmlParsed, paste0("//span[@class='", spanClass, "']"), XML::xmlValue)
+            tempStringXml <- XML::xpathSApply(articleHtmlParsed, paste0("//div[@class='", divClass, "']"), XML::xmlValue)
+            if (length(tempStringXml) == 0) {
+                datesTxt[i] <- NA
+                print(paste("Date in article with ID", i, "could not be extracted."))
+            } else {
+                datesTxt[i] <- tempStringXml
+            }
         }
     }
     if (customXpath != "") {
