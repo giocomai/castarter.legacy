@@ -3,13 +3,16 @@
 #' @param corpus A TM corpus. 
 #' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.
 #' @param specificTerms Character vector of terms to be compared. 
+#' @param corpusDtm A document-term matrix. If provided, computation is faster. 
 #' @export
 #' @examples
 #' AnalyseTerms(corpus, nameOfProject, specificTerms)
 
-AnalyseTerms <- function(corpus, nameOfProject, specificTerms, mode = "graph", includeOnly = NULL, order = TRUE, tipology = NULL, frequency = "relative") {
+AnalyseTerms <- function(corpus, nameOfProject, specificTerms, mode = "graph", includeOnly = NULL, order = TRUE, tipology = NULL, frequency = "relative", corpusDtm = NULL) {
      namesOfWebsites <- levels(as.factor(unlist(NLP::meta(corpus, "author"))))
-     corpusDtm <- CreateDtm(corpus)
+     if (is.null(corpusDtm) == TRUE) {
+         corpusDtm <- CreateDtm(corpus)
+     }
      byWebsiteAll <- DivideByWebsite(corpus = corpus, nameOfProject = nameOfProject)
      if (is.null(includeOnly) == FALSE) {
           byWebsite <- byWebsiteAll[, includeOnly]

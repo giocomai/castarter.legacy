@@ -6,7 +6,7 @@
 \usage{
 AnalyseTerms(corpus, nameOfProject, specificTerms, mode = "graph",
   includeOnly = NULL, order = TRUE, tipology = NULL,
-  frequency = "relative")
+  frequency = "relative", corpusDtm = NULL)
 }
 \arguments{
 \item{corpus}{A TM corpus.}
@@ -14,6 +14,8 @@ AnalyseTerms(corpus, nameOfProject, specificTerms, mode = "graph",
 \item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
 
 \item{specificTerms}{Character vector of terms to be compared.}
+
+\item{corpusDtm}{A document-term matrix. If provided, computation is faster.}
 }
 \description{
 Compares frequency of specific words across websites.
