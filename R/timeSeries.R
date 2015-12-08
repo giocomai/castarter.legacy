@@ -9,11 +9,12 @@
 #' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
 #' @param rollingAverage Integer, defaults to 30. Number of days used to calculate word frequency as shown in the time series. Time series shows word frequency for each date as an average of the N number of days (N=rollingAverage) following the correspondent date.
 #' @param export Logical, defaults to FALSE. If TRUE, saves the time series in both png and pdf format. If nameOfProject and nameOfWebsite are provided, in saves the timeseries in the "Outputs" subfolder. 
+#' @param corpusDtm A document-term matrix. If provided, other parameters (specificWebsites, startDate, endDate) are ignored, but computation is faster. 
 #' @export
 #' @examples
 #' CreateTimeSeries(corpus, terms = c("word1", "word2"))
 
-CreateTimeSeries <- function(corpus, terms, specificWebsites = NULL, startDate = NULL, endDate = NULL, rollingAverage = 30, export = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
+CreateTimeSeries <- function(corpus, terms, specificWebsites = NULL, startDate = NULL, endDate = NULL, rollingAverage = 30, corpusDtm = NULL, export = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
     if (is.null(startDate)==FALSE) {
         corpus <- corpus[NLP::meta(corpus, "datetimestamp") > as.POSIXct(startDate)]
     }
@@ -22,7 +23,9 @@ CreateTimeSeries <- function(corpus, terms, specificWebsites = NULL, startDate =
     }
     time <- as.character(strptime(as.POSIXct(unlist(NLP::meta(corpus, "datetimestamp")), origin = "1970-01-01"), "%Y-%m-%d"))
     nameOfWebsitesIncluded <- as.character(unlist(NLP::meta(corpus, "author")))
-    corpusDtm <- tm::DocumentTermMatrix(corpus)
+    if (is.null(corpusDtm) == TRUE) {
+        corpusDtm <- tm::DocumentTermMatrix(corpus)
+    }
     if (length(terms)>1) {
         frequencyOfterms <- as.table(slam::rollup(corpusDtm[, terms], 1, time))
     } else {

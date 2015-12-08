@@ -5,7 +5,7 @@
 \title{Creates time series of the frequency of specific terms.}
 \usage{
 CreateTimeSeries(corpus, terms, specificWebsites = NULL, startDate = NULL,
-  endDate = NULL, rollingAverage = 30, export = FALSE,
+  endDate = NULL, rollingAverage = 30, corpusDtm = NULL, export = FALSE,
   nameOfProject = NULL, nameOfWebsite = NULL)
 }
 \arguments{
@@ -18,6 +18,8 @@ CreateTimeSeries(corpus, terms, specificWebsites = NULL, startDate = NULL,
 \item{startDate, }{endDate Character vector with date in the format year-month-date, e.g. "2015-07-14".}
 
 \item{rollingAverage}{Integer, defaults to 30. Number of days used to calculate word frequency as shown in the time series. Time series shows word frequency for each date as an average of the N number of days (N=rollingAverage) following the correspondent date.}
+
+\item{corpusDtm}{A document-term matrix. If provided, other parameters (specificWebsites, startDate, endDate) are ignored, but computation is faster.}
 
 \item{export}{Logical, defaults to FALSE. If TRUE, saves the time series in both png and pdf format. If nameOfProject and nameOfWebsite are provided, in saves the timeseries in the "Outputs" subfolder.}
 
