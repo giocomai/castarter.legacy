@@ -30,8 +30,7 @@ SubsetDataset <- function(dataset, terms = NULL, startDate = NULL, endDate = NUL
 #' @examples
 #' DivideByWebsite(corpus, nameOfProject)
 DivideByWebsite <- function(corpus, nameOfProject) {
-    listOfWebsites <- as.character(unlist(NLP::meta(corpus, "author")))
-    # listOfWebsites <- gsub(paste0(nameOfProject, "/"), "", list.dirs(file.path(nameOfProject), recursive = FALSE), fixed = TRUE)
+    listOfWebsites <- levels(as.factor(unlist(NLP::meta(corpus, "author"))))
     byWebsite <- data.frame(matrix(NA, nrow = length(corpus), ncol = length(listOfWebsites)))
     names(byWebsite) <- listOfWebsites
     for (i in 1:length(listOfWebsites)) {
