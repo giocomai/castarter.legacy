@@ -64,11 +64,15 @@ CreateTimeSeries <- function(corpus, terms, specificWebsites = NULL, startDate =
             print(paste("File saved in", file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste("timeseries", nameOfProject, nameOfWebsite, paste(terms, collapse = " - "), sep = " - "), ".png"))))
             ggplot2::ggsave(file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste("timeseries", nameOfProject, nameOfWebsite, paste(terms, collapse = " - "), sep = " - "), ".pdf")))
             print(paste("File saved in", file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste("timeseries", nameOfProject, nameOfWebsite, paste(terms, collapse = " - "), sep = " - "), ".pdf"))))
+            ggplot2::ggsave(file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste("timeseries", nameOfProject, nameOfWebsite, paste(terms, collapse = " - "), sep = " - "), ".svg")))
+            print(paste("File saved in", file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste("timeseries", nameOfProject, nameOfWebsite, paste(terms, collapse = " - "), sep = " - "), ".svg"))))
         } else if (is.null(nameOfProject) == FALSE & is.null(nameOfWebsite) == TRUE) {
             ggplot2::ggsave(file.path("Outputs", paste0(paste("timeseries", nameOfProject, paste(terms, collapse = " - "), sep = " - "), ".png")))
             print(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", nameOfProject, paste(terms, collapse = " - "), sep = " - "), ".png"))))
             ggplot2::ggsave(file.path("Outputs", paste0(paste("timeseries", nameOfProject, paste(terms, collapse = " - "), sep = " - "), ".pdf")))
             print(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", nameOfProject, paste(terms, collapse = " - "), sep = " - "), ".pdf"))))
+            ggplot2::ggsave(file.path("Outputs", paste0(paste("timeseries", nameOfProject, paste(terms, collapse = " - "), sep = " - "), ".svg")))
+            print(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", nameOfProject, paste(terms, collapse = " - "), sep = " - "), ".svg"))))
         } else {
             if (!file.exists(file.path("Outputs"))) {
                 dir.create(file.path("Outputs"))
@@ -77,6 +81,8 @@ CreateTimeSeries <- function(corpus, terms, specificWebsites = NULL, startDate =
             print(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", paste(terms, collapse = " - "), sep = " - "), ".png"))))
             ggplot2::ggsave(file.path("Outputs", paste0(paste("timeseries", paste(terms, collapse = " - "), sep = " - "), ".pdf")))
             print(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", paste(terms, collapse = " - "), sep = " - "), ".pdf"))))
+            ggplot2::ggsave(file.path("Outputs", paste0(paste("timeseries", paste(terms, collapse = " - "), sep = " - "), ".svg")))
+            print(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", paste(terms, collapse = " - "), sep = " - "), ".svg"))))
         }
     }
     timeSeries
