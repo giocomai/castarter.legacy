@@ -14,7 +14,7 @@
 #' @examples
 #' CreateTimeSeries(corpus, terms = c("word1", "word2"))
 
-CreateTimeSeries <- function(corpus, terms, specificWebsites = NULL, startDate = NULL, endDate = NULL, rollingAverage = 30, corpusDtm = NULL, export = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
+CreateTimeSeries <- function(corpus, terms, specificWebsites = NULL, startDate = NULL, endDate = NULL, rollingAverage = 30, corpusDtm = NULL, export = FALSE, allWebsitesAsOne = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
     if (is.null(startDate)==FALSE) {
         corpus <- corpus[NLP::meta(corpus, "datetimestamp") > as.POSIXct(startDate)]
     }
@@ -23,6 +23,9 @@ CreateTimeSeries <- function(corpus, terms, specificWebsites = NULL, startDate =
     }
     time <- as.character(strptime(as.POSIXct(unlist(NLP::meta(corpus, "datetimestamp")), origin = "1970-01-01"), "%Y-%m-%d"))
     nameOfWebsitesIncluded <- as.character(unlist(NLP::meta(corpus, "author")))
+    if (allWebsitesAsOne == TRUE) {
+        nameOfWebsitesIncluded <- rep("all", length(nameOfWebsitesIncluded))
+    }
     if (is.null(corpusDtm) == TRUE) {
         corpusDtm <- tm::DocumentTermMatrix(corpus)
     }

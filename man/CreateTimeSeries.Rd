@@ -6,7 +6,7 @@
 \usage{
 CreateTimeSeries(corpus, terms, specificWebsites = NULL, startDate = NULL,
   endDate = NULL, rollingAverage = 30, corpusDtm = NULL, export = FALSE,
-  nameOfProject = NULL, nameOfWebsite = NULL)
+  allWebsitesAsOne = FALSE, nameOfProject = NULL, nameOfWebsite = NULL)
 }
 \arguments{
 \item{corpus}{A corpus created by the TM package..}
