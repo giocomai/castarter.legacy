@@ -44,6 +44,10 @@ CreateTimeSeries <- function(corpus, terms, specificWebsites = NULL, startDate =
     if (rollingAverage != "") {
         termSeries <- zoo::rollapply(termSeries, rollingAverage, align = "right", mean, na.rm = TRUE)
     }
+    if (dygraphs == TRUE) {
+        termSeriesXts <- as.xts(termSeries)
+        
+    } 
     timeSeries <- zoo::autoplot.zoo(termSeries, facets = NULL) +
         ggplot2::ggtitle(paste("Word frequency of", paste(dQuote(terms), collapse = ", "))) +
         ggplot2::scale_x_datetime("") +
