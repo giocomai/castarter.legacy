@@ -13,7 +13,8 @@ Depends:
     data.table,
     tm,
     NLP,
-    scales
+    scales,
+    magrittr
 Imports:
     stringr,
     gtools,

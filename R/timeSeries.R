@@ -14,7 +14,7 @@
 #' @examples
 #' CreateTimeSeries(corpus, terms = c("word1", "word2"))
 
-CreateTimeSeries <- function(corpus, terms, specificWebsites = NULL, startDate = NULL, endDate = NULL, rollingAverage = 30, corpusDtm = NULL, export = FALSE, allWebsitesAsOne = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
+CreateTimeSeries <- function(corpus, terms, specificWebsites = NULL, startDate = NULL, endDate = NULL, rollingAverage = 30, corpusDtm = NULL, export = FALSE, allWebsitesAsOne = FALSE, nameOfProject = NULL, nameOfWebsite = NULL, dygraphs = FALSE) {
     if (is.null(startDate)==FALSE) {
         corpus <- corpus[NLP::meta(corpus, "datetimestamp") > as.POSIXct(startDate)]
     }
@@ -44,10 +44,6 @@ CreateTimeSeries <- function(corpus, terms, specificWebsites = NULL, startDate =
     if (rollingAverage != "") {
         termSeries <- zoo::rollapply(termSeries, rollingAverage, align = "right", mean, na.rm = TRUE)
     }
-    if (dygraphs == TRUE) {
-        termSeriesXts <- as.xts(termSeries)
-        
-    } 
     timeSeries <- zoo::autoplot.zoo(termSeries, facets = NULL) +
         ggplot2::ggtitle(paste("Word frequency of", paste(dQuote(terms), collapse = ", "))) +
         ggplot2::scale_x_datetime("") +
@@ -92,7 +88,13 @@ CreateTimeSeries <- function(corpus, terms, specificWebsites = NULL, startDate =
             print(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", paste(terms, collapse = " - "), sep = " - "), ".svg"))))
         }
     }
-    timeSeries
+    if (dygraphs == TRUE) {
+        termSeriesXts <- xts::as.xts(termSeries)
+        timeSeriesDygraph <- dygraphs::dygraph(termSeriesXts) %>% dygraphs::dyRangeSelector()
+        timeSeriesDygraph
+    } else {
+        timeSeries
+    }
 } 
 
 #' Creates a time series graph showing the distribution of documents by date
