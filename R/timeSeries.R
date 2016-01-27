@@ -130,8 +130,8 @@ ShowDistribution <- function(dataset, specificWebsites = NULL, rollingAverage = 
             ncharArticles$nchar[i] <- nchar(dataset$articlesTxt[i])
             ncharArticles$date[i] <- dataset$dates[i]
         }
-        ncharPerDay <- plyr::ddply(ncharArticles,~date,summarise,ncharPerDay=sum(nchar))
-        docSeries <- zoo::zoo(ncharPerDay, order.by = dates)
+        ncharPerDay <- plyr::ddply(ncharArticles,~date,plyr::summarise,ncharPerDay=sum(nchar))
+        docSeries <- zoo::zoo(ncharPerDay$ncharPerDay, order.by = dates)
     }
     docSeries <- base::merge(docSeries, zoo::zoo(, seq(start(docSeries), end(docSeries), "DSTday")), fill=0)
     docSeries <- zoo::rollapply(docSeries, rollingAverage, align="right", mean, na.rm=TRUE)
