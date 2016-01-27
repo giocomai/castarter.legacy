@@ -25,6 +25,7 @@ Imports:
     ggplot2,
     wordcloud,
     dplyr,
+    plyr,
     xlsx,
     slam,
     zoo,

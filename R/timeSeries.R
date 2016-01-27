@@ -125,15 +125,13 @@ ShowDistribution <- function(dataset, specificWebsites = NULL, rollingAverage = 
         }
     } else if (method == "numberOfCharacters") {
         numberOfArticles <- length(dataset$articlesTxt)
-        ncharArticles <- rep(NA, numberOfArticles)
+        ncharArticles <- data.frame(date = rep(NA, numberOfArticles), nchar = rep(NA, numberOfArticles))
         for (i in 1:numberOfArticles) {
-            ncharArticles[i] <- nchar(dataset$articlesTxt[i])
+            ncharArticles$nchar[i] <- nchar(dataset$articlesTxt[i])
+            ncharArticles$date[i] <- dataset$dates[i]
         }
-        ncharPerDay <- rep(NA, length(dates))
-        for (i in 1:length(dates)) {
-            ncharPerDay[i] <- sum(ncharArticles[dates==dates[i]])
-        }
-        docSeries <- zoo::zoo(ncharPerDay, order.by=dates)
+        ncharPerDay <- plyr::ddply(ncharArticles,~date,summarise,ncharPerDay=sum(nchar))
+        docSeries <- zoo::zoo(ncharPerDay, order.by = dates)
     }
     docSeries <- base::merge(docSeries, zoo::zoo(, seq(start(docSeries), end(docSeries), "DSTday")), fill=0)
     docSeries <- zoo::rollapply(docSeries, rollingAverage, align="right", mean, na.rm=TRUE)
