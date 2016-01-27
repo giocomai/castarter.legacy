@@ -108,21 +108,40 @@ CreateTimeSeries <- function(corpus, terms, specificWebsites = NULL, startDate =
 #' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
 #' @param startDate, endDate Character vector with date in the format year-month-date, e.g. "2015-07-14".
 #' @param export Logical, defaults to FALSE. If TRUE, saves the graph in both png and pdf format. If nameOfProject and nameOfWebsite are provided, in saves the timeseries in the correspondent "Outputs" subfolder. 
+#' @param method Accepted values: "numberOfArticles" (default, creates time series based on number of publications per day); "numberOfCharacters" (creates time series based on number of charachters per day, currently does not work in conjunction with specificWebsites option). 
 #' @return A ggplot2 time series showing number of articles published each day. 
 #' @export
 #' @examples
-#' CorpusDistribution(dataset)
+#' ShowDistribution(dataset)
 
-ShowDistribution <- function(dataset, specificWebsites = NULL, rollingAverage = 30, nameOfProject = NULL, nameOfWebsite = NULL) {
+ShowDistribution <- function(dataset, specificWebsites = NULL, rollingAverage = 30, nameOfProject = NULL, nameOfWebsite = NULL, method = "numberOfArticles") {
     tab <- base::table(dataset$dates, dataset$nameOfWebsite)
     dates <- base::as.POSIXct(base::rownames(tab))
-    if (base::is.null(specificWebsites) == FALSE) {
-        docSeries <- zoo::zoo(tab[,specificWebsites], order.by=dates)
-    } else {
-        docSeries <- zoo::zoo(tab, order.by=dates)
+    if (method == "numberOfArticles") {
+        if (base::is.null(specificWebsites) == FALSE) {
+            docSeries <- zoo::zoo(tab[,specificWebsites], order.by=dates)
+        } else {
+            docSeries <- zoo::zoo(tab, order.by=dates)
+        }
+    } else if (method == "numberOfCharacters") {
+        numberOfArticles <- length(dataset$articlesTxt)
+        ncharArticles <- rep(NA, numberOfArticles)
+        for (i in 1:numberOfArticles) {
+            ncharArticles[i] <- nchar(dataset$articlesTxt[i])
+        }
+        ncharPerDay <- rep(NA, length(dates))
+        for (i in 1:length(dates)) {
+            ncharPerDay[i] <- sum(ncharArticles[dates==dates[i]])
+        }
+        docSeries <- zoo::zoo(ncharPerDay, order.by=dates)
     }
     docSeries <- base::merge(docSeries, zoo::zoo(, seq(start(docSeries), end(docSeries), "DSTday")), fill=0)
     docSeries <- zoo::rollapply(docSeries, rollingAverage, align="right", mean, na.rm=TRUE)
     distributionOfCorpus <- zoo::autoplot.zoo(docSeries, facets = NULL)
-    distributionOfCorpus + ggplot2::ggtitle("Number of publications per day") + ggplot2::scale_x_datetime("Date")
+    if (method == "numberOfArticles") {
+        distributionOfCorpus <- distributionOfCorpus + ggplot2::ggtitle("Number of publications per day") + ggplot2::scale_x_datetime("Date")
+    } else if (method == "numberOfCharacters") {
+        distributionOfCorpus <- distributionOfCorpus + ggplot2::ggtitle(paste0("Number of characters per day on ", dataset$nameOfWebsite[1], "'s website" )) + ggplot2::scale_x_datetime("Date") + ggplot2::scale_y_continuous("")
+    }
+    distributionOfCorpus
 }
