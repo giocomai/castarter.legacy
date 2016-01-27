@@ -111,9 +111,9 @@ CreateTimeSeries <- function(corpus, terms, specificWebsites = NULL, startDate =
 #' @return A ggplot2 time series showing number of articles published each day. 
 #' @export
 #' @examples
-#' CreateDistributionTimeSeries(dataset)
+#' CorpusDistribution(dataset)
 
-CreateDistributionTimeSeries <- function(dataset, specificWebsites = NULL, rollingAverage = 30, nameOfProject = NULL, nameOfWebsite = NULL) {
+ShowDistribution <- function(dataset, specificWebsites = NULL, rollingAverage = 30, nameOfProject = NULL, nameOfWebsite = NULL) {
     tab <- base::table(dataset$dates, dataset$nameOfWebsite)
     dates <- base::as.POSIXct(base::rownames(tab))
     if (base::is.null(specificWebsites) == FALSE) {
