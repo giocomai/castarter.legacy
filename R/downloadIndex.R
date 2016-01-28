@@ -7,7 +7,10 @@
 #' @param startPage, endPage If the links include a numerical component, define first and last number of the sequence.startPage defaults to 1, endPage defaults to 10.
 #' @param increaseBy Defines by how much the number in the link should be increased in the numerical sequence. Defaults to 1.
 #' @param dateFormat A charachter string that defines the format of the date to incldue in the link. Available options are: "Y" (e.g. 2015), "Ym" (2015-10), "Ymd" (e.g. 2015-10-24).
-#' @param exportParameters Defaults to FALSE. If TRUE, function parameters are exported in the nameOfProject/nameOfWebsite folder. They can be used to update the corpus. 
+#' @param leadingZero Defaults to TRUE. If TRUE, days and months of one digit are preceded by a zero (e.g. 07/05/2014).
+#' @param export Exports the links in a .txt file in the folder nameOfProject/nameOfWebsite.
+#' @param exportParameters Defaults to FALSE. If TRUE, function parameters are exported in the nameOfProject/nameOfWebsite folder. They can be used to update the corpus. Requires parameters nameOfProject/nameOfWebsite.
+#' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.
 #' @return A character vector of links to index pages. 
 #' @export
 #' @examples
