@@ -7,6 +7,7 @@
 #' @param partOfLinkToExclude If an URL includes this string, it is excluded from the output. One or more strings may be provided.
 #' @param indexLinks A character vector, defaults to NULL. If provided, indexLinks are removed from the extracted articlesLinks.
 #' @param minLength If a link is shorter than the number of characters given in minLength, it is excluded from the output.
+#' @param sortLinks Defaults to TRUE. If TRUE, links are sorted in aphabetical order. 
 #' @param appendString If provided, appends given string to the extracted articles. Typically used to create links for print or mobile versions of the extracted page.
 #' @param exportParameters Defaults to FALSE. If TRUE, function parameters are exported in the nameOfProject/nameOfWebsite folder. They can be used to update the corpus. 
 #' @return A named character vector of links to articles. Name of the link may be the article title. 
