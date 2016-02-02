@@ -165,11 +165,12 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", language = "en", cust
 #' @param dateFormat A string used to extract the date. Available date formats options include dmY, dby, dBy, dBY, dbY, etc.
 #' @param minDate, maxDate Minimum and maximum possible dates in the format year-month-date, e.g. "2007-06-24". Introduces NA in the place of impossibly high or low dates.
 #' @param encoding Defaults to NULL. If source is not in UTF, encoding can be specified here for conversion. A list of valid values can be found using iconvlist().
+#' @param keepAllString Logical, defaults to FALSE. If TRUE, it directly tries to parse the date with the given dateFormat, without trying to polish the string provided accordingly.
 #' @return A vector of the POSIXct class. 
 #' @export
 #' @examples
 #' dates <- ExtractDatesXpath(articlesHtml)
-ExtractDatesXpath <- function(articlesHtml, dateFormat = "dmy", divClass = NULL, spanClass = NULL, customXpath = "", language = "en", customString = "", minDate = NULL, maxDate = NULL, encoding = NULL) {
+ExtractDatesXpath <- function(articlesHtml, dateFormat = "dmy", divClass = NULL, spanClass = NULL, customXpath = "", language = "en", customString = "", minDate = NULL, maxDate = NULL, encoding = NULL, keepAllString = FALSE) {
     numberOfArticles <- length(articlesHtml)
     datesTxt <- rep(NA, numberOfArticles)
     if (is.null(encoding) == FALSE) {
@@ -210,7 +211,7 @@ ExtractDatesXpath <- function(articlesHtml, dateFormat = "dmy", divClass = NULL,
     }
     if (length(datesTxt) == 1 & is.na(datesTxt[1]) == TRUE) {
     } else {
-    ExtractDates(datesTxt, dateFormat, language)
+    ExtractDates(articlesHtml = datesTxt, dateFormat = dateFormat, language = language, keepAllString = TRUE)
     }
 }
 
