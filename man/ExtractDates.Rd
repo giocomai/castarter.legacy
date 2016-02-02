@@ -6,7 +6,8 @@
 \usage{
 ExtractDates(articlesHtml, dateFormat = "dmY", language = "en",
   customString = "", minDate = NULL, maxDate = NULL,
-  removeEverythingBefore = NULL, exportParameters = TRUE)
+  removeEverythingBefore = NULL, keepAllString = FALSE,
+  exportParameters = TRUE)
 }
 \arguments{
 \item{articlesHtml}{A character vector of html files.}
@@ -14,6 +15,8 @@ ExtractDates(articlesHtml, dateFormat = "dmY", language = "en",
 \item{dateFormat}{A string used to extract the date. Available date formats options include dmY, dby, dBy, dBY, dbY, etc.}
 
 \item{minDate, }{maxDate Minimum and maximum possible dates in the format year-month-date, e.g. "2007-06-24". Introduces NA in the place of impossibly high or low dates.}
+
+\item{keepAllString}{Logical, defaults to FALSE. If TRUE, it directly tries to parse the date with the given dateFormat, without trying to polish the string provided accordingly.}
 }
 \value{
 A vector of the POSIXct class.

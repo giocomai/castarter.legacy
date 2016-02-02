@@ -21,6 +21,8 @@ ExtractLinks(domain, partOfLink, indexHtml, containerType = "",
 
 \item{indexLinks}{A character vector, defaults to NULL. If provided, indexLinks are removed from the extracted articlesLinks.}
 
+\item{sortLinks}{Defaults to TRUE. If TRUE, links are sorted in aphabetical order.}
+
 \item{appendString}{If provided, appends given string to the extracted articles. Typically used to create links for print or mobile versions of the extracted page.}
 
 \item{exportParameters}{Defaults to FALSE. If TRUE, function parameters are exported in the nameOfProject/nameOfWebsite folder. They can be used to update the corpus.}
