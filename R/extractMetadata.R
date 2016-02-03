@@ -172,7 +172,30 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", language = "en", cust
 #' @export
 #' @examples
 #' dates <- ExtractDatesXpath(articlesHtml)
-ExtractDatesXpath <- function(articlesHtml, dateFormat = "dmy", divClass = NULL, spanClass = NULL, customXpath = "", language = "en", customString = "", minDate = NULL, maxDate = NULL, encoding = NULL, keepAllString = FALSE) {
+ExtractDatesXpath <- function(articlesHtml, dateFormat = "dmy", divClass = NULL, spanClass = NULL, customXpath = "", language = "english", customString = "", minDate = NULL, maxDate = NULL, encoding = NULL, keepAllString = FALSE, exportParameters = FALSE) {
+    if (exportParameters == TRUE) {
+        args <- c("dateFormat", "divClassDatesXpath", "spanClassDatesXpath", "customXpathDates", "customStringDates", "minDate", "maxDate", "keepAllString", "removeEverythingBeforeExtractDates")
+        param <- list(dateFormat, divClass, spanClass, customXpathDates, customString, minDate, maxDate, keepAllString, removeEverythingBefore)
+        for (i in 1:length(param)) {
+            if (is.null(param[[i]])==TRUE) {
+                param[[i]] <- "NULL"
+            }
+        }
+        param <- unlist(param)
+        updateParametersTemp <- data.frame(args, param, stringsAsFactors = FALSE)
+        if (file.exists(base::file.path(nameOfProject, nameOfWebsite, paste(nameOfWebsite, "updateParameters.csv", sep = "-"))) == TRUE) {
+            updateParameters <- utils::read.table(base::file.path(nameOfProject, nameOfWebsite, paste(nameOfWebsite, "updateParameters.csv", sep = "-")), stringsAsFactors = FALSE)
+            for (i in 1:length(updateParametersTemp$args)) {
+                updateParameters$param[updateParameters$args == updateParametersTemp$args[i]] <- updateParametersTemp$param[i]
+                if (is.element(updateParametersTemp$args[i], updateParameters$args) == FALSE) {
+                    updateParameters <- rbind(updateParameters, updateParametersTemp[i,] )
+                }
+            }
+        } else {
+            updateParameters <- updateParametersTemp 
+        }
+        write.table(updateParameters, file = base::file.path(nameOfProject, nameOfWebsite, paste(nameOfWebsite, "updateParameters.csv", sep = "-")))
+    }
     numberOfArticles <- length(articlesHtml)
     datesTxt <- rep(NA, numberOfArticles)
     if (is.null(encoding) == FALSE) {
