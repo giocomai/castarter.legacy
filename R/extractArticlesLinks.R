@@ -52,7 +52,7 @@ ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = "", cont
         allLinks <- allLinks[nchar(as.character(allLinks$links)) > minLength-nchar(domain),  ]
     }
     if (is.null(maxLength)==FALSE) {
-        allLinks <- allLinks[nchar(as.character(allLinks$links)) < minLength-nchar(domain),  ]
+        allLinks <- allLinks[nchar(as.character(allLinks$links)) < maxLength-nchar(domain),  ]
     }
     allLinks <- allLinks[gtools::mixedorder(nchar(as.character(allLinks$titles))), ]
     allLinks$links <- as.character(allLinks$links)
