@@ -21,7 +21,9 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", language = "en", cust
     if (is.null(removeEverythingBefore) == FALSE) {
         articlesHtml <- base::gsub(base::paste0(".*", removeEverythingBefore), "", articlesHtml, fixed = FALSE)
     }
-    if (keepAllString == FALSE) {
+    if (keepAllString == TRUE) {
+        datesTxt <- articlesHtml
+    } else {
         if (dateFormat == "dby" | dateFormat == "dBy" | dateFormat == "dBY" | dateFormat == "dbY") {
             for (i in 1:numberOfArticles) {
                 dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]]?[[:digit:]][[:space:]]?[[:space:]][[:alpha:]]*[[:space:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]", 

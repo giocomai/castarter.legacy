@@ -17,6 +17,8 @@ ExtractDatesXpath(articlesHtml, dateFormat = "dmy", divClass = NULL,
 \item{minDate, }{maxDate Minimum and maximum possible dates in the format year-month-date, e.g. "2007-06-24". Introduces NA in the place of impossibly high or low dates.}
 
 \item{encoding}{Defaults to NULL. If source is not in UTF, encoding can be specified here for conversion. A list of valid values can be found using iconvlist().}
+
+\item{keepAllString}{Logical, defaults to FALSE. If TRUE, it directly tries to parse the date with the given dateFormat, without trying to polish the string provided accordingly.}
 }
 \value{
 A vector of the POSIXct class.
