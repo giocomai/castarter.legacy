@@ -6,9 +6,9 @@
 \usage{
 ExtractLinks(domain, partOfLink, indexHtml, containerType = "",
   containerClass = "", divClass = "", partOfLinkToExclude = NULL,
-  minLength = NULL, indexLinks = NULL, sortLinks = TRUE, export = FALSE,
-  appendString = NULL, exportParameters = FALSE, nameOfProject = NULL,
-  nameOfWebsite = NULL)
+  minLength = NULL, maxLength = NULL, indexLinks = NULL,
+  sortLinks = TRUE, export = FALSE, appendString = NULL,
+  exportParameters = FALSE, nameOfProject = NULL, nameOfWebsite = NULL)
 }
 \arguments{
 \item{domain}{Web domain of the website. Will be added at the beginning of each link found.If links in the page already include the full web address this should be ignored. Defaults to "".}
@@ -18,6 +18,8 @@ ExtractLinks(domain, partOfLink, indexHtml, containerType = "",
 \item{partOfLinkToExclude}{If an URL includes this string, it is excluded from the output. One or more strings may be provided.}
 
 \item{minLength}{If a link is shorter than the number of characters given in minLength, it is excluded from the output.}
+
+\item{maxLength}{If a link is longer than the number of characters given in maxLength, it is excluded from the output.}
 
 \item{indexLinks}{A character vector, defaults to NULL. If provided, indexLinks are removed from the extracted articlesLinks.}
 

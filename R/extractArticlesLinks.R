@@ -7,6 +7,7 @@
 #' @param partOfLinkToExclude If an URL includes this string, it is excluded from the output. One or more strings may be provided.
 #' @param indexLinks A character vector, defaults to NULL. If provided, indexLinks are removed from the extracted articlesLinks.
 #' @param minLength If a link is shorter than the number of characters given in minLength, it is excluded from the output.
+#' @param maxLength If a link is longer than the number of characters given in maxLength, it is excluded from the output.
 #' @param sortLinks Defaults to TRUE. If TRUE, links are sorted in aphabetical order. 
 #' @param appendString If provided, appends given string to the extracted articles. Typically used to create links for print or mobile versions of the extracted page.
 #' @param exportParameters Defaults to FALSE. If TRUE, function parameters are exported in the nameOfProject/nameOfWebsite folder. They can be used to update the corpus. 
@@ -14,7 +15,7 @@
 #' @export
 #' @examples
 #' articlesLinks <- ExtractLinks(domain = "http://www.example.com/", partOfLink = "news/", indexHtml)
-ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = "", containerClass = "", divClass = "", partOfLinkToExclude = NULL, minLength = NULL, indexLinks = NULL,
+ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = "", containerClass = "", divClass = "", partOfLinkToExclude = NULL, minLength = NULL, maxLength = NULL, indexLinks = NULL,
     sortLinks = TRUE, export = FALSE, appendString = NULL, exportParameters = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
     numberOfIndexPages <- length(indexHtml)
     allLinks <- data.frame()
@@ -50,6 +51,9 @@ ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = "", cont
     if (is.null(minLength)==FALSE) {
         allLinks <- allLinks[nchar(as.character(allLinks$links)) > minLength-nchar(domain),  ]
     }
+    if (is.null(maxLength)==FALSE) {
+        allLinks <- allLinks[nchar(as.character(allLinks$links)) < minLength-nchar(domain),  ]
+    }
     allLinks <- allLinks[gtools::mixedorder(nchar(as.character(allLinks$titles))), ]
     allLinks$links <- as.character(allLinks$links)
     allLinks$links <- paste0(domain, allLinks$links)
@@ -71,8 +75,8 @@ ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = "", cont
         writeLines(links, file.path(nameOfProject, nameOfWebsite, paste0(nameOfWebsite, "articlesLinks.txt")))
     }
     if (exportParameters == TRUE) {
-        args <- c("domain", "partOfLink", "indexHtml", "containerType", "containerClass", "divClassExtractLinks", "partOfLinkToExclude", "minLength", "indexLinks","sortLinks", "export", "appendString", "exportParameters", "nameOfProject", "nameOfWebsite")
-        param <- list(domain, partOfLink, "indexHtml", containerType, containerClass, divClass, paste(partOfLinkToExclude, collapse = "§"), minLength, "indexLinks", sortLinks, export, appendString, exportParameters, nameOfProject, nameOfWebsite)
+        args <- c("domain", "partOfLink", "indexHtml", "containerType", "containerClass", "divClassExtractLinks", "partOfLinkToExclude", "minLength", "maxLength", "indexLinks","sortLinks", "export", "appendString", "exportParameters", "nameOfProject", "nameOfWebsite")
+        param <- list(domain, partOfLink, "indexHtml", containerType, containerClass, divClass, paste(partOfLinkToExclude, collapse = "§"), minLength, maxLength, "indexLinks", sortLinks, export, appendString, exportParameters, nameOfProject, nameOfWebsite)
         for (i in 1:length(param)) {
             if (is.null(param[[i]])==TRUE) {
                 param[[i]] <- "NULL"
