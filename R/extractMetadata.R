@@ -268,7 +268,7 @@ MergeDates <- function(dates1, dates2, dates3 = "", minDate = "", maxDate = "") 
 #' @export
 #' @examples
 #' titles <- ExtractTitles(articlesHtml)
-ExtractTitles <- function(articlesHtml = NULL, articlesLinks = "", titlesExtractMethod = "indexLink", removePunctuation = FALSE, onlyStandardCharacters = FALSE, removeString = "", removeEverythingAfter = NULL, customXpath = "", maxCharacters = NULL, exportParameters = TRUE) {
+ExtractTitles <- function(articlesHtml = NULL, articlesLinks = "", titlesExtractMethod = "indexLink", removePunctuation = FALSE, onlyStandardCharacters = FALSE, removeString = NULL, removeEverythingAfter = NULL, customXpath = "", maxCharacters = NULL, exportParameters = TRUE) {
     titles <- vector()
     numberOfArticles <- length(articlesHtml)
     if (titlesExtractMethod == "htmlTitle") {
@@ -296,8 +296,8 @@ ExtractTitles <- function(articlesHtml = NULL, articlesLinks = "", titlesExtract
     } else if (titlesExtractMethod == "beginning") {
         titles <- ExtractTxt(articlesHtml, export = FALSE, keepEverything = TRUE)
     }
-    if (removeString[1] != "") {
-        titles <- gsub(paste(removeString, collapse = "|"), replacement = "", x = titles)
+    if (is.null(removeString) == FALSE) {
+        titles <- gsub(removeString, replacement = "", x = titles, fixed = TRUE)
     }
     if (is.null(removeEverythingAfter) == FALSE) {
         titles <- gsub(paste0(removeEverythingAfter, ".*"), replacement = "", x = titles)

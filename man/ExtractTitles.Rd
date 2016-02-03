@@ -6,7 +6,7 @@
 \usage{
 ExtractTitles(articlesHtml = NULL, articlesLinks = "",
   titlesExtractMethod = "indexLink", removePunctuation = FALSE,
-  onlyStandardCharacters = FALSE, removeString = "",
+  onlyStandardCharacters = FALSE, removeString = NULL,
   removeEverythingAfter = NULL, customXpath = "", maxCharacters = NULL,
   exportParameters = TRUE)
 }
