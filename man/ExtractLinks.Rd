@@ -13,7 +13,7 @@ ExtractLinks(domain, partOfLink, indexHtml, containerType = "",
 \arguments{
 \item{domain}{Web domain of the website. Will be added at the beginning of each link found.If links in the page already include the full web address this should be ignored. Defaults to "".}
 
-\item{partOfLink}{Part of URL found only in links of individual articles to be downloaded.}
+\item{partOfLink}{Part of URL found only in links of individual articles to be downloaded. If more than one provided, it includes all links that contains either of the strings provided.}
 
 \item{partOfLinkToExclude}{If an URL includes this string, it is excluded from the output. One or more strings may be provided.}
 

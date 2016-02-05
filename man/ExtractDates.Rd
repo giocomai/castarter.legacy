@@ -7,7 +7,7 @@
 ExtractDates(articlesHtml, dateFormat = "dmY", language = "en",
   customString = "", minDate = NULL, maxDate = NULL,
   removeEverythingBefore = NULL, keepAllString = FALSE,
-  exportParameters = TRUE)
+  exportParameters = TRUE, nameOfProject = NULL, nameOfWebsite = NULL)
 }
 \arguments{
 \item{articlesHtml}{A character vector of html files.}
@@ -17,6 +17,8 @@ ExtractDates(articlesHtml, dateFormat = "dmY", language = "en",
 \item{minDate, }{maxDate Minimum and maximum possible dates in the format year-month-date, e.g. "2007-06-24". Introduces NA in the place of impossibly high or low dates.}
 
 \item{keepAllString}{Logical, defaults to FALSE. If TRUE, it directly tries to parse the date with the given dateFormat, without trying to polish the string provided accordingly.}
+
+\item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. Required for storing export parameters (with exportParameters = TRUE).}
 }
 \value{
 A vector of the POSIXct class.

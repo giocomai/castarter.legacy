@@ -7,7 +7,8 @@
 ExtractDatesXpath(articlesHtml, dateFormat = "dmy", divClass = NULL,
   spanClass = NULL, customXpath = "", language = "english",
   customString = "", minDate = NULL, maxDate = NULL, encoding = NULL,
-  keepAllString = FALSE, exportParameters = FALSE)
+  keepAllString = FALSE, exportParameters = FALSE, nameOfProject = NULL,
+  nameOfWebsite = NULL)
 }
 \arguments{
 \item{articlesHtml}{A character vector of html files.}
@@ -19,6 +20,8 @@ ExtractDatesXpath(articlesHtml, dateFormat = "dmy", divClass = NULL,
 \item{encoding}{Defaults to NULL. If source is not in UTF, encoding can be specified here for conversion. A list of valid values can be found using iconvlist().}
 
 \item{keepAllString}{Logical, defaults to FALSE. If TRUE, it directly tries to parse the date with the given dateFormat, without trying to polish the string provided accordingly.}
+
+\item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. Required for storing export parameters (with exportParameters = TRUE).}
 }
 \value{
 A vector of the POSIXct class.
