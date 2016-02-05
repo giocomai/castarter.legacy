@@ -3,7 +3,7 @@
 #' Extracts direct links to individual articles from index pages according to a selcted pattern.
 #'  
 #' @param domain Web domain of the website. Will be added at the beginning of each link found.If links in the page already include the full web address this should be ignored. Defaults to "".
-#' @param partOfLink Part of URL found only in links of individual articles to be downloaded.
+#' @param partOfLink Part of URL found only in links of individual articles to be downloaded. If more than one provided, it includes all links that contains either of the strings provided.
 #' @param partOfLinkToExclude If an URL includes this string, it is excluded from the output. One or more strings may be provided.
 #' @param indexLinks A character vector, defaults to NULL. If provided, indexLinks are removed from the extracted articlesLinks.
 #' @param minLength If a link is shorter than the number of characters given in minLength, it is excluded from the output.
@@ -42,7 +42,12 @@ ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = "", cont
     }
     allLinks <- as.data.frame(allLinks, stringsAsFactors = FALSE)
     allLinks <- unique(allLinks)
-    allLinks <- allLinks[grepl(partOfLink, allLinks$links, fixed = TRUE), ]
+    allLinksFiltered <- allLinks[0,]
+    for (i in 1:length(partOfLink)) {
+        allLinksTemp <- allLinks[grepl(partOfLink[i], allLinks$links, fixed = TRUE), ]
+        allLinksFiltered <- rbind(allLinksFiltered, allLinksTemp)
+    }
+    allLinks <- unique(allLinksFiltered)
     if (is.null(partOfLinkToExclude) == FALSE) {
         for (i in 1:length(partOfLinkToExclude)) {
             allLinks <- allLinks[!grepl(partOfLinkToExclude[i], allLinks$links, fixed = TRUE), ]
