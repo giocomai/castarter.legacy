@@ -20,7 +20,7 @@ DownloadContents <- function(links, type = "articles", nameOfProject, nameOfWebs
     }
     htmlFilesList <- gtools::mixedsort(list.files(htmlFilePath, full.names = TRUE))
     htmlFileSize <- file.info(htmlFilesList)["size"]
-    articlesId <- 1:length(articlesLinks)
+    articlesId <- 1:length(links)
     if (missingArticles == TRUE) {
         # articlesId <- as.integer(regmatches(htmlFilesList, regexpr("[[:digit:]]+", htmlFilesList)))
         articlesHtmlFilenamesInTheory <- file.path(htmlFilePath, paste0(articlesId, ".html"))
@@ -30,7 +30,7 @@ DownloadContents <- function(links, type = "articles", nameOfProject, nameOfWebs
         linksToDownload <- htmlFileSize < size
     }
     if (is.null(articlesHtml) == TRUE) {
-        articlesHtml <- rep(NA, length(articlesLinks[linksToDownload]))
+        articlesHtml <- rep(NA, length(links[linksToDownload]))
     }
     temp <- 1
     if (wget == TRUE) {
@@ -39,7 +39,7 @@ DownloadContents <- function(links, type = "articles", nameOfProject, nameOfWebs
                 file.remove(file.path(nameOfProject, nameOfWebsite, "downloadArticles.sh"))
             }
             options(useFancyQuotes = FALSE)
-            for (i in articlesLinks[linksToDownload]) {
+            for (i in links[linksToDownload]) {
                 articleId <- articlesId[linksToDownload][temp]
                 if (type=="articles") {
                     write(x = paste("wget", sQuote(i), "-O", file.path("Html", paste0(articleId, ".html"))), file = file.path(nameOfProject, nameOfWebsite, "downloadArticles.sh"), append = TRUE)
@@ -52,14 +52,14 @@ DownloadContents <- function(links, type = "articles", nameOfProject, nameOfWebs
             system(paste("chmod +x", file.path(nameOfProject, nameOfWebsite, "downloadArticles.sh")))
         } else {
             options(useFancyQuotes = FALSE)
-            for (i in articlesLinks[linksToDownload]) {
+            for (i in links[linksToDownload]) {
                 articleId <- articlesId[linksToDownload][temp]
                 if (type=="articles") {
                     system(paste("wget", sQuote(i), "-O", file.path(nameOfProject, nameOfWebsite, "Html", paste0(articleId, ".html"))))
                 } else if (type=="index") {
                     system(paste("wget", sQuote(i), "-O", file.path(nameOfProject, nameOfWebsite, "IndexHtml", paste0(articleId, ".html"))))
                 }
-                print(paste("Downloaded article", temp, "of", length(articlesLinks[linksToDownload]), ". ArticleID: ", articleId), quote = FALSE)
+                print(paste("Downloaded article", temp, "of", length(links[linksToDownload]), ". ArticleID: ", articleId), quote = FALSE)
                 htmlFile <- readLines(file.path(nameOfProject, nameOfWebsite, "Html", paste0(articleId, ".html")))
                 htmlFile <- paste(htmlFile, collapse = "\n")
                 articlesHtml[linksToDownload][temp] <- htmlFile
@@ -68,7 +68,7 @@ DownloadContents <- function(links, type = "articles", nameOfProject, nameOfWebs
             }
         }
     } else {
-        for (i in articlesLinks[linksToDownload]) {
+        for (i in links[linksToDownload]) {
             articleId <- articlesId[linksToDownload][temp]
             htmlFile <- RCurl::getURL(i, timeout = 20)
             if (type=="articles") {
@@ -76,7 +76,7 @@ DownloadContents <- function(links, type = "articles", nameOfProject, nameOfWebs
             } else if (type=="index") {
                 write(htmlFile, file = file.path(nameOfProject, nameOfWebsite, "IndexHtml", paste0(articleId, ".html")))
             }
-            print(paste("Downloaded article", temp, "of", length(articlesLinks[linksToDownload]), ". ArticleID: ", articleId), quote = FALSE)
+            print(paste("Downloaded article", temp, "of", length(links[linksToDownload]), ". ArticleID: ", articleId), quote = FALSE)
             temp <- temp + 1
             Sys.sleep(wait)
         }
