@@ -56,11 +56,13 @@ DownloadContents <- function(links, type = "articles", nameOfProject, nameOfWebs
                 articleId <- articlesId[linksToDownload][temp]
                 if (type=="articles") {
                     system(paste("wget", sQuote(i), "-O", file.path(nameOfProject, nameOfWebsite, "Html", paste0(articleId, ".html"))))
+                    print(paste("Downloaded article", temp, "of", length(links[linksToDownload]), ". ArticleID: ", articleId), quote = FALSE)
+                    htmlFile <- readLines(file.path(nameOfProject, nameOfWebsite, "Html", paste0(articleId, ".html")))
                 } else if (type=="index") {
                     system(paste("wget", sQuote(i), "-O", file.path(nameOfProject, nameOfWebsite, "IndexHtml", paste0(articleId, ".html"))))
+                    print(paste("Downloaded article", temp, "of", length(links[linksToDownload]), ". ArticleID: ", articleId), quote = FALSE)
+                    htmlFile <- readLines(file.path(nameOfProject, nameOfWebsite, "IndexHtml", paste0(articleId, ".html")))
                 }
-                print(paste("Downloaded article", temp, "of", length(links[linksToDownload]), ". ArticleID: ", articleId), quote = FALSE)
-                htmlFile <- readLines(file.path(nameOfProject, nameOfWebsite, "Html", paste0(articleId, ".html")))
                 htmlFile <- paste(htmlFile, collapse = "\n")
                 articlesHtml[linksToDownload][temp] <- htmlFile
                 temp <- temp + 1
