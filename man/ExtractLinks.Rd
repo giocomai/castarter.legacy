@@ -5,7 +5,7 @@
 \title{Extracts direct links to individual articles from index pages.}
 \usage{
 ExtractLinks(domain, partOfLink, indexHtml, containerType = NULL,
-  containerClass = "", divClass = "", partOfLinkToExclude = NULL,
+  containerClass = NULL, divClass = "", partOfLinkToExclude = NULL,
   minLength = NULL, maxLength = NULL, indexLinks = NULL,
   sortLinks = TRUE, export = FALSE, appendString = NULL,
   exportParameters = FALSE, nameOfProject = NULL, nameOfWebsite = NULL)
