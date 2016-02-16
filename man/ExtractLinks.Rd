@@ -4,7 +4,7 @@
 \alias{ExtractLinks}
 \title{Extracts direct links to individual articles from index pages.}
 \usage{
-ExtractLinks(domain, partOfLink, indexHtml, containerType = "",
+ExtractLinks(domain, partOfLink, indexHtml, containerType = NULL,
   containerClass = "", divClass = "", partOfLinkToExclude = NULL,
   minLength = NULL, maxLength = NULL, indexLinks = NULL,
   sortLinks = TRUE, export = FALSE, appendString = NULL,
@@ -14,6 +14,8 @@ ExtractLinks(domain, partOfLink, indexHtml, containerType = "",
 \item{domain}{Web domain of the website. Will be added at the beginning of each link found.If links in the page already include the full web address this should be ignored. Defaults to "".}
 
 \item{partOfLink}{Part of URL found only in links of individual articles to be downloaded. If more than one provided, it includes all links that contains either of the strings provided.}
+
+\item{containerType}{Type of html container from where links are to be extracted, such as "ul", "div", and others. containerClass must also be provided.}
 
 \item{partOfLinkToExclude}{If an URL includes this string, it is excluded from the output. One or more strings may be provided.}
 

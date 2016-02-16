@@ -6,6 +6,7 @@
 #' @param partOfLink Part of URL found only in links of individual articles to be downloaded. If more than one provided, it includes all links that contains either of the strings provided.
 #' @param partOfLinkToExclude If an URL includes this string, it is excluded from the output. One or more strings may be provided.
 #' @param indexLinks A character vector, defaults to NULL. If provided, indexLinks are removed from the extracted articlesLinks.
+#' @param containerType Type of html container from where links are to be extracted, such as "ul", "div", and others. containerClass must also be provided.
 #' @param minLength If a link is shorter than the number of characters given in minLength, it is excluded from the output.
 #' @param maxLength If a link is longer than the number of characters given in maxLength, it is excluded from the output.
 #' @param sortLinks Defaults to TRUE. If TRUE, links are sorted in aphabetical order. 
@@ -15,7 +16,7 @@
 #' @export
 #' @examples
 #' articlesLinks <- ExtractLinks(domain = "http://www.example.com/", partOfLink = "news/", indexHtml)
-ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = "", containerClass = "", divClass = "", partOfLinkToExclude = NULL, minLength = NULL, maxLength = NULL, indexLinks = NULL,
+ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = NULL, containerClass = "", divClass = "", partOfLinkToExclude = NULL, minLength = NULL, maxLength = NULL, indexLinks = NULL,
     sortLinks = TRUE, export = FALSE, appendString = NULL, exportParameters = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
     numberOfIndexPages <- length(indexHtml)
     allLinks <- data.frame()
@@ -25,12 +26,12 @@ ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = "", cont
             if (divClass != "") {
                 links <- XML::xpathSApply(indexPageHtmlParsed, paste0("//div[@class='", divClass, "']", "//a/@href"))
                 titles <- XML::xpathSApply(indexPageHtmlParsed, paste0("//div[@class='", divClass, "']", "//a"), XML::xmlValue)
-            } else if (containerType == "ul") {
-                if (containerClass == "") {
+            } else if (is.null(containerType) == FALSE) {
+                if (containerClass == NULL) {
                   stop("containerClass must be defined for containerType = 'ul'")
                 }
-                links <- XML::xpathSApply(indexPageHtmlParsed, paste0("//ul[@class='", containerClass, "']", "//a/@href"))
-                titles <- XML::xpathSApply(indexPageHtmlParsed, paste0("//ul[@class='", containerClass, "']", "//a"), XML::xmlValue)
+                links <- XML::xpathSApply(indexPageHtmlParsed, paste0("//", containerType, "[@class='", containerClass, "']", "//a/@href"))
+                titles <- XML::xpathSApply(indexPageHtmlParsed, paste0("//", containerType, "[@class='", containerClass, "']", "//a"), XML::xmlValue)
             } else {
                 XMLnodes <- XML::getNodeSet(indexPageHtmlParsed, "//a")
                 links <- as.character(sapply(XMLnodes, XML::xmlGetAttr, "href"))
