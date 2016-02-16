@@ -176,8 +176,8 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", language = "en", cust
 #' dates <- ExtractDatesXpath(articlesHtml)
 ExtractDatesXpath <- function(articlesHtml, dateFormat = "dmy", divClass = NULL, spanClass = NULL, customXpath = "", language = "english", customString = "", minDate = NULL, maxDate = NULL, encoding = NULL, keepAllString = FALSE, exportParameters = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
     if (exportParameters == TRUE) {
-        args <- c("dateFormat", "divClassDatesXpath", "spanClassDatesXpath", "customXpathDates", "customStringDates", "minDate", "maxDate", "keepAllString", "removeEverythingBeforeExtractDates")
-        param <- list(dateFormat, divClass, spanClass, customXpath, customString, minDate, maxDate, keepAllString, removeEverythingBefore)
+        args <- c("dateFormat", "divClassDatesXpath", "spanClassDatesXpath", "customXpathDates", "customStringDates", "minDate", "maxDate", "keepAllString")
+        param <- list(dateFormat, divClass, spanClass, customXpath, customString, minDate, maxDate, keepAllString)
         for (i in 1:length(param)) {
             if (is.null(param[[i]])==TRUE) {
                 param[[i]] <- "NULL"
