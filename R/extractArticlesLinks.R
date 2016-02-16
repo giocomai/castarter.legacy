@@ -27,7 +27,7 @@ ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = NULL, co
                 links <- XML::xpathSApply(indexPageHtmlParsed, paste0("//div[@class='", divClass, "']", "//a/@href"))
                 titles <- XML::xpathSApply(indexPageHtmlParsed, paste0("//div[@class='", divClass, "']", "//a"), XML::xmlValue)
             } else if (is.null(containerType) == FALSE) {
-                if (containerClass == NULL) {
+                if (is.null(containerClass) == TRUE) {
                   stop("containerClass must be defined for containerType = 'ul'")
                 }
                 links <- XML::xpathSApply(indexPageHtmlParsed, paste0("//", containerType, "[@class='", containerClass, "']", "//a/@href"))
