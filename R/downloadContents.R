@@ -6,12 +6,13 @@
 #' @param type Accepted values are either "articles" (default), or "index"; it defines the folder where files are stored. 
 #' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
 #' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
+#' @param missingArticles Logical, defaults to TRUE. If TRUE, verifies if a downloaded html file exists for each element in articlesLinks; when there is no such file, it downloads it.
 #' @return By default, returns nothing, used for its side effects (downloads html files in relevant folder). Download files can then be imported in a vector with the function ImportHtml. 
 #' @export
 #' @examples
-#' html <- DownloadContents(nameOfProject, nameOfWebsite, links)
+#' DownloadContents(nameOfProject, nameOfWebsite, links)
 
-DownloadContents <- function(links, type = "articles", nameOfProject, nameOfWebsite, articlesHtml = NULL, size = 500, linksToDownload = NULL, wget = FALSE, missingArticles = FALSE, wait = 3, createScript = FALSE) {
+DownloadContents <- function(links, type = "articles", nameOfProject, nameOfWebsite, articlesHtml = NULL, size = 500, linksToDownload = NULL, wget = FALSE, missingArticles = TRUE, wait = 3, createScript = FALSE) {
     articlesHtmlProvided <- is.null(articlesHtml) == FALSE
     if (type=="articles") {
         htmlFilePath <- file.path(nameOfProject, nameOfWebsite, "Html")
