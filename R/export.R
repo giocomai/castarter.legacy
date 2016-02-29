@@ -35,6 +35,15 @@ ExportArticlesWith <- function(dataset, term, nameOfProject, nameOfWebsite = NUL
             print(paste("File .xlsx exported to:", file.path(nameOfProject, nameOfWebsite, "Outputs", paste(term, " in ", nameOfWebsite, ".xlsx", sep = ""))))     
         }
     }
+    if (csv == TRUE) {
+        if (is.null(nameOfWebsite) == TRUE) {
+            utils::write.csv(tempDataset, file.path(nameOfProject, "Outputs", paste(term, " in ", nameOfWebsite, ".csv", sep = "")))
+            print(paste("File .csv exported to:", file.path(nameOfProject, "Outputs", paste(term, " in ", nameOfWebsite, ".csv", sep = ""))))     
+        } else {
+            utils::write.csv(tempDataset, file.path(nameOfProject, nameOfWebsite, "Outputs", paste(term, " in ", nameOfWebsite, ".csv", sep = "")))
+            print(paste("File .csv exported to:", file.path(nameOfProject, nameOfWebsite, "Outputs", paste(term, " in ", nameOfWebsite, ".csv", sep = ""))))     
+        }
+    }
     if (txt == TRUE) {
         if (is.null(nameOfWebsite) == TRUE) {
             writeLines(paste(paste("Date:", tempDataset$date), paste("Title:", tempDataset$titles), paste("Link:", tempDataset$articlesLinks), paste("ID:", tempDataset$articlesId), tempDataset$articlesTxt, " ___  ______  ______  ______  ______  ______  ______  ______  ______  ___\n  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__\n (______)(______)(______)(______)(______)(______)(______)(______)(______)\n", sep = "\n"), file.path(nameOfProject, "Outputs", paste(term, " in ", ".txt", sep = "")))
