@@ -4,6 +4,10 @@
 #' @param term The term that determines which articles are exported.Must be a character vector of length = 1.
 #' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
 #' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.Defaults to NULL. If no nameOfWebsite is provided, exported files are saved in the nameOfProject/Outputs folder.
+#' @param txt Logical, defaults to TRUE. If TRUE, exports all articles including the term provided in a .txt file.
+#' @param csv Logical, defaults to FALSE. If TRUE, exports all articles including the term provided in a .csv file.
+#' @param xlsx Logical, defaults to FALSE. If TRUE, exports all articles including the term provided in a .xlsx file.
+#' @param data.fram Logical, defaults to FALSE. If TRUE, the function outputs a data frame. If FALSE, function used only for its side effects (i.e. exporting to files)
 #' @export
 #' @examples
 #' ExportArticlesWith(dataset, "example", nameOfProject, nameOfWebsite)
@@ -26,15 +30,6 @@ ExportArticlesWith <- function(dataset, term, nameOfProject, nameOfWebsite = NUL
             dir.create(file.path(nameOfProject, nameOfWebsite, "Outputs"))
         }
     }
-    if (xlsx == TRUE) {
-        if (is.null(nameOfWebsite) == TRUE) {
-            xlsx::write.xlsx(tempDataset, file.path(nameOfProject, "Outputs", paste(term, " in ", nameOfWebsite, ".xlsx", sep = "")))
-            print(paste("File .xlsx exported to:", file.path(nameOfProject, "Outputs", paste(term, " in ", nameOfWebsite, ".xlsx", sep = ""))))     
-        } else {
-            xlsx::write.xlsx(tempDataset, file.path(nameOfProject, nameOfWebsite, "Outputs", paste(term, " in ", nameOfWebsite, ".xlsx", sep = "")))
-            print(paste("File .xlsx exported to:", file.path(nameOfProject, nameOfWebsite, "Outputs", paste(term, " in ", nameOfWebsite, ".xlsx", sep = ""))))     
-        }
-    }
     if (csv == TRUE) {
         if (is.null(nameOfWebsite) == TRUE) {
             utils::write.csv(tempDataset, file.path(nameOfProject, "Outputs", paste(term, " in ", nameOfWebsite, ".csv", sep = "")))
@@ -51,6 +46,15 @@ ExportArticlesWith <- function(dataset, term, nameOfProject, nameOfWebsite = NUL
         } else {
             writeLines(paste(paste("Date:", tempDataset$date), paste("Title:", tempDataset$titles), paste("Link:", tempDataset$articlesLinks), paste("ID:", tempDataset$articlesId), tempDataset$articlesTxt, " ___  ______  ______  ______  ______  ______  ______  ______  ______  ___\n  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__\n (______)(______)(______)(______)(______)(______)(______)(______)(______)\n", sep = "\n"), file.path(nameOfProject, nameOfWebsite, "Outputs", paste(term, " in ", nameOfWebsite, ".txt", sep = "")))
             print(paste("File .txt exported to:", file.path(nameOfProject, nameOfWebsite, "Outputs", paste(term, " in ", nameOfWebsite, ".txt", sep = ""))))
+        }
+    }
+    if (xlsx == TRUE) {
+        if (is.null(nameOfWebsite) == TRUE) {
+            xlsx::write.xlsx(tempDataset, file.path(nameOfProject, "Outputs", paste(term, " in ", nameOfWebsite, ".xlsx", sep = "")))
+            print(paste("File .xlsx exported to:", file.path(nameOfProject, "Outputs", paste(term, " in ", nameOfWebsite, ".xlsx", sep = ""))))     
+        } else {
+            xlsx::write.xlsx(tempDataset, file.path(nameOfProject, nameOfWebsite, "Outputs", paste(term, " in ", nameOfWebsite, ".xlsx", sep = "")))
+            print(paste("File .xlsx exported to:", file.path(nameOfProject, nameOfWebsite, "Outputs", paste(term, " in ", nameOfWebsite, ".xlsx", sep = ""))))     
         }
     }
     if (data.frame == TRUE) {
