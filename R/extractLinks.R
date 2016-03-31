@@ -7,6 +7,7 @@
 #' @param partOfLinkToExclude If an URL includes this string, it is excluded from the output. One or more strings may be provided.
 #' @param indexLinks A character vector, defaults to NULL. If provided, indexLinks are removed from the extracted articlesLinks.
 #' @param containerType Type of html container from where links are to be extracted, such as "ul", "div", and others. containerClass must also be provided.
+#' @param attributeType Type of attribute to extract from links, when different from href.
 #' @param minLength If a link is shorter than the number of characters given in minLength, it is excluded from the output.
 #' @param maxLength If a link is longer than the number of characters given in maxLength, it is excluded from the output.
 #' @param sortLinks Defaults to TRUE. If TRUE, links are sorted in aphabetical order. 
@@ -16,7 +17,7 @@
 #' @export
 #' @examples
 #' articlesLinks <- ExtractLinks(domain = "http://www.example.com/", partOfLink = "news/", indexHtml)
-ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = NULL, containerClass = NULL, divClass = "", partOfLinkToExclude = NULL, minLength = NULL, maxLength = NULL, indexLinks = NULL,
+ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = NULL, containerClass = NULL, divClass = "", attributeType = NULL, partOfLinkToExclude = NULL, minLength = NULL, maxLength = NULL, indexLinks = NULL,
     sortLinks = TRUE, export = FALSE, appendString = NULL, exportParameters = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
     numberOfIndexPages <- length(indexHtml)
     allLinks <- data.frame()
@@ -32,6 +33,10 @@ ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = NULL, co
                 }
                 links <- XML::xpathSApply(indexPageHtmlParsed, paste0("//", containerType, "[@class='", containerClass, "']", "//a/@href"))
                 titles <- XML::xpathSApply(indexPageHtmlParsed, paste0("//", containerType, "[@class='", containerClass, "']", "//a"), XML::xmlValue)
+            } else if (is.null(attributeType) == FALSE) {
+                XMLnodes <- XML::getNodeSet(indexPageHtmlParsed, "//a")
+                links <- as.character(sapply(XMLnodes, XML::xmlGetAttr, attributeType))
+                titles <- sapply(XMLnodes, XML::xmlValue)
             } else {
                 XMLnodes <- XML::getNodeSet(indexPageHtmlParsed, "//a")
                 links <- as.character(sapply(XMLnodes, XML::xmlGetAttr, "href"))
@@ -81,8 +86,8 @@ ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = NULL, co
         writeLines(links, file.path(nameOfProject, nameOfWebsite, paste0(nameOfWebsite, "articlesLinks.txt")))
     }
     if (exportParameters == TRUE) {
-        args <- c("domain", "partOfLink", "indexHtml", "containerType", "containerClass", "divClassExtractLinks", "partOfLinkToExclude", "minLength", "maxLength", "indexLinks","sortLinks", "export", "appendString", "exportParameters", "nameOfProject", "nameOfWebsite")
-        param <- list(domain, partOfLink, "indexHtml", containerType, containerClass, divClass, paste(partOfLinkToExclude, collapse = "§"), minLength, maxLength, "indexLinks", sortLinks, export, appendString, exportParameters, nameOfProject, nameOfWebsite)
+        args <- c("domain", "partOfLink", "indexHtml", "containerType", "containerClass", "divClassExtractLinks", "attributeTypeExtractLinks", "partOfLinkToExclude", "minLength", "maxLength", "indexLinks","sortLinks", "export", "appendString", "exportParameters", "nameOfProject", "nameOfWebsite")
+        param <- list(domain, partOfLink, "indexHtml", containerType, containerClass, divClass, attributeType, paste(partOfLinkToExclude, collapse = "§"), minLength, maxLength, "indexLinks", sortLinks, export, appendString, exportParameters, nameOfProject, nameOfWebsite)
         for (i in 1:length(param)) {
             if (is.null(param[[i]])==TRUE) {
                 param[[i]] <- "NULL"
