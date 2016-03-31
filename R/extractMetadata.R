@@ -12,6 +12,9 @@
 #' @examples
 #' dates <- ExtractDates(articlesHtml)
 ExtractDates <- function(articlesHtml, dateFormat = "dmY", language = "english", customString = "", minDate = NULL, maxDate = NULL, removeEverythingBefore = NULL, keepAllString = FALSE, exportParameters = TRUE, nameOfProject = nameOfProject, nameOfWebsite = nameOfWebsite) {
+    if (exportParameters == TRUE && exists("nameOfProject") == FALSE | exportParameters == TRUE && exists("nameOfWebsite") == FALSE) {
+    stop("If exportParameters == TRUE, both nameOfProject and nameOfWebsite must be defined.")    
+    }
     articlesHtml <- iconv(articlesHtml, to = "utf8")
     originalLocale <- base::Sys.getlocale(category = "LC_TIME")
     if (language == "en" | language == "english") {
