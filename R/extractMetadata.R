@@ -296,7 +296,7 @@ MergeDates <- function(dates1, dates2, dates3 = "", minDate = "", maxDate = "") 
 #' @export
 #' @examples
 #' titles <- ExtractTitles(articlesHtml)
-ExtractTitles <- function(articlesHtml = NULL, articlesLinks = "", titlesExtractMethod = "indexLink", removePunctuation = FALSE, onlyStandardCharacters = FALSE, removeString = NULL, removeEverythingAfter = NULL, customXpath = "", maxCharacters = NULL, exportParameters = TRUE, nameOfProject = nameOfProject, nameOfWebsite = nameOfWebsite) {
+ExtractTitles <- function(articlesHtml = NULL, articlesLinks = "", titlesExtractMethod = "indexLink", removePunctuation = FALSE, onlyStandardCharacters = FALSE, removeString = NULL, removeEverythingAfter = NULL, customXpath = "", maxCharacters = NULL, exportParameters = TRUE, nameOfProject = NULL, nameOfWebsite = NULL) {
     titles <- vector()
     numberOfArticles <- length(articlesHtml)
     if (titlesExtractMethod == "htmlTitle") {
