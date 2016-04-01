@@ -137,9 +137,9 @@ ShowDistribution <- function(dataset, specificWebsites = NULL, rollingAverage = 
     docSeries <- zoo::rollapply(docSeries, rollingAverage, align="right", mean, na.rm=TRUE)
     distributionOfCorpus <- zoo::autoplot.zoo(docSeries, facets = NULL)
     if (method == "numberOfArticles") {
-        distributionOfCorpus <- distributionOfCorpus + ggplot2::ggtitle(paste("Number of publications per day on", dataset$nameOfWebsite[1], "'s website" )) + ggplot2::scale_x_datetime("Date") + ggplot2::scale_y_continuous("")
+        distributionOfCorpus <- distributionOfCorpus + ggplot2::ggtitle(paste("Number of publications per day on", dataset$nameOfWebsite[1], "'s website" )) + ggplot2::scale_x_datetime("") + ggplot2::scale_y_continuous("")
     } else if (method == "numberOfCharacters") {
-        distributionOfCorpus <- distributionOfCorpus + ggplot2::ggtitle(paste0("Number of characters per day on ", dataset$nameOfWebsite[1], "'s website" )) + ggplot2::scale_x_datetime("Date") + ggplot2::scale_y_continuous("")
+        distributionOfCorpus <- distributionOfCorpus + ggplot2::+ ggplot2::scale_y_continuous("")ggtitle(paste0("Number of characters per day on ", dataset$nameOfWebsite[1], "'s website" )) + ggplot2::scale_x_datetime("") + ggplot2::scale_y_continuous("")
     }
     distributionOfCorpus
 }
