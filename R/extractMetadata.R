@@ -90,7 +90,7 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", language = "english",
             dateFormat <- "dBY"
         } else if (dateFormat == "ymd" | dateFormat == "Ymd") {
             for (i in 1:numberOfArticles) {
-                dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]][[:digit:]][[:digit:]][[:digit:]][[:punct:]][[:digit:]]?[[:digit:]][[:punct:]][[:digit:]]?[[:digit:]]", articlesHtml[i]))
+                dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]][[:digit:]][[:digit:]][[:digit:]][[:punct:]]?[[:digit:]]?[[:digit:]][[:punct:]]?[[:digit:]]?[[:digit:]]", articlesHtml[i]))
                 if (length(dateTxt) == 0) {
                     datesTxt[i] <- NA
                 } else {
