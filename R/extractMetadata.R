@@ -11,7 +11,7 @@
 #' @export
 #' @examples
 #' dates <- ExtractDates(articlesHtml)
-ExtractDates <- function(articlesHtml, dateFormat = "dmY", language = "english", customString = "", minDate = NULL, maxDate = NULL, removeEverythingBefore = NULL, keepAllString = FALSE, exportParameters = TRUE, nameOfProject = nameOfProject, nameOfWebsite = nameOfWebsite) {
+ExtractDates <- function(articlesHtml, dateFormat = "dmY", language = "english", customString = "", minDate = NULL, maxDate = NULL, removeEverythingBefore = NULL, keepAllString = FALSE, exportParameters = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
     if (exportParameters == TRUE && exists("nameOfProject") == FALSE | exportParameters == TRUE && exists("nameOfWebsite") == FALSE) {
     stop("If exportParameters == TRUE, both nameOfProject and nameOfWebsite must be defined.")    
     }
