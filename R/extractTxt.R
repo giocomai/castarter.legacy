@@ -75,7 +75,7 @@ ExtractTxt <- function(articlesHtml, metadata = "", export = TRUE, maxTitleChara
     }
     if (exportParameters == TRUE) {
         args <- c("exportExtractTxt", "maxTitleCharacters", "textToBeRemovedExtractTxt", "divClassExtractTxt", "divIDExtractTxt", "removeEverythingAfterExtractTxt", "removeEverythingBeforeExtractTxt", "removePunctuationInFilename", "keepEverything")
-        param <- list(export, maxTitleCharacters, textToBeRemoved, divClass, divID, removeEverythingAfter, removeEverythingBefore, removePunctuationInFilename, keepEverything)
+        param <- list(export, maxTitleCharacters, paste0(textToBeRemoved, collapse = "§"), divClass, divID, removeEverythingAfter, removeEverythingBefore, removePunctuationInFilename, keepEverything)
         for (i in 1:length(param)) {
             if (is.null(param[[i]])==TRUE) {
                 param[[i]] <- "NULL"
