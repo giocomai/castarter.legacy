@@ -8,7 +8,7 @@ ExtractTitles(articlesHtml = NULL, articlesLinks = "",
   titlesExtractMethod = "indexLink", removePunctuation = FALSE,
   onlyStandardCharacters = FALSE, removeString = NULL,
   removeEverythingAfter = NULL, customXpath = "", maxCharacters = NULL,
-  exportParameters = TRUE)
+  exportParameters = TRUE, nameOfProject = NULL, nameOfWebsite = NULL)
 }
 \arguments{
 \item{articlesHtml}{A character vector of html files.}

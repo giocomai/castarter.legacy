@@ -4,10 +4,10 @@
 \alias{ExtractDates}
 \title{Extracts dates from a vector of html files}
 \usage{
-ExtractDates(articlesHtml, dateFormat = "dmY", language = "en",
+ExtractDates(articlesHtml, dateFormat = "dmY", language = "english",
   customString = "", minDate = NULL, maxDate = NULL,
   removeEverythingBefore = NULL, keepAllString = FALSE,
-  exportParameters = TRUE, nameOfProject = NULL, nameOfWebsite = NULL)
+  exportParameters = FALSE, nameOfProject = NULL, nameOfWebsite = NULL)
 }
 \arguments{
 \item{articlesHtml}{A character vector of html files.}

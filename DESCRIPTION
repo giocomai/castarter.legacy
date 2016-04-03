@@ -1,7 +1,7 @@
 Package: castarter
 Type: Package
 Title: Content Analysis Starter toolkit for R
-Version: 0.0.0.9035
+Version: 0.0.0.9036
 Date: 2016-04-03
 Author: Giorgio Comai <giorgio.comai@dcu.ie>
 Maintainer: Giorgio Comai <giorgio.comai@dcu.ie>
