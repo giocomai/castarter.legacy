@@ -13,7 +13,7 @@
 #' @export
 #' @examples
 #' articlesTxt <- ExtractTxt(articlesHtml, metadata)
-ExtractTxt <- function(articlesHtml, metadata = "", export = TRUE, maxTitleCharacters = 80, textToBeRemoved = NULL, divClass = NULL, divID = NULL, removeEverythingAfter = NULL, removeEverythingBefore = NULL, removePunctuationInFilename = TRUE, keepEverything = FALSE, exportParameters = TRUE) {
+ExtractTxt <- function(articlesHtml, metadata = "", export = TRUE, maxTitleCharacters = 80, textToBeRemoved = NULL, divClass = NULL, divID = NULL, removeEverythingAfter = NULL, removeEverythingBefore = NULL, removePunctuationInFilename = TRUE, keepEverything = FALSE, exportParameters = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
     numberOfArticles <- length(articlesHtml)
     articlesTxt <- rep(NA, numberOfArticles)
     if (export == TRUE) {
