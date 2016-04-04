@@ -241,7 +241,7 @@ ExtractDatesXpath <- function(articlesHtml, dateFormat = "dmy", divClass = NULL,
     }
     if (length(datesTxt) == 1 & is.na(datesTxt[1]) == TRUE) {
     } else {
-    ExtractDates(articlesHtml = datesTxt, dateFormat = dateFormat, language = language, keepAllString = TRUE, nameOfProject = nameOfProject, nameOfWebsite = nameOfWebsite)
+    ExtractDates(articlesHtml = datesTxt, dateFormat = dateFormat, language = language, keepAllString = FALSE, nameOfProject = nameOfProject, nameOfWebsite = nameOfWebsite)
     }
 }
 
