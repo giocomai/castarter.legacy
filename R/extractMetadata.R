@@ -412,7 +412,7 @@ CreateDatasetFromHtml <- function(nameOfProject, nameOfWebsite, articlesLinks = 
     xlist <- seq(0,numberOfArticles,by=100)
     for (i in 1:numberOfArticles) {
         htmlFile <- readLines(htmlFilesList[i])
-        if (htmlFile=="") {
+        if (length(htmlFile)==0) {
             htmlFile <- "\n"
         }
         htmlFile <- paste(htmlFile, collapse = "\n")
