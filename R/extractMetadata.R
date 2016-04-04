@@ -413,7 +413,7 @@ CreateDatasetFromHtml <- function(nameOfProject, nameOfWebsite, articlesLinks = 
     for (i in 1:numberOfArticles) {
         htmlFile <- readLines(htmlFilesList[i])
         if (length(htmlFile)==0) {
-            htmlFile <- "\n"
+            htmlFile <- "<head></head><body><p></p></body>"
         }
         htmlFile <- paste(htmlFile, collapse = "\n")
         if (is.null(encoding) == FALSE) {
