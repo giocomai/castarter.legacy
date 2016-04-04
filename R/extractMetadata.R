@@ -412,6 +412,9 @@ CreateDatasetFromHtml <- function(nameOfProject, nameOfWebsite, articlesLinks = 
     xlist <- seq(0,numberOfArticles,by=100)
     for (i in 1:numberOfArticles) {
         htmlFile <- readLines(htmlFilesList[i])
+        if (htmlFile=="") {
+            htmlFile <- "\n"
+        }
         htmlFile <- paste(htmlFile, collapse = "\n")
         if (is.null(encoding) == FALSE) {
             htmlFile <- iconv(htmlFile, from = encoding, to = "utf8")
