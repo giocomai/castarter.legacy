@@ -398,13 +398,13 @@ ExtractArticleId <- function(nameOfProject, nameOfWebsite, accordingToDate = FAL
 #' @export
 #' @examples
 #' dataset <- CreateDatasetFromHtml(nameOfProject, nameOfWebsite)
-CreateDatasetFromHtml <- function(nameOfProject, nameOfWebsite, articlesLinks = NULL, dateFormat = "dBY", ExtractDatesXpath = FALSE, titlesExtractMethod = "htmlTitle", divClassDate = NULL, spanClassDate = NULL, language = NULL, divClassTxt = NULL, removeString = NULL, encoding = NULL, removeEverythingAfter = NULL, removeEverythingBefore = NULL, removeEverythingBeforeDate = NULL) {
+CreateDatasetFromHtml <- function(nameOfProject, nameOfWebsite, articlesLinks = NULL, dateFormat = NULL, ExtractDatesXpath = FALSE, titlesExtractMethod = "htmlTitle", divClassDate = NULL, spanClassDate = NULL, language = NULL, divClassTxt = NULL, removeStringTitle = NULL, encoding = NULL, removeEverythingAfter = NULL, removeEverythingBefore = NULL, removeEverythingBeforeDate = NULL) {
     htmlFilesList <- gtools::mixedsort(list.files(file.path(nameOfProject, nameOfWebsite, "Html"), pattern = "\\.html$", full.names = TRUE))
     numberOfArticles <- length(htmlFilesList)
     dates <- as.POSIXct(rep(NA, numberOfArticles))
     articlesTxt <- rep(NA, numberOfArticles)
     if (titlesExtractMethod == "indexLink") {
-        titles <- ExtractTitles(articlesHtml = NULL, articlesLinks = articlesLinks, titlesExtractMethod = "indexLink", removeString = removeString)
+        titles <- ExtractTitles(articlesHtml = NULL, articlesLinks = articlesLinks, titlesExtractMethod = "indexLink", removeString = removeStringTitle)
     } else {
         titles <- rep(NA, numberOfArticles)
     }
