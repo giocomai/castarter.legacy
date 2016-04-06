@@ -54,7 +54,7 @@ ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = NULL, co
         allLinksFiltered <- rbind(allLinksFiltered, allLinksTemp)
     }
     allLinks <- unique(allLinksFiltered)
-    if (is.null(partOfLinkToExclude) == FALSE) {
+    if (is.null(partOfLinkToExclude) == FALSE & is.na(partOfLinkToExclude) == FALSE) {
         for (i in 1:length(partOfLinkToExclude)) {
             allLinks <- allLinks[!grepl(partOfLinkToExclude[i], allLinks$links, fixed = TRUE), ]
         }
@@ -87,7 +87,7 @@ ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = NULL, co
     }
     if (exportParameters == TRUE) {
         args <- c("domain", "partOfLink", "indexHtml", "containerTypeExtractLinks", "containerClassExtractLinks", "divClassExtractLinks", "attributeTypeExtractLinks", "partOfLinkToExclude", "minLength", "maxLength", "indexLinks","sortLinks", "export", "appendString", "exportParameters", "nameOfProject", "nameOfWebsite")
-        param <- list(domain, partOfLink, "indexHtml", containerType, containerClass, divClass, attributeType, paste(partOfLinkToExclude, collapse = "§"), minLength, maxLength, "indexLinks", sortLinks, export, appendString, exportParameters, nameOfProject, nameOfWebsite)
+        param <- list(domain, partOfLink, "indexHtml", containerType, containerClass, divClass, attributeType, paste(partOfLinkToExclude, collapse = "§§§"), minLength, maxLength, "indexLinks", sortLinks, export, appendString, exportParameters, nameOfProject, nameOfWebsite)
         for (i in 1:length(param)) {
             if (is.null(param[[i]])==TRUE) {
                 param[[i]] <- "NULL"
