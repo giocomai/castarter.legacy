@@ -10,7 +10,7 @@
 #' dataset <- UpdateDataset(dataset, nameOfProject, nameOfWebsite)
 UpdateDataset <- function(dataset, nameOfProject, nameOfWebsite, numberOfIndexPages = 10, wget = FALSE, wait = 3) {
     params <- read.table(file = file.path(nameOfProject, nameOfWebsite, paste(nameOfWebsite, "updateParameters.csv", sep = "-")), stringsAsFactors = FALSE)
-    params$param[params$param == "NULL"] <- NA
+    params$param[params$param == "NULL"] <- NULL
     CreateFolderStructure(nameOfProject = nameOfProject, nameOfWebsite = nameOfWebsite)
     indexLinks <- CreateLinks(linkFirstChunk = params$param[params$args=="linkFirstChunk"], linkSecondChunk = params$param[params$args=="linkSecondChunk"], startPage = as.integer(params$param[params$args=="startPage"]), endPage = sum(as.integer(params$param[params$args=="startPage"]), numberOfIndexPages), increaseBy = as.integer(params$param[params$args=="increaseBy"]), sortIndexLinks  = as.logical(params$param[params$args=="sortIndexLinks"]))
     indexHtml <- DownloadIndex(nameOfProject = nameOfProject, nameOfWebsite = nameOfWebsite, indexLinks = indexLinks, wget = wget, wait = wait)
