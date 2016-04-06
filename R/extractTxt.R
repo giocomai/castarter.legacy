@@ -70,7 +70,7 @@ ExtractTxt <- function(articlesHtml, metadata = "", export = FALSE, maxTitleChar
     }
     if (export == TRUE) {
         for (i in 1:length(articlesTxt)) {
-        base::write(articlesTxt[i], file = txtFilenames[i])
+            base::write(articlesTxt[i], file = txtFilenames[i])
         }
     }
     if (exportParameters == TRUE) {
