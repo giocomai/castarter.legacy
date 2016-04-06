@@ -17,14 +17,14 @@
 #' @export
 #' @examples
 #' articlesLinks <- ExtractLinks(domain = "http://www.example.com/", partOfLink = "news/", indexHtml)
-ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = NULL, containerClass = NULL, divClass = "", attributeType = NULL, partOfLinkToExclude = NULL, minLength = NULL, maxLength = NULL, indexLinks = NULL,
+ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = NULL, containerClass = NULL, divClass = NULL, attributeType = NULL, partOfLinkToExclude = NULL, minLength = NULL, maxLength = NULL, indexLinks = NULL,
     sortLinks = TRUE, export = FALSE, appendString = NULL, exportParameters = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
     numberOfIndexPages <- length(indexHtml)
     allLinks <- data.frame()
     for (i in 1:numberOfIndexPages) {
         if (indexHtml[i] != "") {
             indexPageHtmlParsed <- XML::htmlTreeParse(indexHtml[i], useInternalNodes = T, encoding = "UTF-8")
-            if (divClass != "") {
+            if (is.null(divClass) == FALSE & is.na(divClass) == FALSE) {
                 links <- XML::xpathSApply(indexPageHtmlParsed, paste0("//div[@class='", divClass, "']", "//a/@href"))
                 titles <- XML::xpathSApply(indexPageHtmlParsed, paste0("//div[@class='", divClass, "']", "//a"), XML::xmlValue)
             } else if (is.null(containerType) == FALSE & is.na(containerType) == FALSE) {
