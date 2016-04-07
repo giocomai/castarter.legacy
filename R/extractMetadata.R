@@ -177,7 +177,7 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", language = "english",
 #' @export
 #' @examples
 #' dates <- ExtractDatesXpath(articlesHtml)
-ExtractDatesXpath <- function(articlesHtml, dateFormat = "dmy", divClass = NULL, spanClass = NULL, customXpath = "", language = "english", customString = "", minDate = NULL, maxDate = NULL, encoding = NULL, keepAllString = FALSE, exportParameters = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
+ExtractDatesXpath <- function(articlesHtml, dateFormat = "dmy", divClass = NULL, spanClass = NULL, customXpath = NULL, language = "english", customString = "", minDate = NULL, maxDate = NULL, encoding = NULL, keepAllString = FALSE, exportParameters = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
     if (exportParameters == TRUE) {
         args <- c("dateFormat", "divClassDatesXpath", "spanClassDatesXpath", "customXpathDates", "customStringDates", "minDate", "maxDate", "keepAllString")
         param <- list(dateFormat, divClass, spanClass, customXpath, customString, minDate, maxDate, keepAllString)
@@ -231,11 +231,17 @@ ExtractDatesXpath <- function(articlesHtml, dateFormat = "dmy", divClass = NULL,
             }
         }
     }
-    if (customXpath != "") {
+    if (is.null(customXpath) == FALSE) {
         for (i in 1:numberOfArticles) {
             if (articlesHtml[i] != "") {
                 articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T)
-                datesTxt[i] <- XML::xpathSApply(articleHtmlParsed, customXpath, XML::xmlValue)
+                tempStringXml <- XML::xpathSApply(articleHtmlParsed, customXpath, XML::xmlValue)
+                if (length(tempStringXml) == 0) {
+                    datesTxt[i] <- NA
+                    print(paste("Date in article with ID", i, "could not be extracted."))
+                } else {
+                    datesTxt[i] <- tempStringXml
+                }
             }
         }
     }
