@@ -24,16 +24,16 @@ ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = NULL, co
     for (i in 1:numberOfIndexPages) {
         if (indexHtml[i] != "") {
             indexPageHtmlParsed <- XML::htmlTreeParse(indexHtml[i], useInternalNodes = T, encoding = "UTF-8")
-            if (is.null(divClass) == FALSE & is.na(divClass) == FALSE) {
+            if (gtools::invalid(divClass) == FALSE) {
                 links <- XML::xpathSApply(indexPageHtmlParsed, paste0("//div[@class='", divClass, "']", "//a/@href"))
                 titles <- XML::xpathSApply(indexPageHtmlParsed, paste0("//div[@class='", divClass, "']", "//a"), XML::xmlValue)
-            } else if (is.null(containerType) == FALSE & is.na(containerType) == FALSE) {
-                if (is.null(containerClass) == TRUE | is.na(containerClass) == TRUE) {
+            } else if (gtools::invalid(containerType) == FALSE) {
+                if (gtools::invalid(containerClass) == TRUE) {
                   stop("containerClass must be defined if containerType is defined.")
                 }
                 links <- XML::xpathSApply(indexPageHtmlParsed, paste0("//", containerType, "[@class='", containerClass, "']", "//a/@href"))
                 titles <- XML::xpathSApply(indexPageHtmlParsed, paste0("//", containerType, "[@class='", containerClass, "']", "//a"), XML::xmlValue)
-            } else if (is.null(attributeType) == FALSE) {
+            } else if (gtools::invalid(attributeType) == FALSE) {
                 XMLnodes <- XML::getNodeSet(indexPageHtmlParsed, "//a")
                 links <- as.character(sapply(XMLnodes, XML::xmlGetAttr, attributeType))
                 titles <- sapply(XMLnodes, XML::xmlValue)
@@ -54,15 +54,15 @@ ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = NULL, co
         allLinksFiltered <- rbind(allLinksFiltered, allLinksTemp)
     }
     allLinks <- unique(allLinksFiltered)
-    if (is.null(partOfLinkToExclude) == FALSE & is.na(partOfLinkToExclude) == FALSE) {
+    if (gtools::invalid(partOfLinkToExclude) == FALSE) {
         for (i in 1:length(partOfLinkToExclude)) {
             allLinks <- allLinks[!grepl(partOfLinkToExclude[i], allLinks$links, fixed = TRUE), ]
         }
     }
-    if (is.null(minLength)==FALSE) {
+    if (gtools::invalid(minLength)==FALSE) {
         allLinks <- allLinks[nchar(as.character(allLinks$links)) > minLength-nchar(domain),  ]
     }
-    if (is.null(maxLength)==FALSE) {
+    if (gtools::invalid(maxLength)==FALSE) {
         allLinks <- allLinks[nchar(as.character(allLinks$links)) < maxLength-nchar(domain),  ]
     }
     allLinks <- allLinks[gtools::mixedorder(nchar(as.character(allLinks$titles))), ]
