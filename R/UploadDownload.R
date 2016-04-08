@@ -27,7 +27,7 @@ UploadDatasets <- function(projectsAndWebsites, removeNAdates = TRUE, server, us
     for (i in 1:length(lastSavedDatasets)) {
         RCurl::ftpUpload(what = lastSavedDatasets[i],
                          to = paste0("ftp://", server, ":21/",
-                                     paste(projectsAndWebsites[[i]][1], projectsAndWebsites[[i]][2], sep = "/"),
+                                     paste(projectsAndWebsites[[i]][1], projectsAndWebsites[[i]][2], "Dataset", sep = "/"),
                                      "/", datasetFilenames[i]),
                          userpwd = paste(user, pwd, sep = ":"),
                          .opts=opts)
