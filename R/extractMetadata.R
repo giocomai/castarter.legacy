@@ -499,3 +499,31 @@ ExportMetadata <- function(nameOfProject, nameOfWebsite, dates, articlesId, titl
     metadata
 } 
 
+#' Exports dataset
+#' 
+#' Exports dataset to a data.frame, with options to save it as an R object, and export it as a .csv or .xlsx file.
+#'  
+#' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
+#' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
+#' @param exportCsv If equal to TRUE, exports the complete dataset in the .csv file format in the Dataset sub-folder.
+#' @param exportXlsx If equal to TRUE, exports the complete dataset in the .xlsx file format in the Dataset sub-folder.
+#' @return A data.frame, a 'castarter' dataset.
+#' @export
+#' @examples
+#' dataset <- ExportDataset(articlesTxt, metadata, nameOfProject, nameOfWebsite)
+ExportDataset <- function(articlesTxt, metadata, nameOfProject, nameOfWebsite, exportRdata = TRUE, exportCsv = FALSE, exportXlsx = FALSE) {
+    dataset <- cbind(metadata, articlesTxt, stringsAsFactors = FALSE)
+    if (exportRdata == TRUE) {
+        save(dataset, file = file.path(nameOfProject, nameOfWebsite, "Dataset", paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "dataset", sep = " - "), ".RData")))
+        print(paste("Dataset saved in", file.path(nameOfProject, nameOfWebsite, paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "dataset", sep = " - "), ".RData"))))
+    }
+    if (exportCsv == TRUE) {
+        utils::write.csv(dataset, file.path(nameOfProject, nameOfWebsite, "Dataset", paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "dataset", sep = " - "), ".csv")))
+        print(paste("Dataset saved as .csv file in", file.path(nameOfProject, nameOfWebsite, "Dataset", paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "dataset", sep = " - "), ".csv"))))
+    }
+    if (exportXlsx == TRUE) {
+        xlsx::write.xlsx(dataset, file.path(nameOfProject, nameOfWebsite, "Dataset", paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "dataset", sep = " - "), ".xlsx")))
+        print(paste("Dataset saved as .xlsx file in", file.path(nameOfProject, nameOfWebsite, "Dataset", paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "dataset", sep = " - "), ".xlsx"))))
+    }
+    dataset
+} 
