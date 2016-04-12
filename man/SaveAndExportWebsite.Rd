@@ -4,20 +4,26 @@
 \alias{SaveAndExportWebsite}
 \title{Saves working environment and dataset.}
 \usage{
-SaveAndExportWebsite(nameOfProject, nameOfWebsite, exportXlsx = FALSE)
+SaveAndExportWebsite(nameOfProject, nameOfWebsite, dataset = NULL,
+  exportXlsx = FALSE)
 }
 \arguments{
 \item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
 
 \item{nameOfWebsite}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
 
+\item{dataset}{A 'castarter' dataset. Required to export dataset in its dedicated folder if no metadata data.frame is provided, e.g. because dataset has been created through CreateDatasetFromHtml() function.}
+
 \item{exportXlsx}{If equal to TRUE, exports the complete dataset in the .xlsx file format in the Dataset sub-folder.}
+}
+\value{
+Nothing. Used for its side effects (save current workspace and dataset in relevant folders).
 }
 \description{
 It saves the working environment in the website folder, the dataset as an .Rdata file in the dataset subfolder, and, if exportXlsx = TRUE (by default), exports it as an .xlsx file in the Dataset sub-folder.
 It assumes that previous operations have been completed, and both a 'metadata' and an 'articlesTxt' object exist. If they don't, it just prints this to the console.
 }
 \examples{
-LoadLatestWebsite(nameOfProject, nameOfWebsite)
+SaveAndExportWebsite(nameOfProject, nameOfWebsite)
 }
 
