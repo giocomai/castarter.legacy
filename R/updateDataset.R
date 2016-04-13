@@ -20,10 +20,10 @@ UpdateDataset <- function(dataset, nameOfProject, nameOfWebsite, numberOfIndexPa
     articlesLinks <- c(dataset$articlesLinks, articlesLinks)
     articlesHtml <- DownloadArticles(nameOfProject, nameOfWebsite, articlesLinks, start = sum(length(dataset$articlesLinks), 1), wait = wait, wget = wget)
     titles <- ExtractTitles(articlesHtml = articlesHtml, articlesLinks = articlesLinks, titlesExtractMethod = params$param[params$args=="titlesExtractMethod"], removePunctuation = params$param[params$args=="removePunctuationExtractTitles"], onlyStandardCharacters = params$param[params$args=="onlyStandardCharactersExtractTitles"], removeString = params$param[params$args=="removeStringExtractTitles"], removeEverythingAfter = params$param[params$args=="removeEverythingAfterExtractTitles"], customXpath = params$param[params$args=="customXpathExtractTitles"], maxCharacters = params$param[params$args=="maxCharactersExtractTitles"])
-    if (extractDatesXpath == TRUE) {
-        
-    } else {
+    if (gtools::invalid(params$param[params$args=="divClassDatesXpath"]) == TRUE & gtools::invalid(params$param[params$args=="spanClassDatesXpath"]) == TRUE & gtools::invalid(params$param[params$args=="customXpathDates"]) == TRUE) {
         dates <- ExtractDates(articlesHtml = articlesHtml, dateFormat = params$param[params$args=="dateFormat"], language = dataset$language[1], customString = params$param[params$args=="customStringExtractDates"], minDate = params$param[params$args=="minDate"], maxDate = params$param[params$args=="maxDate"], removeEverythingBefore = params$param[params$args=="removeEverythingBeforeExtractDates"])
+    } else {
+        dates <- ExtractDatesXpath(articlesHtml = articlesHtml, dateFormat = params$param[params$args=="dateFormat"], divClass = params$param[params$args=="divClassDatesXpath"], spanClass = params$param[params$args=="spanClassDatesXpath"], customXpath = params$param[params$args=="customXpathDates"], language = dataset$language[1], customString = params$param[params$args=="customStringExtractDates"], minDate = params$param[params$args=="minDate"], maxDate = params$param[params$args=="maxDate"], keepAllString = params$param[params$args=="keepAllString"])
     }
     articlesId <- ExtractArticleId(nameOfProject, nameOfWebsite)
     language <- dataset$language[1]
