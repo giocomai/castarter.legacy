@@ -1,7 +1,7 @@
 #' Subsets a 'castarter' dataset
 #' 
 #' @param dataset A dataset created with 'castarter'.
-#' @param terms A character vector. Only articles including these one of these terms are included in the output.
+#' @param terms A character vector. Only articles including one of these terms are included in the output.
 #' @param startDate, endDate A date in the format YYYY-MM-DD.
 #' @return A dataset in the 'castarter' format. 
 #' @export
