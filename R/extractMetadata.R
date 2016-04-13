@@ -206,7 +206,7 @@ ExtractDatesXpath <- function(articlesHtml, dateFormat = "dmy", divClass = NULL,
     if (is.null(encoding) == FALSE) {
         articlesHtml <- iconv(articlesHtml, from = encoding, to = "utf8")
     }
-    if (is.null(divClass) == FALSE) {
+    if (gtools::invalid(divClass) == FALSE) {
         for (i in 1:numberOfArticles) {
             if (articlesHtml[i] != "") {
                 articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T, encoding = "UTF-8")
@@ -219,7 +219,7 @@ ExtractDatesXpath <- function(articlesHtml, dateFormat = "dmy", divClass = NULL,
             }
         }
     }
-    if (is.null(spanClass)==FALSE) {
+    if (gtools::invalid(spanClass)==FALSE) {
         for (i in 1:numberOfArticles) {
             articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T)
             tempStringXml <- XML::xpathSApply(articleHtmlParsed, paste0("//span[@class='", spanClass, "']"), XML::xmlValue)
@@ -231,7 +231,7 @@ ExtractDatesXpath <- function(articlesHtml, dateFormat = "dmy", divClass = NULL,
             }
         }
     }
-    if (is.null(customXpath) == FALSE) {
+    if (gtools::invalid(customXpath) == FALSE) {
         for (i in 1:numberOfArticles) {
             if (articlesHtml[i] != "") {
                 articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T)
