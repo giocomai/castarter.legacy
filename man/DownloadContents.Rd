@@ -6,7 +6,7 @@
 \usage{
 DownloadContents(links, type = "articles", nameOfProject, nameOfWebsite,
   articlesHtml = NULL, size = 500, linksToDownload = NULL, wget = FALSE,
-  missingArticles = TRUE, wait = 3, createScript = FALSE)
+  missingArticles = TRUE, start = NULL, wait = 3, createScript = FALSE)
 }
 \arguments{
 \item{links}{A character vector of links, commonly generated either with the function CreateLinks or ExtractLinks.}
@@ -17,7 +17,11 @@ DownloadContents(links, type = "articles", nameOfProject, nameOfWebsite,
 
 \item{nameOfWebsite}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
 
+\item{linksToDownload}{A numeric vector. Only corresponding links will be downloaded: links[linksToDownload]}
+
 \item{missingArticles}{Logical, defaults to TRUE. If TRUE, verifies if a downloaded html file exists for each element in articlesLinks; when there is no such file, it downloads it.}
+
+\item{start}{Integer. Only links with position higher than start in the links vector will be downloaded: links[start:length(links)]}
 }
 \value{
 By default, returns nothing, used for its side effects (downloads html files in relevant folder). Download files can then be imported in a vector with the function ImportHtml.

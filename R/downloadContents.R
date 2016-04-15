@@ -7,12 +7,14 @@
 #' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
 #' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
 #' @param missingArticles Logical, defaults to TRUE. If TRUE, verifies if a downloaded html file exists for each element in articlesLinks; when there is no such file, it downloads it.
+#' @param linksToDownload A numeric vector. Only corresponding links will be downloaded: links[linksToDownload]
+#' @param start Integer. Only links with position higher than start in the links vector will be downloaded: links[start:length(links)]
 #' @return By default, returns nothing, used for its side effects (downloads html files in relevant folder). Download files can then be imported in a vector with the function ImportHtml. 
 #' @export
 #' @examples
 #' DownloadContents(nameOfProject, nameOfWebsite, links)
 
-DownloadContents <- function(links, type = "articles", nameOfProject, nameOfWebsite, articlesHtml = NULL, size = 500, linksToDownload = NULL, wget = FALSE, missingArticles = TRUE, wait = 3, createScript = FALSE) {
+DownloadContents <- function(links, type = "articles", nameOfProject, nameOfWebsite, articlesHtml = NULL, size = 500, linksToDownload = NULL, wget = FALSE, missingArticles = TRUE, start = NULL, wait = 3, createScript = FALSE) {
     articlesHtmlProvided <- is.null(articlesHtml) == FALSE
     if (type=="articles") {
         htmlFilePath <- file.path(nameOfProject, nameOfWebsite, "Html")
@@ -29,6 +31,9 @@ DownloadContents <- function(links, type = "articles", nameOfProject, nameOfWebs
     }
     if (is.null(linksToDownload) == TRUE) {
         linksToDownload <- htmlFileSize < size
+    }
+    if (gtools::invalid(start)==FALSE){
+        linksToDownload <- start:length(links)
     }
     if (is.null(articlesHtml) == TRUE) {
         articlesHtml <- rep(NA, length(links[linksToDownload]))
