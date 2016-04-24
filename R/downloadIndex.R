@@ -18,7 +18,7 @@
 CreateLinks <- function(linkFirstChunk, linkSecondChunk = NULL, startPage = 1, endPage = 10, increaseBy = 1, dateFormat = NULL, 
                         firstYear = "", lastYear = "", leadingZero = TRUE, startDate = "", endDate = "", sortIndexLinks = TRUE, dateSeparator = "/", export = FALSE, 
                         reversedOrder = FALSE, exportParameters = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
-    if (is.null(dateFormat) == FALSE) {
+    if (gtools::invalid(dateFormat) == FALSE) {
         if (dateFormat == "ym" | dateFormat == "Ym") {
             years <- firstYear:lastYear
             dates <- vector()
@@ -44,8 +44,8 @@ CreateLinks <- function(linkFirstChunk, linkSecondChunk = NULL, startPage = 1, e
             indexLinks <- paste0(linkFirstChunk, dates)
         } 
     }
-    if (base::is.null(linkSecondChunk) == TRUE | base::is.na(linkSecondChunk) == TRUE) {
-        if (is.null(dateFormat) == FALSE) {
+    if (gtools::invalid(linkSecondChunk) == TRUE | gtools::invalid(linkSecondChunk) == TRUE) {
+        if (gtools::invalid(dateFormat) == FALSE) {
             indexLinks <- base::paste0(indexLinks, linkSecondChunk)
         } else {
             listOfNumbers <- base::seq(startPage, endPage, increaseBy)
@@ -56,8 +56,8 @@ CreateLinks <- function(linkFirstChunk, linkSecondChunk = NULL, startPage = 1, e
             indexLinks <- base::paste0(indexLinks[, 1], indexLinks[, 2])
         }
     }
-    if (base::is.null(linkSecondChunk) == FALSE & is.na(linkSecondChunk) == FALSE) {
-        if (is.null(dateFormat) == FALSE) {
+    if (gtools::invalid(linkSecondChunk) == FALSE & gtools::invalid(linkSecondChunk) == FALSE) {
+        if (gtools::invalid(dateFormat) == FALSE) {
             indexLinks <- base::paste0(indexLinks, linkSecondChunk)
         } else {
             listOfNumbers <- base::seq(startPage, endPage, increaseBy)
