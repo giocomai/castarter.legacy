@@ -330,10 +330,10 @@ ExtractTitles <- function(articlesHtml = NULL, articlesLinks = "", titlesExtract
     } else if (titlesExtractMethod == "beginning") {
         titles <- ExtractTxt(articlesHtml, export = FALSE, keepEverything = TRUE)
     }
-    if (is.null(removeString) == FALSE) {
+    if (gtools::invalid(removeString) == FALSE) {
         titles <- gsub(removeString, replacement = "", x = titles, fixed = TRUE)
     }
-    if (is.null(removeEverythingAfter) == FALSE) {
+    if (gtools::invalid(removeEverythingAfter) == FALSE) {
         titles <- gsub(paste0(removeEverythingAfter, ".*"), replacement = "", x = titles)
     }
     if (onlyStandardCharacters == TRUE) {
@@ -346,7 +346,7 @@ ExtractTitles <- function(articlesHtml = NULL, articlesLinks = "", titlesExtract
         titles <- gsub("  ", " ", titles)
         titles <- gsub("--", "-", titles)
     }
-    if (is.null(maxCharacters) == FALSE) {
+    if (gtools::invalid(maxCharacters) == FALSE) {
     titles <- substring(titles, 1, maxCharacters)
     }
     if (exportParameters == TRUE) {
