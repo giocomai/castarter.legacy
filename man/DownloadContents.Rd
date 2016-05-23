@@ -6,7 +6,8 @@
 \usage{
 DownloadContents(links, type = "articles", nameOfProject, nameOfWebsite,
   articlesHtml = NULL, size = 500, linksToDownload = NULL, wget = FALSE,
-  missingArticles = TRUE, start = NULL, wait = 3, createScript = FALSE)
+  wgetSystem = FALSE, method = "auto", missingArticles = TRUE,
+  start = NULL, wait = 1, createScript = FALSE)
 }
 \arguments{
 \item{links}{A character vector of links, commonly generated either with the function CreateLinks or ExtractLinks.}
@@ -18,6 +19,10 @@ DownloadContents(links, type = "articles", nameOfProject, nameOfWebsite,
 \item{nameOfWebsite}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
 
 \item{linksToDownload}{A numeric vector. Only corresponding links will be downloaded: links[linksToDownload]}
+
+\item{wgetSystem}{Logical, defaults to FALSE. Calls wget as a system command through the system() function. Wget must be previously installed on the system.}
+
+\item{method}{Defaults to "auto". Method is passed to the function utils::download.file(); available options are "internal", "wininet" (Windows only) "libcurl", "wget" and "curl". For more information see ?utils::download.file()}
 
 \item{missingArticles}{Logical, defaults to TRUE. If TRUE, verifies if a downloaded html file exists for each element in articlesLinks; when there is no such file, it downloads it.}
 
