@@ -41,6 +41,9 @@ DownloadContents <- function(links, type = "articles", nameOfProject, nameOfWebs
         articlesHtml <- rep(NA, length(links[linksToDownload]))
     }
     temp <- 1
+    if (createScript == TRUE) {
+        wgetSystem <- TRUE
+    }
     if (wgetSystem == TRUE) {
         if (createScript == TRUE) {
             if (file.exists(file.path(nameOfProject, nameOfWebsite, "downloadArticles.sh")) == TRUE) {
@@ -81,9 +84,9 @@ DownloadContents <- function(links, type = "articles", nameOfProject, nameOfWebs
         for (i in links[linksToDownload]) {
             articleId <- articlesId[linksToDownload][temp]
             if (type=="articles") {
-                utils::download.file(url = I, destfile = file.path(nameOfProject, nameOfWebsite, "Html", paste0(articleId, ".html")), method = method)
+                utils::download.file(url = i, destfile = file.path(nameOfProject, nameOfWebsite, "Html", paste0(articleId, ".html")), method = method)
             } else if (type=="index") {
-                utils::download.file(url = I, destfile = file.path(nameOfProject, nameOfWebsite, "IndexHtml", paste0(articleId, ".html")), method = method)
+                utils::download.file(url = i, destfile = file.path(nameOfProject, nameOfWebsite, "IndexHtml", paste0(articleId, ".html")), method = method)
             }
             print(paste("Downloaded article", temp, "of", length(links[linksToDownload]), ". ArticleID: ", articleId), quote = FALSE)
             temp <- temp + 1
