@@ -21,7 +21,7 @@ DownloadContents <- function(links, type = "articles", articlesHtml = NULL, size
         nameOfProject <- CastarterOptions("nameOfProject")
     }
     if (gtools::invalid(nameOfWebsite) == TRUE) {
-        nameOfProject <- CastarterOptions("nameOfWebsite")
+        nameOfWebsite <- CastarterOptions("nameOfWebsite")
     }
     articlesHtmlProvided <- is.null(articlesHtml) == FALSE
     if (type=="articles") {
