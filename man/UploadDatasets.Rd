@@ -4,7 +4,7 @@
 \alias{UploadDatasets}
 \title{Uploads a set of datasets from existings 'castarter' projects to an online repository.}
 \usage{
-UploadDatasets(projectsAndWebsites, removeNAdates = TRUE, server, user, pwd)
+UploadDatasets(projectsAndWebsites, server, user, pwd)
 }
 \arguments{
 \item{projectsAndWebsites}{A character vector listing websites to be loaded in the format "nameOfProject/nameOfWebsite".}

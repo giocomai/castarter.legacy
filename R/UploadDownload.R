@@ -8,7 +8,7 @@
 #' @examples
 #' projectsAndWebsites <- c("ProjectX/Website1", "ProjectY/Website3", "ProjectZ/Website2")
 #' UploadDataset(projectsAndWebsites, server = "myserver.com", user = "me@myserver.com", pwd = "secretPassword!")
-UploadDatasets <- function(projectsAndWebsites, removeNAdates = TRUE, server, user, pwd) {
+UploadDatasets <- function(projectsAndWebsites, server, user, pwd) {
     projectsAndWebsites <- base::strsplit(projectsAndWebsites, "/")
     lastSavedDatasets <- vector()
     datasetFilenames <- vector()
@@ -32,7 +32,4 @@ UploadDatasets <- function(projectsAndWebsites, removeNAdates = TRUE, server, us
                          userpwd = paste(user, pwd, sep = ":"),
                          .opts=opts)
     }
-    # if (removeNAdates == TRUE) {
-    #     allDatasets <- allDatasets[is.na(allDatasets$dates) == FALSE, ]
-    # }
 }
