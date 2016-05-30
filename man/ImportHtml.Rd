@@ -4,7 +4,7 @@
 \alias{ImportHtml}
 \title{Imports html files into a character vector.}
 \usage{
-ImportHtml(from = "", nameOfProject = "", nameOfWebsite = "",
+ImportHtml(from = "", nameOfProject = NULL, nameOfWebsite = NULL,
   pathToHtmlFolder = "", sort = TRUE, recursive = TRUE,
   includePath = FALSE)
 }

@@ -67,7 +67,13 @@ LoadLatest <- function(nameOfProject = NULL, nameOfWebsite = NULL) {
 #' @export
 #' @examples
 #' SaveAndExportWebsite(nameOfProject, nameOfWebsite)
-SaveAndExportWebsite <- function(nameOfProject, nameOfWebsite, dataset = NULL, exportXlsx = FALSE) {
+SaveAndExportWebsite <- function(nameOfProject = NULL, nameOfWebsite = NULL, dataset = NULL, exportXlsx = FALSE) {
+    if (gtools::invalid(nameOfProject) == TRUE) {
+        nameOfProject <- CastarterOptions("nameOfProject")
+    }
+    if (gtools::invalid(nameOfWebsite) == TRUE) {
+        nameOfWebsite <- CastarterOptions("nameOfWebsite")
+    }
     ## Save environment
     save.image(file = file.path(nameOfProject, nameOfWebsite, paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, sep = " - "), ".RData")))
     print(paste("Environment saved in", file.path(nameOfProject, nameOfWebsite, paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, sep = " - "), ".RData"))))

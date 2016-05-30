@@ -10,7 +10,13 @@
 #' @export
 #' @examples
 #' articlesHtml <- ImportHtml(from = articles, nameOfProject, nameOfWebsite)
-ImportHtml <- function(from = "", nameOfProject = "", nameOfWebsite = "", pathToHtmlFolder = "", sort = TRUE, recursive = TRUE, includePath = FALSE) {
+ImportHtml <- function(from = "", nameOfProject = NULL, nameOfWebsite = NULL, pathToHtmlFolder = "", sort = TRUE, recursive = TRUE, includePath = FALSE) {
+    if (gtools::invalid(nameOfProject) == TRUE) {
+        nameOfProject <- CastarterOptions("nameOfProject")
+    }
+    if (gtools::invalid(nameOfWebsite) == TRUE) {
+        nameOfWebsite <- CastarterOptions("nameOfWebsite")
+    }
     if (from == "articles") {
         htmlFilesList <- list.files(file.path(nameOfProject, nameOfWebsite, "Html"), pattern = "\\.html$", full.names = TRUE)
     } else if (from == "index") {
