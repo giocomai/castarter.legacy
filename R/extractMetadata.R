@@ -16,7 +16,7 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", language = "english",
         nameOfProject <- CastarterOptions("nameOfProject")
     }
     if (gtools::invalid(nameOfWebsite) == TRUE) {
-        nameOfProject <- CastarterOptions("nameOfWebsite")
+        nameOfWebsite <- CastarterOptions("nameOfWebsite")
     }
     if (exportParameters == TRUE && exists("nameOfProject") == FALSE | exportParameters == TRUE && exists("nameOfWebsite") == FALSE) {
     stop("If exportParameters == TRUE, both nameOfProject and nameOfWebsite must be defined.")    
@@ -320,7 +320,7 @@ ExtractTitles <- function(articlesHtml = NULL, articlesLinks = "", titlesExtract
         nameOfProject <- CastarterOptions("nameOfProject")
     }
     if (gtools::invalid(nameOfWebsite) == TRUE) {
-        nameOfProject <- CastarterOptions("nameOfWebsite")
+        nameOfWebsite <- CastarterOptions("nameOfWebsite")
     }
     titles <- vector()
     numberOfArticles <- length(articlesHtml)
