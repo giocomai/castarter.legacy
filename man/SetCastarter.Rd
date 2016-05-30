@@ -4,7 +4,7 @@
 \alias{SetCastarter}
 \title{Sets 'castarter' options}
 \usage{
-SetCastarter(nameOfProject = NULL, nameOfWebsite = NULL, ...)
+SetCastarter(nameOfProject = NULL, nameOfWebsite = NULL)
 }
 \arguments{
 \item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}

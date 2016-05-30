@@ -11,6 +11,6 @@ CastarterOptions <- settings::options_manager(nameOfProject = NULL, nameOfWebsit
 #' @export
 #' @examples
 #' SetCastarter(nameOfProject, nameOfWebsite)
-SetCastarter <- function(nameOfProject = NULL, nameOfWebsite = NULL, ...){
+SetCastarter <- function(nameOfProject = NULL, nameOfWebsite = NULL){
     CastarterOptions(nameOfProject = nameOfProject, nameOfWebsite = nameOfWebsite)
 }
