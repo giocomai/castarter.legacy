@@ -32,7 +32,8 @@ Imports:
     RCurl,
     XML, 
     xts, 
-    dygraphs
+    dygraphs, 
+    settings
 Suggests:
     knitr
 VignetteBuilder: knitr
