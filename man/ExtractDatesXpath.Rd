@@ -21,7 +21,9 @@ ExtractDatesXpath(articlesHtml, dateFormat = "dmy", divClass = NULL,
 
 \item{keepAllString}{Logical, defaults to FALSE. If TRUE, it directly tries to parse the date with the given dateFormat, without trying to polish the string provided accordingly.}
 
-\item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. Required for storing export parameters (with exportParameters = TRUE).}
+\item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. Defaults to NULL, required for storing export parameters (with exportParameters = TRUE).}
+
+\item{nameOfWebsite}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder. Defaults to NULL, required for storing export parameters (with exportParameters = TRUE).}
 }
 \value{
 A vector of the POSIXct class.

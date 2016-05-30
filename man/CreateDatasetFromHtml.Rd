@@ -4,8 +4,8 @@
 \alias{CreateDatasetFromHtml}
 \title{Extracts metadata and text from local html files}
 \usage{
-CreateDatasetFromHtml(nameOfProject, nameOfWebsite, articlesLinks = NULL,
-  dateFormat = NULL, ExtractDatesXpath = FALSE,
+CreateDatasetFromHtml(nameOfProject = NULL, nameOfWebsite = NULL,
+  articlesLinks = NULL, dateFormat = NULL, ExtractDatesXpath = FALSE,
   titlesExtractMethod = "htmlTitle", divClassDate = NULL,
   spanClassDate = NULL, language = NULL, divClassTxt = NULL,
   removeStringTitle = NULL, encoding = NULL, removeEverythingAfter = NULL,

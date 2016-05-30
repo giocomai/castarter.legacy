@@ -12,6 +12,12 @@
 #' @examples
 #' dates <- ExtractDates(articlesHtml)
 ExtractDates <- function(articlesHtml, dateFormat = "dmY", language = "english", customString = "", minDate = NULL, maxDate = NULL, removeEverythingBefore = NULL, keepAllString = FALSE, exportParameters = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
+    if (gtools::invalid(nameOfProject) == TRUE) {
+        nameOfProject <- CastarterOptions("nameOfProject")
+    }
+    if (gtools::invalid(nameOfWebsite) == TRUE) {
+        nameOfProject <- CastarterOptions("nameOfWebsite")
+    }
     if (exportParameters == TRUE && exists("nameOfProject") == FALSE | exportParameters == TRUE && exists("nameOfWebsite") == FALSE) {
     stop("If exportParameters == TRUE, both nameOfProject and nameOfWebsite must be defined.")    
     }
@@ -172,12 +178,19 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", language = "english",
 #' @param minDate, maxDate Minimum and maximum possible dates in the format year-month-date, e.g. "2007-06-24". Introduces NA in the place of impossibly high or low dates.
 #' @param encoding Defaults to NULL. If source is not in UTF, encoding can be specified here for conversion. A list of valid values can be found using iconvlist().
 #' @param keepAllString Logical, defaults to FALSE. If TRUE, it directly tries to parse the date with the given dateFormat, without trying to polish the string provided accordingly.
-#' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. Required for storing export parameters (with exportParameters = TRUE).
+#' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. Defaults to NULL, required for storing export parameters (with exportParameters = TRUE).
+#' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder. Defaults to NULL, required for storing export parameters (with exportParameters = TRUE).
 #' @return A vector of the POSIXct class. 
 #' @export
 #' @examples
 #' dates <- ExtractDatesXpath(articlesHtml)
 ExtractDatesXpath <- function(articlesHtml, dateFormat = "dmy", divClass = NULL, spanClass = NULL, customXpath = NULL, language = "english", customString = "", minDate = NULL, maxDate = NULL, encoding = NULL, keepAllString = FALSE, exportParameters = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
+    if (gtools::invalid(nameOfProject) == TRUE) {
+        nameOfProject <- CastarterOptions("nameOfProject")
+    }
+    if (gtools::invalid(nameOfWebsite) == TRUE) {
+        nameOfProject <- CastarterOptions("nameOfWebsite")
+    }
     if (exportParameters == TRUE) {
         args <- c("dateFormat", "divClassDatesXpath", "spanClassDatesXpath", "customXpathDates", "customStringDates", "minDate", "maxDate", "keepAllString")
         param <- list(dateFormat, divClass, spanClass, customXpath, customString, minDate, maxDate, keepAllString)
@@ -303,6 +316,12 @@ MergeDates <- function(dates1, dates2, dates3 = "", minDate = "", maxDate = "") 
 #' @examples
 #' titles <- ExtractTitles(articlesHtml)
 ExtractTitles <- function(articlesHtml = NULL, articlesLinks = "", titlesExtractMethod = "indexLink", removePunctuation = FALSE, onlyStandardCharacters = FALSE, removeString = NULL, removeEverythingAfter = NULL, customXpath = "", maxCharacters = NULL, exportParameters = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
+    if (gtools::invalid(nameOfProject) == TRUE) {
+        nameOfProject <- CastarterOptions("nameOfProject")
+    }
+    if (gtools::invalid(nameOfWebsite) == TRUE) {
+        nameOfProject <- CastarterOptions("nameOfWebsite")
+    }
     titles <- vector()
     numberOfArticles <- length(articlesHtml)
     if (titlesExtractMethod == "htmlTitle") {
@@ -404,7 +423,13 @@ ExtractArticleId <- function(nameOfProject, nameOfWebsite, accordingToDate = FAL
 #' @export
 #' @examples
 #' dataset <- CreateDatasetFromHtml(nameOfProject, nameOfWebsite)
-CreateDatasetFromHtml <- function(nameOfProject, nameOfWebsite, articlesLinks = NULL, dateFormat = NULL, ExtractDatesXpath = FALSE, titlesExtractMethod = "htmlTitle", divClassDate = NULL, spanClassDate = NULL, language = NULL, divClassTxt = NULL, removeStringTitle = NULL, encoding = NULL, removeEverythingAfter = NULL, removeEverythingBefore = NULL, removeEverythingBeforeDate = NULL) {
+CreateDatasetFromHtml <- function(nameOfProject = NULL, nameOfWebsite = NULL, articlesLinks = NULL, dateFormat = NULL, ExtractDatesXpath = FALSE, titlesExtractMethod = "htmlTitle", divClassDate = NULL, spanClassDate = NULL, language = NULL, divClassTxt = NULL, removeStringTitle = NULL, encoding = NULL, removeEverythingAfter = NULL, removeEverythingBefore = NULL, removeEverythingBeforeDate = NULL) {
+    if (gtools::invalid(nameOfProject) == TRUE) {
+        nameOfProject <- CastarterOptions("nameOfProject")
+    }
+    if (gtools::invalid(nameOfWebsite) == TRUE) {
+        nameOfProject <- CastarterOptions("nameOfWebsite")
+    }
     htmlFilesList <- gtools::mixedsort(list.files(file.path(nameOfProject, nameOfWebsite, "Html"), pattern = "\\.html$", full.names = TRUE))
     numberOfArticles <- length(htmlFilesList)
     dates <- as.POSIXct(rep(NA, numberOfArticles))
