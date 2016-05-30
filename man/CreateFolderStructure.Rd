@@ -7,10 +7,9 @@
 CreateFolderStructure(nameOfProject, nameOfWebsite)
 }
 \description{
-It needs to be deleted.
+Creates all the standard folders required by a 'castarter' project.
 }
 \examples{
 CreateFolderStructure(nameOfProject, nameOfWebsite)
 }
-\keyword{toBeRemoved}
 

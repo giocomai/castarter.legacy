@@ -1,7 +1,7 @@
 #' Creates the folder structure needed by 'castarter'.
 #'
-#' It needs to be deleted.
-#' @keywords toBeRemoved
+#' Creates all the standard folders required by a 'castarter' project.
+#' @keywords 
 #' @export
 #' @examples
 #' CreateFolderStructure(nameOfProject, nameOfWebsite)
