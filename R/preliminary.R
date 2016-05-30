@@ -45,7 +45,13 @@ CreateFolderStructure <- function(nameOfProject = NULL, nameOfWebsite = NULL) {
 #' @export
 #' @examples
 #' load(LoadLatest(nameOfProject, nameOfWebsite))
-LoadLatest <- function(nameOfProject, nameOfWebsite) {
+LoadLatest <- function(nameOfProject = NULL, nameOfWebsite = NULL) {
+    if (gtools::invalid(nameOfProject) == TRUE) {
+        nameOfProject <- CastarterOptions("nameOfProject")
+    }
+    if (gtools::invalid(nameOfWebsite) == TRUE) {
+        nameOfWebsite <- CastarterOptions("nameOfWebsite")
+    }
     lastSavedFile <- file.path(file.path(nameOfProject, nameOfWebsite), sort(list.files(file.path(nameOfProject, nameOfWebsite))[stringr::str_extract(list.files(file.path(nameOfProject, nameOfWebsite)), "RData") == "RData"], decreasing = TRUE)[1])
 }
 
