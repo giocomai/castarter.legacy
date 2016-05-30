@@ -13,6 +13,6 @@ CastarterOptions <- settings::options_manager(nameOfProject = NULL, nameOfWebsit
 #' SetCastarter(nameOfProject, nameOfWebsite)
 SetCastarter <- function(...){
     # protect against the use of reserved words.
-    stop_if_reserved(...)
+    settings::stop_if_reserved(...)
     CastarterOptions(...)
 }
