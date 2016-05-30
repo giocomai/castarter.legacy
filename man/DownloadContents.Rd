@@ -5,7 +5,7 @@
 \title{Downloads html pages based on a vector of links}
 \usage{
 DownloadContents(links, type = "articles", nameOfProject, nameOfWebsite,
-  articlesHtml = NULL, size = 500, linksToDownload = NULL, wget = FALSE,
+  articlesHtml = NULL, size = 500, linksToDownload = NULL,
   wgetSystem = FALSE, method = "auto", missingArticles = TRUE,
   start = NULL, wait = 1, createScript = FALSE)
 }
