@@ -4,7 +4,7 @@
 \alias{CreateFolderStructure}
 \title{Creates the folder structure needed by 'castarter'.}
 \usage{
-CreateFolderStructure(nameOfProject, nameOfWebsite)
+CreateFolderStructure(nameOfProject = NULL, nameOfWebsite = NULL)
 }
 \description{
 Creates all the standard folders required by a 'castarter' project.

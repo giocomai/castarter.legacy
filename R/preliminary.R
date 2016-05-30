@@ -4,7 +4,13 @@
 #' @export
 #' @examples
 #' CreateFolderStructure(nameOfProject, nameOfWebsite)
-CreateFolderStructure <- function(nameOfProject, nameOfWebsite) {
+CreateFolderStructure <- function(nameOfProject = NULL, nameOfWebsite = NULL) {
+    if (gtools::invalid(nameOfProject) == TRUE) {
+        nameOfProject <- CastarterOptions("nameOfProject")
+    }
+    if (gtools::invalid(nameOfWebsite) == TRUE) {
+        nameOfWebsite <- CastarterOptions("nameOfWebsite")
+    }
     if (!file.exists(file.path(nameOfProject))) {
         dir.create(file.path(nameOfProject))
     }
