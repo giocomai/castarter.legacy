@@ -4,19 +4,15 @@
 \alias{DownloadContents}
 \title{Downloads html pages based on a vector of links}
 \usage{
-DownloadContents(links, type = "articles", nameOfProject, nameOfWebsite,
-  articlesHtml = NULL, size = 500, linksToDownload = NULL,
-  wgetSystem = FALSE, method = "auto", missingArticles = TRUE,
-  start = NULL, wait = 1, createScript = FALSE)
+DownloadContents(links, type = "articles", articlesHtml = NULL,
+  size = 500, linksToDownload = NULL, wgetSystem = FALSE,
+  method = "auto", missingArticles = TRUE, start = NULL, wait = 1,
+  createScript = FALSE, nameOfProject = NULL, nameOfWebsite = NULL)
 }
 \arguments{
 \item{links}{A character vector of links, commonly generated either with the function CreateLinks or ExtractLinks.}
 
 \item{type}{Accepted values are either "articles" (default), or "index"; it defines the folder where files are stored.}
-
-\item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
-
-\item{nameOfWebsite}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
 
 \item{linksToDownload}{A numeric vector. Only corresponding links will be downloaded: links[linksToDownload]}
 
@@ -27,6 +23,10 @@ DownloadContents(links, type = "articles", nameOfProject, nameOfWebsite,
 \item{missingArticles}{Logical, defaults to TRUE. If TRUE, verifies if a downloaded html file exists for each element in articlesLinks; when there is no such file, it downloads it.}
 
 \item{start}{Integer. Only links with position higher than start in the links vector will be downloaded: links[start:length(links)]}
+
+\item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
+
+\item{nameOfWebsite}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
 }
 \value{
 By default, returns nothing, used for its side effects (downloads html files in relevant folder). Download files can then be imported in a vector with the function ImportHtml.

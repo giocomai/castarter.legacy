@@ -18,6 +18,12 @@
 CreateLinks <- function(linkFirstChunk, linkSecondChunk = NULL, startPage = 1, endPage = 10, increaseBy = 1, dateFormat = NULL, 
                         firstYear = "", lastYear = "", leadingZero = TRUE, startDate = "", endDate = "", sortIndexLinks = FALSE, dateSeparator = "/", export = FALSE, 
                         reversedOrder = FALSE, exportParameters = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
+    if (gtools::invalid(nameOfProject) == TRUE) {
+        nameOfProject <- CastarterOptions("nameOfProject")
+    }
+    if (gtools::invalid(nameOfWebsite) == TRUE) {
+        nameOfProject <- CastarterOptions("nameOfWebsite")
+    }
     if (gtools::invalid(dateFormat) == FALSE) {
         if (dateFormat == "ym" | dateFormat == "Ym") {
             years <- firstYear:lastYear

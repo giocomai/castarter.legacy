@@ -16,7 +16,13 @@
 #' @examples
 #' DownloadContents(nameOfProject, nameOfWebsite, links)
 
-DownloadContents <- function(links, type = "articles", nameOfProject, nameOfWebsite, articlesHtml = NULL, size = 500, linksToDownload = NULL, wgetSystem = FALSE, method = "auto", missingArticles = TRUE, start = NULL, wait = 1, createScript = FALSE) {
+DownloadContents <- function(links, type = "articles", articlesHtml = NULL, size = 500, linksToDownload = NULL, wgetSystem = FALSE, method = "auto", missingArticles = TRUE, start = NULL, wait = 1, createScript = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
+    if (gtools::invalid(nameOfProject) == TRUE) {
+        nameOfProject <- CastarterOptions("nameOfProject")
+    }
+    if (gtools::invalid(nameOfWebsite) == TRUE) {
+        nameOfProject <- CastarterOptions("nameOfWebsite")
+    }
     articlesHtmlProvided <- is.null(articlesHtml) == FALSE
     if (type=="articles") {
         htmlFilePath <- file.path(nameOfProject, nameOfWebsite, "Html")
