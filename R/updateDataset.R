@@ -7,8 +7,14 @@
 #' @return A castarter dataset.
 #' @export
 #' @examples
-#' dataset <- UpdateDataset(dataset, nameOfProject, nameOfWebsite)
-UpdateDataset <- function(dataset, nameOfProject, nameOfWebsite, numberOfIndexPages = 10, wget = FALSE, wait = 3) {
+#' dataset <- UpdateDataset(dataset)
+UpdateDataset <- function(dataset, numberOfIndexPages = 10, wget = FALSE, wait = 3, nameOfProject = NULL, nameOfWebsite = NULL) {
+    if (gtools::invalid(nameOfProject) == TRUE) {
+        nameOfProject <- CastarterOptions("nameOfProject")
+    }
+    if (gtools::invalid(nameOfWebsite) == TRUE) {
+        nameOfWebsite <- CastarterOptions("nameOfWebsite")
+    }
     params <- read.table(file = file.path(nameOfProject, nameOfWebsite, paste(nameOfWebsite, "updateParameters.csv", sep = "-")), stringsAsFactors = FALSE)
     params$param[params$param == "NULL"] <- NA
     params$param[params$param == ""] <- NA

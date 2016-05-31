@@ -4,8 +4,8 @@
 \alias{UpdateDataset}
 \title{Updates a dataset}
 \usage{
-UpdateDataset(dataset, nameOfProject, nameOfWebsite, numberOfIndexPages = 10,
-  wget = FALSE, wait = 3)
+UpdateDataset(dataset, numberOfIndexPages = 10, wget = FALSE, wait = 3,
+  nameOfProject = NULL, nameOfWebsite = NULL)
 }
 \arguments{
 \item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
@@ -19,6 +19,6 @@ A castarter dataset.
 Updates a dataset given a previously created parameters export file.
 }
 \examples{
-dataset <- UpdateDataset(dataset, nameOfProject, nameOfWebsite)
+dataset <- UpdateDataset(dataset)
 }
 
