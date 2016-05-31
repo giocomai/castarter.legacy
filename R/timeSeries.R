@@ -15,6 +15,12 @@
 #' CreateTimeSeries(corpus, terms = c("word1", "word2"))
 
 CreateTimeSeries <- function(corpus, terms, specificWebsites = NULL, startDate = NULL, endDate = NULL, rollingAverage = 30, corpusDtm = NULL, export = FALSE, allWebsitesAsOne = FALSE, nameOfProject = NULL, nameOfWebsite = NULL, dygraphs = FALSE) {
+    if (gtools::invalid(nameOfProject) == TRUE) {
+        nameOfProject <- CastarterOptions("nameOfProject")
+    }
+    if (gtools::invalid(nameOfWebsite) == TRUE) {
+        nameOfWebsite <- CastarterOptions("nameOfWebsite")
+    }
     if (is.null(startDate)==FALSE) {
         corpus <- corpus[NLP::meta(corpus, "datetimestamp") > as.POSIXct(startDate)]
     }
@@ -115,6 +121,12 @@ CreateTimeSeries <- function(corpus, terms, specificWebsites = NULL, startDate =
 #' ShowDistribution(dataset)
 
 ShowDistribution <- function(dataset, specificWebsites = NULL, rollingAverage = 30, nameOfProject = NULL, nameOfWebsite = NULL, method = "numberOfArticles") {
+    if (gtools::invalid(nameOfProject) == TRUE) {
+        nameOfProject <- CastarterOptions("nameOfProject")
+    }
+    if (gtools::invalid(nameOfWebsite) == TRUE) {
+        nameOfWebsite <- CastarterOptions("nameOfWebsite")
+    }
     tab <- base::table(dataset$dates, dataset$nameOfWebsite)
     dates <- base::as.POSIXct(base::rownames(tab))
     if (method == "numberOfArticles") {
