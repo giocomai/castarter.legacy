@@ -33,3 +33,29 @@ UploadDatasets <- function(projectsAndWebsites, server, user, pwd) {
                          .opts=opts)
     }
 }
+
+
+#' Downloads a set of datasets from existings 'castarter' projects to an online repository.
+#' 
+#' Downloads a set of datasets from existings 'castarter' projects to an online repository.
+#'  
+#' @param projectsAndWebsites A character vector listing websites to be loaded in the format "nameOfProject/nameOfWebsite".
+#' @return A 'castarter' dataset.
+#' @export
+#' @examples
+#' projectsAndWebsites <- c("ProjectX/Website1", "ProjectY/Website3", "ProjectZ/Website2")
+#' DownloadDataset(projectsAndWebsites, server = "myserver.com", user = "me@myserver.com", pwd = "secretPassword!")
+DownloadDatasets <- function(projectsAndWebsites, server, user, pwd) {
+    datasetExport <- data.frame()
+    for (i in 1:length(projectsAndWebsites)) {
+        filenames <- RCurl::getURL(url = paste0("ftp://", server, ":21/", projectsAndWebsites[i], "/", "Dataset", "/"), userpwd = paste(user, pwd, sep = ":"),
+                                   ftp.use.epsv = TRUE, dirlistonly = TRUE, verbose = FALSE)
+        filenames <- unlist(strsplit(x = filenames, split = "\n", fixed = TRUE))
+        filenames <- filenames[filenames!="."&filenames!=".."]
+        datasetBin <- RCurl::getBinaryURL(paste0("ftp://", server, ":21/", projectsAndWebsites[i], "/", "Dataset", "/", filenames[1]), userpwd = paste(user, pwd, sep = ":"), verbose = FALSE, ftp.use.epsv = TRUE)
+        load(rawConnection(datasetBin))
+        datasetExport <- rbind(datasetExport, dataset)
+        print(x = paste("Dataset", projectsAndWebsites[i], "downloaded."))
+    }
+    datasetExport
+}
