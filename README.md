@@ -31,7 +31,10 @@ Using castarter
 
 In `castarter` every dataset is expected to be extracted from a website, and each website is expected to be part of a project. This is useful to give a consistent way of storing the materials gathered and to facilitate comparison among cases, but it does not imply additional limitations: it is possible to have projects of only one website, and it is possible to make comparisons among websites that are part of different projects.
 
-In order to explain the functioning of `castarter`, this document will now proceed to show how to extract the textual part of all press releases published on the current version of the European Parliament's website (©European Union, 2010-2016 – Source: European Parliament').[1] As will be shown, `castarter` takes advantage of the fact that most modern content management systems consistently generate URLs and archive pages to present the contents of a website.
+In order to explain the functioning of `castarter`, this document will now proceed to show how to extract the textual part of all press releases published on the current version of the European Parliament's website (©European Union, 2010-2016 – Source: European Parliament').[1] As will be shown, `castarter` takes advantage of the fact that most modern content management systems consistently generate URLs and archive pages to present the contents of a website. This document shows only the most basic use of the package; additional parameters are explained elsewhere in the documentation or can be seen by running `?nameOfFunction` (still in development).
+
+Prepare the environment
+-----------------------
 
 First, define the name of project and the name of website. In this case, the project will be called "EuropeanUnion", assuming other websites to be analysed later may be of other EU institutions.
 
@@ -69,6 +72,9 @@ This creates the following folders in the current working directory:
 
 Notice that there is no need to provide nameOfProject and nameOfWebsite to the function `CreateFolderStructure()`, since they are retrieved from the previously set options.
 
+Download index pages
+--------------------
+
 From the home page of the European Parliament, it is easy to reach the main page dedicated to press releases clicking on 'News', and then on 'Press releases' on the top of the page: <http://www.europarl.europa.eu/news/en/news-room/press-release> At the bottom of this page, as it is customary, the user is given the possibility to see older press released by clicking on the 'Next page' link. There is also the possibility to go back in time quicker, or seeing directly the oldest press release. Let's have a look at the URL's of these pages. Clicking subsequent times on the 'next page' link, these are the URLs that we obtain:
 
 <http://www.europarl.europa.eu/news/en/news-room/press-release?start=10>
@@ -85,10 +91,10 @@ There is clearly a pattern: each page shows 10 press releases, and as we go back
 
 ``` r
 indexLinks <- CreateLinks(
-linkFirstChunk = "http://www.europarl.europa.eu/news/en/news-room/press-release?start=",
-startPage = 0,
-endPage = 5130,
-increaseBy = 10)
+    linkFirstChunk = "http://www.europarl.europa.eu/news/en/news-room/press-release?start=",
+    startPage = 0,
+    endPage = 5130,
+    increaseBy = 10)
 ```
 
 This command creates a vector (`indexLinks`) including direct links to the index pages. With the following command, it is possible to see the first links thus created:
@@ -106,25 +112,78 @@ head(indexLinks)
 It is now necessary to download these index pages. The following command downloads the relevant index pages and saves them in .html format in the /EuropeanUnion/EuropeanParliament/IndexHtml folder.
 
 ``` r
-DownloadContents(links = indexLinks)
+DownloadContents(links = indexLinks, type = "index")
 ```
 
-Now that we have the index pages, we need to extract direct links to the individual articles. There are various ways to do this, but the easiest approach is looking at the URLs of individual articles, and see if there is a pattern (this is usually the case in most modern websites). Hovering over the titles of an index page, it is easy to see the links to indivudal news items. In this case, we see that the URL to each news item includes in the URL the following string: "/news/en/news-room/content/". We use this to extract relevant links, and discard all links to other pages or sections of the website scattered around that we are not interested in. The following command extracts links to individual articles, and tries to guess the title of the article.
+If the process is interrupted for any reason, it is possible simply to run again the same function, which will check which files have already been downloaded, and will download the missing ones. Sometimes, due to a number of reasons, one or a few pages may not download correctly. It is usually appropriate to run the following function, which will re-download files that are too small to contain meaningful contents (if all pages have been downloaded correctly, the following will not do anything).
 
-As expected, this function extracts 50 links to individual news items. In this example, the links are correctly extracted and the titles match the links. However, the titles include an unnecessary "Read more:" string and brackets. This can easily be removed in a following phase.
+``` r
+DownloadContents(links = indexLinks, type = "index", missingArticles = FALSE)
+```
 
-Now that we have direct links, it is easy to download all articles. The following command downloads all articles, stores them in a vector, saves them in .html format in the /EU/EUparliament/Html folder, and notifies of advancement.
+Then use the `ImportHtml` function to import these downloaded files in an R vector for further processing:
+
+``` r
+indexHtml <- ImportHtml(from = "index")
+```
+
+Download all articles
+---------------------
+
+Now that we have the index pages, we need to extract direct links to the individual press releases. There are various ways to do this, but the easiest approach is looking at the URLs of individual articles, and see if there is a pattern (this is very often the case in modern websites). Hovering over the titles of an index page, it is easy to see the links to indivudal news items. In this case, we see that the URL to each news item includes in the URL the following string: "/news/en/news-room/content/". We use this to extract relevant links, and discard all links to other pages or sections of the website scattered around the page that we are not interested in. The following command extracts links to individual articles, and tries to guess the title of the article.
+
+``` r
+articlesLinks <- ExtractLinks(domain = "http://www.europarl.europa.eu/",
+                              partOfLink = "/news/en/news-room/",
+                              indexHtml = indexHtml)
+head(articlesLinks)
+length(articlesLinks)
+```
+
+As expected, this function extracts more than 5000 links to individual pages. In this example, the links are correctly extracted and the titles match the links.
+
+Now that we have direct links, it is easy to download all articles. The following command downloads all articles, stores them in a vector, saves them in .html format in the `/EuropeanUnion/EuropeanParliament/` folder, and notifies of advancement.
+
+``` r
+DownloadContents(links = articlesLinks, type = "articles")
+```
+
+As for the index files, it is advised to check if all files have been downloaded correctly, and then import them into R for further analysis.
+
+``` r
+DownloadContents(links = indexLinks, type = "articles", missingArticles = FALSE)
+indexHtml <- ImportHtml(from = "articles")
+```
 
 Extracting metadata
 -------------------
 
-It is now time to extract (or set) basic metadata from the articles: title, date, an ID, and language. We have multiple options to extract the titles. We have already extracted the title of the articles from the index pages, and we could simply polish the results. However, it is also possible to extract the titles from the individual pages, using for example the metadata embedded in the html page or by extracting the text that has style "heading 1".
+It is now time to extract (or set) basic metadata from the articles: title, date, an ID, and language. We have multiple options to extract the titles (use `?ExtractTitles` to find out more). For examples, titles can be extracted from individual pages, using the metadata embedded in the html page or by extracting the text that has style "heading 1".
+
+``` r
+titles <- ExtractTitles(articlesHtml = articlesHtml,
+                        articlesLinks = articlesLinks,
+                        titlesExtractMethod = "htmlTitle")
+
+titles <- ExtractTitles(articlesHtml = articlesHtml,
+                        articlesLinks = articlesLinks,
+                        titlesExtractMethod = "htmlH1")
+```
 
 In this case, both methods seem to function reasonably well.
 
-Extracting the date may be more complex, and `castarter` offers a number of different methods to extract dates. However, in many cases it is enough to provide the format of the date (more details are provided in the documentation of the function, accessible through the command `?ExtractDates`). In the case of the European Parliament, the date is presented in the format day-month-year, and it is extracted correctly using the default settings.
+Extracting the date may be more complex, and `castarter` offers a number of different methods to extract dates. However, in many cases it is enough to provide the format of the date (more details are provided in the documentation of the function, accessible through the command `?ExtractDates` and `?ExtractDatesXpath`). In the case of the European Parliament, the date is presented in the format day-month-year, and it is extracted correctly using the default settings.
 
-There may be various criteria to set a unique ID for each article. The default option uses the same number given to the .html file stored in the `/EU/EUparliament/Html` folder.
+``` r
+dates <- ExtractDates(articlesHtml = articlesHtml,
+                      dateFormat = "dmY")
+```
+
+There may be various criteria to set a unique ID for each article. The default option uses the same number given to the .html file stored in the `/EuropeanUnion/EuropeanParliament/Html` folder.
+
+``` r
+articlesId <- ExtractArticleId()
+```
 
 The language can be set easily in subsequent steps, but storing it in a dedicated vector makes it easier to use template files.
 
