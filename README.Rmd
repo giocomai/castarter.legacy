@@ -14,6 +14,7 @@ knitr::opts_chunk$set(
   comment = "#>",
   fig.path = "README-"
 )
+knitr::opts_knit$set(root.dir = normalizePath('./data'))
 ```
 
 ## Introduction
@@ -35,27 +36,30 @@ library("castarter")
 ## Using castarter
 `castarter` facilitates downloading and extracting textual contents from a given section of a website. `castarter` can be used to analyse one single website, or more websites as part of a project, facilitating comparison among cases. In order to smoothen replication and prevent data losses, by default `castarter` stores a copy of downloaded web pages in .html format, and of the extracted textual contents in .txt format (other export possibilities are available and presented below). To do so, it includes a function that creates the relevant folder structure, and another function that facilitates archiving the .html files in compressed format.
 
-First, you may want to set the root working folder, if you do not wish to use R's default, with:
-```{r eval=FALSE, include=FALSE}
-setwd("/path/to/folder/")
-```
 In `castarter` every dataset is expected to be extracted from a website, and each website is expected to be part of a project. This is useful to give a consistent way of storing the materials gathered and to facilitate comparison among cases, but it does not imply additional limitations: it is possible to have projects of only one website, and it is possible to make comparisons among websites that are part of different projects. 
 
+In order to explain the functioning of `castarter`, this document will now proceed to show how to extract the textual part of all press releases published on the current version of the European Parliament's website (©European Union, 2010-2016 – Source: European Parliament'). ^[Reproduction and use of contents published on the European Parliament's website is explicitly allowed by its [terms of use](http://www.europarl.europa.eu/portal/en/legal-notice).] As will be shown, `castarter` takes advantage of the fact that most modern content management systems consistently generate URLs and archive pages to present the contents of a website. This document shows only the most basic use of the package; additional parameters are explained elsewhere in the documentation or can be seen by running `?nameOfFunction` (still in development).
 
-First, define the name of project and name of website: 
+First, define the name of project and the name of website. In this case, the project will be called "EuropeanUnion", assuming other websites to be analysed later may be of other EU institutions.
+``` {r SetCastarter}
+SetCastarter(nameOfProject = "EuropeanUnion", nameOfWebsite = "EuropeanParliament")
 ```
-SetCastarter(nameOfProject = "exampleProject", nameOfWebsite = "nameOfWebsiteToBeAnalysedHere")
+This stores nameOfProject and nameOfWebsite as options that can be retrieved by all `castarter` functions automatically, without the need to inputting them each time a function requires to save or load files. 
+
+At this stage, one may consider setting the root working folder, if one does not wish to use R's default, with:
+```{r Set folder, eval=FALSE, include=TRUE}
+setwd("/path/to/folder/")
 ```
-This stores nameOfProject and nameOfWebsite as options that can be retrieved by all `castarter` functions automatically, without the need to inputting them each time. 
+This step is of course optional.
 
 Then, it is time to create the folder structure where all outputs will be saved:
-```
+```{r CreateFolderStructure, eval=FALSE, include=TRUE}
 CreateFolderStructure()
 ```
 This creates the following folders in the current working directory:
 
-* exampleProject
-    + exampleWebsite
+* EuropeanUnion
+    + EuropeanParliament
         + Archives
         + Dataset
         + Html
@@ -64,16 +68,10 @@ This creates the following folders in the current working directory:
         + Outputs
         + Txt
         
-Notice that there is no need to provide nameOfProject and nameOfWebsite, since they are retrieved from the previously set options.
+Notice that there is no need to provide nameOfProject and nameOfWebsite to the function `CreateFolderStructure()`, since they are retrieved from the previously set options.
 
-In order to clarify the functioning of `castarter`, I will now show how to extract and prepare for content analysis all press releases currently available on the European Parliament's website. As will be shown, `castarter` takes advantage of the fact that most modern content management systems consistently generate URLs to present the contents of a website.
-Before we start, we need to create the folders where files downloaded will be stored for reference
-
-```{r}
-SetCastarter(nameOfProject = "exampleProject", nameOfWebsite = "nameOfWebsiteToBeAnalysedHere")
-```
-From the home page of the European Parliament, we can easily reach the main page dedicated to press releases clicking on 'News', and then on 'Press releases' on the top of the page: [http://www.europarl.europa.eu/news/en/news-room/press-release](http://www.europarl.europa.eu/news/en/news-room/press-release)
-At the bottom of this page, as it is customary, the user is given the possibility to see older press released by clicking on the 'Next page' link. There is also the possibility to go back in time quicker, or seeing directly the oldest press release. Let's have a look at the URL's of these pages:
+From the home page of the European Parliament, it is easy to reach the main page dedicated to press releases clicking on 'News', and then on 'Press releases' on the top of the page: [http://www.europarl.europa.eu/news/en/news-room/press-release](http://www.europarl.europa.eu/news/en/news-room/press-release)
+At the bottom of this page, as it is customary, the user is given the possibility to see older press released by clicking on the 'Next page' link. There is also the possibility to go back in time quicker, or seeing directly the oldest press release. Let's have a look at the URL's of these pages.
 Clicking subsequent times on the 'next page' link, these are the URLs that we obtain:
 
 http://www.europarl.europa.eu/news/en/news-room/press-release?start=10
@@ -84,34 +82,37 @@ http://www.europarl.europa.eu/news/en/news-room/press-release?start=30
 
 Clicking on the link to the last available page, at the time of this writing, shows the following URLs, including links to press releases published in 2010:
 
-http://www.europarl.europa.eu/news/en/news-room/press-release?start=4600
+http://www.europarl.europa.eu/news/en/news-room/press-release?start=5130
 
 There is clearly a pattern: each page shows 10 press releases, and as we go back in time, the URLs "tells" the content management system to skip the first x number of press releases before starting. This makes it easy to create the links to these index pages. In `castarter`, this can be done by using the following function:
-```
+``` {r CreateLinks}
 indexLinks <- CreateLinks(
-linkFirstChunk = "http://www.europarl.europa.eu/news/en/news-room/press-release?start=",
-startPage = 0,
-endPage = 50,
-increaseBy = 10)
+    linkFirstChunk = "http://www.europarl.europa.eu/news/en/news-room/press-release?start=",
+    startPage = 0,
+    endPage = 5130,
+    increaseBy = 10)
 ```
-This command creates a vector (`indexLinks`) including direct links to the index pages:
-```{r}
-indexLinks <- CreateLinks(linkFirstChunk = "http://www.europarl.europa.eu/news/en/news-room/press-release?start=",
-            startPage = 0,
-            endPage = 40,
-            increaseBy = 10)
-print(indexLinks)
+This command creates a vector (`indexLinks`) including direct links to the index pages. With the following command, it is possible to see the first links thus created:
+```{r Show index links}
+head(indexLinks)
 ```
 
-For this example, we will download only the first five index pages, including links to 50 press releases. In order to download all of the press releases available, it is only necessary to change the `endPage` parameter, by changing the relevant parameter (at the time of this writing, this would be `endPage = 4600` instead of `endPage = 40`).
-The following command downloads the relevant index pages, stores them in a vector, and saves them in .html format in the /EU/EUparliament/IndexHtml folder. 
+It is now necessary to download these index pages. The following command downloads the relevant index pages and saves them in .html format in the /EuropeanUnion/EuropeanParliament/IndexHtml folder. 
 
-```{r, eval=FALSE, include=FALSE}
-indexHtml <- DownloadIndex(nameOfProject = "EU",
-                           nameOfWebsite = "EuropeanParliament",
-                           indexLinks = indexLinks)
+```{r, eval=FALSE, include=TRUE}
+DownloadContents(links = indexLinks, type = "index")
 ```
-Now that we have the index pages, we need to extract direct links to the individual articles. There are various ways to do this, but the easiest approach is looking at the URLs of individual articles, and see if there is a pattern (this is usually the case in most modern websites). Hovering over the titles of an index page, it is easy to see the links to indivudal news items. In this case, we see that the URL to each news item includes in the URL the following string: "/news/en/news-room/content/". We use this to extract relevant links, and discard all links to other pages or sections of the website scattered around that we are not interested in. The following command extracts links to individual articles, and tries to guess the title of the article.
+If the process is interrupted for any reason, it is possible simply to run again the same function, which will check which files have already been downloaded, and will download the missing ones.
+Sometimes, due to a number of reasons, one or a few pages may not download correctly. It is usually appropriate to run the following function, which will re-download files that are too small to contain meaningful contents (if all pages have been downloaded correctly, the following will not do anything).
+```{r, eval=FALSE, include=TRUE}
+DownloadContents(links = indexLinks, type = "index", missingArticles = FALSE)
+```
+Then use the `ImportHtml` function to import these downloaded files in an R vector for further processing:
+```{r, eval=FALSE, include=TRUE}
+indexHtml <- ImportHtml(from = "index")
+```
+
+Now that we have the index pages, we need to extract direct links to the individual press releases. There are various ways to do this, but the easiest approach is looking at the URLs of individual articles, and see if there is a pattern (this is very often the case in modern websites). Hovering over the titles of an index page, it is easy to see the links to indivudal news items. In this case, we see that the URL to each news item includes in the URL the following string: "/news/en/news-room/content/". We use this to extract relevant links, and discard all links to other pages or sections of the website scattered around the page that we are not interested in. The following command extracts links to individual articles, and tries to guess the title of the article.
 ```{r, eval=FALSE, include=FALSE}
 articlesLinks <- ExtractLinks(domain = "http://www.europarl.europa.eu/",
                               partOfLink = "/news/en/news-room/content/",
