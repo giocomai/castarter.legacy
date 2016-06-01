@@ -4,8 +4,8 @@
 \alias{ExtractArticleId}
 \title{Extracts articlesId from filename}
 \usage{
-ExtractArticleId(nameOfProject, nameOfWebsite, accordingToDate = FALSE,
-  dates = NULL)
+ExtractArticleId(nameOfProject = NULL, nameOfWebsite = NULL,
+  accordingToDate = FALSE, dates = NULL)
 }
 \arguments{
 \item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}

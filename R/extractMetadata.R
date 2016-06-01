@@ -404,7 +404,13 @@ ExtractTitles <- function(articlesHtml = NULL, articlesLinks = "", titlesExtract
 #' @export
 #' @examples
 #' articlesId <- ExtractArticleId(nameOfProject, nameOfWebsite)
-ExtractArticleId <- function(nameOfProject, nameOfWebsite, accordingToDate = FALSE, dates = NULL) {
+ExtractArticleId <- function(nameOfProject = NULL, nameOfWebsite = NULL, accordingToDate = FALSE, dates = NULL) {
+    if (gtools::invalid(nameOfProject) == TRUE) {
+        nameOfProject <- CastarterOptions("nameOfProject")
+    }
+    if (gtools::invalid(nameOfWebsite) == TRUE) {
+        nameOfWebsite <- CastarterOptions("nameOfWebsite")
+    }
     htmlFilesList <- gtools::mixedsort(list.files(file.path(nameOfProject, nameOfWebsite, "Html")))
     if (accordingToDate == TRUE) {
         htmlFilesList <- htmlFilesList[order(dates)]
