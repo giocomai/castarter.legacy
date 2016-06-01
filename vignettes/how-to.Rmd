@@ -22,26 +22,32 @@ library("devtools")
 install_github("giocomai/castarter")
 ```
 Load `castarter` with:
-```{r}
+```{r Load castarter, message=FALSE, warning=FALSE}
 library("castarter")
 ```
 
 ## Using castarter
-`castarter` facilitates downloading and extracting textual contents from a given section of a website. `castarter` can be used to analyse one single website, or more websites as part of a project, facilitating comparison among cases. In order to smoothen replication and prevent data losses, by default `castarter` stores a copy of downloaded web pages in .html format, and of the extracted textual contents in .txt format (other export possibilities are available and presented below). To do so, it includes a function that creates the relevant folder structure.
+`castarter` facilitates downloading and extracting textual contents from a given section of a website. `castarter` can be used to analyse one single website, or more websites as part of a project, facilitating comparison among cases. In order to smoothen replication and prevent data losses, by default `castarter` stores a copy of downloaded web pages in .html format, and of the extracted textual contents in .txt format (other export possibilities are available and presented below). To do so, it includes a function that creates the relevant folder structure, and another function that facilitates archiving the .html files in compressed format.
+
 First, you may want to set the root working folder, if you do not wish to use R's default, with:
 ```
 setwd("/path/to/folder/")
 ```
 Then, define name of project and name of website: 
 ```
-nameOfProject <- "exampleProject"
-nameOfWebsite <- "exampleWebsite"
-CreateFolderStructure(nameOfProject, nameOfWebsite)
+SetCastarter(nameOfProject = "exampleProject", nameOfWebsite = "nameOfWebsiteToBeAnalysedHere")
 ```
-This creates the following folders
+This stores nameOfProject and nameOfWebsite as options that can be retrieved by all `castarter` functions automatically, without the need to inputting them each time. 
+
+Then, it is time to create the folder structure where all outputs will be saved:
+```
+CreateFolderStructure()
+```
+This creates the following folders in the current working directory:
 
 * exampleProject
     + exampleWebsite
+        + Archives
         + Dataset
         + Html
         + IndexHtml
@@ -49,13 +55,13 @@ This creates the following folders
         + Outputs
         + Txt
         
+Notice that there is no need to provide nameOfProject and nameOfWebsite, since they are retrieved from the previously set options.
+
 In order to clarify the functioning of `castarter`, I will now show how to extract and prepare for content analysis all press releases currently available on the European Parliament's website. As will be shown, `castarter` takes advantage of the fact that most modern content management systems consistently generate URLs to present the contents of a website.
 Before we start, we need to create the folders where files downloaded will be stored for reference
 
 ```{r}
-nameOfProject <- "EU"
-nameOfWebsite <- "EuropeanParliament"
-CreateFolderStructure(nameOfProject, nameOfWebsite)
+SetCastarter(nameOfProject = "exampleProject", nameOfWebsite = "nameOfWebsiteToBeAnalysedHere")
 ```
 From the home page of the European Parliament, we can easily reach the main page dedicated to press releases clicking on 'News', and then on 'Press releases' on the top of the page: [http://www.europarl.europa.eu/news/en/news-room/press-release](http://www.europarl.europa.eu/news/en/news-room/press-release)
 At the bottom of this page, as it is customary, the user is given the possibility to see older press released by clicking on the 'Next page' link. There is also the possibility to go back in time quicker, or seeing directly the oldest press release. Let's have a look at the URL's of these pages:
