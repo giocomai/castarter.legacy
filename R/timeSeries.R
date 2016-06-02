@@ -8,13 +8,14 @@
 #' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
 #' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
 #' @param rollingAverage Integer, defaults to 30. Number of days used to calculate word frequency as shown in the time series. Time series shows word frequency for each date as an average of the N number of days (N=rollingAverage) following the correspondent date.
+#' @param align Defaults to "center", can be either "left", "right" or "center" and refers to the way the rolling average is calculated.
 #' @param export Logical, defaults to FALSE. If TRUE, saves the time series in both png and pdf format. If nameOfProject and nameOfWebsite are provided, in saves the timeseries in the "Outputs" subfolder. 
 #' @param corpusDtm A document-term matrix. If provided, other parameters (specificWebsites, startDate, endDate) are ignored, but computation is faster. 
 #' @export
 #' @examples
 #' CreateTimeSeries(corpus, terms = c("word1", "word2"))
 
-CreateTimeSeries <- function(corpus, terms, specificWebsites = NULL, startDate = NULL, endDate = NULL, rollingAverage = 30, corpusDtm = NULL, export = FALSE, allWebsitesAsOne = FALSE, nameOfProject = NULL, nameOfWebsite = NULL, dygraphs = FALSE) {
+CreateTimeSeries <- function(corpus, terms, specificWebsites = NULL, startDate = NULL, endDate = NULL, rollingAverage = 30, align = "center", corpusDtm = NULL, export = FALSE, allWebsitesAsOne = FALSE, nameOfProject = NULL, nameOfWebsite = NULL, dygraphs = FALSE) {
     if (gtools::invalid(nameOfProject) == TRUE) {
         nameOfProject <- CastarterOptions("nameOfProject")
     }
@@ -48,7 +49,7 @@ CreateTimeSeries <- function(corpus, terms, specificWebsites = NULL, startDate =
     termSeries <- zoo::zoo(frequencyOfterms/c(tapply(slam::row_sums(corpusDtm), time, sum)), order.by = as.POSIXct(rownames(frequencyOfterms)))
     termSeries <- merge(termSeries, zoo::zoo(, seq(start(termSeries), end(termSeries), "DSTday")), fill = NaN)
     if (rollingAverage != "") {
-        termSeries <- zoo::rollapply(termSeries, rollingAverage, align = "right", mean, na.rm = TRUE)
+        termSeries <- zoo::rollapply(termSeries, rollingAverage, align = align, mean, na.rm = TRUE)
     }
     timeSeries <- zoo::autoplot.zoo(termSeries, facets = NULL) +
         ggplot2::ggtitle(paste("Word frequency of", paste(dQuote(terms), collapse = ", "))) +
@@ -110,6 +111,7 @@ CreateTimeSeries <- function(corpus, terms, specificWebsites = NULL, startDate =
 #' @param dataset A dataset created with 'castarter'.
 #' @param specificWebsites Character vector indicating which websites (defined by relative nameOfWebsite) have to be included in graph. If left to default, includes all websites present in the dataset.
 #' @param rollingAverage Integer, defaults to 30. Number of days used to calculate word frequency as shown in the time series. Time series shows word frequency for each date as an average of the N number of days (N=rollingAverage) following the correspondent date.
+#' @param align Defaults to "center", can be either "left", "right" or "center" and refers to the way the rolling average is calculated.
 #' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
 #' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
 #' @param startDate, endDate Character vector with date in the format year-month-date, e.g. "2015-07-14".
@@ -120,7 +122,7 @@ CreateTimeSeries <- function(corpus, terms, specificWebsites = NULL, startDate =
 #' @examples
 #' ShowDistribution(dataset)
 
-ShowDistribution <- function(dataset, specificWebsites = NULL, rollingAverage = 30, nameOfProject = NULL, nameOfWebsite = NULL, method = "numberOfArticles") {
+ShowDistribution <- function(dataset, specificWebsites = NULL, rollingAverage = 30, align = "center", nameOfProject = NULL, nameOfWebsite = NULL, method = "numberOfArticles") {
     if (gtools::invalid(nameOfProject) == TRUE) {
         nameOfProject <- CastarterOptions("nameOfProject")
     }
@@ -146,7 +148,7 @@ ShowDistribution <- function(dataset, specificWebsites = NULL, rollingAverage = 
         docSeries <- zoo::zoo(ncharPerDay$ncharPerDay, order.by = dates)
     }
     docSeries <- base::merge(docSeries, zoo::zoo(, seq(start(docSeries), end(docSeries), "DSTday")), fill=0)
-    docSeries <- zoo::rollapply(docSeries, rollingAverage, align="right", mean, na.rm=TRUE)
+    docSeries <- zoo::rollapply(docSeries, rollingAverage, align=align, mean, na.rm=TRUE)
     distributionOfCorpus <- zoo::autoplot.zoo(docSeries, facets = NULL)
     if (method == "numberOfArticles") {
         distributionOfCorpus <- distributionOfCorpus + ggplot2::ggtitle(paste0("Number of publications per day on ", dataset$nameOfWebsite[1], "'s website")) + ggplot2::scale_x_datetime("") + ggplot2::scale_y_continuous("")

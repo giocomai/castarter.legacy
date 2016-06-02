@@ -5,9 +5,9 @@
 \title{Creates time series of the frequency of specific terms.}
 \usage{
 CreateTimeSeries(corpus, terms, specificWebsites = NULL, startDate = NULL,
-  endDate = NULL, rollingAverage = 30, corpusDtm = NULL, export = FALSE,
-  allWebsitesAsOne = FALSE, nameOfProject = NULL, nameOfWebsite = NULL,
-  dygraphs = FALSE)
+  endDate = NULL, rollingAverage = 30, align = "center",
+  corpusDtm = NULL, export = FALSE, allWebsitesAsOne = FALSE,
+  nameOfProject = NULL, nameOfWebsite = NULL, dygraphs = FALSE)
 }
 \arguments{
 \item{corpus}{A corpus created by the TM package..}
@@ -19,6 +19,8 @@ CreateTimeSeries(corpus, terms, specificWebsites = NULL, startDate = NULL,
 \item{startDate, }{endDate Character vector with date in the format year-month-date, e.g. "2015-07-14".}
 
 \item{rollingAverage}{Integer, defaults to 30. Number of days used to calculate word frequency as shown in the time series. Time series shows word frequency for each date as an average of the N number of days (N=rollingAverage) following the correspondent date.}
+
+\item{align}{Defaults to "center", can be either "left", "right" or "center" and refers to the way the rolling average is calculated.}
 
 \item{corpusDtm}{A document-term matrix. If provided, other parameters (specificWebsites, startDate, endDate) are ignored, but computation is faster.}
 

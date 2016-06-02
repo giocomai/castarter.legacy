@@ -5,7 +5,8 @@
 \title{Creates a time series graph showing the distribution of documents by date}
 \usage{
 ShowDistribution(dataset, specificWebsites = NULL, rollingAverage = 30,
-  nameOfProject = NULL, nameOfWebsite = NULL, method = "numberOfArticles")
+  align = "center", nameOfProject = NULL, nameOfWebsite = NULL,
+  method = "numberOfArticles")
 }
 \arguments{
 \item{dataset}{A dataset created with 'castarter'.}
@@ -13,6 +14,8 @@ ShowDistribution(dataset, specificWebsites = NULL, rollingAverage = 30,
 \item{specificWebsites}{Character vector indicating which websites (defined by relative nameOfWebsite) have to be included in graph. If left to default, includes all websites present in the dataset.}
 
 \item{rollingAverage}{Integer, defaults to 30. Number of days used to calculate word frequency as shown in the time series. Time series shows word frequency for each date as an average of the N number of days (N=rollingAverage) following the correspondent date.}
+
+\item{align}{Defaults to "center", can be either "left", "right" or "center" and refers to the way the rolling average is calculated.}
 
 \item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
 
