@@ -4,16 +4,17 @@
 \alias{ExportMetadata}
 \title{Exports metadata}
 \usage{
-ExportMetadata(nameOfProject, nameOfWebsite, dates, articlesId, titles,
-  language, articlesLinks, exportXlsx = FALSE, accordingToDate = FALSE,
-  ignoreNAdates = FALSE, onlyExistingHtmlFiles = FALSE)
+ExportMetadata(dates, articlesId, titles, language, articlesLinks,
+  exportXlsx = FALSE, accordingToDate = FALSE, ignoreNAdates = FALSE,
+  onlyExistingHtmlFiles = FALSE, nameOfProject = NULL,
+  nameOfWebsite = NULL)
 }
 \arguments{
+\item{exportXlsx}{If equal to TRUE, exports the complete dataset in the .xlsx file format in the Dataset sub-folder.}
+
 \item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
 
 \item{nameOfWebsite}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
-
-\item{exportXlsx}{If equal to TRUE, exports the complete dataset in the .xlsx file format in the Dataset sub-folder.}
 }
 \value{
 A vector of the POSIXct class.

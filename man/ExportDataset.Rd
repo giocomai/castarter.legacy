@@ -4,17 +4,17 @@
 \alias{ExportDataset}
 \title{Exports dataset}
 \usage{
-ExportDataset(articlesTxt, metadata, nameOfProject, nameOfWebsite,
-  exportRdata = TRUE, exportCsv = FALSE, exportXlsx = FALSE)
+ExportDataset(articlesTxt, metadata, exportRdata = TRUE, exportCsv = FALSE,
+  exportXlsx = FALSE, nameOfProject = NULL, nameOfWebsite = NULL)
 }
 \arguments{
-\item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
-
-\item{nameOfWebsite}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
-
 \item{exportCsv}{If equal to TRUE, exports the complete dataset in the .csv file format in the Dataset sub-folder.}
 
 \item{exportXlsx}{If equal to TRUE, exports the complete dataset in the .xlsx file format in the Dataset sub-folder.}
+
+\item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
+
+\item{nameOfWebsite}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
 }
 \value{
 A data.frame, a 'castarter' dataset.
