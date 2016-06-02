@@ -12,7 +12,13 @@
 #' @examples
 #' ExportArticlesWith(dataset, "example", nameOfProject, nameOfWebsite)
 
-ExportArticlesWith <- function(dataset, term, nameOfProject, nameOfWebsite = NULL, txt = TRUE, csv = FALSE, xlsx = FALSE, data.frame = FALSE, includeOnly = NULL, sortBy = "date") {
+ExportArticlesWith <- function(dataset, term, nameOfProject = NULL, nameOfWebsite = NULL, txt = TRUE, csv = FALSE, xlsx = FALSE, data.frame = FALSE, includeOnly = NULL, sortBy = "date") {
+    if (gtools::invalid(nameOfProject) == TRUE) {
+        nameOfProject <- CastarterOptions("nameOfProject")
+    }
+    if (gtools::invalid(nameOfWebsite) == TRUE) {
+        nameOfWebsite <- CastarterOptions("nameOfWebsite")
+    }
     # Export only items that include...
     tempDataset <- dataset[grep(term, dataset$articlesTxt, ignore.case = TRUE), ]
     if (is.null(includeOnly) == FALSE) {

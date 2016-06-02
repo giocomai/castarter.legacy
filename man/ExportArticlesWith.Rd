@@ -4,9 +4,9 @@
 \alias{ExportArticlesWith}
 \title{Exports all articles that contain a given term.}
 \usage{
-ExportArticlesWith(dataset, term, nameOfProject, nameOfWebsite = NULL,
-  txt = TRUE, csv = FALSE, xlsx = FALSE, data.frame = FALSE,
-  includeOnly = NULL, sortBy = "date")
+ExportArticlesWith(dataset, term, nameOfProject = NULL,
+  nameOfWebsite = NULL, txt = TRUE, csv = FALSE, xlsx = FALSE,
+  data.frame = FALSE, includeOnly = NULL, sortBy = "date")
 }
 \arguments{
 \item{dataset}{A dataset created with 'castarter'.}
