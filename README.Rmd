@@ -12,7 +12,7 @@ bibliography: readme.bib
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "README-"
+  fig.path = "data/readme/README-"
 )
 knitr::opts_knit$set(root.dir = normalizePath('./data'))
 ```
@@ -23,7 +23,7 @@ Books dedicated to content analysis typically assume that the researcher has alr
 ## Installation
 `castarter` is hosted on GitHub. The easiest way to install it on your system, is to run the following commands in R:
 
-```
+``` {r Install castarter, eval = FALSE}
 install.packages("devtools")
 library("devtools")
 install_github("giocomai/castarter")
@@ -102,12 +102,12 @@ head(indexLinks)
 
 It is now necessary to download these index pages. The following command downloads the relevant index pages and saves them in .html format in the /EuropeanUnion/EuropeanParliament/IndexHtml folder. 
 
-```{r, eval=FALSE, include=TRUE}
+```{r Download index, eval=FALSE, include=TRUE}
 DownloadContents(links = indexLinks, type = "index")
 ```
 If the process is interrupted for any reason, it is possible simply to run again the same function, which will check which files have already been downloaded, and will download the missing ones.
 Sometimes, due to a number of reasons, one or a few pages may not download correctly. It is usually appropriate to run the following function, which will re-download files that are too small to contain meaningful contents (if all pages have been downloaded correctly, the following will not do anything).
-```{r, eval=FALSE, include=TRUE}
+```{r Download index check, eval=FALSE, include=TRUE}
 DownloadContents(links = indexLinks, type = "index", missingArticles = FALSE)
 ```
 Then use the `ImportHtml` function to import these downloaded files in an R vector for further processing:
@@ -117,7 +117,7 @@ indexHtml <- ImportHtml(from = "index")
 
 ## Download all articles
 Now that we have the index pages, we need to extract direct links to the individual press releases. There are various ways to do this, but the easiest approach is looking at the URLs of individual articles, and see if there is a pattern (this is very often the case in modern websites). Hovering over the titles of an index page, it is easy to see the links to indivudal news items. In this case, we see that the URL to each news item includes in the URL the following string: "/news/en/news-room/content/". We use this to extract relevant links, and discard all links to other pages or sections of the website scattered around the page that we are not interested in. The following command extracts links to individual articles, and tries to guess the title of the article.
-```{r, eval=FALSE, include=TRUE}
+```{r Extract article links, eval=FALSE, include=TRUE}
 articlesLinks <- ExtractLinks(domain = "http://www.europarl.europa.eu/",
                               partOfLink = "/news/en/news-room/",
                               indexHtml = indexHtml)
@@ -127,48 +127,48 @@ length(articlesLinks)
 As expected, this function extracts more than 5000 links to individual pages. In this example, the links are correctly extracted and the titles match the links.
 
 Now that we have direct links, it is easy to download all articles. The following command downloads all articles, stores them in a vector, saves them in .html format in the `/EuropeanUnion/EuropeanParliament/` folder, and notifies of advancement.
-```{r, eval=FALSE, include=TRUE}
+```{r Download articles, eval=FALSE, include=TRUE}
 DownloadContents(links = articlesLinks, type = "articles")
 ```
 As for the index files, it is advised to check if all files have been downloaded correctly, and then import them into R for further analysis. 
-```{r, eval=FALSE, include=TRUE}
-DownloadContents(links = indexLinks, type = "articles", missingArticles = FALSE)
-indexHtml <- ImportHtml(from = "articles")
+```{r Import html articles, eval=FALSE, include=TRUE}
+DownloadContents(links = articlesLinks, type = "articles", missingArticles = FALSE)
+articlesHtml <- ImportHtml(from = "articles")
 ```
 
 ## Extracting metadata
 It is now time to extract (or set) basic metadata from the articles: title, date, an ID, and language.
 We have multiple options to extract the titles (use `?ExtractTitles` to find out more). For examples, titles can be extracted from individual pages, using the metadata embedded in the html page or by extracting the text that has style "heading 1".
-```{r, eval=FALSE, include=TRUE}
+```{r Extracting titles, eval=FALSE, include=TRUE}
 titles <- ExtractTitles(articlesHtml = articlesHtml,
                         articlesLinks = articlesLinks,
                         titlesExtractMethod = "htmlTitle")
+head(titles)
 
 titles <- ExtractTitles(articlesHtml = articlesHtml,
                         articlesLinks = articlesLinks,
                         titlesExtractMethod = "htmlH1")
+head(titles)
 ```
 In this case, both methods seem to function reasonably well.
 
 Extracting the date may be more complex, and `castarter` offers a number of different methods to extract dates. However, in many cases it is enough to provide the format of the date (more details are provided in the documentation of the function, accessible through the command `?ExtractDates` and `?ExtractDatesXpath`). In the case of the European Parliament, the date is presented in the format day-month-year, and it is extracted correctly using the default settings. 
-```{r, eval=FALSE, include=TRUE}
+```{r Extracting dates, eval=FALSE, include=TRUE}
 dates <- ExtractDates(articlesHtml = articlesHtml,
                       dateFormat = "dmY")
 ```
 
 There may be various criteria to set a unique ID for each article. The default option uses the same number given to the .html file stored in the  `/EuropeanUnion/EuropeanParliament/Html` folder.
-```{r, eval=FALSE, include=TRUE}
+```{r Extract article ID, eval=FALSE, include=TRUE}
 articlesId <- ExtractArticleId()
 ```
 The language can be set easily in subsequent steps, but storing it in a dedicated vector makes it easier to use template files.
-```{r, eval=FALSE, include=FALSE}
-language <- "en"
+```{r Input language, eval=FALSE, include=TRUE}
+language <- "english"
 ```
 We can now store the metadata in a dedicated data.frame, and export them in a spreadsheet for future reference outside of R and `castarter`.
-```{r, eval=FALSE, include=FALSE}
-metadata <- ExportMetadata(nameOfProject = "EU",
-                           nameOfWebsite = "EuropeanParliament",
-                           dates = dates,
+```{r Export metadata, eval=FALSE, include=TRUE}
+metadata <- ExportMetadata(dates = dates,
                            articlesId = articlesId,
                            titles = titles,
                            language = language,
@@ -177,70 +177,142 @@ metadata <- ExportMetadata(nameOfProject = "EU",
 ```
 
 Metadata are also used to create relevant filenames for storing individual articles in textual format. The following command calls the `boilerpipeR` library and allows to extract only the main contents of each page, removing menus and other html clutter. 
-```{r, eval=FALSE, include=FALSE}
+```{r ExtractTxt, eval=FALSE, include=TRUE}
 articlesTxt <- ExtractTxt(articlesHtml, metadata)
 ```
 Text extraction works well in most cases. However, at this stage it is generally a good idea to have a quick look at the extracted textual contents and remove easy-to-spot glitches. The following command prints on the terminal five random articles among all those extracted. 
-```
+``` {r Check txt files, eval=FALSE, include = TRUE}
 articlesTxt[sample(1:length(articlesTxt), 5)]
 ```
-At this stage, `castarter` has generated a folder of txt files and has exported relevant metadata. These can be imported and used in other software for quantitative or qualitative content analysis. The following command saves the current workspace in the working directory, stores the dataset in a dedicated folder for easy retrieval and allows to export both metadata and textual contents in a single spreadsheet. 
 
-```{r, eval=FALSE, include=FALSE}
-SaveAndExportWebsite(nameOfProject = "EU", 
-                     nameOfWebsite = "EuropeanParliament", 
-                     exportXlsx = TRUE)
+The following command saves the current workspace in the working directory, stores the dataset in a dedicated folder for easy retrieval and allows to export both metadata and textual contents in a single spreadsheet. 
+
+```{r Save and export, eval=FALSE, include=TRUE}
+SaveAndExportWebsite(exportXlsx = TRUE)
 ```
-At this stage, if we are satisified with the data we have, we may want to store all downloaded files in a .zip file and remove the original folders containing the original .html files. This way, we still can recover all of the original files, yet we don't have the thousands (or hundreds of thousands) of .html files that often are created in a `castarter` project, and may unnecessary slow down the backup process. This can easily be done with the following command.
-```{r, eval=FALSE, include=FALSE}
-ArchiveFolders(nameOfProject = "EU", 
-               nameOfWebsite = "EuropeanParliament", 
-               removeArchivedFolders = TRUE)
+It is also possible to export all articles as a folder of txt files (with `ExtractTxt(articlesHtml, metadata, export = TRUE)`. Either using those, or the spreadsheet generated by `SaveAndExportWebsite`, it will be easy to import the newly created dataset into other software packages for quantitative or qualitative content analysis.
+
+At this stage, if we are satisified with the data we have, we may want to store all downloaded files in a compressed file and remove the original folders containing the original .html files. This way, we still can recover all of the original files, yet we don't have the thousands (or hundreds of thousands) of .html files that often are created in a `castarter` project, and may unnecessary slow down the backup process. This can easily be done with the following command.
+```{r Archive folders, eval=FALSE, include=TRUE}
+ArchiveFolders(removeArchivedFolders = TRUE)
 ```
 ## Creating and polishing a corpus
 For further analysis in `castarter`, it is useful to convert the data to a corpus of the `tm` package. Most of the functions offered by `castarter` are simply wrappers of `tm` functions. At this stage, it is possible to start a completely new R session, and simply load the dataset into the current workspace. All relevant information is effectively stored in the dataset. 
-```{r, eval=FALSE, include=FALSE}
-dataset <- LoadDatasets(projectsAndWebsites = "EU/EuropeanParliament")
-corpus <- ConvertToCorpus(dataset)
+```{r Import dataset and create corpus, eval=FALSE, include=TRUE}
+dataset <- LoadDatasets(projectsAndWebsites = "EuropeanUnion/EuropeanParliament")
 ```
-The following  command allows to conduct a number of common operation on the corpus, such as transforming all text to lowercase, removing punctuation and removing numbers. These operations are enabled by default, but depending on the users needs can easily be disabled (e.g. by adding the paramater `removePunctuation = FALSE`)
-```{r, eval=FALSE, include=FALSE}
-corpus <- CleanCorpus(corpus)
+```{r Actually import the dataset, eval=TRUE, include=FALSE}
+load(file = "2016-06-02 - EuropeanUnion - EuropeanParliament - dataset.RData")
+```
+First, it is however advisable to have a quick look at the distribution of the dataset to see if there are oddities that require further attention.
+```{r Show distribution}
+ShowDistribution(dataset)
+```
+N.B. All `castarter` time series function default to a rolling average of 90 days. This can be changed, for example `ShowDistribution(dataset, , rollingAverage = 90)` or `ShowDistribution(dataset, , rollingAverage = 1)`
+
+In these case we see that, as is common for many websites, the first few months include only occasional data. To have more consistent result, it might be advisable to exclude that period. To have a more polished result we can also set a cutoff date on 1 June 2016.
+```{r Subset dataset}
+dataset <- SubsetDataset(dataset, startDate = "2011-01-01", endDate = "2016-06-01")
+```
+N.B. `SubsetDataset` allows also to subset a dataset by keeping only documents that include a given term, e.g. `SubsetDataset(dataset,  terms = "environment")`
+
+Looking at the distribution after subsetting, we still some irregularities, but they can mostly be related to seasonal variations in the activity of the European Parliament that are not surprising (e.g. less activity in August and around New Year).
+```{r Show distribution after subset}
+ShowDistribution(dataset)
 ```
 
-When two or more separate words express a specific concept that is relevant to our research, we might want to combine those words and analyse them as one in following phases. For example, we might want to consider "European Union", and "EU" asone and the same word, "EuropeanUnion".
-```{r, eval=FALSE, include=FALSE}
-originalCombination <- "european union"
-toBeUsed <- "EuropeanUnion"
+We can thus proceed and convert the dataset to a corpus object of the `tm` package for further analysis.
+```{r Convert to corpus}
+corpus <- ConvertToCorpus(dataset)
+```
+The next few functions are dedicated to polishing up the corpus for quantitative analysis. Each step should be evaluated by the researcher, as it will have substantive impact on the final results.
+The following  command allows to conduct a number of common operation on the corpus, such as transforming all text to lowercase, removing punctuation and removing numbers. These operations are enabled by default, but depending on the users needs can easily be disabled (e.g. by adding the paramater `removePunctuation = FALSE`)
+```{r Clean Corpus, eval=TRUE, include=TRUE}
+corpus <- CleanCorpus(corpus)
+```
+When two or more separate words express a specific concept that is relevant to our research, we might want to combine those words and analyse them as one in following phases. For example, we might want to consider "European Union", and "EU" as one and the same word, "EuropeanUnion", or "human rights" as "HumanRights", or join a few terms that refer to migration and migrants.
+```{r Adding word combinations, eval=TRUE, include=TRUE}
 wordCombinations <- AddWordCombinations(wordCombinations = NULL,
-                                        originalCombination = originalCombination,
-                                        toBeUsed = toBeUsed)
-originalCombination <- "eu"
-toBeUsed <- "EuropeanUnion"
+                                        originalCombination = "european union",
+                                        toBeUsed = "EuropeanUnion")
 wordCombinations <- AddWordCombinations(wordCombinations = wordCombinations,
-                                        originalCombination = originalCombination,
-                                        toBeUsed = toBeUsed)
+                                        originalCombination = "eu",
+                                        toBeUsed = "EuropeanUnion")
+wordCombinations <- AddWordCombinations(wordCombinations = wordCombinations,
+                                        originalCombination = "european parliament",
+                                        toBeUsed = "EuropeanParliament")
+wordCombinations <- AddWordCombinations(wordCombinations = wordCombinations,
+                                        originalCombination = "migration",
+                                        toBeUsed = "migrant")
+wordCombinations <- AddWordCombinations(wordCombinations = wordCombinations,
+                                        originalCombination = "migratory",
+                                        toBeUsed = "migrant")
+wordCombinations <- AddWordCombinations(wordCombinations = wordCombinations,
+                                        originalCombination = "migrate",
+                                        toBeUsed = "migrant")
+wordCombinations <- AddWordCombinations(wordCombinations = wordCombinations,
+                                        originalCombination = "human rights",
+                                        toBeUsed = "HumanRights")
 wordCombinations
 ```
 We can then apply these word combinations to the corpus. 
-```{r, eval=FALSE, include=FALSE}
+```{r Combining words, eval=TRUE, include=TRUE}
 corpus <- CombineWords(corpus, wordCombinations)
 ```
 It is common to remove stopwords, i.e. commonly used words that are substantially relevant to our research. The `tm` package provides a default list of stopwords, and we can add our own. However, such steps must be carefully supervisioned. "will" may be substantially irrelvant, unless we are interested, for example, in "political will"; "can" may be substantially irrelevant, unless, for example, we are interested in recycling, etc. 
-```{r, eval=FALSE, include=FALSE}
-stopwords <- c("will", "also", "can")
+```{r Adding stopwords, eval=TRUE, include=TRUE}
+stopwords <- c("will", "also", "can", "said")
 stopwords <- AddStopwords(newStopwords = stopwords,
-                          nameOfProject = "EU", 
                           includeDefault = TRUE, 
                           language = "en")
 corpus <- RemoveStopwords(corpus, stopwords)
 ```
-A common next step is that of document stemming.
-```{r, eval=FALSE, include=FALSE}
+
+A common next step is that of document stemming. Depending on the language and the desired result, word combinations may be better applied after stemming. To understand precisely what stemming does, it may be useul to export and have a look at the stemming dictionary.
+```{r Export stemming dictionary, eval=FALSE}
+stemmingDictionary <- ExportStemmingDictionary(corpusDtm = CreateDtm(corpus), stopwords = stopwords)
+```
+We can then proceed with stemming the document. 
+```{r Stem corpus, eval=TRUE, include=TRUE}
 corpus <- tm::tm_map(corpus, tm::stemDocument)
 ```
-Depending on the language and the desired result, word combinations may be better applied after stemming. 
+
+## Analysing the corpus
+We are now ready to conduct some basic quantitative analysis on the corpus.
+
+First, we can create a document-term matrix. 
+```{r Create document term matrix, eval=TRUE}
+corpusDtm <- CreateDtm(corpus)
+```
+
+We can now see, for example, which are the most frequently used words. 
+
+```{r Most frequent words, eval=TRUE}
+ShowMostFrequent(corpusDtm, mode = "data.frame")
+ShowMostFrequent(corpusDtm, mode = "barchart")
+ShowMostFrequent(corpusDtm, mode = "wordcloud", number = 100)
+```
+N.B. After stemming, stemmed words are provided. 
+This may be curious, but is usually more useful to provide a list of terms we are specifically interested in. 
+
+```{r Show specific terms barchart, eval=TRUE}
+ShowMostFrequent(corpusDtm, mode = "barchart", specificTerms = c("environment", "humanright", "migrant"))
+```
+N.B. After stemming, stemmed version of words should be provided.
+
+`castarter` graphs are generally created with `ggplot` (and can thus be edited inside R), and can be exported as .png or .svg file for further editing in other applications by adding `export = TRUE` option (graphs are automatically saved in the `outputs` subfolder).
+Showing the data in a time series, allows to highlight variation over time.
+```{r Create time series}
+CreateTimeSeries(corpus, terms = c("environment", "humanright", "migrant"), rollingAverage = 90)
+```
+N.B. In order to zoom dynamically into the time series, it is possible to output the timeseries to dygraphs, enabling the relevant parameter `dygraphs=TRUE`.
 
 
+
+## Disclaimer
+`castarter` is under active development:
+* some functions may not work as expected;
+* documentation is incomplete (however, most paramters should be self-descriptive);
+* the code has not been optimised. 
 
 ## References
