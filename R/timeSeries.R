@@ -55,8 +55,8 @@ CreateTimeSeries <- function(corpus, terms, specificWebsites = NULL, startDate =
         ggplot2::ggtitle(paste("Word frequency of", paste(dQuote(terms), collapse = ", "))) +
         ggplot2::scale_x_datetime("") +
         ggplot2::scale_y_continuous("") +
-        ggplot2::theme(plot.title = ggplot2::element_text(size = ggplot2::rel(1.2)),
-              legend.title = ggplot2::element_text(size = ggplot2::rel(1.2)),
+        ggplot2::theme(plot.title = ggplot2::element_text(size = ggplot2::rel(1.1)),
+              legend.title = ggplot2::element_text(size = ggplot2::rel(1.1)),
               legend.text = ggplot2::element_text(size = ggplot2::rel(1))) +
         ggplot2::scale_colour_brewer(type = "qual", palette = 6) +
         ggplot2::labs(color = "Terms") +
