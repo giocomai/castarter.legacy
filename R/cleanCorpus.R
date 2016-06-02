@@ -74,6 +74,9 @@ CombineWords <- function(corpus, wordCombinations) {
 #' stopwords <- AddStopwords(newStopwords, nameOfProject, includeDefault = TRUE, language = "en")
 
 AddStopwords <- function(newStopwords = NULL, nameOfProject = NULL, includeDefault = TRUE, language = "en", importExport = FALSE) {
+    if (gtools::invalid(nameOfProject) == TRUE) {
+        nameOfProject <- CastarterOptions("nameOfProject")
+    }
     if (is.null(nameOfProject)==FALSE & importExport == TRUE) {
         if (file.exists(file.path(nameOfProject, paste(nameOfProject, "stopwords.txt")))) {
             stopwords <- as.vector(readLines(con = file.path(nameOfProject, paste(nameOfProject, "stopwords.txt"))))
@@ -166,7 +169,10 @@ CleanCorpus <- function(corpus, stripWhitespace = TRUE, toLowerCase = TRUE, remo
 #' @export
 #' @examples
 #' stemmingDictionary <- ExportStemmingDictionary(corpus, nameOfProject)
-ExportStemmingDictionary <- function(corpusDtm, nameOfProject, stopwords = "", language = "english") {
+ExportStemmingDictionary <- function(corpusDtm, nameOfProject = NULL, stopwords = "", language = "english") {
+    if (gtools::invalid(nameOfProject) == TRUE) {
+        nameOfProject <- CastarterOptions("nameOfProject")
+    }
     stemmingDictionary <- data.frame(row.names = colnames(corpusDtm), occurrences = slam::col_sums(corpusDtm), stemmedTerm = SnowballC::wordStem(colnames(corpusDtm), language), 
                                      stopword = ifelse(colnames(corpusDtm) %in% stopwords, "stopword", ""), stringsAsFactors = FALSE)
     stemmingDictionary[Terms(corpusDtm) %in% stopwords, "stemmedTerm"] <- ""

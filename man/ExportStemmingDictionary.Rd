@@ -4,7 +4,7 @@
 \alias{ExportStemmingDictionary}
 \title{Exports the stemming dictionary}
 \usage{
-ExportStemmingDictionary(corpusDtm, nameOfProject, stopwords = "",
+ExportStemmingDictionary(corpusDtm, nameOfProject = NULL, stopwords = "",
   language = "english")
 }
 \arguments{
