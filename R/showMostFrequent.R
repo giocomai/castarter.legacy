@@ -94,7 +94,7 @@ ShowMostFrequent <- function(corpusDtm, mode = "data.frame", number = 10, specif
         }
         barchart
     } else if (mode == "wordcloud") {
-        wordcloud::wordcloud(rownames(wordFrequency), wordFrequency$freq, min.freq = minFrequency, colors = "black")
+        wordcloud::wordcloud(rownames(wordFrequency), wordFrequency$freq, min.freq = minFrequency, random.order=FALSE, colors = "black")
     } else if (mode == "data.frame") {
         wordFrequency
     }
