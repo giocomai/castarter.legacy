@@ -505,7 +505,13 @@ CreateDatasetFromHtml <- function(nameOfProject = NULL, nameOfWebsite = NULL, ar
 #' @export
 #' @examples
 #' metadata <- ExportMetadata(nameOfProject, nameOfWebsite, dates, articlesId, titles, language, articlesLinks)
-ExportMetadata <- function(nameOfProject, nameOfWebsite, dates, articlesId, titles, language, articlesLinks, exportXlsx = FALSE, accordingToDate = FALSE, ignoreNAdates = FALSE, onlyExistingHtmlFiles = FALSE) {
+ExportMetadata <- function(dates, articlesId, titles, language, articlesLinks, exportXlsx = FALSE, accordingToDate = FALSE, ignoreNAdates = FALSE, onlyExistingHtmlFiles = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
+    if (gtools::invalid(nameOfProject) == TRUE) {
+        nameOfProject <- CastarterOptions("nameOfProject")
+    }
+    if (gtools::invalid(nameOfWebsite) == TRUE) {
+        nameOfProject <- CastarterOptions("nameOfWebsite")
+    }
     ignoreVector <- NULL
     if (onlyExistingHtmlFiles == TRUE) {
         htmlFilesList <- gtools::mixedsort(list.files(file.path(nameOfProject, nameOfWebsite, "Html"), full.names = TRUE))
@@ -542,7 +548,13 @@ ExportMetadata <- function(nameOfProject, nameOfWebsite, dates, articlesId, titl
 #' @export
 #' @examples
 #' dataset <- ExportDataset(articlesTxt, metadata, nameOfProject, nameOfWebsite)
-ExportDataset <- function(articlesTxt, metadata, nameOfProject, nameOfWebsite, exportRdata = TRUE, exportCsv = FALSE, exportXlsx = FALSE) {
+ExportDataset <- function(articlesTxt, metadata, exportRdata = TRUE, exportCsv = FALSE, exportXlsx = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
+    if (gtools::invalid(nameOfProject) == TRUE) {
+        nameOfProject <- CastarterOptions("nameOfProject")
+    }
+    if (gtools::invalid(nameOfWebsite) == TRUE) {
+        nameOfProject <- CastarterOptions("nameOfWebsite")
+    }
     dataset <- cbind(metadata, articlesTxt, stringsAsFactors = FALSE)
     if (exportRdata == TRUE) {
         save(dataset, file = file.path(nameOfProject, nameOfWebsite, "Dataset", paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "dataset", sep = " - "), ".RData")))
