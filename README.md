@@ -247,6 +247,8 @@ ArchiveFolders(removeArchivedFolders = TRUE)
 
 All of the above steps are made available [here](https://gist.github.com/giocomai/2d8e998cd8f85e8bdd857c8d4d99a1c9), in a format that can easily be used as a template for creating datasets from other websites.
 
+`castarter` includes functions that make it easier to share datasets (and faciliate replication of analysis) for those that have access to an ftp server, `UploadDatasets()` and `DownloadDatasets()`.
+
 Creating and polishing a corpus
 -------------------------------
 
