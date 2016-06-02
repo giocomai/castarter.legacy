@@ -32,6 +32,7 @@ ShowMostFrequent <- function(corpusDtm, mode = "data.frame", number = 10, specif
     }
     wordFrequency <- data.frame(term = names(freq), freq = freq)[1:number, ]
     wordFrequency <- wordFrequency[wordFrequency$freq>minFrequency,]
+    wordFrequency <- wordFrequency[is.na(wordFrequency$freq)==FALSE,]
     if (stemCompletion == TRUE) {
         wordFrequency$term <- tm::stemCompletion(wordFrequency$term, corpusOriginal)
         for (i in 1:length(wordFrequency$term)) {
