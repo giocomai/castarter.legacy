@@ -7,7 +7,12 @@ Giorgio Comai
 Introduction
 ------------
 
-Books dedicated to content analysis typically assume that the researcher has already created, has access or may buy access to a structured dataset.They may include sections on sampling (Krippendorff 2004; Riffe, Lacy, and Fico 2005), but they do not debate explicitly how new datasets can be built. Commercial software packages generally share the same expectation. In the R ecosystem, there are a number of packages that can be used to access existing datasets (e.g. [tm.plugin.lexisnexis](https://cran.r-project.org/web/packages/tm.plugin.lexisnexis/), [manifestoR](https://cran.r-project.org/web/packages/manifestoR/)) or import into R textual content from social media through their APIs (e.g. [twitteR](https://cran.r-project.org/web/packages/twitteR/)). However, there is no package dedicated to getting into R the textual contents of regular websites and extracting key metadata (date and title) in order to populate a corpus that can be analysed in R or with other software packages. 'castarter - content analysis starter toolkit for R' aims to accomplish just that, offering to moderately incompetent users the opportunity to extract textual contents from websites and prepare them for content analysis.
+Books dedicated to content analysis typically assume that the researcher has already created, has access or may buy access to a structured dataset. They may include sections on sampling (Krippendorff 2004; Riffe, Lacy, and Fico 2005), but they do not debate explicitly how new datasets can be built. Commercial software packages generally share the same expectation. In the R ecosystem, there are a number of packages that can be used to access existing datasets (e.g. [tm.plugin.lexisnexis](https://cran.r-project.org/web/packages/tm.plugin.lexisnexis/), [manifestoR](https://cran.r-project.org/web/packages/manifestoR/)) or import into R textual content from social media through their APIs (e.g. [twitteR](https://cran.r-project.org/web/packages/twitteR/)). However, there is no package dedicated to getting into R the textual contents of regular websites and extracting key metadata (date and title) in order to populate a corpus that can be analysed in R or with other software packages. 'castarter - content analysis starter toolkit for R' aims to accomplish just that, offering to moderately incompetent users the opportunity to extract textual contents from websites and prepare them for content analysis. It allows to export the datasets in a number of standard formats for further processing and facilitates basic word frequency analysis in R.
+
+Preliminary note
+----------------
+
+N.B. Please consider that this document illustrates only the most basic parameters of `castarter` functions. More advanced options can be seen by running `?nameOfFunction`.
 
 Installation
 ------------
@@ -29,11 +34,11 @@ library("castarter")
 Using castarter
 ---------------
 
-`castarter` facilitates downloading and extracting textual contents from a given section of a website. `castarter` can be used to analyse one single website, or more websites as part of a project, facilitating comparison among cases. In order to smoothen replication and prevent data losses, by default `castarter` stores a copy of downloaded web pages in .html format, and of the extracted textual contents in .txt format (other export possibilities are available and presented below). To do so, it includes a function that creates the relevant folder structure, and another function that facilitates archiving the .html files in compressed format.
+`castarter` facilitates downloading and extracting textual contents from a given section of a website. `castarter` can be used to analyse one single website, or more websites as part of a project, facilitating comparison among cases. In order to smoothen replication and prevent data losses, by default `castarter` stores a copy of downloaded web pages in html format. To do so, it includes a function that creates the relevant folder structure, and another function that facilitates archiving the html files in compressed format.
 
-In `castarter` every dataset is expected to be extracted from a website, and each website is expected to be part of a project. This is useful to give a consistent way of storing the materials gathered and to facilitate comparison among cases, but it does not imply additional limitations: it is possible to have projects of only one website, and it is possible to make comparisons among websites that are part of different projects.
+In `castarter` every dataset is expected to be extracted from a website, and each website is expected to be part of a project. This is useful to give a consistent way of storing the materials gathered and to facilitate comparison among cases, but it does not imply additional limitations: it is possible to have projects composed of a single website, and it is possible to make comparisons among websites that are part of different projects.
 
-In order to explain the functioning of `castarter`, this document will now proceed to show how to extract the textual part of all press releases published on the current version of the European Parliament's website (©European Union, 2010-2016 – Source: European Parliament').[1] As will be shown, `castarter` takes advantage of the fact that most modern content management systems consistently generate URLs and archive pages to present the contents of a website. This document shows only the most basic use of the package; additional parameters are explained elsewhere in the documentation or can be seen by running `?nameOfFunction` (still in development).
+In order to explain the functioning of `castarter`, this document will now proceed to show how to extract the textual part of all press releases published on the current version of the European Parliament's website (©European Union, 2010-2016 – Source: European Parliament').[1] As will be shown, `castarter` takes advantage of the fact that most modern content management systems consistently generate URLs and archive pages to present the contents of a website. This document shows only the most basic use of the package; additional parameters are explained elsewhere in the documentation or can be seen by running `?nameOfFunction`.
 
 Prepare the environment
 -----------------------
@@ -77,7 +82,7 @@ Notice that there is no need to provide nameOfProject and nameOfWebsite to the f
 Download index pages
 --------------------
 
-From the home page of the European Parliament, it is easy to reach the main page dedicated to press releases clicking on 'News', and then on 'Press releases' on the top of the page: <http://www.europarl.europa.eu/news/en/news-room/press-release> At the bottom of this page, as it is customary, the user is given the possibility to see older press released by clicking on the 'Next page' link. There is also the possibility to go back in time quicker, or seeing directly the oldest press release. Let's have a look at the URL's of these pages. Clicking subsequent times on the 'next page' link, these are the URLs that we obtain:
+From the home page of the European Parliament, it is easy to reach the main page dedicated to press releases clicking on 'News', and then on 'Press releases' on the top of the page: <http://www.europarl.europa.eu/news/en/news-room/press-release> At the bottom of this page, as it is customary, the user is given the possibility to see older press released by clicking on the 'Next page' link. There is also the possibility to go back in time one page at a time, or jumping directly the oldest press release. Let's have a look at the URL's of these pages. Clicking subsequent times on the 'next page' link, these are the URLs that we obtain:
 
 <http://www.europarl.europa.eu/news/en/news-room/press-release?start=10>
 
@@ -111,7 +116,7 @@ head(indexLinks)
 #> [6] "http://www.europarl.europa.eu/news/en/news-room/press-release?start=50"
 ```
 
-It is now necessary to download these index pages. The following command downloads the relevant index pages and saves them in .html format in the /EuropeanUnion/EuropeanParliament/IndexHtml folder.
+It is now necessary to download these index pages. The following command downloads the relevant index pages and saves them in html format in the /EuropeanUnion/EuropeanParliament/IndexHtml folder.
 
 ``` r
 DownloadContents(links = indexLinks, type = "index")
@@ -156,6 +161,8 @@ As for the index files, it is advised to check if all files have been downloaded
 DownloadContents(links = articlesLinks, type = "articles", missingArticles = FALSE)
 articlesHtml <- ImportHtml(from = "articles")
 ```
+
+N.B. If due to RAM size it proves unfeasible to import all articles in R, it is possible to create a dataset directly from the downloaded html files with `CreateDatasetFromHtml()`. More details with `?CreateDatasetFromHtml`.
 
 Extracting metadata
 -------------------
@@ -212,30 +219,38 @@ Metadata are also used to create relevant filenames for storing individual artic
 articlesTxt <- ExtractTxt(articlesHtml, metadata)
 ```
 
-Text extraction works well in most cases. However, at this stage it is generally a good idea to have a quick look at the extracted textual contents and remove easy-to-spot glitches. The following command prints on the terminal five random articles among all those extracted.
+Text extraction works well in most cases (options for more advanced users based on xpath are also available, see `?ExtractTxt`). However, at this stage it is generally a good idea to have a quick look at the extracted textual contents and remove easy-to-spot glitches. The following command prints on the terminal five random articles among all those extracted.
 
 ``` r
 articlesTxt[sample(1:length(articlesTxt), 5)]
 ```
 
-The following command saves the current workspace in the working directory, stores the dataset in a dedicated folder for easy retrieval and allows to export both metadata and textual contents in a single spreadsheet.
+The following command saves the current workspace in the working directory, stores the dataset in a dedicated folder for easy retrieval and allows to export both metadata and textual contents in a single spreadsheet (e.g. by enabling the `exportXlsx = TRUE` parameter).
 
 ``` r
-SaveAndExportWebsite(exportXlsx = TRUE)
+SaveAndExportWebsite()
 ```
 
 It is also possible to export all articles as a folder of txt files (with `ExtractTxt(articlesHtml, metadata, export = TRUE)`. Either using those, or the spreadsheet generated by `SaveAndExportWebsite`, it will be easy to import the newly created dataset into other software packages for quantitative or qualitative content analysis.
 
-At this stage, if we are satisified with the data we have, we may want to store all downloaded files in a compressed file and remove the original folders containing the original .html files. This way, we still can recover all of the original files, yet we don't have the thousands (or hundreds of thousands) of .html files that often are created in a `castarter` project, and may unnecessary slow down the backup process. This can easily be done with the following command.
+Another option is to export a subset of documents that, for example, include a given word in a single txt file or in a spreadsheet for quick consultation, e.g. export all press releases that mention the word "internet".
+
+``` r
+ExportArticlesWith(dataset, term = "internet", txt = TRUE, csv = TRUE, xlsx = TRUE)
+```
+
+At this stage, if we are satisified with the data we have, we may want to store all downloaded files in a compressed file and remove the original folders containing the original html files to free space. This way, we still can recover all of the original files, yet we don't have the thousands (or hundreds of thousands) of html files that often are created in a `castarter` project, and may unnecessary slow down the backup process. This can easily be done with the following command.
 
 ``` r
 ArchiveFolders(removeArchivedFolders = TRUE)
 ```
 
+All of the above steps are made available [here](https://gist.github.com/giocomai/2d8e998cd8f85e8bdd857c8d4d99a1c9), in a format that can easily be used as a template for creating datasets from other websites.
+
 Creating and polishing a corpus
 -------------------------------
 
-For further analysis in `castarter`, it is useful to convert the data to a corpus of the `tm` package. Most of the functions offered by `castarter` are simply wrappers of `tm` functions. At this stage, it is possible to start a completely new R session, and simply load the dataset into the current workspace. All relevant information is effectively stored in the dataset.
+For further analysis in `castarter`, it is useful to convert the data to a corpus of the `tm` package. Some of the functions offered by `castarter` for processing the corpus are simply wrappers of `tm` functions. At this stage, it is possible to start a completely new R session, and simply load the dataset into the current workspace. All relevant information is effectively stored in the dataset.
 
 ``` r
 dataset <- LoadDatasets(projectsAndWebsites = "EuropeanUnion/EuropeanParliament")
@@ -247,9 +262,11 @@ First, it is however advisable to have a quick look at the distribution of the d
 ShowDistribution(dataset)
 ```
 
-![](data/readme/README-Show%20distribution-1.png) N.B. All `castarter` time series function default to a rolling average of 90 days. This can be changed, for example `ShowDistribution(dataset, , rollingAverage = 90)` or `ShowDistribution(dataset, , rollingAverage = 1)`
+![](data/readme/README-Show%20distribution-1.png)
 
-In these case we see that, as is common for many websites, the first few months include only occasional data. To have more consistent result, it might be advisable to exclude that period. To have a more polished result we can also set a cutoff date on 1 June 2016.
+N.B. All `castarter` time series functions default to a rolling average of 30 days. This can be changed, for example `ShowDistribution(dataset, , rollingAverage = 90)` or `ShowDistribution(dataset, , rollingAverage = 1)`
+
+In this case we see that, as is common for many websites, the first few months include only occasional publications To have more consistent results, it might be advisable to exclude that period, and to set a clear cutoff date on 1 June 2016.
 
 ``` r
 dataset <- SubsetDataset(dataset, startDate = "2011-01-01", endDate = "2016-06-01")
@@ -257,7 +274,7 @@ dataset <- SubsetDataset(dataset, startDate = "2011-01-01", endDate = "2016-06-0
 
 N.B. `SubsetDataset` allows also to subset a dataset by keeping only documents that include a given term, e.g. `SubsetDataset(dataset,  terms = "environment")`
 
-Looking at the distribution after subsetting, we still some irregularities, but they can mostly be related to seasonal variations in the activity of the European Parliament that are not surprising (e.g. less activity in August and around New Year).
+Looking at the distribution after subsetting, we still find some irregularities, but they can mostly be related to seasonal variations in the activity of the European Parliament that are not surprising (e.g. less activity in August and around New Year).
 
 ``` r
 ShowDistribution(dataset)
@@ -271,7 +288,7 @@ We can thus proceed and convert the dataset to a corpus object of the `tm` packa
 corpus <- ConvertToCorpus(dataset)
 ```
 
-The next few functions are dedicated to polishing up the corpus for quantitative analysis. Each step should be evaluated by the researcher, as it will have substantive impact on the final results. The following command allows to conduct a number of common operation on the corpus, such as transforming all text to lowercase, removing punctuation and removing numbers. These operations are enabled by default, but depending on the users needs can easily be disabled (e.g. by adding the paramater `removePunctuation = FALSE`)
+The next few functions are dedicated to polishing up the corpus for quantitative analysis. Each step should be evaluated by the researcher, as it will have substantive impact on the final results. The following command allows to conduct a number of common operation on the corpus, such as transforming all text to lowercase, removing punctuation and removing numbers. These operations are enabled by default, but depending on the users' needs can easily be disabled (e.g. by adding the paramater `removePunctuation = FALSE`)
 
 ``` r
 corpus <- CleanCorpus(corpus)
@@ -375,26 +392,48 @@ ShowMostFrequent(corpusDtm, mode = "barchart")
 ShowMostFrequent(corpusDtm, mode = "wordcloud", number = 100)
 ```
 
-![](data/readme/README-Most%20frequent%20words-2.png) N.B. After stemming, stemmed words are provided. This may be curious, but is usually more useful to provide a list of terms we are specifically interested in.
+![](data/readme/README-Most%20frequent%20words-2.png)
+
+N.B. After stemming, stemmed words are provided. This may be curious, but is usually more useful to provide a list of terms we are specifically interested in.
 
 ``` r
 ShowMostFrequent(corpusDtm, mode = "barchart", specificTerms = c("environment", "humanright", "migrant"))
 ```
 
-![](data/readme/README-Show%20specific%20terms%20barchart-1.png) N.B. After stemming, stemmed version of words should be provided.
+![](data/readme/README-Show%20specific%20terms%20barchart-1.png)
 
-`castarter` graphs are generally created with `ggplot` (and can thus be edited inside R), and can be exported as .png or .svg file for further editing in other applications by adding `export = TRUE` option (graphs are automatically saved in the `outputs` subfolder). Showing the data in a time series, allows to highlight variation over time.
+N.B. After stemming, stemmed version of words should be provided.
+
+`castarter` graphs are generally created with `ggplot` (and can thus be edited inside R), and can be exported as .png or .svg file for further editing in other applications by enabling the export parameter with `export = TRUE` (graphs are automatically saved in the `outputs` subfolder). Showing the data in a time series, allows to highlight variation over time.
 
 ``` r
 CreateTimeSeries(corpus, terms = c("environment", "humanright", "migrant"), rollingAverage = 90)
 ```
 
-![](data/readme/README-Create%20time%20series-1.png) N.B. In order to zoom dynamically into the time series, it is possible to output the timeseries to dygraphs, enabling the relevant parameter `dygraphs=TRUE`.
+![](data/readme/README-Create%20time%20series-1.png)
+
+N.B. In order to zoom dynamically into the time series, it is possible to output the timeseries to dygraphs, enabling the relevant parameter `dygraphs=TRUE`.
+
+The above graphs can also be produced to visualize comparisons among different websites.
+
+An alternative way of presenting the data is given by the function `ShowShare()`, which shows how many press releases mention a given term in a given time period.
+
+``` r
+ShowShare(dataset = dataset, terms = "migration", breaks = "years")
+```
+
+![](data/readme/README-Show%20share-1.png)
+
+N.B. Notice that the \`ShowShare' function is based on the dataset, and thus does not consider stemming.
 
 Disclaimer
 ----------
 
-`castarter` is under active development: \* some functions may not work as expected; \* documentation is incomplete (however, most paramters should be self-descriptive); \* the code has not been optimised.
+`castarter` is under active development:
+
+-   some functions may not work as expected;
+-   documentation is incomplete (however, most paramters should be self-descriptive);
+-   the code has not been optimised.
 
 References
 ----------
