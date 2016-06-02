@@ -4,7 +4,8 @@
 \alias{ArchiveFolders}
 \title{Archives Html, Txt, and IndexHtml folders in .tar.gz files.}
 \usage{
-ArchiveFolders(nameOfProject, nameOfWebsite, removeArchivedFolders = FALSE)
+ArchiveFolders(nameOfProject = NULL, nameOfWebsite = NULL,
+  removeArchivedFolders = FALSE)
 }
 \arguments{
 \item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
