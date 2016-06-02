@@ -510,7 +510,7 @@ ExportMetadata <- function(dates, articlesId, titles, language, articlesLinks, e
         nameOfProject <- CastarterOptions("nameOfProject")
     }
     if (gtools::invalid(nameOfWebsite) == TRUE) {
-        nameOfProject <- CastarterOptions("nameOfWebsite")
+        nameOfWebsite <- CastarterOptions("nameOfWebsite")
     }
     ignoreVector <- NULL
     if (onlyExistingHtmlFiles == TRUE) {

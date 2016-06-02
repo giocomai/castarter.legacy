@@ -14,7 +14,7 @@ ArchiveFolders <- function(nameOfProject = NULL, nameOfWebsite = NULL, removeArc
         nameOfProject <- CastarterOptions("nameOfProject")
     }
     if (gtools::invalid(nameOfWebsite) == TRUE) {
-        nameOfProject <- CastarterOptions("nameOfWebsite")
+        nameOfWebsite <- CastarterOptions("nameOfWebsite")
     }
     if (!file.exists(file.path(nameOfProject, nameOfWebsite, "Archives"))) {
         dir.create(file.path(nameOfProject, nameOfWebsite, "Archives"))
