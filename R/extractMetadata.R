@@ -434,7 +434,7 @@ CreateDatasetFromHtml <- function(nameOfProject = NULL, nameOfWebsite = NULL, ar
         nameOfProject <- CastarterOptions("nameOfProject")
     }
     if (gtools::invalid(nameOfWebsite) == TRUE) {
-        nameOfProject <- CastarterOptions("nameOfWebsite")
+        nameOfWebsite <- CastarterOptions("nameOfWebsite")
     }
     htmlFilesList <- gtools::mixedsort(list.files(file.path(nameOfProject, nameOfWebsite, "Html"), pattern = "\\.html$", full.names = TRUE))
     numberOfArticles <- length(htmlFilesList)
