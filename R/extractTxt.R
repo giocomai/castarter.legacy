@@ -13,7 +13,13 @@
 #' @export
 #' @examples
 #' articlesTxt <- ExtractTxt(articlesHtml, metadata)
-ExtractTxt <- function(articlesHtml, metadata = "", export = FALSE, maxTitleCharacters = 80, textToBeRemoved = NULL, divClass = NULL, divID = NULL, removeEverythingAfter = NULL, removeEverythingBefore = NULL, removePunctuationInFilename = TRUE, keepEverything = FALSE, exportParameters = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
+ExtractTxt <- function(articlesHtml, metadata = NULL, export = FALSE, maxTitleCharacters = 80, textToBeRemoved = NULL, divClass = NULL, divID = NULL, removeEverythingAfter = NULL, removeEverythingBefore = NULL, removePunctuationInFilename = TRUE, keepEverything = FALSE, exportParameters = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
+    if (gtools::invalid(nameOfProject) == TRUE) {
+        nameOfProject <- CastarterOptions("nameOfProject")
+    }
+    if (gtools::invalid(nameOfWebsite) == TRUE) {
+        nameOfWebsite <- CastarterOptions("nameOfWebsite")
+    }
     numberOfArticles <- length(articlesHtml)
     articlesTxt <- rep(NA, numberOfArticles)
     if (export == TRUE) {

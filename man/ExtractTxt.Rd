@@ -4,7 +4,7 @@
 \alias{ExtractTxt}
 \title{Extracts textual contents from a vector of html files}
 \usage{
-ExtractTxt(articlesHtml, metadata = "", export = FALSE,
+ExtractTxt(articlesHtml, metadata = NULL, export = FALSE,
   maxTitleCharacters = 80, textToBeRemoved = NULL, divClass = NULL,
   divID = NULL, removeEverythingAfter = NULL,
   removeEverythingBefore = NULL, removePunctuationInFilename = TRUE,
