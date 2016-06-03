@@ -189,7 +189,7 @@ ExtractDatesXpath <- function(articlesHtml, dateFormat = "dmy", divClass = NULL,
         nameOfProject <- CastarterOptions("nameOfProject")
     }
     if (gtools::invalid(nameOfWebsite) == TRUE) {
-        nameOfProject <- CastarterOptions("nameOfWebsite")
+        nameOfWebsite <- CastarterOptions("nameOfWebsite")
     }
     if (exportParameters == TRUE) {
         args <- c("dateFormat", "divClassDatesXpath", "spanClassDatesXpath", "customXpathDates", "customStringDates", "minDate", "maxDate", "keepAllString")
