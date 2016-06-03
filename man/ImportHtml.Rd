@@ -5,8 +5,8 @@
 \title{Imports html files into a character vector.}
 \usage{
 ImportHtml(from = "", sample = NULL, nameOfProject = NULL,
-  nameOfWebsite = NULL, pathToHtmlFolder = "", sort = TRUE,
-  recursive = TRUE, includePath = FALSE)
+  nameOfWebsite = NULL, pathToHtmlFolder = "", sort = FALSE,
+  recursive = FALSE, includePath = FALSE)
 }
 \arguments{
 \item{from}{Allows to choose which type of contents to import. Can be either "articles" or "index".}

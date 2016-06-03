@@ -11,7 +11,7 @@
 #' @export
 #' @examples
 #' articlesHtml <- ImportHtml(from = articles, nameOfProject, nameOfWebsite)
-ImportHtml <- function(from = "", sample = NULL, nameOfProject = NULL, nameOfWebsite = NULL, pathToHtmlFolder = "", sort = TRUE, recursive = TRUE, includePath = FALSE) {
+ImportHtml <- function(from = "", sample = NULL, nameOfProject = NULL, nameOfWebsite = NULL, pathToHtmlFolder = "", sort = FALSE, recursive = FALSE, includePath = FALSE) {
     if (gtools::invalid(nameOfProject) == TRUE) {
         nameOfProject <- CastarterOptions("nameOfProject")
     }
