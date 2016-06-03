@@ -4,12 +4,14 @@
 \alias{ImportHtml}
 \title{Imports html files into a character vector.}
 \usage{
-ImportHtml(from = "", nameOfProject = NULL, nameOfWebsite = NULL,
-  pathToHtmlFolder = "", sort = TRUE, recursive = TRUE,
-  includePath = FALSE)
+ImportHtml(from = "", sample = NULL, nameOfProject = NULL,
+  nameOfWebsite = NULL, pathToHtmlFolder = "", sort = TRUE,
+  recursive = TRUE, includePath = FALSE)
 }
 \arguments{
 \item{from}{Allows to choose which type of contents to import. Can be either "articles" or "index".}
+
+\item{sample}{Defaults to NULL. If a numeric value n is provided, then instead of importing all html files it imports n random files.}
 
 \item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
 

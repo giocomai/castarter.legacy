@@ -3,6 +3,7 @@
 #' Imports html files already downloaded into a character vector.
 #'  
 #' @param from Allows to choose which type of contents to import. Can be either "articles" or "index".
+#' @param sample Defaults to NULL. If a numeric value n is provided, then instead of importing all html files it imports n random files.
 #' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
 #' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
 #' @param recursive Value is passed to list.files function when using the pathToHtmlFolder option.
@@ -10,7 +11,7 @@
 #' @export
 #' @examples
 #' articlesHtml <- ImportHtml(from = articles, nameOfProject, nameOfWebsite)
-ImportHtml <- function(from = "", nameOfProject = NULL, nameOfWebsite = NULL, pathToHtmlFolder = "", sort = TRUE, recursive = TRUE, includePath = FALSE) {
+ImportHtml <- function(from = "", sample = NULL, nameOfProject = NULL, nameOfWebsite = NULL, pathToHtmlFolder = "", sort = TRUE, recursive = TRUE, includePath = FALSE) {
     if (gtools::invalid(nameOfProject) == TRUE) {
         nameOfProject <- CastarterOptions("nameOfProject")
     }
@@ -30,6 +31,9 @@ ImportHtml <- function(from = "", nameOfProject = NULL, nameOfWebsite = NULL, pa
     }
     if (sort == TRUE) {
         htmlFilesList <- gtools::mixedsort(htmlFilesList)
+    }
+    if (is.numeric(sample) == TRUE) {
+        htmlFilesList <- sample(x = htmlFilesList, size = sample)
     }
     numberOfArticles <- length(htmlFilesList)
     htmlFiles <- rep(NA, numberOfArticles)
