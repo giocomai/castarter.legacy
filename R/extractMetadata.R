@@ -4,6 +4,7 @@
 #'  
 #' @param articlesHtml A character vector of html files.
 #' @param dateFormat A string used to extract the date. Available date formats options include dmY, dby, dBy, dBY, dbY, etc.
+#' @param language Provide a language in order to extract name of months. Generic forms such as "english" or "russian", are usually accepted. See ?locales for more details. On linux, you can run system("locale -a", intern = TRUE) to see all available locales.
 #' @param minDate, maxDate Minimum and maximum possible dates in the format year-month-date, e.g. "2007-06-24". Introduces NA in the place of impossibly high or low dates.
 #' @param keepAllString Logical, defaults to FALSE. If TRUE, it directly tries to parse the date with the given dateFormat, without trying to polish the string provided accordingly.
 #' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. Required for storing export parameters (with exportParameters = TRUE).
@@ -22,10 +23,6 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", language = "english",
     stop("If exportParameters == TRUE, both nameOfProject and nameOfWebsite must be defined.")    
     }
     articlesHtml <- iconv(articlesHtml, to = "utf8")
-    originalLocale <- base::Sys.getlocale(category = "LC_TIME")
-    if (language == "en" | language == "english") {
-        base::Sys.setlocale(category = "LC_TIME", locale = "en_GB.UTF-8")
-    }
     numberOfArticles <- length(articlesHtml)
     datesTxt <- rep(NA, numberOfArticles)
     if (is.null(removeEverythingBefore) == FALSE) {
@@ -125,18 +122,7 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", language = "english",
             }
         }
     }
-    if (language == "ru" | language == "russian") {
-        monthsRu <- c("Января", "Февраля", "Марта", "Апреля", "Мая", "Июня", "Июля", "Августа", "Сентября", 
-            "Октября", "Ноября", "Декабря")
-        monthsEn <- month.name
-        monthsRu <- tolower(monthsRu)
-        datesTxt <- tolower(datesTxt)
-        for (i in 1:12) {
-            datesTxt <- gsub(monthsRu[i], monthsEn[i], datesTxt)
-        }
-        Sys.setlocale(category = "LC_TIME", locale = "en_GB.UTF-8")
-    }
-    dates <- lubridate::parse_date_time(datesTxt, dateFormat)
+    dates <- lubridate::parse_date_time(datesTxt, dateFormat, locale = language)
     if (is.null(minDate) == FALSE) {
     dates[dates < as.POSIXct(minDate)] <- NA
     }
@@ -166,9 +152,9 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", language = "english",
         }
         write.table(updateParameters, file = base::file.path(nameOfProject, nameOfWebsite, paste(nameOfWebsite, "updateParameters.csv", sep = "-")))
     }
-    base::Sys.setlocale(category = "LC_TIME", locale = originalLocale)
     dates
 }
+
 #' Extracts dates from a vector of html files
 #' 
 #' Extracts dates from a vector of html files.

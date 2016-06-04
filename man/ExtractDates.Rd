@@ -14,6 +14,8 @@ ExtractDates(articlesHtml, dateFormat = "dmY", language = "english",
 
 \item{dateFormat}{A string used to extract the date. Available date formats options include dmY, dby, dBy, dBY, dbY, etc.}
 
+\item{language}{Provide a language in order to extract name of months. Generic forms such as "english" or "russian", are usually accepted. See ?locales for more details. On linux, you can run system("locale -a", intern = TRUE) to see all available locales.}
+
 \item{minDate, }{maxDate Minimum and maximum possible dates in the format year-month-date, e.g. "2007-06-24". Introduces NA in the place of impossibly high or low dates.}
 
 \item{keepAllString}{Logical, defaults to FALSE. If TRUE, it directly tries to parse the date with the given dateFormat, without trying to polish the string provided accordingly.}
