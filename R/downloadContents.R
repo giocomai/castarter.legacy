@@ -90,9 +90,9 @@ DownloadContents <- function(links, type = "articles", articlesHtml = NULL, size
         for (i in links[linksToDownload]) {
             articleId <- articlesId[linksToDownload][temp]
             if (type=="articles") {
-                utils::download.file(url = i, destfile = file.path(nameOfProject, nameOfWebsite, "Html", paste0(articleId, ".html")), method = method)
+                try(utils::download.file(url = i, destfile = file.path(nameOfProject, nameOfWebsite, "Html", paste0(articleId, ".html")), method = method))
             } else if (type=="index") {
-                utils::download.file(url = i, destfile = file.path(nameOfProject, nameOfWebsite, "IndexHtml", paste0(articleId, ".html")), method = method)
+                try(utils::download.file(url = i, destfile = file.path(nameOfProject, nameOfWebsite, "IndexHtml", paste0(articleId, ".html")), method = method))
             }
             print(paste("Downloaded article", temp, "of", length(links[linksToDownload]), ". ArticleID: ", articleId), quote = FALSE)
             temp <- temp + 1
