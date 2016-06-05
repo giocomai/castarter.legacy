@@ -415,7 +415,7 @@ ExtractArticleId <- function(nameOfProject = NULL, nameOfWebsite = NULL, accordi
 #' @export
 #' @examples
 #' dataset <- CreateDatasetFromHtml(nameOfProject, nameOfWebsite)
-CreateDatasetFromHtml <- function(nameOfProject = NULL, nameOfWebsite = NULL, articlesLinks = NULL, dateFormat = NULL, ExtractDatesXpath = FALSE, titlesExtractMethod = "htmlTitle", divClassDate = NULL, spanClassDate = NULL, language = NULL, divClassTxt = NULL, removeStringTitle = NULL, encoding = NULL, removeEverythingAfter = NULL, removeEverythingBefore = NULL, removeEverythingBeforeDate = NULL) {
+CreateDatasetFromHtml <- function(nameOfProject = NULL, nameOfWebsite = NULL, articlesLinks = NULL, dateFormat = NULL, ExtractDatesXpath = FALSE, customXpathDate = NULL, titlesExtractMethod = "htmlTitle", divClassDate = NULL, spanClassDate = NULL, language = NULL, divClassTxt = NULL, removeStringText = NULL, removeStringTitle = NULL, encoding = NULL, removeEverythingAfter = NULL, removeEverythingBefore = NULL, removeEverythingBeforeDate = NULL) {
     if (gtools::invalid(nameOfProject) == TRUE) {
         nameOfProject <- CastarterOptions("nameOfProject")
     }
@@ -448,14 +448,14 @@ CreateDatasetFromHtml <- function(nameOfProject = NULL, nameOfWebsite = NULL, ar
             dates[i] <- ExtractDates(htmlFile, dateFormat = dateFormat, language = language, removeEverythingBefore = removeEverythingBeforeDate)
         }
         if (ExtractDatesXpath == TRUE) {
-            dateTemp <- ExtractDatesXpath(articlesHtml = htmlFile, dateFormat = dateFormat, divClass = divClassDate, spanClass = spanClassDate, language = language)
+            dateTemp <- ExtractDatesXpath(articlesHtml = htmlFile, dateFormat = dateFormat, divClass = divClassDate, spanClass = spanClassDate, customXpath = customXpathDate, language = language)
             if (length(dateTemp) == 1) {
                 dates[i] <- dateTemp
             } else {
                 dates[i] <- NA
             }
         }
-        articlesTxt[i] <- ExtractTxt(articlesHtml = htmlFile, export = FALSE, removeEverythingAfter = removeEverythingAfter, removeEverythingBefore = removeEverythingBefore, divClass = divClassTxt)
+        articlesTxt[i] <- ExtractTxt(articlesHtml = htmlFile, export = FALSE, removeEverythingAfter = removeEverythingAfter, removeEverythingBefore = removeEverythingBefore, divClass = divClassTxt, textToBeRemoved = removeStringText)
         if (titlesExtractMethod != "indexLink") {
             titleTemp <- ExtractTitles(articlesHtml = htmlFile, titlesExtractMethod = titlesExtractMethod, removeString = removeStringTitle)
             if (length(titleTemp) == 1) {
