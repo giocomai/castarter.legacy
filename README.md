@@ -1,7 +1,7 @@
 An introduction to 'castarter' - content analysis starter toolkit for R
 ================
 Giorgio Comai
-2016-06-02
+2016-06-05
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 Introduction
@@ -21,8 +21,7 @@ Installation
 
 ``` r
 install.packages("devtools")
-library("devtools")
-install_github("giocomai/castarter")
+devtools::install_github("giocomai/castarter")
 ```
 
 Load `castarter` with:
@@ -103,6 +102,8 @@ indexLinks <- CreateLinks(
     endPage = 5130,
     increaseBy = 10)
 ```
+
+N.B. Another frequently found way for websites to provide access to their archives is by creating pages with dates directly in their URL. If, for example, a website offers its contents in the form of <http://www.example.com/archive/2015-10-22>, then it would be possible to generate the links for all the dates, say, between January 2012 and December 2015, with the following parameters: `CreateLinks(linkFirstChunk = "http://www.example.com/", startDate = "2012-01-01", endDate = "2015-12-31", dateSeparator = "-")`
 
 This command creates a vector (`indexLinks`) including direct links to the index pages. With the following command, it is possible to see the first links thus created:
 
