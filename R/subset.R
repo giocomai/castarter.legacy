@@ -8,7 +8,7 @@
 #' @examples
 #' SubsetDataset(dataset, terms)
 
-SubsetDataset <- function(dataset, terms = NULL, startDate = NULL, endDate = NULL) {
+SubsetDataset <- function(dataset, terms = NULL, startDate = NULL, endDate = NULL, sample = NULL) {
     if (is.null(terms) == FALSE) {
         terms <- base::paste(terms,collapse="|")
         dataset <- dataset[base::grep(terms, dataset$articlesTxt, ignore.case = TRUE), ]
@@ -18,6 +18,9 @@ SubsetDataset <- function(dataset, terms = NULL, startDate = NULL, endDate = NUL
     }
     if (is.null(endDate) == FALSE) {
         dataset <- dataset[dataset$dates < as.POSIXct(endDate), ]
+    }
+    if (is.null(sample) == FALSE) {
+        dataset <- dataset[base::sample.int(n = dim(dataset)[1], size = sample),]
     }
     dataset
 }
