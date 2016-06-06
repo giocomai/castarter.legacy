@@ -415,7 +415,7 @@ ExtractArticleId <- function(nameOfProject = NULL, nameOfWebsite = NULL, accordi
 #' @export
 #' @examples
 #' dataset <- CreateDatasetFromHtml(nameOfProject, nameOfWebsite)
-CreateDatasetFromHtml <- function(nameOfProject = NULL, nameOfWebsite = NULL, articlesLinks = NULL, dateFormat = NULL, ExtractDatesXpath = FALSE, customXpathDate = NULL, titlesExtractMethod = "htmlTitle", removeStringTitle = NULL, removeEverythingAfterTitle = NULL, divClassDate = NULL, spanClassDate = NULL, language = NULL, divClassTxt = NULL, removeStringText = NULL, encoding = NULL, removeEverythingAfter = NULL, removeEverythingBefore = NULL, removeEverythingBeforeDate = NULL) {
+CreateDatasetFromHtml <- function(nameOfProject = NULL, nameOfWebsite = NULL, articlesLinks = NULL, dateFormat = NULL, ExtractDatesXpath = FALSE, customXpathDate = NULL, titlesExtractMethod = "htmlTitle", removeStringTitle = NULL, removeEverythingAfterTitle = NULL, divClassDate = NULL, spanClassDate = NULL, language = NULL, divClassTxt = NULL, divIdTxt = NULL, removeStringText = NULL, encoding = NULL, removeEverythingAfter = NULL, removeEverythingBefore = NULL, removeEverythingBeforeDate = NULL) {
     if (gtools::invalid(nameOfProject) == TRUE) {
         nameOfProject <- CastarterOptions("nameOfProject")
     }
@@ -455,7 +455,7 @@ CreateDatasetFromHtml <- function(nameOfProject = NULL, nameOfWebsite = NULL, ar
                 dates[i] <- NA
             }
         }
-        articlesTxt[i] <- ExtractTxt(articlesHtml = htmlFile, export = FALSE, removeEverythingAfter = removeEverythingAfter, removeEverythingBefore = removeEverythingBefore, divClass = divClassTxt, textToBeRemoved = removeStringText)
+        articlesTxt[i] <- ExtractTxt(articlesHtml = htmlFile, export = FALSE, removeEverythingAfter = removeEverythingAfter, removeEverythingBefore = removeEverythingBefore, divClass = divClassTxt, divID = divIdTxt, textToBeRemoved = removeStringText)
         if (titlesExtractMethod != "indexLink") {
             titleTemp <- ExtractTitles(articlesHtml = htmlFile, titlesExtractMethod = titlesExtractMethod, removeString = removeStringTitle)
             if (length(titleTemp) == 1) {
