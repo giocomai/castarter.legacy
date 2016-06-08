@@ -56,15 +56,10 @@ DownloadContents <- function(links, type = "articles", articlesHtml = NULL, size
                 file.remove(file.path(nameOfProject, nameOfWebsite, "downloadArticles.sh"))
             }
             options(useFancyQuotes = FALSE)
-            for (i in links[linksToDownload]) {
-                articleId <- articlesId[linksToDownload][temp]
-                if (type=="articles") {
-                    write(x = paste("wget", sQuote(i), "-O", file.path("Html", paste0(articleId, ".html"))), file = file.path(nameOfProject, nameOfWebsite, "downloadArticles.sh"), append = TRUE)
-                } else if (type=="index") {
-                    write(x = paste("wget", sQuote(i), "-O", file.path("IndexHtml", paste0(articleId, ".html"))), file = file.path(nameOfProject, nameOfWebsite, "downloadArticles.sh"), append = TRUE)
-                }
-                write(x = paste("sleep", wait), file = file.path(nameOfProject, nameOfWebsite, "downloadArticles.sh"), append = TRUE)
-                temp <- temp + 1
+            if (type=="articles") {
+                write(x = paste("wget", sQuote(links[linksToDownload]), "-O", file.path("Html", paste0(articlesId[linksToDownload], ".html")), ";", "sleep", wait), file = file.path(nameOfProject, nameOfWebsite, "downloadArticles.sh"), append = TRUE)
+            } else if (type=="index") {
+                write(x = paste("wget", sQuote(links[linksToDownload]), "-O", file.path("IndexHtml", paste0(articlesId[linksToDownload], ".html")), ";", "sleep", wait), file = file.path(nameOfProject, nameOfWebsite, "downloadArticles.sh"), append = TRUE)
             }
             system(paste("chmod +x", file.path(nameOfProject, nameOfWebsite, "downloadArticles.sh")))
         } else {
