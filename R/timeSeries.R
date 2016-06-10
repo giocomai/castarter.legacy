@@ -28,7 +28,13 @@ CreateTimeSeries <- function(corpus, terms, specificWebsites = NULL, startDate =
     if (is.null(endDate)==FALSE) {
         corpus <- corpus[NLP::meta(corpus, "datetimestamp") < as.POSIXct(endDate)]
     }
-    time <- as.character(strptime(as.POSIXct(unlist(NLP::meta(corpus, "datetimestamp")), origin = "1970-01-01"), "%Y-%m-%d"))
+    if (class(corpus)[1]=="VCorpus") {
+        time <- as.character(strptime(as.POSIXct(unlist(NLP::meta(corpus, "datetimestamp")), origin = "1970-01-01"), "%Y-%m-%d"))
+        nameOfWebsitesIncluded <- as.character(unlist(NLP::meta(corpus, "author")))
+    } else if ((class(corpus)[1]=="corpus")) {
+        time <- as.character(strptime(as.POSIXct(quanteda::docvars(corpus, "date"), origin = "1970-01-01"), "%Y-%m-%d"))
+        nameOfWebsitesIncluded <- as.character(quanteda::docvars(corpus, "nameOfWebsite"))
+    }
     nameOfWebsitesIncluded <- as.character(unlist(NLP::meta(corpus, "author")))
     if (allWebsitesAsOne == TRUE) {
         nameOfWebsitesIncluded <- rep("all", length(nameOfWebsitesIncluded))
