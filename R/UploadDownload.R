@@ -51,7 +51,9 @@ DownloadDatasets <- function(projectsAndWebsites, server, user, pwd) {
         filenames <- RCurl::getURL(url = paste0("ftp://", server, ":21/", projectsAndWebsites[i], "/", "Dataset", "/"), userpwd = paste(user, pwd, sep = ":"),
                                    ftp.use.epsv = TRUE, dirlistonly = TRUE, verbose = FALSE)
         filenames <- unlist(strsplit(x = filenames, split = "\n", fixed = TRUE))
+        filenames <- gsub(pattern = "\r", replacement = "", x = filenames)
         filenames <- filenames[filenames!="."&filenames!=".."]
+        filenames <- gsub(pattern = " ", replacement = "%20", x = filenames)
         datasetBin <- RCurl::getBinaryURL(paste0("ftp://", server, ":21/", projectsAndWebsites[i], "/", "Dataset", "/", filenames[1]), userpwd = paste(user, pwd, sep = ":"), verbose = FALSE, ftp.use.epsv = TRUE)
         load(rawConnection(datasetBin))
         datasetExport <- rbind(datasetExport, dataset)
