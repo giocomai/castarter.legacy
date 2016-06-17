@@ -435,7 +435,7 @@ Disclaimer
 `castarter` is under active development:
 
 -   some functions may not work as expected;
--   documentation is incomplete (however, most paramters should be self-descriptive);
+-   documentation is incomplete (however, most paramaters should be self-descriptive);
 -   the code has not been optimised.
 
 Forthcoming features and other development issues
@@ -443,7 +443,14 @@ Forthcoming features and other development issues
 
 Only the development version is currently available: starting with version 0.2 there will be a more stable version, and daily development will take place on a separate branch.
 
-Forthcoming features: \* adding support to `quanteda` for enhanced speed; \* enhancing date extraction; \* enhancing support for updating datasets (see `?UpdateDataset`); \* enhancing support for larger datasets, including by improving direct import from html files without importing them into R first through `CreateDatasetFromHtml`
+Forthcoming features:
+
+-   adding support to `quanteda` for enhanced speed;
+-   enhancing date extraction;
+-   enhancing support for updating datasets (see `?UpdateDataset`);
+-   enhancing support for larger datasets, including by improving direct import from html files without importing them into R first through `CreateDatasetFromHtml`;
+-   reducing dependencies;
+-   polishing and speeding up code.
 
 References
 ----------
