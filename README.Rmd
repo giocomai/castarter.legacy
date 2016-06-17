@@ -157,7 +157,7 @@ head(titles)
 ```
 In this case, both methods seem to function reasonably well.
 
-Extracting the date may be more complex, and `castarter` offers a number of different methods to extract dates. However, in many cases it is enough to provide the format of the date (more details are provided in the documentation of the function, accessible through the command `?ExtractDates` and `?ExtractDatesXpath`). In the case of the European Parliament, the date is presented in the format day-month-year, and it is extracted correctly using the default settings. 
+Extracting the date may be more complex, and `castarter` offers a number of different methods to extract dates. However, in many cases it is enough to provide the format of the date (more details are provided in the documentation of the function, accessible through the command `?ExtractDates` and - for more advanced users wishing to extract dates based on their location in a given div or span - `?ExtractDatesXpath`). In the case of the European Parliament, the date is presented in the format day-month-year, and it is extracted correctly using the default settings. 
 ```{r Extracting dates, eval=FALSE, include=TRUE}
 dates <- ExtractDates(articlesHtml = articlesHtml,
                       dateFormat = "dmY")
