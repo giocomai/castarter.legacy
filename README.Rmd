@@ -353,4 +353,7 @@ Forthcoming features:
 * reducing dependencies;
 * polishing and speeding up code.
 
+## About the author
+Giorgio Comai is doctoral researcher at the School of Law and Government, Dublin City University, and a member of the Marie Curie ITN network “Post-Soviet tensions”. You can find out more about his work on his [personal website](http://giorgiocomai.eu/). He is on Twitter: https://twitter.com/giocomai.
+
 ## References

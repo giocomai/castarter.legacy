@@ -1,7 +1,7 @@
 An introduction to 'castarter' - content analysis starter toolkit for R
 ================
 Giorgio Comai
-2016-06-17
+2016-06-19
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 Introduction
@@ -451,6 +451,11 @@ Forthcoming features:
 -   enhancing support for larger datasets, including by improving direct import from html files without importing them into R first through `CreateDatasetFromHtml`;
 -   reducing dependencies;
 -   polishing and speeding up code.
+
+About the author
+----------------
+
+Giorgio Comai is doctoral researcher at the School of Law and Government, Dublin City University, and a member of the Marie Curie ITN network “Post-Soviet tensions”. You can find out more about his work on his [personal website](http://giorgiocomai.eu/). He is on Twitter: <https://twitter.com/giocomai>.
 
 References
 ----------
