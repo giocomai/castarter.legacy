@@ -51,7 +51,9 @@ CreateTimeSeries <- function(corpus, terms, specificWebsites = NULL, startDate =
             termsL <- as.list(terms)
             termsL <- setNames(object = termsL, nm = terms)
             termsDic <- quanteda::dictionary(x = termsL)
-            
+            corpusDtm <- quanteda::applyDictionary(corpusDtm, termsDic)
+            dailyFreq <- data.frame(docs = docnames(corpusDtm), as.data.frame(corpusDtm))
+            dailyFreq <- tidyr::separate(data = dailyFreq, col = docs, into = c("Date","nameOfWebsite"), sep = "\\.")
         } else {
             frequencyOfterms <- as.table(slam::rollup(corpusDtm[, terms], 1, time))
         }
