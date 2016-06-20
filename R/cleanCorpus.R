@@ -213,9 +213,13 @@ StemCorpusDtm <- function(corpusDtm, stemmingDictionary) {
 #' @examples
 #' dtm <- CreateDtm(corpus)
 CreateDtm <- function(corpus, removeSparseTerms = NULL){
-    corpusDtm <- tm::DocumentTermMatrix(corpus)
-    if (is.null(removeSparseTerms) == FALSE) {
-        corpusDtm <- tm::removeSparseTerms(corpusDtm, removeSparseTerms)
+    if (quanteda::is.corpus(corpus)==TRUE) {
+        corpusDtm <- quanteda::dfm(x = corpus, groups=c("date", "nameOfWebsite"))
+    } else {
+        corpusDtm <- tm::DocumentTermMatrix(corpus)
+        if (is.null(removeSparseTerms) == FALSE) {
+            corpusDtm <- tm::removeSparseTerms(corpusDtm, removeSparseTerms)
+        }
     }
     corpusDtm
 }
