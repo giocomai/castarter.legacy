@@ -44,35 +44,53 @@ CreateTimeSeries <- function(corpus, terms, specificWebsites = NULL, startDate =
             corpusDtm <- quanteda::weight(corpusDtm, "relFreq")
         } else {
             corpusDtm <- tm::DocumentTermMatrix(corpus)
+        } 
+    } else {
+        if (quanteda::is.dfm(corpusDtm)==TRUE) {
+            corpusDtm <- quanteda::weight(corpusDtm, "relFreq")
         }
     }
     if (length(terms)>1) {
         if (quanteda::is.dfm(corpusDtm)==TRUE) {
-            termsL <- as.list(terms)
-            termsL <- setNames(object = termsL, nm = terms)
-            termsDic <- quanteda::dictionary(x = termsL)
-            corpusDtm <- quanteda::applyDictionary(corpusDtm, termsDic)
-            dailyFreq <- data.frame(docs = docnames(corpusDtm), as.data.frame(corpusDtm))
-            dailyFreq <- tidyr::separate(data = dailyFreq, col = docs, into = c("Date","nameOfWebsite"), sep = "\\.")
+            
         } else {
             frequencyOfterms <- as.table(slam::rollup(corpusDtm[, terms], 1, time))
         }
     } else {
-        frequencyOfterms <- as.table(tapply(as.numeric(as.matrix(corpusDtm[, terms])), list(time, nameOfWebsitesIncluded), sum))
+        if (quanteda::is.dfm(corpusDtm)==TRUE) {
+            termsL <- as.list(terms)
+            termsL <- setNames(object = termsL, nm = terms)
+            termsDic <- quanteda::dictionary(x = termsL)
+            corpusDtmDic <- quanteda::applyDictionary(corpusDtm, termsDic)
+            dailyFreq <- data.frame(docs = docnames(corpusDtmDic), quanteda::as.data.frame(corpusDtmDic))
+            dailyFreq <- tidyr::separate(data = dailyFreq, col = docs, into = c("Date","nameOfWebsite"), sep = "\\.")
+            dailyFreqL <- reshape2::melt(data = dailyFreq, id.vars = c("Date", "nameOfWebsite"), variable.name="Term", value.name="Frequency")
+            dailyFreqL$Date <- as.Date(dailyFreqL$Date)
+            dailyFreqAgg <- stats::aggregate(Frequency ~ Date + nameOfWebsite, dailyFreqL, mean)
+            dailyFreq <- reshape2::dcast(data = dailyFreqAgg, Date ~ nameOfWebsite, value.var = "Frequency")
+        } else {
+            frequencyOfterms <- as.table(tapply(as.numeric(as.matrix(corpusDtm[, terms])), list(time, nameOfWebsitesIncluded), sum))
+        }
     }
     # to filter specific websites
     if (is.null(specificWebsites) == FALSE) {
         frequencyOfterms <- as.table(frequencyOfterms[, specificWebsites])
     }
-    names(dimnames(frequencyOfterms)) <- NULL
-    termSeries <- zoo::zoo(frequencyOfterms/c(tapply(slam::row_sums(corpusDtm), time, sum)), order.by = as.POSIXct(rownames(frequencyOfterms)))
-    termSeries <- merge(termSeries, zoo::zoo(, seq(start(termSeries), end(termSeries), "DSTday")), fill = NaN)
-    if (rollingAverage != "") {
-        termSeries <- zoo::rollapply(termSeries, rollingAverage, align = align, mean, na.rm = TRUE)
+    if (quanteda::is.dfm(corpusDtm)==TRUE) {
+        # dailyFreqL <- reshape2::melt(data = dailyFreq, id.vars = c("Date", "nameOfWebsite"), variable.name="Term", value.name="Frequency")
+        # dailyFreqL$Date <- as.Date(dailyFreqL$Date)
+        # dailyFreqAgg <- stats::aggregate(Frequency ~ Date + Term, dailyFreq, mean)
+        dailyFreqZoo <- zoo::zoo(dailyFreq[2:length(dailyFreq)], dailyFreq$Date)
+    } else {
+        names(dimnames(frequencyOfterms)) <- NULL
+        termSeries <- zoo::zoo(frequencyOfterms/c(tapply(slam::row_sums(corpusDtm), time, sum)), order.by = as.POSIXct(rownames(frequencyOfterms)))
+        dailyFreqZoo <- merge(termSeries, zoo::zoo(, seq(start(termSeries), end(termSeries), "DSTday")), fill = NaN)
     }
-    timeSeries <- zoo::autoplot.zoo(termSeries, facets = NULL) +
+    if (rollingAverage != "") {
+        dailyFreqZoo <- zoo::rollapply(dailyFreqZoo, rollingAverage, align = align, mean, na.rm = TRUE)
+    }
+    timeSeries <- zoo::autoplot.zoo(dailyFreqZoo, facets = NULL) +
         ggplot2::ggtitle(paste("Word frequency of", paste(dQuote(terms), collapse = ", "))) +
-        ggplot2::scale_x_datetime("") +
         ggplot2::scale_y_continuous("") +
         ggplot2::theme(plot.title = ggplot2::element_text(size = ggplot2::rel(1.1)),
               legend.title = ggplot2::element_text(size = ggplot2::rel(1.1)),
@@ -80,6 +98,11 @@ CreateTimeSeries <- function(corpus, terms, specificWebsites = NULL, startDate =
         ggplot2::scale_colour_brewer(type = "qual", palette = 6) +
         ggplot2::labs(color = "Terms") +
         ggplot2::geom_line(size = 1)
+    if (quanteda::is.dfm(corpusDtm) == TRUE) {
+        timeSeries <- timeSeries + ggplot2::scale_x_date("") 
+    } else {
+        timeSeries <- timeSeries + ggplot2::scale_x_datetime("")
+    }
     if (is.null(nameOfWebsite) == FALSE) {
         timeSeries <- timeSeries + ggplot2::ggtitle(paste("References to", paste(dQuote(terms), collapse = ", "), "in", nameOfWebsite))
         }
