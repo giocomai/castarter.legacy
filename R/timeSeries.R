@@ -96,12 +96,16 @@ CreateTimeSeries <- function(corpus, terms, specificWebsites = NULL, startDate =
               legend.title = ggplot2::element_text(size = ggplot2::rel(1.1)),
               legend.text = ggplot2::element_text(size = ggplot2::rel(1))) +
         ggplot2::scale_colour_brewer(type = "qual", palette = 6) +
-        ggplot2::labs(color = "Terms") +
         ggplot2::geom_line(size = 1)
     if (quanteda::is.dfm(corpusDtm) == TRUE) {
         timeSeries <- timeSeries + ggplot2::scale_x_date("") 
     } else {
         timeSeries <- timeSeries + ggplot2::scale_x_datetime("")
+    }
+    if (length(terms)>1) {
+        timeSeries <- timeSeries + ggplot2::labs(color = "Terms") 
+    } else {
+        timeSeries <- timeSeries + ggplot2::labs(color = "Websites") 
     }
     if (is.null(nameOfWebsite) == FALSE) {
         timeSeries <- timeSeries + ggplot2::ggtitle(paste("References to", paste(dQuote(terms), collapse = ", "), "in", nameOfWebsite))
