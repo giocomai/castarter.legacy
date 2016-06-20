@@ -46,7 +46,14 @@ CreateTimeSeries <- function(corpus, terms, specificWebsites = NULL, startDate =
         }
     }
     if (length(terms)>1) {
-        frequencyOfterms <- as.table(slam::rollup(corpusDtm[, terms], 1, time))
+        if (quanteda::is.dfm(corpusDtm)==TRUE) {
+            termsL <- as.list(terms)
+            termsL <- setNames(object = termsL, nm = terms)
+            termsDic <- quanteda::dictionary(x = termsL)
+            
+        } else {
+            frequencyOfterms <- as.table(slam::rollup(corpusDtm[, terms], 1, time))
+        }
     } else {
         frequencyOfterms <- as.table(tapply(as.numeric(as.matrix(corpusDtm[, terms])), list(time, nameOfWebsitesIncluded), sum))
     }
