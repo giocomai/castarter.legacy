@@ -74,20 +74,26 @@ LoadAllDatasets <- function(nameOfProject, removeNAdates = TRUE) {
 #' Takes a dataset created with 'castarter' and converts it into a 'tm' corpus. Metadata are automatically imported.
 #'  
 #' @param dataset A data.frame created by 'castarter' including metadata and full text articles to be converted into a corpus. 
-#' @return A corpus as created by the 'tm' package including metadata. 
-#' @keywords tm
+#' @param Logical, defaults to FAlSE. If TRUE generates corpus of the 'quanteda' package, otherwise of the 'tm' package. 
+#' @return A corpus as created by the 'tm' or 'quanteda' package including metadata. 
+#' @keywords 
 #' @export
 #' @examples
 #' corpus <- ConvertToCorpus(dataset)
-ConvertToCorpus <- function(dataset) {
-    corpus <- tm::VCorpus(tm::VectorSource(dataset$articlesTxt))
-    for (i in 1:length(dataset$articlesTxt)) {
-        NLP::meta(corpus[[i]], tag = "author") <- dataset$nameOfWebsite[i]
-        NLP::meta(corpus[[i]], tag = "datetimestamp") <- dataset$dates[i]
-        NLP::meta(corpus[[i]], tag = "heading") <- dataset$titles[i]
-        NLP::meta(corpus[[i]], tag = "id") <- dataset$articlesId[i]
-        NLP::meta(corpus[[i]], tag = "language") <- dataset$language[i]
-        NLP::meta(corpus[[i]], tag = "origin") <- dataset$articlesLinks[i]
+ConvertToCorpus <- function(dataset, quanteda = FALSE) {
+    if (quanteda==TRUE) {
+        corpus <- quanteda::corpus(dataset$articlesTxt,
+                                   docvars=data.frame(nameOfWebsite=dataset$nameOfWebsite, date=as.Date(dataset$dates), title=dataset$titles, links = dataset$articlesLinks, ID=dataset$articlesId))
+    } else {
+        corpus <- tm::VCorpus(tm::VectorSource(dataset$articlesTxt))
+        for (i in 1:length(dataset$articlesTxt)) {
+            NLP::meta(corpus[[i]], tag = "author") <- dataset$nameOfWebsite[i]
+            NLP::meta(corpus[[i]], tag = "datetimestamp") <- dataset$dates[i]
+            NLP::meta(corpus[[i]], tag = "heading") <- dataset$titles[i]
+            NLP::meta(corpus[[i]], tag = "id") <- dataset$articlesId[i]
+            NLP::meta(corpus[[i]], tag = "language") <- dataset$language[i]
+            NLP::meta(corpus[[i]], tag = "origin") <- dataset$articlesLinks[i]
+        }
     }
     corpus
 } 

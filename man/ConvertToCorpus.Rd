@@ -4,13 +4,15 @@
 \alias{ConvertToCorpus}
 \title{Converts a 'castarter' dataset into a 'tm' corpus.}
 \usage{
-ConvertToCorpus(dataset)
+ConvertToCorpus(dataset, quanteda = FALSE)
 }
 \arguments{
 \item{dataset}{A data.frame created by 'castarter' including metadata and full text articles to be converted into a corpus.}
+
+\item{Logical, }{defaults to FAlSE. If TRUE generates corpus of the 'quanteda' package, otherwise of the 'tm' package.}
 }
 \value{
-A corpus as created by the 'tm' package including metadata.
+A corpus as created by the 'tm' or 'quanteda' package including metadata.
 }
 \description{
 Takes a dataset created with 'castarter' and converts it into a 'tm' corpus. Metadata are automatically imported.
@@ -18,5 +20,4 @@ Takes a dataset created with 'castarter' and converts it into a 'tm' corpus. Met
 \examples{
 corpus <- ConvertToCorpus(dataset)
 }
-\keyword{tm}
 
