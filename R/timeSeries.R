@@ -41,6 +41,7 @@ CreateTimeSeries <- function(corpus, terms, specificWebsites = NULL, startDate =
     if (is.null(corpusDtm) == TRUE) {
         if (quanteda::is.corpus(corpus)==TRUE) {
             corpusDtm <- quanteda::dfm(x = corpus, groups=c("date", "nameOfWebsite"))
+            corpusDtm <- quanteda::weight(corpusDtm, "relFreq")
         } else {
             corpusDtm <- tm::DocumentTermMatrix(corpus)
         }
