@@ -76,7 +76,6 @@ LoadAllDatasets <- function(nameOfProject, removeNAdates = TRUE) {
 #' @param dataset A data.frame created by 'castarter' including metadata and full text articles to be converted into a corpus. 
 #' @param Logical, defaults to FAlSE. If TRUE generates corpus of the 'quanteda' package, otherwise of the 'tm' package. 
 #' @return A corpus as created by the 'tm' or 'quanteda' package including metadata. 
-#' @keywords 
 #' @export
 #' @examples
 #' corpus <- ConvertToCorpus(dataset)
