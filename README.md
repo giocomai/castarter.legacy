@@ -1,7 +1,7 @@
 An introduction to 'castarter' - content analysis starter toolkit for R
 ================
 Giorgio Comai
-2016-06-19
+2016-06-20
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 Introduction
@@ -117,7 +117,7 @@ head(indexLinks)
 #> [6] "http://www.europarl.europa.eu/news/en/news-room/press-release?start=50"
 ```
 
-It is now necessary to download these index pages. The following command downloads the relevant index pages and saves them in html format in the /EuropeanUnion/EuropeanParliament/IndexHtml folder.
+It is now necessary to download these index pages. The following command downloads the relevant index pages and saves them in html format in the `/EuropeanUnion/EuropeanParliament/IndexHtml/` folder.
 
 ``` r
 DownloadContents(links = indexLinks, type = "index")
@@ -150,7 +150,7 @@ length(articlesLinks)
 
 As expected, this function extracts more than 5000 links to individual pages. In this example, the links are correctly extracted and the titles match the links.
 
-Now that we have direct links, it is easy to download all articles. The following command downloads all articles, stores them in a vector, saves them in .html format in the `/EuropeanUnion/EuropeanParliament/` folder, and notifies of advancement.
+Now that we have direct links, it is easy to download all articles. The following command downloads all articles, stores them in a vector, saves them in .html format in the `/EuropeanUnion/EuropeanParliament/Html/` folder, and notifies of advancement.
 
 ``` r
 DownloadContents(links = articlesLinks, type = "articles")

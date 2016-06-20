@@ -104,7 +104,7 @@ This command creates a vector (`indexLinks`) including direct links to the index
 head(indexLinks)
 ```
 
-It is now necessary to download these index pages. The following command downloads the relevant index pages and saves them in html format in the /EuropeanUnion/EuropeanParliament/IndexHtml folder. 
+It is now necessary to download these index pages. The following command downloads the relevant index pages and saves them in html format in the `/EuropeanUnion/EuropeanParliament/IndexHtml/` folder. 
 
 ```{r Download index, eval=FALSE, include=TRUE}
 DownloadContents(links = indexLinks, type = "index")
@@ -130,7 +130,7 @@ length(articlesLinks)
 ```
 As expected, this function extracts more than 5000 links to individual pages. In this example, the links are correctly extracted and the titles match the links.
 
-Now that we have direct links, it is easy to download all articles. The following command downloads all articles, stores them in a vector, saves them in .html format in the `/EuropeanUnion/EuropeanParliament/` folder, and notifies of advancement.
+Now that we have direct links, it is easy to download all articles. The following command downloads all articles, stores them in a vector, saves them in .html format in the `/EuropeanUnion/EuropeanParliament/Html/` folder, and notifies of advancement.
 ```{r Download articles, eval=FALSE, include=TRUE}
 DownloadContents(links = articlesLinks, type = "articles")
 ```
