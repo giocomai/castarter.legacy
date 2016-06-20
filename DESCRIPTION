@@ -35,7 +35,8 @@ Imports:
     dygraphs, 
     settings,
     quanteda,
-    tidyr
+    tidyr,
+    reshape2
 Suggests:
     knitr
 VignetteBuilder: knitr
