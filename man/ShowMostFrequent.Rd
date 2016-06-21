@@ -23,7 +23,7 @@ ShowMostFrequent(corpusDtm, mode = "data.frame", number = 10,
 
 \item{export}{Logical, defaults to FALSE. If TRUE, saves the time series in both png and pdf format. If nameOfProject and nameOfWebsite are provided, in saves the barchart in the "Outputs" subfolder.}
 
-\item{corpusDtm}{A document-term matrix. Can be obtained with 'DocumentTermMatrix(corpus)'}
+\item{corpusDtm}{A document-term matrix or a document-feature matrix of the 'quanteda' type.}
 
 \item{title}{A character vector, defaults to NULL.It allows to customize the title of the exported barchart file.}
 }
