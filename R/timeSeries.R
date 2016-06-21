@@ -1,8 +1,8 @@
 #' Creates time series of the frequency of specific terms.
 #'
 #' It creates time series with the frequency of one or more terms, in one or more websites. 
-#' @param corpus A corpus created by the TM package..
-#' @param terms Character vector with one or more words to be analysed, or a 'quanteda' dictionary if corpus/corpusDtm are also of the 'quanteda' type.
+#' @param corpus A corpus of the 'tm' or 'quanteda' type, presumably created with castarter's ConvertToCorpus() function.
+#' @param terms A character vector with one or more words to be analysed, or a 'quanteda' dictionary if corpus/corpusDtm are also of the 'quanteda' type.
 #' @param specificWebsites Character vector of the names of one or more websites included in the corpus. Only selected websites will be included in the analysis.
 #' @param startDate, endDate Character vector with date in the format year-month-date, e.g. "2015-07-14".
 #' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
@@ -10,7 +10,7 @@
 #' @param rollingAverage Integer, defaults to 30. Number of days used to calculate word frequency as shown in the time series. Time series shows word frequency for each date as an average of the N number of days (N=rollingAverage) following the correspondent date.
 #' @param align Defaults to "center", can be either "left", "right" or "center" and refers to the way the rolling average is calculated.
 #' @param export Logical, defaults to FALSE. If TRUE, saves the time series in both png and pdf format. If nameOfProject and nameOfWebsite are provided, in saves the timeseries in the "Outputs" subfolder. 
-#' @param corpusDtm A document-term matrix. If provided, other parameters (specificWebsites, startDate, endDate) are ignored, but computation is faster. 
+#' @param corpusDtm A document-term matrix or a document-feature matrix of the 'quanteda' type. If provided, other parameters (specificWebsites, startDate, endDate) are ignored, but computation is faster. 
 #' @export
 #' @examples
 #' CreateTimeSeries(corpus, terms = c("word1", "word2"))

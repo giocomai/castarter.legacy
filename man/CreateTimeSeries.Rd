@@ -10,9 +10,9 @@ CreateTimeSeries(corpus, terms, specificWebsites = NULL, startDate = NULL,
   nameOfProject = NULL, nameOfWebsite = NULL, dygraphs = FALSE)
 }
 \arguments{
-\item{corpus}{A corpus created by the TM package..}
+\item{corpus}{A corpus of the 'tm' or 'quanteda' type, presumably created with castarter's ConvertToCorpus() function.}
 
-\item{terms}{Character vector with one or more words to be analysed, or a 'quanteda' dictionary if corpus/corpusDtm are also of the 'quanteda' type.}
+\item{terms}{A character vector with one or more words to be analysed, or a 'quanteda' dictionary if corpus/corpusDtm are also of the 'quanteda' type.}
 
 \item{specificWebsites}{Character vector of the names of one or more websites included in the corpus. Only selected websites will be included in the analysis.}
 
@@ -22,7 +22,7 @@ CreateTimeSeries(corpus, terms, specificWebsites = NULL, startDate = NULL,
 
 \item{align}{Defaults to "center", can be either "left", "right" or "center" and refers to the way the rolling average is calculated.}
 
-\item{corpusDtm}{A document-term matrix. If provided, other parameters (specificWebsites, startDate, endDate) are ignored, but computation is faster.}
+\item{corpusDtm}{A document-term matrix or a document-feature matrix of the 'quanteda' type. If provided, other parameters (specificWebsites, startDate, endDate) are ignored, but computation is faster.}
 
 \item{export}{Logical, defaults to FALSE. If TRUE, saves the time series in both png and pdf format. If nameOfProject and nameOfWebsite are provided, in saves the timeseries in the "Outputs" subfolder.}
 
