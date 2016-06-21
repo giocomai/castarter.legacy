@@ -2,7 +2,7 @@
 #'
 #' It creates time series with the frequency of one or more terms, in one or more websites. 
 #' @param corpus A corpus created by the TM package..
-#' @param terms Character vector with one or more words to be analysed. 
+#' @param terms Character vector with one or more words to be analysed, or a 'quanteda' dictionary if corpus/corpusDtm are also of the 'quanteda' type.
 #' @param specificWebsites Character vector of the names of one or more websites included in the corpus. Only selected websites will be included in the analysis.
 #' @param startDate, endDate Character vector with date in the format year-month-date, e.g. "2015-07-14".
 #' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
@@ -51,9 +51,13 @@ CreateTimeSeries <- function(corpus, terms, specificWebsites = NULL, startDate =
         }
     }
     if (quanteda::is.dfm(corpusDtm)==TRUE) {
-        termsL <- as.list(terms)
-        termsL <- setNames(object = termsL, nm = terms)
-        termsDic <- quanteda::dictionary(x = termsL)
+        if (as.character(class(terms))=="dictionary") {
+            terms <- termsDic
+        } else {
+            termsL <- as.list(terms)
+            termsL <- setNames(object = termsL, nm = terms)
+            termsDic <- quanteda::dictionary(x = termsL)
+        }
         corpusDtmDic <- quanteda::applyDictionary(corpusDtm, termsDic)
         dailyFreq <- data.frame(docs = quanteda::docnames(corpusDtmDic), quanteda::as.data.frame(corpusDtmDic))
         dailyFreq <- tidyr::separate(data = dailyFreq, col = docs, into = c("Date","nameOfWebsite"), sep = "\\.")

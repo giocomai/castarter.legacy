@@ -12,7 +12,7 @@ CreateTimeSeries(corpus, terms, specificWebsites = NULL, startDate = NULL,
 \arguments{
 \item{corpus}{A corpus created by the TM package..}
 
-\item{terms}{Character vector with one or more words to be analysed.}
+\item{terms}{Character vector with one or more words to be analysed, or a 'quanteda' dictionary if corpus/corpusDtm are also of the 'quanteda' type.}
 
 \item{specificWebsites}{Character vector of the names of one or more websites included in the corpus. Only selected websites will be included in the analysis.}
 
