@@ -151,8 +151,8 @@ CreateTimeSeries <- function(corpus, terms, specificWebsites = NULL, startDate =
         }
     }
     if (dygraphs == TRUE) {
-        termSeriesXts <- xts::as.xts(termSeries)
-        timeSeriesDygraph <- dygraphs::dygraph(termSeriesXts) %>% dygraphs::dyRangeSelector()
+        dailyFreqXts <- xts::as.xts(dailyFreqZoo)
+        timeSeriesDygraph <- dygraphs::dygraph(dailyFreqXts) %>% dygraphs::dyRangeSelector()
         timeSeriesDygraph
     } else {
         timeSeries
