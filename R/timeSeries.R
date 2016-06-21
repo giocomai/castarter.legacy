@@ -52,7 +52,7 @@ CreateTimeSeries <- function(corpus, terms, specificWebsites = NULL, startDate =
     }
     if (quanteda::is.dfm(corpusDtm)==TRUE) {
         if (as.character(class(terms))=="dictionary") {
-            terms <- termsDic
+            termsDic <- terms
         } else {
             termsL <- as.list(terms)
             termsL <- setNames(object = termsL, nm = terms)
