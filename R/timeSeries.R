@@ -50,20 +50,25 @@ CreateTimeSeries <- function(corpus, terms, specificWebsites = NULL, startDate =
             corpusDtm <- quanteda::weight(corpusDtm, "relFreq")
         }
     }
+    if (quanteda::is.dfm(corpusDtm)==TRUE) {
+        termsL <- as.list(terms)
+        termsL <- setNames(object = termsL, nm = terms)
+        termsDic <- quanteda::dictionary(x = termsL)
+        corpusDtmDic <- quanteda::applyDictionary(corpusDtm, termsDic)
+        dailyFreq <- data.frame(docs = quanteda::docnames(corpusDtmDic), quanteda::as.data.frame(corpusDtmDic))
+        dailyFreq <- tidyr::separate(data = dailyFreq, col = docs, into = c("Date","nameOfWebsite"), sep = "\\.")
+    }
     if (length(terms)>1) {
         if (quanteda::is.dfm(corpusDtm)==TRUE) {
-            
+            dailyFreqL <- reshape2::melt(data = dailyFreq, id.vars = c("Date", "nameOfWebsite"), variable.name="Term", value.name="Frequency")
+            dailyFreqL$Date <- as.Date(dailyFreqL$Date)
+            dailyFreqAgg <- stats::aggregate(Frequency ~ Date + Term, dailyFreqL, mean)
+            dailyFreq <- reshape2::dcast(data = dailyFreqAgg, Date ~ Term, value.var = "Frequency")
         } else {
             frequencyOfterms <- as.table(slam::rollup(corpusDtm[, terms], 1, time))
         }
     } else {
         if (quanteda::is.dfm(corpusDtm)==TRUE) {
-            termsL <- as.list(terms)
-            termsL <- setNames(object = termsL, nm = terms)
-            termsDic <- quanteda::dictionary(x = termsL)
-            corpusDtmDic <- quanteda::applyDictionary(corpusDtm, termsDic)
-            dailyFreq <- data.frame(docs = docnames(corpusDtmDic), quanteda::as.data.frame(corpusDtmDic))
-            dailyFreq <- tidyr::separate(data = dailyFreq, col = docs, into = c("Date","nameOfWebsite"), sep = "\\.")
             dailyFreqL <- reshape2::melt(data = dailyFreq, id.vars = c("Date", "nameOfWebsite"), variable.name="Term", value.name="Frequency")
             dailyFreqL$Date <- as.Date(dailyFreqL$Date)
             dailyFreqAgg <- stats::aggregate(Frequency ~ Date + nameOfWebsite, dailyFreqL, mean)
@@ -77,9 +82,6 @@ CreateTimeSeries <- function(corpus, terms, specificWebsites = NULL, startDate =
         frequencyOfterms <- as.table(frequencyOfterms[, specificWebsites])
     }
     if (quanteda::is.dfm(corpusDtm)==TRUE) {
-        # dailyFreqL <- reshape2::melt(data = dailyFreq, id.vars = c("Date", "nameOfWebsite"), variable.name="Term", value.name="Frequency")
-        # dailyFreqL$Date <- as.Date(dailyFreqL$Date)
-        # dailyFreqAgg <- stats::aggregate(Frequency ~ Date + Term, dailyFreq, mean)
         dailyFreqZoo <- zoo::zoo(dailyFreq[2:length(dailyFreq)], dailyFreq$Date)
     } else {
         names(dimnames(frequencyOfterms)) <- NULL
