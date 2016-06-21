@@ -113,6 +113,9 @@ CreateTimeSeries <- function(corpus, terms, specificWebsites = NULL, startDate =
     } else {
         timeSeries <- timeSeries + ggplot2::labs(color = "Websites") 
     }
+    if (as.character(class(terms))=="dictionary") {
+        terms <- names(terms)
+    }
     if (is.null(nameOfWebsite) == FALSE) {
         timeSeries <- timeSeries + ggplot2::ggtitle(paste("References to", paste(dQuote(terms), collapse = ", "), "in", nameOfWebsite))
         }
