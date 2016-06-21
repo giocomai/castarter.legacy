@@ -95,6 +95,9 @@ CreateTimeSeries <- function(corpus, terms, specificWebsites = NULL, startDate =
     if (rollingAverage != "") {
         dailyFreqZoo <- zoo::rollapply(dailyFreqZoo, rollingAverage, align = align, mean, na.rm = TRUE)
     }
+    if (as.character(class(terms))=="dictionary") {
+        terms <- names(terms)
+    }
     timeSeries <- zoo::autoplot.zoo(dailyFreqZoo, facets = NULL) +
         ggplot2::ggtitle(paste("Word frequency of", paste(dQuote(terms), collapse = ", "))) +
         ggplot2::scale_y_continuous("") +
@@ -112,9 +115,6 @@ CreateTimeSeries <- function(corpus, terms, specificWebsites = NULL, startDate =
         timeSeries <- timeSeries + ggplot2::labs(color = "Terms") 
     } else {
         timeSeries <- timeSeries + ggplot2::labs(color = "Websites") 
-    }
-    if (as.character(class(terms))=="dictionary") {
-        terms <- names(terms)
     }
     if (is.null(nameOfWebsite) == FALSE) {
         timeSeries <- timeSeries + ggplot2::ggtitle(paste("References to", paste(dQuote(terms), collapse = ", "), "in", nameOfWebsite))
