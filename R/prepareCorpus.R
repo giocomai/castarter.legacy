@@ -3,6 +3,11 @@
 #' Takes a specific set of datasets from existings 'castarter' projects.
 #'  
 #' @param projectsAndWebsites A character vector listing websites to be loaded in the format "nameOfProject/nameOfWebsite".
+#' @param type Defines the format in which the dataset will be loaded. Available options are:
+##' \itemize{
+##'  \item{"dataset"}{: Outputs a 'castarter' dataset as data.frame. This is the default option.}
+##'  \item{"corpus"}{: Outputs a corpus.}
+##' }
 #' @return A data frame including all loaded datasets.
 #' @export
 #' @examples
