@@ -5,8 +5,8 @@
 \title{Saves working environment and dataset.}
 \usage{
 SaveAndExportWebsite(saveEnvironment = TRUE, dataset = NULL,
-  corpus = NULL, nameOfProject = NULL, nameOfWebsite = NULL,
-  exportXlsx = FALSE)
+  corpus = NULL, corpusDtm = NULL, nameOfProject = NULL,
+  nameOfWebsite = NULL, exportXlsx = FALSE)
 }
 \arguments{
 \item{saveEnvironment}{Logical, defaults to TRUE. If TRUE, saves environment as .Rdata in the correspodning website folder.}
@@ -27,6 +27,11 @@ It saves the working environment in the website folder, the dataset as an .Rdata
 It assumes that previous operations have been completed, and both a 'metadata' and an 'articlesTxt' object exist. If they don't, it just prints this to the console.
 }
 \examples{
-SaveAndExportWebsite(nameOfProject, nameOfWebsite)
+Sav#' @param mode Defines the type of output. Can be
+\\itemize{
+ \\item{"data.frame"}{: Outputs a data.frame This is the default option.}
+ \\item{"barchart"}{: Outputs a ggplot2 barchart.}
+ \\item{"wordcloud"}{: Outputs a wordcloud.}
+}eAndExportWebsite(nameOfProject, nameOfWebsite)
 }
 
