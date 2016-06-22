@@ -8,13 +8,19 @@
 #' @examples
 #' projectsAndWebsites <- c("ProjectX/Website1", "ProjectY/Website3", "ProjectZ/Website2")
 #' allDatasets <- LoadDatasets(projectsAndWebsites)
-LoadDatasets <- function(projectsAndWebsites, removeNAdates = TRUE) {
+LoadDatasets <- function(projectsAndWebsites, type = "dataset", removeNAdates = TRUE) {
     projectsAndWebsites <- base::strsplit(projectsAndWebsites, "/")
     lastSavedDatasets <- vector()
     for (i in 1:length(projectsAndWebsites)) {
         nameOfProject <- projectsAndWebsites[[i]][1]
         nameOfWebsite <- projectsAndWebsites[[i]][2]
-        datasetFilename <- sort(list.files(file.path(nameOfProject, nameOfWebsite, "Dataset"))[stringr::str_extract(list.files(file.path(nameOfProject, nameOfWebsite, "Dataset")), "dataset.RData") == "dataset.RData"], decreasing = TRUE)[1]
+        if (type == "corpus") {
+            datasetFilename <- sort(list.files(file.path(nameOfProject, nameOfWebsite, "Dataset"))[stringr::str_extract(list.files(file.path(nameOfProject, nameOfWebsite, "Dataset")), "corpus.RData") == "corpus.RData"], decreasing = TRUE)[1]
+        } else if (type == "dataset") {
+            datasetFilename <- sort(list.files(file.path(nameOfProject, nameOfWebsite, "Dataset"))[stringr::str_extract(list.files(file.path(nameOfProject, nameOfWebsite, "Dataset")), "dataset.RData") == "dataset.RData"], decreasing = TRUE)[1]
+        } else {
+            stop("Type can be either 'dataset' or 'corpus'")
+        }
         if (is.na(datasetFilename) == FALSE) {
             lastSavedDataset <- file.path(file.path(nameOfProject, nameOfWebsite, "Dataset"), datasetFilename)
             lastSavedDatasets[i] <- lastSavedDataset
@@ -22,10 +28,25 @@ LoadDatasets <- function(projectsAndWebsites, removeNAdates = TRUE) {
         lastSavedDatasets <- lastSavedDatasets[!is.na(lastSavedDatasets)]
     }
     allDatasets <- data.frame()
-    for (i in 1:length(lastSavedDatasets)) {
-        load(lastSavedDatasets[i])
-        allDatasets <- rbind(allDatasets, dataset)
-        rm(dataset)
+    if (type == "corpus") {
+        for (i in 1:length(lastSavedDatasets)) {
+            load(lastSavedDatasets[i])
+            if (exists("corpusTemp") == TRUE) {
+                corpusAll <- corpusTemp+corpus
+                rm(corpusTemp)
+            } else if (exists("corpusAll")) {
+                corpusAll <- corpusAll+corpus
+            } else {
+                corpusTemp <- corpus
+            }
+            rm(corpus)
+        }
+    } else if (type == "dataset") {
+        for (i in 1:length(lastSavedDatasets)) {
+            load(lastSavedDatasets[i])
+            allDatasets <- rbind(allDatasets, dataset)
+            rm(dataset)
+        }
     }
     if (removeNAdates == TRUE) {
         allDatasets <- allDatasets[is.na(allDatasets$dates) == FALSE, ]
