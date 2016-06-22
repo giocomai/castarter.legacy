@@ -59,29 +59,32 @@ LoadLatest <- function(nameOfProject = NULL, nameOfWebsite = NULL) {
 #'
 #' It saves the working environment in the website folder, the dataset as an .Rdata file in the dataset subfolder, and, if exportXlsx = TRUE (by default), exports it as an .xlsx file in the Dataset sub-folder.
 #' It assumes that previous operations have been completed, and both a 'metadata' and an 'articlesTxt' object exist. If they don't, it just prints this to the console. 
+#' @param saveEnvironment Logical, defaults to TRUE. If TRUE, saves environment as .Rdata in the correspodning website folder. 
 #' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
 #' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
-#' @param dataset A 'castarter' dataset. Required to export dataset in its dedicated folder if no metadata data.frame is provided, e.g. because dataset has been created through CreateDatasetFromHtml() function.
+#' @param dataset A 'castarter' dataset. Required to export dataset in its dedicated folder if no metadata and articlesTxt are found in the environment, e.g. because dataset has been created through CreateDatasetFromHtml() function.
 #' @param exportXlsx If equal to TRUE, exports the complete dataset in the .xlsx file format in the Dataset sub-folder.
 #' @return Nothing. Used for its side effects (save current workspace and dataset in relevant folders).
 #' @export
 #' @examples
 #' SaveAndExportWebsite(nameOfProject, nameOfWebsite)
-SaveAndExportWebsite <- function(nameOfProject = NULL, nameOfWebsite = NULL, dataset = NULL, exportXlsx = FALSE) {
+SaveAndExportWebsite <- function(saveEnvironment = TRUE, dataset = NULL, corpus = NULL, nameOfProject = NULL, nameOfWebsite = NULL, exportXlsx = FALSE) {
     if (gtools::invalid(nameOfProject) == TRUE) {
         nameOfProject <- CastarterOptions("nameOfProject")
     }
     if (gtools::invalid(nameOfWebsite) == TRUE) {
         nameOfWebsite <- CastarterOptions("nameOfWebsite")
     }
-    ## Save environment
-    save.image(file = file.path(nameOfProject, nameOfWebsite, paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, sep = " - "), ".RData")))
-    print(paste("Environment saved in", file.path(nameOfProject, nameOfWebsite, paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, sep = " - "), ".RData"))))
+    if (saveEnvironment == TRUE) {
+        save.image(file = file.path(nameOfProject, nameOfWebsite, paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, sep = " - "), ".RData")))
+        print(paste("Environment saved in", file.path(nameOfProject, nameOfWebsite, paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, sep = " - "), ".RData"))))
+    }
     if (gtools::invalid(dataset) == TRUE) {
-        if (exists("metadata") == FALSE) {
-            print("Metadata not available, the dataset has not been saved separately.")
-        } 
-        dataset <- cbind(metadata, articlesTxt, stringsAsFactors = FALSE)
+        if (exists("metadata")|exists("articlesTxt") == FALSE) {
+            warning("Dataset not provided, and either metadata or articlesTxt not available: the dataset has not been saved separately.")
+        } else {
+            dataset <- cbind(metadata, articlesTxt, stringsAsFactors = FALSE)
+        }
     }
     save(dataset, file = file.path(nameOfProject, nameOfWebsite, "Dataset", paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "dataset", sep = " - "), ".RData")))
     print(paste("Dataset saved in", file.path(nameOfProject, nameOfWebsite, paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "dataset", sep = " - "), ".RData"))))

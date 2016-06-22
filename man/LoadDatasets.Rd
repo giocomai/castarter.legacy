@@ -8,6 +8,12 @@ LoadDatasets(projectsAndWebsites, type = "dataset", removeNAdates = TRUE)
 }
 \arguments{
 \item{projectsAndWebsites}{A character vector listing websites to be loaded in the format "nameOfProject/nameOfWebsite".}
+
+\item{type}{Defines the format in which the dataset will be loaded. Available options are:
+\itemize{
+ \item{"dataset"}{: Outputs a 'castarter' dataset as data.frame. This is the default option.}
+ \item{"corpus"}{: Outputs a corpus.}
+}}
 }
 \value{
 A data frame including all loaded datasets.
