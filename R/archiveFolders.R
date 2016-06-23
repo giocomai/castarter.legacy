@@ -43,4 +43,53 @@ ArchiveFolders <- function(nameOfProject = NULL, nameOfWebsite = NULL, removeArc
             unlink(file.path(nameOfProject, nameOfWebsite, "Txt"), recursive = TRUE)
         }
     }
+}
+
+#' Restore Html, Txt, and IndexHtml folders previously archived with in .tar.gz files with ArchiveFolders().
+#'
+#' Restore Html, Txt, and IndexHtml folders previously archived with in .tar.gz files with ArchiveFolders().
+#' @param html Logical, defaults to FALSE. If TRUE, restores previously archived html files in their standard folder.
+#' @param indeHtml Logical, defaults to FALSE. If TRUE, restores previously archived indexHtml files in their standard folder.
+#' @param txt Logical, defaults to FALSE. If TRUE, restores previously archived txt files in their standard folder.
+#' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
+#' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
+#' @export
+#' @section Warning:
+#' If the option overwrite is enabled, the function will overwrite files in Html, IndexHtml and Txt folders. 
+#' @examples
+#' RestoreArchives(nameOfProject, nameOfWebsite, removeArchivedFolders = FALSE))
+RestoreArchives <- function(html = FALSE, indexHtml = FALSE, txt = FALSE, overwrite = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
+    if (gtools::invalid(nameOfProject) == TRUE) {
+        nameOfProject <- CastarterOptions("nameOfProject")
+    }
+    if (gtools::invalid(nameOfWebsite) == TRUE) {
+        nameOfWebsite <- CastarterOptions("nameOfWebsite")
+    }
+    if (html==TRUE) {
+        if (file.exists(file.path(nameOfProject, nameOfWebsite, "Html"))==TRUE) {
+            stop("Html folder already exists, and overwrite option is not enabled. Either remove folder or set overwrite=TRUE")
+        } else {
+            lastArchiveFolderDate <- file.path(file.path(nameOfProject, nameOfWebsite, "Archives"), sort(list.files(file.path(nameOfProject, nameOfWebsite, "Archives")), decreasing = TRUE)[1])
+            lastSavedHtmlFile <- file.path(lastArchiveFolderDate, "Html.tar.gz")
+            untar(tarfile = lastSavedHtmlFile)
+        }
+    }
+    if (indexHtml==TRUE) {
+        if (file.exists(file.path(nameOfProject, nameOfWebsite, "indexHtml"))==TRUE) {
+            stop("indexHtml folder already exists, and overwrite option is not enabled. Either remove folder or set overwrite=TRUE")
+        } else {
+            lastArchiveFolderDate <- file.path(file.path(nameOfProject, nameOfWebsite, "Archives"), sort(list.files(file.path(nameOfProject, nameOfWebsite, "Archives")), decreasing = TRUE)[1])
+            lastSavedIndexHtmlFile <- file.path(lastArchiveFolderDate, "indexHtml.tar.gz")
+            untar(tarfile = lastSavedIndexHtmlFile)
+        }
+    }
+    if (Txt==TRUE) {
+        if (file.exists(file.path(nameOfProject, nameOfWebsite, "Txt"))==TRUE) {
+            stop("Txt folder already exists, and overwrite option is not enabled. Either remove folder or set overwrite=TRUE")
+        } else {
+            lastArchiveFolderDate <- file.path(file.path(nameOfProject, nameOfWebsite, "Archives"), sort(list.files(file.path(nameOfProject, nameOfWebsite, "Archives")), decreasing = TRUE)[1])
+            lastSavedTxtFile <- file.path(lastArchiveFolderDate, "Txt.tar.gz")
+            untar(tarfile = lastSavedTxtFile)
+        }
+    }
 } 
