@@ -16,7 +16,7 @@
 #' @examples
 #' DownloadContents(nameOfProject, nameOfWebsite, links)
 
-DownloadContents <- function(links, type = "articles", articlesHtml = NULL, size = 500, linksToDownload = NULL, wgetSystem = FALSE, method = "auto", missingArticles = TRUE, start = NULL, wait = 1, createScript = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
+DownloadContents <- function(links, type = "articles", articlesHtml = NULL, size = 500, linksToDownload = NULL, wgetSystem = FALSE, method = "auto", missingArticles = TRUE, start = 1, wait = 1, createScript = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
     if (gtools::invalid(nameOfProject) == TRUE) {
         nameOfProject <- CastarterOptions("nameOfProject")
     }
@@ -40,9 +40,7 @@ DownloadContents <- function(links, type = "articles", articlesHtml = NULL, size
     if (is.null(linksToDownload) == TRUE) {
         linksToDownload <- htmlFileSize < size
     }
-    if (gtools::invalid(start)==FALSE){
-        linksToDownload <- start:length(links)
-    }
+    linksToDownload[1:start-1] <- FALSE
     if (is.null(articlesHtml) == TRUE) {
         articlesHtml <- rep(NA, length(links[linksToDownload]))
     }
