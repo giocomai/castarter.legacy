@@ -4,15 +4,18 @@
 \alias{CreateTimeSeries}
 \title{Creates time series of the frequency of specific terms.}
 \usage{
-CreateTimeSeries(corpus, terms, specificWebsites = NULL, startDate = NULL,
-  endDate = NULL, rollingAverage = 30, align = "center",
-  corpusDtm = NULL, export = FALSE, allWebsitesAsOne = FALSE,
-  nameOfProject = NULL, nameOfWebsite = NULL, dygraphs = FALSE)
+CreateTimeSeries(terms, corpusDtm = NULL, corpus = NULL,
+  specificWebsites = NULL, startDate = NULL, endDate = NULL,
+  rollingAverage = 30, align = "center", export = FALSE,
+  allWebsitesAsOne = FALSE, dygraphs = FALSE, nameOfProject = NULL,
+  nameOfWebsite = NULL)
 }
 \arguments{
-\item{corpus}{A corpus of the 'tm' or 'quanteda' type, presumably created with castarter's ConvertToCorpus() function.}
-
 \item{terms}{A character vector with one or more words to be analysed, or a 'quanteda' dictionary if corpus/corpusDtm are also of the 'quanteda' type.}
+
+\item{corpusDtm}{A document-term matrix or a document-feature matrix of the 'quanteda' type. If provided, other parameters (specificWebsites, startDate, endDate) are ignored, but computation is faster.}
+
+\item{corpus}{A corpus of the 'tm' or 'quanteda' type, presumably created with castarter's ConvertToCorpus() function.}
 
 \item{specificWebsites}{Character vector of the names of one or more websites included in the corpus. Only selected websites will be included in the analysis.}
 
@@ -21,8 +24,6 @@ CreateTimeSeries(corpus, terms, specificWebsites = NULL, startDate = NULL,
 \item{rollingAverage}{Integer, defaults to 30. Number of days used to calculate word frequency as shown in the time series. Time series shows word frequency for each date as an average of the N number of days (N=rollingAverage) following the correspondent date.}
 
 \item{align}{Defaults to "center", can be either "left", "right" or "center" and refers to the way the rolling average is calculated.}
-
-\item{corpusDtm}{A document-term matrix or a document-feature matrix of the 'quanteda' type. If provided, other parameters (specificWebsites, startDate, endDate) are ignored, but computation is faster.}
 
 \item{export}{Logical, defaults to FALSE. If TRUE, saves the time series in both png and pdf format. If nameOfProject and nameOfWebsite are provided, in saves the timeseries in the "Outputs" subfolder.}
 

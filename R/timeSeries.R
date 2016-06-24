@@ -15,7 +15,7 @@
 #' @examples
 #' CreateTimeSeries(corpus, terms = c("word1", "word2"))
 
-CreateTimeSeries <- function(corpus, terms, specificWebsites = NULL, startDate = NULL, endDate = NULL, rollingAverage = 30, align = "center", corpusDtm = NULL, export = FALSE, allWebsitesAsOne = FALSE, nameOfProject = NULL, nameOfWebsite = NULL, dygraphs = FALSE) {
+CreateTimeSeries <- function(terms, corpusDtm = NULL, corpus = NULL, specificWebsites = NULL, startDate = NULL, endDate = NULL, rollingAverage = 30, align = "center", export = FALSE, allWebsitesAsOne = FALSE, dygraphs = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
     if (gtools::invalid(nameOfProject) == TRUE) {
         nameOfProject <- CastarterOptions("nameOfProject")
     }
@@ -32,8 +32,12 @@ CreateTimeSeries <- function(corpus, terms, specificWebsites = NULL, startDate =
         time <- as.character(strptime(as.POSIXct(quanteda::docvars(corpus, "date"), origin = "1970-01-01"), "%Y-%m-%d"))
         nameOfWebsitesIncluded <- as.character(quanteda::docvars(corpus, "nameOfWebsite"))
     } else {
-        time <- as.character(strptime(as.POSIXct(unlist(NLP::meta(corpus, "datetimestamp")), origin = "1970-01-01"), "%Y-%m-%d"))
-        nameOfWebsitesIncluded <- as.character(unlist(NLP::meta(corpus, "author")))
+        if (is.null(corpusDtm) == FALSE) {
+            if (quanteda::is.dfm(corpusDtm) == FALSE) {
+                time <- as.character(strptime(as.POSIXct(unlist(NLP::meta(corpus, "datetimestamp")), origin = "1970-01-01"), "%Y-%m-%d"))
+                nameOfWebsitesIncluded <- as.character(unlist(NLP::meta(corpus, "author")))
+            }
+        }
     }
     if (allWebsitesAsOne == TRUE) {
         nameOfWebsitesIncluded <- rep("all", length(nameOfWebsitesIncluded))
