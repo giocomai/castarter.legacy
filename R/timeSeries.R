@@ -193,7 +193,7 @@ CreateTimeSeries <- function(terms, corpusDtm = NULL, corpus = NULL, specificWeb
 #' @examples
 #' ShowDistribution(dataset)
 
-ShowDistribution <- function(dataset, specificWebsites = NULL, rollingAverage = 30, align = "center", nameOfProject = NULL, nameOfWebsite = NULL, method = "numberOfArticles", export = FALSE) {
+ShowDistribution <- function(dataset, specificWebsites = NULL, rollingAverage = 30, align = "center", customTitle = NULL, method = "numberOfArticles", export = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
     if (gtools::invalid(nameOfProject) == TRUE) {
         nameOfProject <- CastarterOptions("nameOfProject")
     }
@@ -222,9 +222,12 @@ ShowDistribution <- function(dataset, specificWebsites = NULL, rollingAverage = 
     docSeries <- zoo::rollapply(docSeries, rollingAverage, align=align, mean, na.rm=TRUE)
     distributionOfCorpus <- zoo::autoplot.zoo(docSeries, facets = NULL)
     if (method == "numberOfArticles") {
-        distributionOfCorpus <- distributionOfCorpus + ggplot2::ggtitle(paste0("Number of publications per day on ", dataset$nameOfWebsite[1], "'s website")) + ggplot2::scale_x_datetime("") + ggplot2::scale_y_continuous("")
+        distributionOfCorpus <- distributionOfCorpus + ggplot2::ggtitle(paste0("Number of publications per day in ", nameOfProject)) + ggplot2::scale_x_datetime("") + ggplot2::scale_y_continuous("")
     } else if (method == "numberOfCharacters") {
-        distributionOfCorpus <- distributionOfCorpus + ggplot2::scale_y_continuous("") + ggplot2::ggtitle(paste0("Number of characters per day on ", dataset$nameOfWebsite[1], "'s website" )) + ggplot2::scale_x_datetime("") + ggplot2::scale_y_continuous("")
+        distributionOfCorpus <- distributionOfCorpus + ggplot2::scale_y_continuous("") + ggplot2::ggtitle(paste0("Number of characters per day in ", nameOfProject)) + ggplot2::scale_x_datetime("") + ggplot2::scale_y_continuous("")
+    }
+    if (is.null(customTitle)==FALSE) {
+        distributionOfCorpus <- distributionOfCorpus + ggplot2::ggtitle(customTitle)
     }
     if (export == TRUE) {
         distributionOfCorpus

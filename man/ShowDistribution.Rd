@@ -5,8 +5,8 @@
 \title{Creates a time series graph showing the distribution of documents by date}
 \usage{
 ShowDistribution(dataset, specificWebsites = NULL, rollingAverage = 30,
-  align = "center", nameOfProject = NULL, nameOfWebsite = NULL,
-  method = "numberOfArticles", export = FALSE)
+  align = "center", customTitle = NULL, method = "numberOfArticles",
+  export = FALSE, nameOfProject = NULL, nameOfWebsite = NULL)
 }
 \arguments{
 \item{dataset}{A dataset created with 'castarter'.}
@@ -17,13 +17,13 @@ ShowDistribution(dataset, specificWebsites = NULL, rollingAverage = 30,
 
 \item{align}{Defaults to "center", can be either "left", "right" or "center" and refers to the way the rolling average is calculated.}
 
-\item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
-
-\item{nameOfWebsite}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
-
 \item{method}{Accepted values: "numberOfArticles" (default, creates time series based on number of publications per day); "numberOfCharacters" (creates time series based on number of charachters per day, currently does not work in conjunction with specificWebsites option).}
 
 \item{export}{Logical, defaults to FALSE. If TRUE, saves the graph in both png and pdf format. If nameOfProject and nameOfWebsite are provided, in saves the timeseries in the correspondent "Outputs" subfolder.}
+
+\item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
+
+\item{nameOfWebsite}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
 
 \item{startDate, }{endDate Character vector with date in the format year-month-date, e.g. "2015-07-14".}
 }
