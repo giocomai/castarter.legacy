@@ -19,12 +19,12 @@ LoadDatasets <- function(projectsAndWebsites, type = "dataset", removeNAdates = 
     for (i in 1:length(projectsAndWebsites)) {
         nameOfProject <- projectsAndWebsites[[i]][1]
         nameOfWebsite <- projectsAndWebsites[[i]][2]
-        if (type == "corpus") {
-            datasetFilename <- sort(list.files(file.path(nameOfProject, nameOfWebsite, "Dataset"))[stringr::str_extract(list.files(file.path(nameOfProject, nameOfWebsite, "Dataset")), "corpus.RData") == "corpus.RData"], decreasing = TRUE)[1]
+        if (type == "corpusQ") {
+            datasetFilename <- sort(list.files(file.path(nameOfProject, nameOfWebsite, "Dataset"))[stringr::str_extract(list.files(file.path(nameOfProject, nameOfWebsite, "Dataset")), "corpusQ.RData") == "corpusQ.RData"], decreasing = TRUE)[1]
         } else if (type == "dataset") {
             datasetFilename <- sort(list.files(file.path(nameOfProject, nameOfWebsite, "Dataset"))[stringr::str_extract(list.files(file.path(nameOfProject, nameOfWebsite, "Dataset")), "dataset.RData") == "dataset.RData"], decreasing = TRUE)[1]
         } else {
-            stop("Type can be either 'dataset' or 'corpus'")
+            stop("Type can be 'dataset', 'corpusQ', or 'corpusTM")
         }
         if (is.na(datasetFilename) == FALSE) {
             lastSavedDataset <- file.path(file.path(nameOfProject, nameOfWebsite, "Dataset"), datasetFilename)
@@ -32,7 +32,7 @@ LoadDatasets <- function(projectsAndWebsites, type = "dataset", removeNAdates = 
         }
         lastSavedDatasets <- lastSavedDatasets[!is.na(lastSavedDatasets)]
     }
-    if (type == "corpus") {
+    if (type == "corpusQ") {
         for (i in 1:length(lastSavedDatasets)) {
             load(lastSavedDatasets[i])
             if (exists("corpusTemp") == TRUE) {
@@ -56,8 +56,12 @@ LoadDatasets <- function(projectsAndWebsites, type = "dataset", removeNAdates = 
     if (removeNAdates == TRUE) {
         allDatasets <- allDatasets[is.na(allDatasets$dates) == FALSE, ]
     }
-    if (type == "corpus") {
-        return(corpusAll)
+    if (type == "corpusQ") {
+        if (length(lastSavedDatasets)=1) {
+            return(corpusTemp)
+        } else {
+            return(corpusAll)
+        }
     } else if (type == "dataset") {
         return(allDatasets)
     }
