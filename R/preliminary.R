@@ -69,7 +69,7 @@ LoadLatest <- function(nameOfProject = NULL, nameOfWebsite = NULL) {
 #' @export
 #' @examples
 #' SaveWebsite(nameOfProject, nameOfWebsite)
-SaveAndExportWebsite <- function(saveEnvironment = TRUE, dataset = NULL, corpus = NULL, corpusDtm = NULL, nameOfProject = NULL, nameOfWebsite = NULL, exportXlsx = FALSE) {
+SaveWebsite <- function(saveEnvironment = TRUE, dataset = NULL, corpus = NULL, corpusDtm = NULL, nameOfProject = NULL, nameOfWebsite = NULL, exportCsv = FALSE, exportXlsx = FALSE) {
     if (gtools::invalid(nameOfProject) == TRUE) {
         nameOfProject <- CastarterOptions("nameOfProject")
     }
