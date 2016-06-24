@@ -95,8 +95,13 @@ SaveWebsite <- function(saveEnvironment = TRUE, dataset = NULL, corpus = NULL, c
         }
     }
     if (is.null(corpus)==FALSE) {
-        save(corpus, file = file.path(nameOfProject, nameOfWebsite, "Dataset", paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "corpus", sep = " - "), ".RData")))
-        message(paste("Corpus saved in", file.path(nameOfProject, nameOfWebsite, paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "corpus", sep = " - "), ".RData"))))
+        if (quanteda::is.corpus(corpus)==TRUE) {
+            save(corpus, file = file.path(nameOfProject, nameOfWebsite, "Dataset", paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "corpusQ", sep = " - "), ".RData")))
+            message(paste("Corpus saved in", file.path(nameOfProject, nameOfWebsite, paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "corpusQ", sep = " - "), ".RData"))))
+        } else {
+            save(corpus, file = file.path(nameOfProject, nameOfWebsite, "Dataset", paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "corpusTM", sep = " - "), ".RData")))
+            message(paste("Corpus saved in", file.path(nameOfProject, nameOfWebsite, paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "corpusTM", sep = " - "), ".RData"))))
+        }
     }
     if (is.null(corpusDtm)==FALSE) {
         save(corpusDtm, file = file.path(nameOfProject, nameOfWebsite, "Dataset", paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "corpusDtm", sep = " - "), ".RData")))

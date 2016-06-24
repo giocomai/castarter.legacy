@@ -57,7 +57,7 @@ LoadDatasets <- function(projectsAndWebsites, type = "dataset", removeNAdates = 
         allDatasets <- allDatasets[is.na(allDatasets$dates) == FALSE, ]
     }
     if (type == "corpusQ") {
-        if (length(lastSavedDatasets)=1) {
+        if (length(lastSavedDatasets)==1) {
             return(corpusTemp)
         } else {
             return(corpusAll)
