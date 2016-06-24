@@ -19,7 +19,7 @@ CreateTimeSeries(terms, corpusDtm = NULL, corpus = NULL,
 
 \item{specificWebsites}{Character vector of the names of one or more websites included in the corpus. Only selected websites will be included in the analysis.}
 
-\item{startDate, }{endDate Character vector with date in the format year-month-date, e.g. "2015-07-14".}
+\item{startDate, }{endDate Character vector with date in the format year-month-date, e.g. "2015-07-14". Given dates are included, e.g. if you wish to include all of 2015, set startDate="2015-01-01", endDate"2015-12-31")}
 
 \item{rollingAverage}{Integer, defaults to 30. Number of days used to calculate word frequency as shown in the time series. Time series shows word frequency for each date as an average of the N number of days (N=rollingAverage) following the correspondent date.}
 

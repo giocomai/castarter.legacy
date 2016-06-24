@@ -4,7 +4,7 @@
 #' @param corpus A corpus of the 'tm' or 'quanteda' type, presumably created with castarter's ConvertToCorpus() function.
 #' @param terms A character vector with one or more words to be analysed, or a 'quanteda' dictionary if corpus/corpusDtm are also of the 'quanteda' type.
 #' @param specificWebsites Character vector of the names of one or more websites included in the corpus. Only selected websites will be included in the analysis.
-#' @param startDate, endDate Character vector with date in the format year-month-date, e.g. "2015-07-14".
+#' @param startDate, endDate Character vector with date in the format year-month-date, e.g. "2015-07-14". Given dates are included, e.g. if you wish to include all of 2015, set startDate="2015-01-01", endDate"2015-12-31")
 #' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
 #' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
 #' @param rollingAverage Integer, defaults to 30. Number of days used to calculate word frequency as shown in the time series. Time series shows word frequency for each date as an average of the N number of days (N=rollingAverage) following the correspondent date.
@@ -22,16 +22,16 @@ CreateTimeSeries <- function(terms, corpusDtm = NULL, corpus = NULL, specificWeb
     if (gtools::invalid(nameOfWebsite) == TRUE) {
         nameOfWebsite <- CastarterOptions("nameOfWebsite")
     }
-    if (is.null(startDate)==FALSE) {
-        corpus <- corpus[NLP::meta(corpus, "datetimestamp") > as.POSIXct(startDate)]
-    }
-    if (is.null(endDate)==FALSE) {
-        corpus <- corpus[NLP::meta(corpus, "datetimestamp") < as.POSIXct(endDate)]
-    }
     if (quanteda::is.corpus(corpus)==TRUE) {
         time <- as.character(strptime(as.POSIXct(quanteda::docvars(corpus, "date"), origin = "1970-01-01"), "%Y-%m-%d"))
         nameOfWebsitesIncluded <- as.character(quanteda::docvars(corpus, "nameOfWebsite"))
     } else {
+        if (is.null(startDate)==FALSE) {
+            corpus <- corpus[NLP::meta(corpus, "datetimestamp") > as.POSIXct(startDate)]
+        }
+        if (is.null(endDate)==FALSE) {
+            corpus <- corpus[NLP::meta(corpus, "datetimestamp") < as.POSIXct(endDate)]
+        }
         if (is.null(corpusDtm) == FALSE) {
             if (quanteda::is.dfm(corpusDtm) == FALSE) {
                 time <- as.character(strptime(as.POSIXct(unlist(NLP::meta(corpus, "datetimestamp")), origin = "1970-01-01"), "%Y-%m-%d"))
@@ -65,6 +65,12 @@ CreateTimeSeries <- function(terms, corpusDtm = NULL, corpus = NULL, specificWeb
         corpusDtmDic <- quanteda::applyDictionary(corpusDtm, termsDic)
         dailyFreq <- data.frame(docs = quanteda::docnames(corpusDtmDic), quanteda::as.data.frame(corpusDtmDic))
         dailyFreq <- tidyr::separate(data = dailyFreq, col = docs, into = c("Date","nameOfWebsite"), sep = "\\.")
+        if (is.null(startDate)==FALSE) {
+            dailyFreq <-dailyFreq[as.Date(dailyFreq$Date)>=as.Date(startDate),]
+        }
+        if (is.null(endDate)==FALSE) {
+            dailyFreq <-dailyFreq[as.Date(dailyFreq$Date)<=as.Date(endDate),]
+        }
     }
     if (length(terms)>1) {
         if (quanteda::is.dfm(corpusDtm)==TRUE) {
