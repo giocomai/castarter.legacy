@@ -141,29 +141,29 @@ CreateTimeSeries <- function(terms, corpusDtm = NULL, corpus = NULL, specificWeb
             if (file.exists(file.path(nameOfProject, nameOfWebsite, "Outputs")) == FALSE) {
                 dir.create(file.path(nameOfProject, nameOfWebsite, "Outputs"))
             }
-            ggplot2::ggsave(file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste("timeseries", nameOfProject, nameOfWebsite, paste(terms, collapse = " - "), sep = " - "), ".png")))
-            print(paste("File saved in", file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste("timeseries", nameOfProject, nameOfWebsite, paste(terms, collapse = " - "), sep = " - "), ".png"))))
-            ggplot2::ggsave(file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste("timeseries", nameOfProject, nameOfWebsite, paste(terms, collapse = " - "), sep = " - "), ".pdf")))
-            print(paste("File saved in", file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste("timeseries", nameOfProject, nameOfWebsite, paste(terms, collapse = " - "), sep = " - "), ".pdf"))))
-            ggplot2::ggsave(file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste("timeseries", nameOfProject, nameOfWebsite, paste(terms, collapse = " - "), sep = " - "), ".svg")))
-            print(paste("File saved in", file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste("timeseries", nameOfProject, nameOfWebsite, paste(terms, collapse = " - "), sep = " - "), ".svg"))))
+            ggplot2::ggsave(file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste("timeseries", nameOfProject, nameOfWebsite, sep = " - "), ".png")))
+            print(paste("File saved in", file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste("timeseries", nameOfProject, nameOfWebsite, sep = " - "), ".png"))))
+            ggplot2::ggsave(file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste("timeseries", nameOfProject, nameOfWebsite, sep = " - "), ".pdf")))
+            print(paste("File saved in", file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste("timeseries", nameOfProject, nameOfWebsite, sep = " - "), ".pdf"))))
+            ggplot2::ggsave(file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste("timeseries", nameOfProject, nameOfWebsite, sep = " - "), ".svg")))
+            print(paste("File saved in", file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste("timeseries", nameOfProject, nameOfWebsite, sep = " - "), ".svg"))))
         } else if (is.null(nameOfProject) == FALSE & is.null(nameOfWebsite) == TRUE) {
-            ggplot2::ggsave(file.path("Outputs", paste0(paste("timeseries", nameOfProject, paste(terms, collapse = " - "), sep = " - "), ".png")))
-            print(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", nameOfProject, paste(terms, collapse = " - "), sep = " - "), ".png"))))
-            ggplot2::ggsave(file.path("Outputs", paste0(paste("timeseries", nameOfProject, paste(terms, collapse = " - "), sep = " - "), ".pdf")))
-            print(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", nameOfProject, paste(terms, collapse = " - "), sep = " - "), ".pdf"))))
-            ggplot2::ggsave(file.path("Outputs", paste0(paste("timeseries", nameOfProject, paste(terms, collapse = " - "), sep = " - "), ".svg")))
-            print(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", nameOfProject, paste(terms, collapse = " - "), sep = " - "), ".svg"))))
+            ggplot2::ggsave(file.path("Outputs", paste0(paste("timeseries", nameOfProject, sep = " - "), ".png")))
+            print(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", nameOfProject, sep = " - "), ".png"))))
+            ggplot2::ggsave(file.path("Outputs", paste0(paste("timeseries", nameOfProject, sep = " - "), ".pdf")))
+            print(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", nameOfProject, sep = " - "), ".pdf"))))
+            ggplot2::ggsave(file.path("Outputs", paste0(paste("timeseries", nameOfProject, sep = " - "), ".svg")))
+            print(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", nameOfProject, sep = " - "), ".svg"))))
         } else {
             if (!file.exists(file.path("Outputs"))) {
                 dir.create(file.path("Outputs"))
             }
-            ggplot2::ggsave(file.path("Outputs", paste0(paste("timeseries", paste(terms, collapse = " - "), sep = " - "), ".png")))
-            print(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", paste(terms, collapse = " - "), sep = " - "), ".png"))))
-            ggplot2::ggsave(file.path("Outputs", paste0(paste("timeseries", paste(terms, collapse = " - "), sep = " - "), ".pdf")))
-            print(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", paste(terms, collapse = " - "), sep = " - "), ".pdf"))))
-            ggplot2::ggsave(file.path("Outputs", paste0(paste("timeseries", paste(terms, collapse = " - "), sep = " - "), ".svg")))
-            print(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", paste(terms, collapse = " - "), sep = " - "), ".svg"))))
+            ggplot2::ggsave(file.path("Outputs", paste0(paste("timeseries", sep = " - "), ".png")))
+            print(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", sep = " - "), ".png"))))
+            ggplot2::ggsave(file.path("Outputs", paste0(paste("timeseries", sep = " - "), ".pdf")))
+            print(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", sep = " - "), ".pdf"))))
+            ggplot2::ggsave(file.path("Outputs", paste0(paste("timeseries", sep = " - "), ".svg")))
+            print(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", sep = " - "), ".svg"))))
         }
     }
     if (dygraphs == TRUE) {
@@ -193,7 +193,7 @@ CreateTimeSeries <- function(terms, corpusDtm = NULL, corpus = NULL, specificWeb
 #' @examples
 #' ShowDistribution(dataset)
 
-ShowDistribution <- function(dataset, specificWebsites = NULL, rollingAverage = 30, align = "center", nameOfProject = NULL, nameOfWebsite = NULL, method = "numberOfArticles") {
+ShowDistribution <- function(dataset, specificWebsites = NULL, rollingAverage = 30, align = "center", nameOfProject = NULL, nameOfWebsite = NULL, method = "numberOfArticles", export = FALSE) {
     if (gtools::invalid(nameOfProject) == TRUE) {
         nameOfProject <- CastarterOptions("nameOfProject")
     }
@@ -225,6 +225,37 @@ ShowDistribution <- function(dataset, specificWebsites = NULL, rollingAverage = 
         distributionOfCorpus <- distributionOfCorpus + ggplot2::ggtitle(paste0("Number of publications per day on ", dataset$nameOfWebsite[1], "'s website")) + ggplot2::scale_x_datetime("") + ggplot2::scale_y_continuous("")
     } else if (method == "numberOfCharacters") {
         distributionOfCorpus <- distributionOfCorpus + ggplot2::scale_y_continuous("") + ggplot2::ggtitle(paste0("Number of characters per day on ", dataset$nameOfWebsite[1], "'s website" )) + ggplot2::scale_x_datetime("") + ggplot2::scale_y_continuous("")
+    }
+    if (export == TRUE) {
+        distributionOfCorpus
+        if (is.null(nameOfProject) == FALSE & is.null(nameOfWebsite) == FALSE) {
+            if (file.exists(file.path(nameOfProject, nameOfWebsite, "Outputs")) == FALSE) {
+                dir.create(file.path(nameOfProject, nameOfWebsite, "Outputs"))
+            }
+            ggplot2::ggsave(file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste("distributionOfCorpus", nameOfProject, nameOfWebsite, sep = " - "), ".png")))
+            print(paste("File saved in", file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste("distributionOfCorpus", nameOfProject, nameOfWebsite, sep = " - "), ".png"))))
+            ggplot2::ggsave(file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste("distributionOfCorpus", nameOfProject, nameOfWebsite, sep = " - "), ".pdf")))
+            print(paste("File saved in", file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste("distributionOfCorpus", nameOfProject, nameOfWebsite, sep = " - "), ".pdf"))))
+            ggplot2::ggsave(file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste("distributionOfCorpus", nameOfProject, nameOfWebsite, sep = " - "), ".svg")))
+            print(paste("File saved in", file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste("distributionOfCorpus", nameOfProject, nameOfWebsite, sep = " - "), ".svg"))))
+        } else if (is.null(nameOfProject) == FALSE & is.null(nameOfWebsite) == TRUE) {
+            ggplot2::ggsave(file.path("Outputs", paste0(paste("distributionOfCorpus", nameOfProject, sep = " - "), ".png")))
+            print(paste("File saved in", file.path("Outputs", paste0(paste("distributionOfCorpus", nameOfProject, sep = " - "), ".png"))))
+            ggplot2::ggsave(file.path("Outputs", paste0(paste("distributionOfCorpus", nameOfProject, sep = " - "), ".pdf")))
+            print(paste("File saved in", file.path("Outputs", paste0(paste("distributionOfCorpus", nameOfProject, sep = " - "), ".pdf"))))
+            ggplot2::ggsave(file.path("Outputs", paste0(paste("distributionOfCorpus", nameOfProject, sep = " - "), ".svg")))
+            print(paste("File saved in", file.path("Outputs", paste0(paste("distributionOfCorpus", nameOfProject, sep = " - "), ".svg"))))
+        } else {
+            if (!file.exists(file.path("Outputs"))) {
+                dir.create(file.path("Outputs"))
+            }
+            ggplot2::ggsave(file.path("Outputs", paste0(paste("distributionOfCorpus", sep = " - "), ".png")))
+            print(paste("File saved in", file.path("Outputs", paste0(paste("distributionOfCorpus", sep = " - "), ".png"))))
+            ggplot2::ggsave(file.path("Outputs", paste0(paste("distributionOfCorpus", sep = " - "), ".pdf")))
+            print(paste("File saved in", file.path("Outputs", paste0(paste("distributionOfCorpus", sep = " - "), ".pdf"))))
+            ggplot2::ggsave(file.path("Outputs", paste0(paste("distributionOfCorpus", sep = " - "), ".svg")))
+            print(paste("File saved in", file.path("Outputs", paste0(paste("distributionOfCorpus", sep = " - "), ".svg"))))
+        }
     }
     distributionOfCorpus
 }

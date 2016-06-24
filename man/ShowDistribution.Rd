@@ -6,7 +6,7 @@
 \usage{
 ShowDistribution(dataset, specificWebsites = NULL, rollingAverage = 30,
   align = "center", nameOfProject = NULL, nameOfWebsite = NULL,
-  method = "numberOfArticles")
+  method = "numberOfArticles", export = FALSE)
 }
 \arguments{
 \item{dataset}{A dataset created with 'castarter'.}
@@ -23,9 +23,9 @@ ShowDistribution(dataset, specificWebsites = NULL, rollingAverage = 30,
 
 \item{method}{Accepted values: "numberOfArticles" (default, creates time series based on number of publications per day); "numberOfCharacters" (creates time series based on number of charachters per day, currently does not work in conjunction with specificWebsites option).}
 
-\item{startDate, }{endDate Character vector with date in the format year-month-date, e.g. "2015-07-14".}
-
 \item{export}{Logical, defaults to FALSE. If TRUE, saves the graph in both png and pdf format. If nameOfProject and nameOfWebsite are provided, in saves the timeseries in the correspondent "Outputs" subfolder.}
+
+\item{startDate, }{endDate Character vector with date in the format year-month-date, e.g. "2015-07-14".}
 }
 \value{
 A ggplot2 time series showing number of articles published each day.
