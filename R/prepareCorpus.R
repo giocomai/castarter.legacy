@@ -32,7 +32,6 @@ LoadDatasets <- function(projectsAndWebsites, type = "dataset", removeNAdates = 
         }
         lastSavedDatasets <- lastSavedDatasets[!is.na(lastSavedDatasets)]
     }
-    allDatasets <- data.frame()
     if (type == "corpus") {
         for (i in 1:length(lastSavedDatasets)) {
             load(lastSavedDatasets[i])
@@ -47,6 +46,7 @@ LoadDatasets <- function(projectsAndWebsites, type = "dataset", removeNAdates = 
             rm(corpus)
         }
     } else if (type == "dataset") {
+        allDatasets <- data.frame()
         for (i in 1:length(lastSavedDatasets)) {
             load(lastSavedDatasets[i])
             allDatasets <- rbind(allDatasets, dataset)
@@ -56,7 +56,11 @@ LoadDatasets <- function(projectsAndWebsites, type = "dataset", removeNAdates = 
     if (removeNAdates == TRUE) {
         allDatasets <- allDatasets[is.na(allDatasets$dates) == FALSE, ]
     }
-    allDatasets
+    if (type == "corpus") {
+        return(corpusAll)
+    } else if (type == "dataset") {
+        return(allDatasets)
+    }
 }
 
 
