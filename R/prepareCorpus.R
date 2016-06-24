@@ -13,7 +13,7 @@
 #' @examples
 #' projectsAndWebsites <- c("ProjectX/Website1", "ProjectY/Website3", "ProjectZ/Website2")
 #' allDatasets <- LoadDatasets(projectsAndWebsites)
-LoadDatasets <- function(projectsAndWebsites, type = "dataset", removeNAdates = TRUE) {
+LoadDatasets <- function(projectsAndWebsites, type = "dataset", removeNAdates = FALSE) {
     projectsAndWebsites <- base::strsplit(projectsAndWebsites, "/")
     lastSavedDatasets <- vector()
     for (i in 1:length(projectsAndWebsites)) {
