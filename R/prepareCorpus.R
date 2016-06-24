@@ -23,8 +23,10 @@ LoadDatasets <- function(projectsAndWebsites, type = "dataset", removeNAdates = 
             datasetFilename <- sort(list.files(file.path(nameOfProject, nameOfWebsite, "Dataset"))[stringr::str_extract(list.files(file.path(nameOfProject, nameOfWebsite, "Dataset")), "corpusQ.RData") == "corpusQ.RData"], decreasing = TRUE)[1]
         } else if (type == "dataset") {
             datasetFilename <- sort(list.files(file.path(nameOfProject, nameOfWebsite, "Dataset"))[stringr::str_extract(list.files(file.path(nameOfProject, nameOfWebsite, "Dataset")), "dataset.RData") == "dataset.RData"], decreasing = TRUE)[1]
+        } else if (type == "corpusDtmQ") {
+            datasetFilename <- sort(list.files(file.path(nameOfProject, nameOfWebsite, "Dataset"))[stringr::str_extract(list.files(file.path(nameOfProject, nameOfWebsite, "Dataset")), "corpusDtmQ.RData") == "corpusDtmQ.RData"], decreasing = TRUE)[1]
         } else {
-            stop("Type can be 'dataset', 'corpusQ', or 'corpusTM")
+            stop("Type can be 'dataset', 'corpusQ', 'corpusTM, or 'corpusDtmQ'")
         }
         if (is.na(datasetFilename) == FALSE) {
             lastSavedDataset <- file.path(file.path(nameOfProject, nameOfWebsite, "Dataset"), datasetFilename)
@@ -64,6 +66,8 @@ LoadDatasets <- function(projectsAndWebsites, type = "dataset", removeNAdates = 
         }
     } else if (type == "dataset") {
         return(allDatasets)
+    } else if (type == "corpusDtmQ") {
+        return(corpusDtm)
     }
 }
 
