@@ -63,16 +63,12 @@ LoadLatest <- function(nameOfProject = NULL, nameOfWebsite = NULL) {
 #' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
 #' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
 #' @param dataset A 'castarter' dataset. Required to export dataset in its dedicated folder if no metadata and articlesTxt are found in the environment, e.g. because dataset has been created through CreateDatasetFromHtml() function.
-#' @param exportXlsx If equal to TRUE, exports the complete dataset in the .xlsx file format in the Dataset sub-folder.
+#' @param exportCsv Logical, defaults to FALSE. If TRUE, exports the complete dataset in the .csv file format in the Dataset sub-folder.
+#' @param exportXlsx Logical, defaults to FALSE. If TRUE, exports the complete dataset in the .xlsx file format in the Dataset sub-folder.
 #' @return Nothing. Used for its side effects (save current workspace and dataset in relevant folders).
 #' @export
 #' @examples
-#' Sav#' @param mode Defines the type of output. Can be
-##' \itemize{
-##'  \item{"data.frame"}{: Outputs a data.frame This is the default option.}
-##'  \item{"barchart"}{: Outputs a ggplot2 barchart.}
-##'  \item{"wordcloud"}{: Outputs a wordcloud.}
-##' }eAndExportWebsite(nameOfProject, nameOfWebsite)
+#' SaveWebsite(nameOfProject, nameOfWebsite)
 SaveAndExportWebsite <- function(saveEnvironment = TRUE, dataset = NULL, corpus = NULL, corpusDtm = NULL, nameOfProject = NULL, nameOfWebsite = NULL, exportXlsx = FALSE) {
     if (gtools::invalid(nameOfProject) == TRUE) {
         nameOfProject <- CastarterOptions("nameOfProject")
@@ -84,17 +80,19 @@ SaveAndExportWebsite <- function(saveEnvironment = TRUE, dataset = NULL, corpus 
         save.image(file = file.path(nameOfProject, nameOfWebsite, paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, sep = " - "), ".RData")))
         print(paste("Environment saved in", file.path(nameOfProject, nameOfWebsite, paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, sep = " - "), ".RData"))))
     }
-    if (is.null(dataset) == TRUE) {
-        if (exists("metadata")|exists("articlesTxt") == FALSE) {
-            warning("Dataset not provided, and either metadata or articlesTxt not available: the dataset has not been saved separately.")
-        } else {
-            dataset <- cbind(metadata, articlesTxt, stringsAsFactors = FALSE)
+    if (is.null(dataset) == FALSE) {
+        if (dataset == TRUE) {
+            if (exists("metadata")|exists("articlesTxt") == FALSE) {
+                warning("Dataset not provided, and either metadata or articlesTxt not available: the dataset has not been saved separately.")
+            } else {
+                dataset <- cbind(metadata, articlesTxt, stringsAsFactors = FALSE)
+                save(dataset, file = file.path(nameOfProject, nameOfWebsite, "Dataset", paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "dataset", sep = " - "), ".RData")))
+                print(paste("Dataset saved in", file.path(nameOfProject, nameOfWebsite, paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "dataset", sep = " - "), ".RData"))))
+            }
+        } else if (is.data.frame(dataset)==TRUE) {
             save(dataset, file = file.path(nameOfProject, nameOfWebsite, "Dataset", paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "dataset", sep = " - "), ".RData")))
             print(paste("Dataset saved in", file.path(nameOfProject, nameOfWebsite, paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "dataset", sep = " - "), ".RData"))))
         }
-    } else if (is.data.frame(dataset)==TRUE) {
-        save(dataset, file = file.path(nameOfProject, nameOfWebsite, "Dataset", paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "dataset", sep = " - "), ".RData")))
-        print(paste("Dataset saved in", file.path(nameOfProject, nameOfWebsite, paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "dataset", sep = " - "), ".RData"))))
     }
     if (is.null(corpus)==FALSE) {
         save(corpus, file = file.path(nameOfProject, nameOfWebsite, "Dataset", paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "corpus", sep = " - "), ".RData")))
@@ -104,7 +102,10 @@ SaveAndExportWebsite <- function(saveEnvironment = TRUE, dataset = NULL, corpus 
         save(corpusDtm, file = file.path(nameOfProject, nameOfWebsite, "Dataset", paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "corpusDtm", sep = " - "), ".RData")))
         message(paste("corpusDtm saved in", file.path(nameOfProject, nameOfWebsite, paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "corpusDtm", sep = " - "), ".RData"))))
     }
+    if (exportCsv == TRUE) {
+        write.csv(dataset, file.path(nameOfProject, nameOfWebsite, "Dataset", paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "dataset", sep = " - "), ".csv")))
+    }
     if (exportXlsx == TRUE) {
-        xlsx::write.xlsx(dataset, file.path(nameOfProject, nameOfWebsite, "Dataset", paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "metadata and txt", sep = " - "), ".xlsx")))
+        xlsx::write.xlsx(dataset, file.path(nameOfProject, nameOfWebsite, "Dataset", paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "dataset", sep = " - "), ".xlsx")))
     }
 } 
