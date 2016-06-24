@@ -26,14 +26,14 @@ CreateTimeSeries <- function(terms, corpusDtm = NULL, corpus = NULL, specificWeb
         time <- as.character(strptime(as.POSIXct(quanteda::docvars(corpus, "date"), origin = "1970-01-01"), "%Y-%m-%d"))
         nameOfWebsitesIncluded <- as.character(quanteda::docvars(corpus, "nameOfWebsite"))
     } else {
-        if (is.null(startDate)==FALSE) {
-            corpus <- corpus[NLP::meta(corpus, "datetimestamp") > as.POSIXct(startDate)]
-        }
-        if (is.null(endDate)==FALSE) {
-            corpus <- corpus[NLP::meta(corpus, "datetimestamp") < as.POSIXct(endDate)]
-        }
         if (is.null(corpusDtm) == FALSE) {
             if (quanteda::is.dfm(corpusDtm) == FALSE) {
+                if (is.null(startDate)==FALSE) {
+                    corpus <- corpus[NLP::meta(corpus, "datetimestamp") > as.POSIXct(startDate)]
+                }
+                if (is.null(endDate)==FALSE) {
+                    corpus <- corpus[NLP::meta(corpus, "datetimestamp") < as.POSIXct(endDate)]
+                }
                 time <- as.character(strptime(as.POSIXct(unlist(NLP::meta(corpus, "datetimestamp")), origin = "1970-01-01"), "%Y-%m-%d"))
                 nameOfWebsitesIncluded <- as.character(unlist(NLP::meta(corpus, "author")))
             }
@@ -47,6 +47,12 @@ CreateTimeSeries <- function(terms, corpusDtm = NULL, corpus = NULL, specificWeb
             corpusDtm <- quanteda::dfm(x = corpus, groups=c("date", "nameOfWebsite"))
             corpusDtm <- quanteda::weight(corpusDtm, "relFreq")
         } else {
+            if (is.null(startDate)==FALSE) {
+                corpus <- corpus[NLP::meta(corpus, "datetimestamp") > as.POSIXct(startDate)]
+            }
+            if (is.null(endDate)==FALSE) {
+                corpus <- corpus[NLP::meta(corpus, "datetimestamp") < as.POSIXct(endDate)]
+            }
             corpusDtm <- tm::DocumentTermMatrix(corpus)
         } 
     } else {
