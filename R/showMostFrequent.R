@@ -20,9 +20,9 @@
 #' @export
 #' @examples
 #' corpusDtm <- DocumentTermMatrix(corpus).
-#' mostFrequent <- ShowMostFrequent(corpusDtm)
+#' ShowFreq(corpusDtm)
 
-ShowMostFrequent <- function(corpusDtm, mode = "data.frame", number = 10, specificTerms = NULL, stemCompletion = FALSE, corpusOriginal = "", minFrequency = 0, export = FALSE, customTitle = NULL, tipology = NULL, byWebsite = FALSE, stacked = FALSE, relFreq = FALSE, invert = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
+ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, specificTerms = NULL, stemCompletion = FALSE, corpusOriginal = "", minFrequency = 0, export = FALSE, customTitle = NULL, tipology = NULL, byWebsite = FALSE, stacked = FALSE, relFreq = FALSE, invert = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
     if (number == "all") {
         number <- length(dim(corpusDtm)[2])
     }

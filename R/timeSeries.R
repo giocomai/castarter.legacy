@@ -13,9 +13,9 @@
 #' @param corpusDtm A document-term matrix or a document-feature matrix of the 'quanteda' type. If provided, other parameters (specificWebsites, startDate, endDate) are ignored, but computation is faster. 
 #' @export
 #' @examples
-#' CreateTimeSeries(corpus, terms = c("word1", "word2"))
+#' ShowTS(corpus, terms = c("word1", "word2"))
 
-CreateTimeSeries <- function(terms, corpusDtm = NULL, corpus = NULL, specificWebsites = NULL, startDate = NULL, endDate = NULL, rollingAverage = 30, align = "center", export = FALSE, allWebsitesAsOne = FALSE, dygraphs = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
+ShowTS <- function(terms, corpusDtm = NULL, corpus = NULL, specificWebsites = NULL, startDate = NULL, endDate = NULL, rollingAverage = 30, align = "center", export = FALSE, allWebsitesAsOne = FALSE, dygraphs = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
     if (gtools::invalid(nameOfProject) == TRUE) {
         nameOfProject <- CastarterOptions("nameOfProject")
     }
