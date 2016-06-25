@@ -21,7 +21,7 @@
 #' corpusDtm <- DocumentTermMatrix(corpus).
 #' mostFrequent <- ShowMostFrequent(corpusDtm)
 
-ShowMostFrequent <- function(corpusDtm, mode = "data.frame", number = 10, specificTerms = NULL, stemCompletion = FALSE, corpusOriginal = "", minFrequency = 0, export = FALSE, customTitle = NULL, tipology = NULL, nameOfProject = NULL, nameOfWebsite = NULL) {
+ShowMostFrequent <- function(corpusDtm, mode = "data.frame", number = 10, specificTerms = NULL, stemCompletion = FALSE, corpusOriginal = "", minFrequency = 0, export = FALSE, customTitle = NULL, tipology = NULL, byWebsite = FALSE, stacked = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
     if (number == "all") {
         number <- length(dim(corpusDtm)[2])
     }
@@ -34,7 +34,17 @@ ShowMostFrequent <- function(corpusDtm, mode = "data.frame", number = 10, specif
             termsDic <- quanteda::dictionary(x = termsL)
         }
         corpusDtm <- quanteda::applyDictionary(corpusDtm, termsDic)
-        freq <- quanteda::topfeatures(x = corpusDtm, n = number)
+        if (byWebsite==TRUE) {
+            namesOfWebsites <- unique(sapply(strsplit(x = quanteda::docnames(corpusDtm), split = ".", fixed = TRUE),function(x) x[2]))
+            wordFrequency <- data.frame()
+            for (i in seq_along(namesOfWebsites)) {
+                temp <- quanteda::topfeatures(x = corpusDtm[grepl(pattern = namesOfWebsites[i], docnames(corpusDtm))], n = number)
+                tempDF <- data.frame(term = names(temp), freq = temp, type = namesOfWebsites[i])
+                wordFrequency <- rbind(wordFrequency, tempDF)
+            }
+        } else {
+            freq <- quanteda::topfeatures(x = corpusDtm, n = number)
+        }
     } else {
         freq <- sort(slam::col_sums(corpusDtm, na.rm = TRUE), decreasing = TRUE)
         if (is.null(specificTerms) == FALSE) {
@@ -43,9 +53,11 @@ ShowMostFrequent <- function(corpusDtm, mode = "data.frame", number = 10, specif
             freq <- sort(freq, decreasing = TRUE)
         }
     }
-    wordFrequency <- data.frame(term = names(freq), freq = freq)[1:number, ]
-    wordFrequency <- wordFrequency[wordFrequency$freq>minFrequency,]
-    wordFrequency <- wordFrequency[is.na(wordFrequency$freq)==FALSE,]
+    if (byWebsite==FALSE) {
+        wordFrequency <- data.frame(term = names(freq), freq = freq)[1:number, ]
+        wordFrequency <- wordFrequency[wordFrequency$freq>minFrequency,]
+        wordFrequency <- wordFrequency[is.na(wordFrequency$freq)==FALSE,]
+    }
     if (stemCompletion == TRUE) {
         wordFrequency$term <- tm::stemCompletion(wordFrequency$term, corpusOriginal)
         for (i in 1:length(wordFrequency$term)) {
@@ -67,6 +79,12 @@ ShowMostFrequent <- function(corpusDtm, mode = "data.frame", number = 10, specif
             }
             barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = reorder(term, -freq), y = freq, fill = type)) + ggplot2::geom_bar(stat = "identity") + ggplot2::coord_flip() + ggplot2::ylab("Word frequency") + ggplot2::xlab("") + ggplot2::labs(fill="Type")
             # mostFrequentByWebsite$nameOfWebsite <- reorder(mostFrequentByWebsite$nameOfWebsite, mostFrequentByWebsite$nameOfWebsite)
+        } else if (byWebsite == TRUE) {
+            if (stacked == TRUE) {
+                barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = reorder(term, -freq), y = freq, fill = type)) + ggplot2::geom_bar(stat = "identity") + ggplot2::coord_flip() + ggplot2::ylab("Word frequency") + ggplot2::xlab("") + ggplot2::labs(fill="Website")
+            } else {
+                barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = reorder(term, -freq), y = freq, fill = type)) + ggplot2::geom_bar(stat = "identity", position="dodge") + ggplot2::coord_flip() + ggplot2::ylab("Word frequency") + ggplot2::xlab("") + ggplot2::labs(fill="Website")
+            }
         } else {
             barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = reorder(term, -freq), y = freq)) + ggplot2::geom_bar(stat = "identity") + ggplot2::coord_flip() + ggplot2::ylab("Word frequency") + ggplot2::xlab("")
         }

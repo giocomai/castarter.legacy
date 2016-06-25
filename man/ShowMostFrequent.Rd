@@ -7,7 +7,8 @@
 ShowMostFrequent(corpusDtm, mode = "data.frame", number = 10,
   specificTerms = NULL, stemCompletion = FALSE, corpusOriginal = "",
   minFrequency = 0, export = FALSE, customTitle = NULL, tipology = NULL,
-  nameOfProject = NULL, nameOfWebsite = NULL)
+  byWebsite = FALSE, stacked = FALSE, nameOfProject = NULL,
+  nameOfWebsite = NULL)
 }
 \arguments{
 \item{corpusDtm}{A document term matrix.}
