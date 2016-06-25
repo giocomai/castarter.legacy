@@ -15,13 +15,14 @@
 #' @param export Logical, defaults to FALSE. If TRUE, saves the time series in both png and pdf format. If nameOfProject and nameOfWebsite are provided, in saves the barchart in the "Outputs" subfolder. 
 #' @param title A character vector, defaults to NULL.It allows to customize the title of the exported barchart file. 
 #' @param tipology A data.frame of two columns, one named "term" and one named "type". If provided, and if type=="barchart", colors are used to differentiate terms belonging to different types. Example: tipology <- data.frame(term = c("apple", "orange", "bear", "lion"), type = c("fruit", "fruit", "animal", "animal"))
+#' @param invert Logical, defaults to FALSE. If TRUE, inverts websites and terms in the barcharts mapping, i.e. specificTerms determine the color while the website are on the y axis.
 #' @return A data.frame, barchart, or wordcloud as defined with the 'mode' parameter.
 #' @export
 #' @examples
 #' corpusDtm <- DocumentTermMatrix(corpus).
 #' mostFrequent <- ShowMostFrequent(corpusDtm)
 
-ShowMostFrequent <- function(corpusDtm, mode = "data.frame", number = 10, specificTerms = NULL, stemCompletion = FALSE, corpusOriginal = "", minFrequency = 0, export = FALSE, customTitle = NULL, tipology = NULL, byWebsite = FALSE, stacked = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
+ShowMostFrequent <- function(corpusDtm, mode = "data.frame", number = 10, specificTerms = NULL, stemCompletion = FALSE, corpusOriginal = "", minFrequency = 0, export = FALSE, customTitle = NULL, tipology = NULL, byWebsite = FALSE, stacked = FALSE, relFreq = FALSE, invert = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
     if (number == "all") {
         number <- length(dim(corpusDtm)[2])
     }
@@ -32,6 +33,9 @@ ShowMostFrequent <- function(corpusDtm, mode = "data.frame", number = 10, specif
             termsL <- as.list(specificTerms)
             termsL <- setNames(object = termsL, nm = specificTerms)
             termsDic <- quanteda::dictionary(x = termsL)
+        }
+        if (relFreq == TRUE) {
+            corpusDtm <- quanteda::weight(corpusDtm, "relFreq")
         }
         corpusDtm <- quanteda::applyDictionary(corpusDtm, termsDic)
         if (byWebsite==TRUE) {
@@ -81,9 +85,17 @@ ShowMostFrequent <- function(corpusDtm, mode = "data.frame", number = 10, specif
             # mostFrequentByWebsite$nameOfWebsite <- reorder(mostFrequentByWebsite$nameOfWebsite, mostFrequentByWebsite$nameOfWebsite)
         } else if (byWebsite == TRUE) {
             if (stacked == TRUE) {
-                barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = reorder(term, -freq), y = freq, fill = type)) + ggplot2::geom_bar(stat = "identity") + ggplot2::coord_flip() + ggplot2::ylab("Word frequency") + ggplot2::xlab("") + ggplot2::labs(fill="Website")
-            } else {
-                barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = reorder(term, -freq), y = freq, fill = type)) + ggplot2::geom_bar(stat = "identity", position="dodge") + ggplot2::coord_flip() + ggplot2::ylab("Word frequency") + ggplot2::xlab("") + ggplot2::labs(fill="Website")
+                if (invert == FALSE) {
+                    barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = reorder(term, -freq), y = freq, fill = type)) + ggplot2::geom_bar(stat = "identity") + ggplot2::coord_flip() + ggplot2::ylab("Word frequency") + ggplot2::xlab("") + ggplot2::labs(fill="Website")
+                } else if (invert == TRUE) {
+                    barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = type, y = freq, fill = term)) + ggplot2::geom_bar(stat = "identity") + ggplot2::coord_flip() + ggplot2::ylab("Word frequency") + ggplot2::xlab("") + ggplot2::labs(fill="Term")
+                }
+            } else if (stacked == FALSE) {
+                if (invert == FALSE) {
+                    barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = reorder(term, -freq), y = freq, fill = type)) + ggplot2::geom_bar(stat = "identity", position="dodge") + ggplot2::coord_flip() + ggplot2::ylab("Word frequency") + ggplot2::xlab("") + ggplot2::labs(fill="Website")
+                } else if (invert == TRUE) {
+                    barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = type, y = freq, fill = term)) + ggplot2::geom_bar(stat = "identity", position="dodge") + ggplot2::coord_flip() + ggplot2::ylab("Word frequency") + ggplot2::xlab("") + ggplot2::labs(fill="Term")
+                }
             }
         } else {
             barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = reorder(term, -freq), y = freq)) + ggplot2::geom_bar(stat = "identity") + ggplot2::coord_flip() + ggplot2::ylab("Word frequency") + ggplot2::xlab("")

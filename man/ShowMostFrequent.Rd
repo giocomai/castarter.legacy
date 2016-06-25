@@ -7,8 +7,8 @@
 ShowMostFrequent(corpusDtm, mode = "data.frame", number = 10,
   specificTerms = NULL, stemCompletion = FALSE, corpusOriginal = "",
   minFrequency = 0, export = FALSE, customTitle = NULL, tipology = NULL,
-  byWebsite = FALSE, stacked = FALSE, nameOfProject = NULL,
-  nameOfWebsite = NULL)
+  byWebsite = FALSE, stacked = FALSE, relFreq = FALSE, invert = FALSE,
+  nameOfProject = NULL, nameOfWebsite = NULL)
 }
 \arguments{
 \item{corpusDtm}{A document term matrix.}
@@ -25,6 +25,8 @@ ShowMostFrequent(corpusDtm, mode = "data.frame", number = 10,
 \item{export}{Logical, defaults to FALSE. If TRUE, saves the time series in both png and pdf format. If nameOfProject and nameOfWebsite are provided, in saves the barchart in the "Outputs" subfolder.}
 
 \item{tipology}{A data.frame of two columns, one named "term" and one named "type". If provided, and if type=="barchart", colors are used to differentiate terms belonging to different types. Example: tipology <- data.frame(term = c("apple", "orange", "bear", "lion"), type = c("fruit", "fruit", "animal", "animal"))}
+
+\item{invert}{Logical, defaults to FALSE. If TRUE, inverts websites and terms in the barcharts mapping, i.e. specificTerms determine the color while the website are on the y axis.}
 
 \item{corpusDtm}{A document-term matrix or a document-feature matrix of the 'quanteda' type.}
 
