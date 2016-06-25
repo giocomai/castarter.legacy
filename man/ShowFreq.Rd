@@ -7,8 +7,8 @@
 ShowFreq(corpusDtm, mode = "data.frame", number = 10,
   specificTerms = NULL, stemCompletion = FALSE, corpusOriginal = "",
   minFrequency = 0, export = FALSE, customTitle = NULL, tipology = NULL,
-  byWebsite = FALSE, stacked = FALSE, relFreq = FALSE, invert = FALSE,
-  nameOfProject = NULL, nameOfWebsite = NULL)
+  byDate = FALSE, byWebsite = FALSE, stacked = FALSE, relFreq = FALSE,
+  invert = FALSE, nameOfProject = NULL, nameOfWebsite = NULL)
 }
 \arguments{
 \item{corpusDtm}{A document term matrix.}

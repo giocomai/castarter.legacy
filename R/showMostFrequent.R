@@ -22,7 +22,13 @@
 #' corpusDtm <- DocumentTermMatrix(corpus).
 #' ShowFreq(corpusDtm)
 
-ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, specificTerms = NULL, stemCompletion = FALSE, corpusOriginal = "", minFrequency = 0, export = FALSE, customTitle = NULL, tipology = NULL, byWebsite = FALSE, stacked = FALSE, relFreq = FALSE, invert = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
+ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, specificTerms = NULL, stemCompletion = FALSE, corpusOriginal = "", minFrequency = 0, export = FALSE, customTitle = NULL, tipology = NULL, byDate = FALSE, byWebsite = FALSE, stacked = FALSE, relFreq = FALSE, invert = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
+    if (gtools::invalid(nameOfProject) == TRUE) {
+        nameOfProject <- CastarterOptions("nameOfProject")
+    }
+    if (gtools::invalid(nameOfWebsite) == TRUE) {
+        nameOfWebsite <- CastarterOptions("nameOfWebsite")
+    }
     if (number == "all") {
         number <- length(dim(corpusDtm)[2])
     }
@@ -46,6 +52,15 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, specificTerms 
                 tempDF <- data.frame(term = names(temp), freq = temp, type = namesOfWebsites[i])
                 wordFrequency <- rbind(wordFrequency, tempDF)
             }
+        } else if (byDate == TRUE) {
+            dates <- unique(lubridate::year(sapply(strsplit(x = quanteda::docnames(corpusDtm), split = ".", fixed = TRUE),function(x) x[1])))
+            wordFrequency <- data.frame()
+            for (i in seq_along(dates)) {
+                temp <- quanteda::topfeatures(x = corpusDtm[grepl(pattern = dates[i], docnames(corpusDtm))], n = number)
+                tempDF <- data.frame(term = names(temp), freq = temp, type = dates[i])
+                wordFrequency <- rbind(wordFrequency, tempDF)
+            }
+            wordFrequency$type <- as.factor(wordFrequency$type)
         } else {
             freq <- quanteda::topfeatures(x = corpusDtm, n = number)
         }
@@ -57,7 +72,7 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, specificTerms 
             freq <- sort(freq, decreasing = TRUE)
         }
     }
-    if (byWebsite==FALSE) {
+    if (byWebsite==FALSE&byDate==FALSE) {
         wordFrequency <- data.frame(term = names(freq), freq = freq)[1:number, ]
         wordFrequency <- wordFrequency[wordFrequency$freq>minFrequency,]
         wordFrequency <- wordFrequency[is.na(wordFrequency$freq)==FALSE,]
@@ -83,18 +98,22 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, specificTerms 
             }
             barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = reorder(term, -freq), y = freq, fill = type)) + ggplot2::geom_bar(stat = "identity") + ggplot2::coord_flip() + ggplot2::ylab("Word frequency") + ggplot2::xlab("") + ggplot2::labs(fill="Type")
             # mostFrequentByWebsite$nameOfWebsite <- reorder(mostFrequentByWebsite$nameOfWebsite, mostFrequentByWebsite$nameOfWebsite)
-        } else if (byWebsite == TRUE) {
+        } else if (byWebsite == TRUE | byDate == TRUE) {
             if (stacked == TRUE) {
                 if (invert == FALSE) {
-                    barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = reorder(term, -freq), y = freq, fill = type)) + ggplot2::geom_bar(stat = "identity") + ggplot2::coord_flip() + ggplot2::ylab("Word frequency") + ggplot2::xlab("") + ggplot2::labs(fill="Website")
+                    barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = reorder(term, -freq), y = freq, fill = type)) + ggplot2::geom_bar(stat = "identity") + ggplot2::coord_flip() + ggplot2::ylab("Word frequency") + ggplot2::xlab("") + ggplot2::labs(fill="")
                 } else if (invert == TRUE) {
                     barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = type, y = freq, fill = term)) + ggplot2::geom_bar(stat = "identity") + ggplot2::coord_flip() + ggplot2::ylab("Word frequency") + ggplot2::xlab("") + ggplot2::labs(fill="Term")
                 }
             } else if (stacked == FALSE) {
                 if (invert == FALSE) {
-                    barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = reorder(term, -freq), y = freq, fill = type)) + ggplot2::geom_bar(stat = "identity", position="dodge") + ggplot2::coord_flip() + ggplot2::ylab("Word frequency") + ggplot2::xlab("") + ggplot2::labs(fill="Website")
+                    barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = reorder(term, -freq), y = freq, fill = type)) + ggplot2::geom_bar(stat = "identity", position="dodge") + ggplot2::coord_flip() + ggplot2::ylab("Word frequency") + ggplot2::xlab("") + ggplot2::labs(fill="")
                 } else if (invert == TRUE) {
-                    barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = type, y = freq, fill = term)) + ggplot2::geom_bar(stat = "identity", position="dodge") + ggplot2::coord_flip() + ggplot2::ylab("Word frequency") + ggplot2::xlab("") + ggplot2::labs(fill="Term")
+                    if (length(specificTerms)==1) {
+                        barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = type, y = freq)) + ggplot2::geom_bar(stat = "identity", position="dodge") + ggplot2::coord_flip() + ggplot2::ylab("Word frequency") + ggplot2::xlab("")
+                    } else {
+                        barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = type, y = freq, fill = term)) + ggplot2::geom_bar(stat = "identity", position="dodge") + ggplot2::coord_flip() + ggplot2::ylab("Word frequency") + ggplot2::xlab("") + ggplot2::labs(fill="Term")
+                    }
                 }
             }
         } else {
@@ -106,6 +125,9 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, specificTerms 
             barchart <- barchart + ggplot2::ggtitle("Word frequency barchart")
         }
         if (export == TRUE) {
+            if (is.null(customTitle)) {
+                customTitle <- paste(nameOfProject, "word frequency", paste(names(terms), collapse = " - "), sep = " - ")
+            }
             if (is.null(nameOfProject) == FALSE & is.null(nameOfWebsite) == FALSE) {
                 if (file.exists(file.path(nameOfProject, nameOfWebsite, "Outputs")) == FALSE) {
                     dir.create(file.path(nameOfProject, nameOfWebsite, "Outputs"))
