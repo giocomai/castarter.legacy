@@ -25,13 +25,22 @@ ShowMostFrequent <- function(corpusDtm, mode = "data.frame", number = 10, specif
         number <- length(dim(corpusDtm)[2])
     }
     if (quanteda::is.dfm(corpusDtm)==TRUE) {
+        if (as.character(class(specificTerms))=="dictionary") {
+            termsDic <- specificTerms
+        } else {
+            termsL <- as.list(specificTerms)
+            termsL <- setNames(object = termsL, nm = specificTerms)
+            termsDic <- quanteda::dictionary(x = termsL)
+        }
+        corpusDtm <- quanteda::applyDictionary(corpusDtm, termsDic)
         freq <- quanteda::topfeatures(x = corpusDtm, n = number)
-    }
-    freq <- sort(slam::col_sums(corpusDtm, na.rm = TRUE), decreasing = TRUE)
-    if (is.null(specificTerms) == FALSE) {
-        freq <- freq[base::match(specificTerms, names(freq))]
-        freq <- freq[is.na(freq)==FALSE]
-        freq <- sort(freq, decreasing = TRUE)
+    } else {
+        freq <- sort(slam::col_sums(corpusDtm, na.rm = TRUE), decreasing = TRUE)
+        if (is.null(specificTerms) == FALSE) {
+            freq <- freq[base::match(specificTerms, names(freq))]
+            freq <- freq[is.na(freq)==FALSE]
+            freq <- sort(freq, decreasing = TRUE)
+        }
     }
     wordFrequency <- data.frame(term = names(freq), freq = freq)[1:number, ]
     wordFrequency <- wordFrequency[wordFrequency$freq>minFrequency,]
