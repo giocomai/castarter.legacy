@@ -48,7 +48,7 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, specificTerms 
             namesOfWebsites <- unique(sapply(strsplit(x = quanteda::docnames(corpusDtm), split = ".", fixed = TRUE),function(x) x[2]))
             wordFrequency <- data.frame()
             for (i in seq_along(namesOfWebsites)) {
-                temp <- quanteda::topfeatures(x = corpusDtm[grepl(pattern = namesOfWebsites[i], docnames(corpusDtm))], n = number)
+                temp <- quanteda::topfeatures(x = corpusDtm[grepl(pattern = namesOfWebsites[i], quanteda::docnames(corpusDtm))], n = number)
                 tempDF <- data.frame(term = names(temp), freq = temp, type = namesOfWebsites[i])
                 wordFrequency <- rbind(wordFrequency, tempDF)
             }
@@ -56,7 +56,7 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, specificTerms 
             dates <- unique(lubridate::year(sapply(strsplit(x = quanteda::docnames(corpusDtm), split = ".", fixed = TRUE),function(x) x[1])))
             wordFrequency <- data.frame()
             for (i in seq_along(dates)) {
-                temp <- quanteda::topfeatures(x = corpusDtm[grepl(pattern = dates[i], docnames(corpusDtm))], n = number)
+                temp <- quanteda::topfeatures(x = corpusDtm[grepl(pattern = dates[i], quanteda::docnames(corpusDtm))], n = number)
                 tempDF <- data.frame(term = names(temp), freq = temp, type = dates[i])
                 wordFrequency <- rbind(wordFrequency, tempDF)
             }
