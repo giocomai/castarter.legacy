@@ -301,16 +301,16 @@ corpusDtm <- CreateDtm(corpus)
 We can now see, for example, which are the most frequently used words. 
 
 ```{r Most frequent words, eval=TRUE}
-ShowMostFrequent(corpusDtm, mode = "data.frame")
-ShowMostFrequent(corpusDtm, mode = "barchart")
-ShowMostFrequent(corpusDtm, mode = "wordcloud", number = 100)
+ShowFreq(corpusDtm, mode = "data.frame")
+ShowFreq(corpusDtm, mode = "barchart")
+ShowFreq(corpusDtm, mode = "wordcloud", number = 100)
 ```
 
 N.B. After stemming, stemmed words are provided. 
 This may be curious, but is usually more useful to provide a list of terms we are specifically interested in. 
 
 ```{r Show specific terms barchart, eval=TRUE}
-ShowMostFrequent(corpusDtm, mode = "barchart", specificTerms = c("environment", "humanright", "migrant"))
+ShowFreq(corpusDtm, mode = "barchart", specificTerms = c("environment", "humanright", "migrant"))
 ```
 
 N.B. After stemming, stemmed version of words should be provided.
@@ -318,7 +318,7 @@ N.B. After stemming, stemmed version of words should be provided.
 `castarter` graphs are generally created with `ggplot` (and can thus be edited inside R), and can be exported as .png or .svg file for further editing in other applications by enabling the export parameter with `export = TRUE` (graphs are automatically saved in the `outputs` subfolder).
 Showing the data in a time series, allows to highlight variation over time.
 ```{r Create time series}
-CreateTimeSeries(corpus, terms = c("environment", "humanright", "migrant"), rollingAverage = 90)
+ShowTS(corpusDtm = corpusDtm, corpus = corpus, terms = c("environment", "humanright", "migrant"), rollingAverage = 90)
 ```
 
 N.B. In order to zoom dynamically into the time series, it is possible to output the timeseries to dygraphs, enabling the relevant parameter `dygraphs=TRUE`.
