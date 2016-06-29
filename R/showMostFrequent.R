@@ -2,7 +2,7 @@
 #' 
 #' Shows most frequent terms in a corpus starting from a document term matrix.
 #'  
-#' @param corpusDtm A document term matrix.
+#' @param corpusDtm A document-term matrix created with the 'TM' package or a document-feature matrix of the 'quanteda' type.
 #' @param mode Defines the type of output. Can be
 ##' \itemize{
 ##'  \item{"data.frame"}{: Outputs a data.frame This is the default option.}
@@ -10,7 +10,7 @@
 ##'  \item{"wordcloud"}{: Outputs a wordcloud.}
 ##' }
 ##'
-#' @param corpusDtm A document-term matrix or a document-feature matrix of the 'quanteda' type. 
+#' @param corpus Required only if corpusDtm is not of the 'quanteda' type. A corpus as created by the 'tm' package including relevant metadata and typically created with castarter's CreateCorpus() function. 
 #' @param specificTerms A character vector, defaults to NULL. If specificTerms is provided, only terms included in this vector will be included in the output.
 #' @param export Logical, defaults to FALSE. If TRUE, saves the time series in both png and pdf format. If nameOfProject and nameOfWebsite are provided, in saves the barchart in the "Outputs" subfolder. 
 #' @param title A character vector, defaults to NULL.It allows to customize the title of the exported barchart file. 
@@ -22,7 +22,7 @@
 #' corpusDtm <- DocumentTermMatrix(corpus).
 #' ShowFreq(corpusDtm)
 
-ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, specificTerms = NULL, stemCompletion = FALSE, corpusOriginal = "", minFrequency = 0, export = FALSE, customTitle = NULL, tipology = NULL, byDate = FALSE, byWebsite = FALSE, stacked = FALSE, relFreq = FALSE, invert = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
+ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, specificTerms = NULL, corpus = NULL, stemCompletion = FALSE, corpusOriginal = "", minFrequency = 0, export = FALSE, customTitle = NULL, tipology = NULL, byDate = FALSE, byWebsite = FALSE, stacked = FALSE, relFreq = FALSE, invert = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
     if (gtools::invalid(nameOfProject) == TRUE) {
         nameOfProject <- CastarterOptions("nameOfProject")
     }
@@ -65,17 +65,31 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, specificTerms 
             freq <- quanteda::topfeatures(x = corpusDtm, n = number)
         }
     } else {
-        freq <- sort(slam::col_sums(corpusDtm, na.rm = TRUE), decreasing = TRUE)
         if (is.null(specificTerms) == FALSE) {
+            freq <- sort(slam::col_sums(corpusDtm[,grepl(pattern = paste0(specificTerms, collapse = "|"), x = colnames(corpusDtm))], na.rm = TRUE), decreasing = TRUE)
             freq <- freq[base::match(specificTerms, names(freq))]
             freq <- freq[is.na(freq)==FALSE]
             freq <- sort(freq, decreasing = TRUE)
+        } else {
+            freq <- sort(slam::col_sums(corpusDtm, na.rm = TRUE), decreasing = TRUE)
         }
     }
     if (byWebsite==FALSE&byDate==FALSE) {
         wordFrequency <- data.frame(term = names(freq), freq = freq)[1:number, ]
         wordFrequency <- wordFrequency[wordFrequency$freq>minFrequency,]
         wordFrequency <- wordFrequency[is.na(wordFrequency$freq)==FALSE,]
+    }
+    if (byWebsite==FALSE&byDate==TRUE) {
+        time <- as.character(strptime(as.POSIXct(unlist(NLP::meta(corpus, "datetimestamp")), origin = "1970-01-01"), "%Y-%m-%d"))
+        dates <- unique(lubridate::year(time))
+        corpusDtm <- corpusDtm[,base::match(specificTerms, colnames(corpusDtm))]
+        wordFrequency <- data.frame()
+        for (i in seq_along(dates)) {
+            temp <- sort(slam::col_sums(corpusDtm[lubridate::year(time)==dates[i],], na.rm = TRUE), decreasing = TRUE)
+            tempDF <- data.frame(term = names(temp), freq = temp, type = dates[i])
+            wordFrequency <- rbind(wordFrequency, tempDF)
+        }
+        wordFrequency$type <- as.factor(wordFrequency$type)
     }
     if (stemCompletion == TRUE) {
         wordFrequency$term <- tm::stemCompletion(wordFrequency$term, corpusOriginal)

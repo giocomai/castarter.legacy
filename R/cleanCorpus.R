@@ -205,7 +205,7 @@ StemCorpusDtm <- function(corpusDtm, stemmingDictionary) {
 
 #' Creates a Document Term Matrix (DTM).
 #'  
-#' @param corpus A corpus as created by the 'tm' package including metadata.
+#' @param corpus A corpus as created by the 'tm' or 'quanteda' package including relevant metadata and typically created with castarter's CreateCorpus() function.
 #' @param removeSparseTerms A value between 0 and 1, to be passed to the removeSparseTerms function of the 'tm' function.
 #' @return A Document Term Matrix (DTM).
 #' @keywords tm
