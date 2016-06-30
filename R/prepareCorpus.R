@@ -60,9 +60,11 @@ LoadDatasets <- function(projectsAndWebsites = NULL, type = "dataset", removeNAd
             allDatasets <- rbind(allDatasets, dataset)
             rm(dataset)
         }
-    }
-    if (removeNAdates == TRUE) {
-        allDatasets <- allDatasets[is.na(allDatasets$dates) == FALSE, ]
+        if (removeNAdates == TRUE) {
+            allDatasets <- allDatasets[is.na(allDatasets$dates) == FALSE, ]
+        }
+    } else if (type == "corpusDtmQ") {
+        load(lastSavedDatasets[i])
     }
     if (type == "corpusQ") {
         if (length(lastSavedDatasets)==1) {
