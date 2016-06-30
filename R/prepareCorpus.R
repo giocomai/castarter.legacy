@@ -14,13 +14,13 @@
 #' projectsAndWebsites <- c("ProjectX/Website1", "ProjectY/Website3", "ProjectZ/Website2")
 #' allDatasets <- LoadDatasets(projectsAndWebsites)
 LoadDatasets <- function(projectsAndWebsites = NULL, type = "dataset", removeNAdates = FALSE) {
-    if (gtools::invalid(nameOfProject) == TRUE) {
+    if (gtools::invalid(projectsAndWebsites) == TRUE) {
         nameOfProject <- CastarterOptions("nameOfProject")
-    }
-    if (gtools::invalid(nameOfWebsite) == TRUE) {
         nameOfWebsite <- CastarterOptions("nameOfWebsite")
+        projectsAndWebsites <- list(projectsAndWebsites = c(nameOfProject, nameOfWebsite))
+    } else {
+        projectsAndWebsites <- base::strsplit(projectsAndWebsites, "/")
     }
-    projectsAndWebsites <- base::strsplit(projectsAndWebsites, "/")
     lastSavedDatasets <- vector()
     for (i in 1:length(projectsAndWebsites)) {
         nameOfProject <- projectsAndWebsites[[i]][1]
