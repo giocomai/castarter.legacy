@@ -2,7 +2,7 @@
 #' 
 #' Takes a specific set of datasets from existings 'castarter' projects.
 #'  
-#' @param projectsAndWebsites A character vector listing websites to be loaded in the format "nameOfProject/nameOfWebsite".
+#' @param projectsAndWebsites A character vector listing websites to be loaded in the format "nameOfProject/nameOfWebsite". If none is given, it will check if nameOfProject and nameOfWebsite have been set with `SetCastarter()`
 #' @param type Defines the format in which the dataset will be loaded. Available options are:
 ##' \itemize{
 ##'  \item{"dataset"}{: Outputs a 'castarter' dataset as data.frame. This is the default option.}
@@ -13,7 +13,13 @@
 #' @examples
 #' projectsAndWebsites <- c("ProjectX/Website1", "ProjectY/Website3", "ProjectZ/Website2")
 #' allDatasets <- LoadDatasets(projectsAndWebsites)
-LoadDatasets <- function(projectsAndWebsites, type = "dataset", removeNAdates = FALSE) {
+LoadDatasets <- function(projectsAndWebsites = NULL, type = "dataset", removeNAdates = FALSE) {
+    if (gtools::invalid(nameOfProject) == TRUE) {
+        nameOfProject <- CastarterOptions("nameOfProject")
+    }
+    if (gtools::invalid(nameOfWebsite) == TRUE) {
+        nameOfWebsite <- CastarterOptions("nameOfWebsite")
+    }
     projectsAndWebsites <- base::strsplit(projectsAndWebsites, "/")
     lastSavedDatasets <- vector()
     for (i in 1:length(projectsAndWebsites)) {
