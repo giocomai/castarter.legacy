@@ -75,7 +75,7 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, specificTerms 
         wordFrequency <- wordFrequency[wordFrequency$freq>minFrequency,]
         wordFrequency <- wordFrequency[is.na(wordFrequency$freq)==FALSE,]
     }
-    if (byWebsite==FALSE&byDate==TRUE) {
+    if (byWebsite==FALSE&byDate==TRUE&quanteda::is.dfm(corpusDtm)==FALSE) {
         time <- as.character(strptime(as.POSIXct(unlist(NLP::meta(corpus, "datetimestamp")), origin = "1970-01-01"), "%Y-%m-%d"))
         dates <- unique(lubridate::year(time))
         corpusDtm <- corpusDtm[,base::match(specificTerms, colnames(corpusDtm))]
