@@ -441,11 +441,11 @@ Disclaimer
 Forthcoming features and other development issues
 -------------------------------------------------
 
-Only the development version is currently available: starting with version 0.2 there will be a more stable version, and daily development will take place on a separate branch.
+Only the development version is currently available: functions may be broken, or work only with corpus/corpusDtm of either the 'tm' or 'quanteda' type. Starting with version 0.2 (due by the end of 2016) there will be a more stable version, and daily development will take place on a separate branch.
 
 Forthcoming features:
 
--   adding support to `quanteda` for enhanced speed;
+-   full support to `quanteda` for enhanced speed, while mantaining compatibility with the 'tm' packgage;
 -   enhancing date extraction;
 -   enhancing support for updating datasets (see `?UpdateDataset`);
 -   enhancing support for larger datasets, including by improving direct import from html files without importing them into R first through `CreateDatasetFromHtml`;
