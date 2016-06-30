@@ -66,13 +66,13 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, specificTerms 
         }
     } else {
         if (is.null(specificTerms) == FALSE) {
-            freq <- sort(slam::col_sums(corpusDtm[,grepl(pattern = paste0(specificTerms, collapse = "|"), x = colnames(corpusDtm))], na.rm = TRUE), decreasing = TRUE)
-            freq <- freq[base::match(specificTerms, names(freq))]
-            freq <- freq[is.na(freq)==FALSE]
-            freq <- sort(freq, decreasing = TRUE)
-        } else {
-            freq <- sort(slam::col_sums(corpusDtm, na.rm = TRUE), decreasing = TRUE)
+            corpusDtm <- corpusDtm[,base::match(specificTerms, colnames(corpusDtm))]
+            # freq <- sort(slam::col_sums(corpusDtm[,grepl(pattern = paste0(specificTerms, collapse = "|"), x = colnames(corpusDtm))], na.rm = TRUE), decreasing = TRUE)
+            # freq <- freq[base::match(specificTerms, names(freq))]
+            # freq <- freq[is.na(freq)==FALSE]
+            # freq <- sort(freq, decreasing = TRUE)
         }
+            freq <- sort(slam::col_sums(corpusDtm, na.rm = TRUE), decreasing = TRUE)
     }
     if (byWebsite==FALSE&byDate==FALSE) {
         wordFrequency <- data.frame(term = names(freq), freq = freq)[1:number, ]
