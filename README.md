@@ -1,7 +1,7 @@
 An introduction to 'castarter' - content analysis starter toolkit for R
 ================
 Giorgio Comai
-2016-06-24
+2016-06-30
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 Introduction
@@ -374,7 +374,7 @@ corpusDtm <- CreateDtm(corpus)
 We can now see, for example, which are the most frequently used words.
 
 ``` r
-ShowMostFrequent(corpusDtm, mode = "data.frame")
+ShowFreq(corpusDtm, mode = "data.frame")
 #>                        term  freq
 #> europeanunion europeanunion 20568
 #> mep                     mep 11996
@@ -386,13 +386,13 @@ ShowMostFrequent(corpusDtm, mode = "data.frame")
 #> commiss             commiss  6219
 #> countri             countri  5801
 #> vote                   vote  5574
-ShowMostFrequent(corpusDtm, mode = "barchart")
+ShowFreq(corpusDtm, mode = "barchart")
 ```
 
 ![](data/readme/README-Most%20frequent%20words-1.png)
 
 ``` r
-ShowMostFrequent(corpusDtm, mode = "wordcloud", number = 100)
+ShowFreq(corpusDtm, mode = "wordcloud", number = 100)
 ```
 
 ![](data/readme/README-Most%20frequent%20words-2.png)
@@ -400,7 +400,7 @@ ShowMostFrequent(corpusDtm, mode = "wordcloud", number = 100)
 N.B. After stemming, stemmed words are provided. This may be curious, but is usually more useful to provide a list of terms we are specifically interested in.
 
 ``` r
-ShowMostFrequent(corpusDtm, mode = "barchart", specificTerms = c("environment", "humanright", "migrant"))
+ShowFreq(corpusDtm, mode = "barchart", specificTerms = c("environment", "humanright", "migrant"))
 ```
 
 ![](data/readme/README-Show%20specific%20terms%20barchart-1.png)
@@ -410,7 +410,7 @@ N.B. After stemming, stemmed version of words should be provided.
 `castarter` graphs are generally created with `ggplot` (and can thus be edited inside R), and can be exported as .png or .svg file for further editing in other applications by enabling the export parameter with `export = TRUE` (graphs are automatically saved in the `outputs` subfolder). Showing the data in a time series, allows to highlight variation over time.
 
 ``` r
-CreateTimeSeries(corpus, terms = c("environment", "humanright", "migrant"), rollingAverage = 90)
+ShowTS(corpusDtm = corpusDtm, corpus = corpus, terms = c("environment", "humanright", "migrant"), rollingAverage = 90)
 ```
 
 ![](data/readme/README-Create%20time%20series-1.png)
