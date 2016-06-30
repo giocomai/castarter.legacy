@@ -346,12 +346,19 @@ Only the development version is currently available: functions may be broken, or
 
 Forthcoming features:
 
-* full support to `quanteda` for enhanced speed, while mantaining compatibility with the 'tm' packgage;
+* adding full support to `quanteda` for enhanced speed, while mantaining compatibility with the 'tm' packgage;
+* including additional example datasets;
+* enhancing documentation and tutorials;
 * enhancing date extraction;
 * enhancing support for updating datasets (see `?UpdateDataset`);
 * enhancing support for larger datasets, including by improving direct import from html files without importing them into R first through `CreateDatasetFromHtml`;
 * reducing dependencies;
 * polishing and speeding up code.
+
+## Examples of outputs
+Some examples of analysis of media contents conducted with `castarter` are available on the author's blog:
+
+* [Word frequency of 'Ukraine', 'Crimea' and 'Syria' on Russia's First Channel](http://www.giorgiocomai.eu/2015/11/03/word-frequency-of-ukraine-crimea-and-syria-on-russias-first-channel/)
 
 ## About the author
 Giorgio Comai is doctoral researcher at the School of Law and Government, Dublin City University, and a member of the Marie Curie ITN network “Post-Soviet tensions”. You can find out more about his work on his [personal website](http://giorgiocomai.eu/). He is on Twitter: https://twitter.com/giocomai.

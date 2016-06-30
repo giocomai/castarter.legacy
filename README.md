@@ -445,12 +445,21 @@ Only the development version is currently available: functions may be broken, or
 
 Forthcoming features:
 
--   full support to `quanteda` for enhanced speed, while mantaining compatibility with the 'tm' packgage;
+-   adding full support to `quanteda` for enhanced speed, while mantaining compatibility with the 'tm' packgage;
+-   including additional example datasets;
+-   enhancing documentation and tutorials;
 -   enhancing date extraction;
 -   enhancing support for updating datasets (see `?UpdateDataset`);
 -   enhancing support for larger datasets, including by improving direct import from html files without importing them into R first through `CreateDatasetFromHtml`;
 -   reducing dependencies;
 -   polishing and speeding up code.
+
+Examples of outputs
+-------------------
+
+Some examples of analysis of media contents conducted with `castarter` are available on the author's blog:
+
+-   [Word frequency of 'Ukraine', 'Crimea' and 'Syria' on Russia's First Channel](http://www.giorgiocomai.eu/2015/11/03/word-frequency-of-ukraine-crimea-and-syria-on-russias-first-channel/)
 
 About the author
 ----------------
