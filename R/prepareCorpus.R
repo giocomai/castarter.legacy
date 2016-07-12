@@ -67,6 +67,7 @@ LoadDatasets <- function(projectsAndWebsites, type = "dataset", removeNAdates = 
     } else if (type == "dataset") {
         return(allDatasets)
     } else if (type == "corpusDtmQ") {
+        load(lastSavedDatasets)
         return(corpusDtm)
     }
 }
