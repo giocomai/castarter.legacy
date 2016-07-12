@@ -7,7 +7,7 @@
 CreateDtm(corpus, removeSparseTerms = NULL)
 }
 \arguments{
-\item{corpus}{A corpus as created by the 'tm' package including metadata.}
+\item{corpus}{A corpus as created by the 'tm' or 'quanteda' package including relevant metadata and typically created with castarter's CreateCorpus() function.}
 
 \item{removeSparseTerms}{A value between 0 and 1, to be passed to the removeSparseTerms function of the 'tm' function.}
 }

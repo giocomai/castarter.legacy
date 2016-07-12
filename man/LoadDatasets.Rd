@@ -4,10 +4,11 @@
 \alias{LoadDatasets}
 \title{Loads a specific set of datasets from existings 'castarter' projects.}
 \usage{
-LoadDatasets(projectsAndWebsites, type = "dataset", removeNAdates = FALSE)
+LoadDatasets(projectsAndWebsites = NULL, type = "dataset",
+  removeNAdates = FALSE)
 }
 \arguments{
-\item{projectsAndWebsites}{A character vector listing websites to be loaded in the format "nameOfProject/nameOfWebsite".}
+\item{projectsAndWebsites}{A character vector listing websites to be loaded in the format "nameOfProject/nameOfWebsite". If none is given, it will check if nameOfProject and nameOfWebsite have been set with `SetCastarter()`}
 
 \item{type}{Defines the format in which the dataset will be loaded. Available options are:
 \itemize{
