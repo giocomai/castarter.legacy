@@ -2,7 +2,7 @@
 #' 
 #' Takes a specific set of datasets from existings 'castarter' projects.
 #'  
-#' @param projectsAndWebsites A character vector listing websites to be loaded in the format "nameOfProject/nameOfWebsite".
+#' @param projectsAndWebsites A character vector listing websites to be loaded in the format "nameOfProject/nameOfWebsite". If none is given, it will check if nameOfProject and nameOfWebsite have been set with `SetCastarter()`
 #' @param type Defines the format in which the dataset will be loaded. Available options are:
 ##' \itemize{
 ##'  \item{"dataset"}{: Outputs a 'castarter' dataset as data.frame. This is the default option.}
@@ -13,8 +13,14 @@
 #' @examples
 #' projectsAndWebsites <- c("ProjectX/Website1", "ProjectY/Website3", "ProjectZ/Website2")
 #' allDatasets <- LoadDatasets(projectsAndWebsites)
-LoadDatasets <- function(projectsAndWebsites, type = "dataset", removeNAdates = FALSE) {
-    projectsAndWebsites <- base::strsplit(projectsAndWebsites, "/")
+LoadDatasets <- function(projectsAndWebsites = NULL, type = "dataset", removeNAdates = FALSE) {
+    if (gtools::invalid(projectsAndWebsites) == TRUE) {
+        nameOfProject <- CastarterOptions("nameOfProject")
+        nameOfWebsite <- CastarterOptions("nameOfWebsite")
+        projectsAndWebsites <- list(projectsAndWebsites = c(nameOfProject, nameOfWebsite))
+    } else {
+        projectsAndWebsites <- base::strsplit(projectsAndWebsites, "/")
+    }
     lastSavedDatasets <- vector()
     for (i in 1:length(projectsAndWebsites)) {
         nameOfProject <- projectsAndWebsites[[i]][1]
@@ -54,9 +60,11 @@ LoadDatasets <- function(projectsAndWebsites, type = "dataset", removeNAdates = 
             allDatasets <- rbind(allDatasets, dataset)
             rm(dataset)
         }
-    }
-    if (removeNAdates == TRUE) {
-        allDatasets <- allDatasets[is.na(allDatasets$dates) == FALSE, ]
+        if (removeNAdates == TRUE) {
+            allDatasets <- allDatasets[is.na(allDatasets$dates) == FALSE, ]
+        }
+    } else if (type == "corpusDtmQ") {
+        load(lastSavedDatasets[i])
     }
     if (type == "corpusQ") {
         if (length(lastSavedDatasets)==1) {
