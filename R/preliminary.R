@@ -104,9 +104,14 @@ SaveWebsite <- function(saveEnvironment = TRUE, dataset = NULL, corpus = NULL, c
         }
     }
     if (is.null(corpusDtm)==FALSE) {
-        save(corpusDtm, file = file.path(nameOfProject, nameOfWebsite, "Dataset", paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "corpusDtm", sep = " - "), ".RData")))
-        message(paste("corpusDtm saved in", file.path(nameOfProject, nameOfWebsite, paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "corpusDtm", sep = " - "), ".RData"))))
-    }
+        if (quanteda::is.dfm(corpusDtm)) {
+            save(corpusDtm, file = file.path(nameOfProject, nameOfWebsite, "Dataset", paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "corpusDtmQ", sep = " - "), ".RData")))
+            message(paste("corpusDtm of the 'quanteda' type saved in", file.path(nameOfProject, nameOfWebsite, paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "corpusDtmQ", sep = " - "), ".RData"))))
+        } else {
+            save(corpusDtm, file = file.path(nameOfProject, nameOfWebsite, "Dataset", paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "corpusDtmTM", sep = " - "), ".RData")))
+            message(paste("corpusDtm of the 'tm' type saved in", file.path(nameOfProject, nameOfWebsite, paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "corpusDtmTM", sep = " - "), ".RData"))))
+        }
+ }
     if (exportCsv == TRUE) {
         write.csv(dataset, file.path(nameOfProject, nameOfWebsite, "Dataset", paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "dataset", sep = " - "), ".csv")))
     }
