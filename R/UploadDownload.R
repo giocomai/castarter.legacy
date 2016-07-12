@@ -8,14 +8,22 @@
 #' @examples
 #' projectsAndWebsites <- c("ProjectX/Website1", "ProjectY/Website3", "ProjectZ/Website2")
 #' UploadDataset(projectsAndWebsites, server = "myserver.com", user = "me@myserver.com", pwd = "secretPassword!")
-UploadDatasets <- function(projectsAndWebsites, server, user, pwd) {
+UploadDatasets <- function(projectsAndWebsites, server, user, pwd, dataset = TRUE, corpusQ = TRUE, corpusDtmQ = TRUE) {
     projectsAndWebsites <- base::strsplit(projectsAndWebsites, "/")
     lastSavedDatasets <- vector()
     datasetFilenames <- vector()
     for (i in 1:length(projectsAndWebsites)) {
         nameOfProject <- projectsAndWebsites[[i]][1]
         nameOfWebsite <- projectsAndWebsites[[i]][2]
-        datasetFilename <- sort(list.files(file.path(nameOfProject, nameOfWebsite, "Dataset"))[stringr::str_extract(list.files(file.path(nameOfProject, nameOfWebsite, "Dataset")), "dataset.RData") == "dataset.RData"], decreasing = TRUE)[1]
+        if (dataset == TRUE) {
+            datasetFilename <- sort(list.files(file.path(nameOfProject, nameOfWebsite, "Dataset"))[stringr::str_extract(list.files(file.path(nameOfProject, nameOfWebsite, "Dataset")), "dataset.RData") == "dataset.RData"], decreasing = TRUE)[1]
+        }
+        if (corpusQ == TRUE) {
+            corpusQFilename <- sort(list.files(file.path(nameOfProject, nameOfWebsite, "Dataset"))[stringr::str_extract(list.files(file.path(nameOfProject, nameOfWebsite, "Dataset")), "corpusQ.RData") == "corpusQ.RData"], decreasing = TRUE)[1]
+        }
+        if (corpusDtmQ == TRUE) {
+            corpusDtmQFilename <- sort(list.files(file.path(nameOfProject, nameOfWebsite, "Dataset"))[stringr::str_extract(list.files(file.path(nameOfProject, nameOfWebsite, "Dataset")), "corpusDtmQ.RData") == "corpusDtmQ.RData"], decreasing = TRUE)[1]
+        }
         if (is.na(datasetFilename) == FALSE) {
             lastSavedDataset <- file.path(file.path(nameOfProject, nameOfWebsite, "Dataset"), datasetFilename)
             lastSavedDatasets[i] <- lastSavedDataset
