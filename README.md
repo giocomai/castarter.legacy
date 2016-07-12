@@ -1,7 +1,7 @@
 An introduction to 'castarter' - content analysis starter toolkit for R
 ================
 Giorgio Comai
-2016-06-24
+2016-06-30
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 Introduction
@@ -374,7 +374,7 @@ corpusDtm <- CreateDtm(corpus)
 We can now see, for example, which are the most frequently used words.
 
 ``` r
-ShowMostFrequent(corpusDtm, mode = "data.frame")
+ShowFreq(corpusDtm, mode = "data.frame")
 #>                        term  freq
 #> europeanunion europeanunion 20568
 #> mep                     mep 11996
@@ -386,13 +386,13 @@ ShowMostFrequent(corpusDtm, mode = "data.frame")
 #> commiss             commiss  6219
 #> countri             countri  5801
 #> vote                   vote  5574
-ShowMostFrequent(corpusDtm, mode = "barchart")
+ShowFreq(corpusDtm, mode = "barchart")
 ```
 
 ![](data/readme/README-Most%20frequent%20words-1.png)
 
 ``` r
-ShowMostFrequent(corpusDtm, mode = "wordcloud", number = 100)
+ShowFreq(corpusDtm, mode = "wordcloud", number = 100)
 ```
 
 ![](data/readme/README-Most%20frequent%20words-2.png)
@@ -400,7 +400,7 @@ ShowMostFrequent(corpusDtm, mode = "wordcloud", number = 100)
 N.B. After stemming, stemmed words are provided. This may be curious, but is usually more useful to provide a list of terms we are specifically interested in.
 
 ``` r
-ShowMostFrequent(corpusDtm, mode = "barchart", specificTerms = c("environment", "humanright", "migrant"))
+ShowFreq(corpusDtm, mode = "barchart", specificTerms = c("environment", "humanright", "migrant"))
 ```
 
 ![](data/readme/README-Show%20specific%20terms%20barchart-1.png)
@@ -410,7 +410,7 @@ N.B. After stemming, stemmed version of words should be provided.
 `castarter` graphs are generally created with `ggplot` (and can thus be edited inside R), and can be exported as .png or .svg file for further editing in other applications by enabling the export parameter with `export = TRUE` (graphs are automatically saved in the `outputs` subfolder). Showing the data in a time series, allows to highlight variation over time.
 
 ``` r
-CreateTimeSeries(corpus, terms = c("environment", "humanright", "migrant"), rollingAverage = 90)
+ShowTS(corpusDtm = corpusDtm, corpus = corpus, terms = c("environment", "humanright", "migrant"), rollingAverage = 90)
 ```
 
 ![](data/readme/README-Create%20time%20series-1.png)
@@ -441,16 +441,25 @@ Disclaimer
 Forthcoming features and other development issues
 -------------------------------------------------
 
-Only the development version is currently available: starting with version 0.2 there will be a more stable version, and daily development will take place on a separate branch.
+Only the development version is currently available: functions may be broken, or work only with corpus/corpusDtm of either the 'tm' or 'quanteda' type. Starting with version 0.2 (due by the end of 2016) there will be a more stable version, and daily development will take place on a separate branch.
 
 Forthcoming features:
 
--   adding support to `quanteda` for enhanced speed;
+-   adding full support to `quanteda` for enhanced speed, while mantaining compatibility with the 'tm' packgage;
+-   including additional example datasets;
+-   enhancing documentation and tutorials;
 -   enhancing date extraction;
 -   enhancing support for updating datasets (see `?UpdateDataset`);
 -   enhancing support for larger datasets, including by improving direct import from html files without importing them into R first through `CreateDatasetFromHtml`;
 -   reducing dependencies;
 -   polishing and speeding up code.
+
+Examples of outputs
+-------------------
+
+Some examples of analysis of media contents conducted with `castarter` are available on the author's blog:
+
+-   [Word frequency of 'Ukraine', 'Crimea' and 'Syria' on Russia's First Channel](http://www.giorgiocomai.eu/2015/11/03/word-frequency-of-ukraine-crimea-and-syria-on-russias-first-channel/)
 
 About the author
 ----------------

@@ -310,7 +310,11 @@ N.B. After stemming, stemmed words are provided.
 This may be curious, but is usually more useful to provide a list of terms we are specifically interested in. 
 
 ```{r Show specific terms barchart, eval=TRUE}
+<<<<<<< HEAD
 ShowFreq(corpusDtm = corpusDtm, mode = "barchart", specificTerms = c("environment", "humanright", "migrant"))
+=======
+ShowFreq(corpusDtm, mode = "barchart", specificTerms = c("environment", "humanright", "migrant"))
+>>>>>>> fa23fd458789438b456e6a2b9405be3390fa759b
 ```
 
 N.B. After stemming, stemmed version of words should be provided.
@@ -318,7 +322,11 @@ N.B. After stemming, stemmed version of words should be provided.
 `castarter` graphs are generally created with `ggplot` (and can thus be edited inside R), and can be exported as .png or .svg file for further editing in other applications by enabling the export parameter with `export = TRUE` (graphs are automatically saved in the `outputs` subfolder).
 Showing the data in a time series, allows to highlight variation over time.
 ```{r Create time series}
+<<<<<<< HEAD
 ShowTS(corpus = corpus, terms = c("environment", "humanright", "migrant"), rollingAverage = 90)
+=======
+ShowTS(corpusDtm = corpusDtm, corpus = corpus, terms = c("environment", "humanright", "migrant"), rollingAverage = 90)
+>>>>>>> fa23fd458789438b456e6a2b9405be3390fa759b
 ```
 
 N.B. In order to zoom dynamically into the time series, it is possible to output the timeseries to dygraphs, enabling the relevant parameter `dygraphs=TRUE`.
@@ -342,21 +350,30 @@ N.B. Notice that the `ShowShare' function is based on the dataset, and thus does
 
 ## Forthcoming features and other development issues
 
-Only the development version is currently available: starting with version 0.2 there will be a more stable version, and daily development will take place on a separate branch.
+Only the development version is currently available: functions may be broken, or work only with corpus/corpusDtm of either the 'tm' or 'quanteda' type. Starting with version 0.2 (due by the end of 2016) there will be a more stable version, and daily development will take place on a separate branch.
 
 Forthcoming features:
 
-* adding support to `quanteda` for enhanced speed;
+* adding full support to `quanteda` for enhanced speed, while mantaining compatibility with the 'tm' packgage;
+* including additional example datasets;
+* enhancing documentation and tutorials;
 * enhancing date extraction;
 * enhancing support for updating datasets (see `?UpdateDataset`);
 * enhancing support for larger datasets, including by improving direct import from html files without importing them into R first through `CreateDatasetFromHtml`;
 * reducing dependencies;
 * polishing and speeding up code.
 
+<<<<<<< HEAD
 ## Examples of output
 
 * [Word frequency of ‘Ukraine’, ‘Crimea’, and ‘Syria’ on Russia’s First Channel](http://www.giorgiocomai.eu/2015/11/03/word-frequency-of-ukraine-crimea-and-syria-on-russias-first-channel/)
 * [Presidents and prime ministers in Romanian media](http://www.giorgiocomai.eu/2016/06/29/presidents-and-prime-ministers-in-romanian-media/)
+=======
+## Examples of outputs
+Some examples of analysis of media contents conducted with `castarter` are available on the author's blog:
+
+* [Word frequency of 'Ukraine', 'Crimea' and 'Syria' on Russia's First Channel](http://www.giorgiocomai.eu/2015/11/03/word-frequency-of-ukraine-crimea-and-syria-on-russias-first-channel/)
+>>>>>>> fa23fd458789438b456e6a2b9405be3390fa759b
 
 ## About the author
 Giorgio Comai is doctoral researcher at the School of Law and Government, Dublin City University, and a member of the Marie Curie ITN network “Post-Soviet tensions”. You can find out more about his work on his [personal website](http://giorgiocomai.eu/). He is on Twitter: https://twitter.com/giocomai.
