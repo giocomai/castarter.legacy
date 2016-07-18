@@ -1,7 +1,7 @@
 An introduction to 'castarter' - content analysis starter toolkit for R
 ================
 Giorgio Comai
-2016-06-30
+2016-07-18
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 Introduction
@@ -400,7 +400,7 @@ ShowFreq(corpusDtm, mode = "wordcloud", number = 100)
 N.B. After stemming, stemmed words are provided. This may be curious, but is usually more useful to provide a list of terms we are specifically interested in.
 
 ``` r
-ShowFreq(corpusDtm, mode = "barchart", specificTerms = c("environment", "humanright", "migrant"))
+ShowFreq(corpusDtm = corpusDtm, mode = "barchart", specificTerms = c("environment", "humanright", "migrant"))
 ```
 
 ![](data/readme/README-Show%20specific%20terms%20barchart-1.png)
@@ -451,15 +451,21 @@ Forthcoming features:
 -   enhancing date extraction;
 -   enhancing support for updating datasets (see `?UpdateDataset`);
 -   enhancing support for larger datasets, including by improving direct import from html files without importing them into R first through `CreateDatasetFromHtml`;
+-   facilitating creation of a web interface through integration with shiny ([see preliminary example](https://giocomai.shinyapps.io/ArmeniaPresident/))
 -   reducing dependencies;
 -   polishing and speeding up code.
 
-Examples of outputs
--------------------
+Examples of output
+------------------
 
 Some examples of analysis of media contents conducted with `castarter` are available on the author's blog:
 
--   [Word frequency of 'Ukraine', 'Crimea' and 'Syria' on Russia's First Channel](http://www.giorgiocomai.eu/2015/11/03/word-frequency-of-ukraine-crimea-and-syria-on-russias-first-channel/)
+-   [Word frequency of ‘Ukraine’, ‘Crimea’, and ‘Syria’ on Russia’s First Channel](http://www.giorgiocomai.eu/2015/11/03/word-frequency-of-ukraine-crimea-and-syria-on-russias-first-channel/)
+-   [Presidents and prime ministers in Romanian media](http://www.giorgiocomai.eu/2016/06/29/presidents-and-prime-ministers-in-romanian-media/)
+
+Interactive example:
+
+-   [Armenia's president website](https://giocomai.shinyapps.io/ArmeniaPresident/)
 
 About the author
 ----------------
