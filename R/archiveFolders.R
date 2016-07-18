@@ -83,7 +83,7 @@ RestoreArchives <- function(html = FALSE, indexHtml = FALSE, txt = FALSE, overwr
             untar(tarfile = lastSavedIndexHtmlFile)
         }
     }
-    if (Txt==TRUE) {
+    if (txt==TRUE) {
         if (file.exists(file.path(nameOfProject, nameOfWebsite, "Txt"))==TRUE) {
             stop("Txt folder already exists, and overwrite option is not enabled. Either remove folder or set overwrite=TRUE")
         } else {
