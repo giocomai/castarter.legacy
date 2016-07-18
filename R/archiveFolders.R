@@ -66,7 +66,7 @@ RestoreArchives <- function(html = FALSE, indexHtml = FALSE, txt = FALSE, overwr
         nameOfWebsite <- CastarterOptions("nameOfWebsite")
     }
     if (html==TRUE) {
-        if (file.exists(file.path(nameOfProject, nameOfWebsite, "Html"))==TRUE) {
+        if (file.exists(file.path(nameOfProject, nameOfWebsite, "Html"))==TRUE&overwrite==FALSE) {
             stop("Html folder already exists, and overwrite option is not enabled. Either remove folder or set overwrite=TRUE")
         } else {
             lastArchiveFolderDate <- file.path(file.path(nameOfProject, nameOfWebsite, "Archives"), sort(list.files(file.path(nameOfProject, nameOfWebsite, "Archives")), decreasing = TRUE)[1])
@@ -75,11 +75,11 @@ RestoreArchives <- function(html = FALSE, indexHtml = FALSE, txt = FALSE, overwr
         }
     }
     if (indexHtml==TRUE) {
-        if (file.exists(file.path(nameOfProject, nameOfWebsite, "indexHtml"))==TRUE) {
-            stop("indexHtml folder already exists, and overwrite option is not enabled. Either remove folder or set overwrite=TRUE")
+        if (file.exists(file.path(nameOfProject, nameOfWebsite, "IndexHtml"))==TRUE&overwrite==FALSE) {
+            stop("IndexHtml folder already exists, and overwrite option is not enabled. Either remove folder or set overwrite=TRUE")
         } else {
             lastArchiveFolderDate <- file.path(file.path(nameOfProject, nameOfWebsite, "Archives"), sort(list.files(file.path(nameOfProject, nameOfWebsite, "Archives")), decreasing = TRUE)[1])
-            lastSavedIndexHtmlFile <- file.path(lastArchiveFolderDate, "indexHtml.tar.gz")
+            lastSavedIndexHtmlFile <- file.path(lastArchiveFolderDate, "IndexHtml.tar.gz")
             untar(tarfile = lastSavedIndexHtmlFile)
         }
     }
