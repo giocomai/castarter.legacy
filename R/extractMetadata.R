@@ -122,7 +122,19 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", language = "english",
             }
         }
     }
-    dates <- lubridate::parse_date_time(datesTxt, dateFormat, locale = language)
+    if (language == "ru" | language == "russian") {
+            monthsRu <- c("Января", "Февраля", "Марта", "Апреля", "Мая", "Июня", "Июля", "Августа", "Сентября", 
+                                       "Октября", "Ноября", "Декабря")
+            monthsEn <- month.name
+            monthsRu <- tolower(monthsRu)
+            datesTxt <- tolower(datesTxt)
+            for (i in 1:12) {
+                    datesTxt <- gsub(monthsRu[i], monthsEn[i], datesTxt)
+                }
+            dates <- lubridate::parse_date_time(datesTxt, dateFormat, locale = "en_GB.UTF-8")
+    } else {
+        dates <- lubridate::parse_date_time(datesTxt, dateFormat, locale = language)
+    }
     if (is.null(minDate) == FALSE) {
     dates[dates < as.POSIXct(minDate)] <- NA
     }
