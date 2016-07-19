@@ -4,8 +4,8 @@
 \alias{ImportHtml}
 \title{Imports html files into a character vector.}
 \usage{
-ImportHtml(from = "", sample = NULL, nameOfProject = NULL,
-  nameOfWebsite = NULL, pathToHtmlFolder = "", sort = FALSE,
+ImportHtml(from = "articles", sample = NULL, nameOfProject = NULL,
+  nameOfWebsite = NULL, pathToHtmlFolder = "", sort = TRUE,
   recursive = FALSE, includePath = FALSE)
 }
 \arguments{
@@ -16,6 +16,8 @@ ImportHtml(from = "", sample = NULL, nameOfProject = NULL,
 \item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
 
 \item{nameOfWebsite}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
+
+\item{sort}{Logical, defaults to TRUE. For folders downloaded through 'castarter' (e.g. with DownloadContents) this should be left to TRUE, otherwise mismatch between articlesLinks and imported documents is due to occur.}
 
 \item{recursive}{Value is passed to list.files function when using the pathToHtmlFolder option.}
 }

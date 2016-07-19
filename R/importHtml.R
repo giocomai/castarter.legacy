@@ -6,12 +6,13 @@
 #' @param sample Defaults to NULL. If a numeric value n is provided, then instead of importing all html files it imports n random files.
 #' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
 #' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
+#' @param sort Logical, defaults to TRUE. For folders downloaded through 'castarter' (e.g. with DownloadContents) this should be left to TRUE, otherwise mismatch between articlesLinks and imported documents is due to occur. 
 #' @param recursive Value is passed to list.files function when using the pathToHtmlFolder option.
 #' @return A character vector of html file, or a data frame if includePath is set to TRUE. 
 #' @export
 #' @examples
 #' articlesHtml <- ImportHtml(from = articles, nameOfProject, nameOfWebsite)
-ImportHtml <- function(from = "", sample = NULL, nameOfProject = NULL, nameOfWebsite = NULL, pathToHtmlFolder = "", sort = FALSE, recursive = FALSE, includePath = FALSE) {
+ImportHtml <- function(from = "articles", sample = NULL, nameOfProject = NULL, nameOfWebsite = NULL, pathToHtmlFolder = "", sort = TRUE, recursive = FALSE, includePath = FALSE) {
     if (gtools::invalid(nameOfProject) == TRUE) {
         nameOfProject <- CastarterOptions("nameOfProject")
     }
