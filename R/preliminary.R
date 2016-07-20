@@ -69,7 +69,7 @@ LoadLatest <- function(nameOfProject = NULL, nameOfWebsite = NULL) {
 #' @export
 #' @examples
 #' SaveWebsite(nameOfProject, nameOfWebsite)
-SaveWebsite <- function(saveEnvironment = TRUE, dataset = NULL, corpus = NULL, corpusDtm = NULL, nameOfProject = NULL, nameOfWebsite = NULL, exportCsv = FALSE, exportXlsx = FALSE) {
+SaveWebsite <- function(saveEnvironment = TRUE, dataset = NULL, corpus = NULL, corpusDtm = NULL, nameOfProject = NULL, nameOfWebsite = NULL, exportCsv = FALSE, exportTxt = FALSE, exportXlsx = FALSE) {
     if (gtools::invalid(nameOfProject) == TRUE) {
         nameOfProject <- CastarterOptions("nameOfProject")
     }
@@ -93,10 +93,10 @@ SaveWebsite <- function(saveEnvironment = TRUE, dataset = NULL, corpus = NULL, c
     if (is.null(corpus)==FALSE) {
         if (quanteda::is.corpus(corpus)==TRUE) {
             save(corpus, file = file.path(nameOfProject, nameOfWebsite, "Dataset", paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "corpusQ", sep = " - "), ".RData")))
-            message(paste("Corpus saved in", file.path(nameOfProject, nameOfWebsite, paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "corpusQ", sep = " - "), ".RData"))))
+            message(paste("Corpus of the 'quanteda' type saved in", file.path(nameOfProject, nameOfWebsite, paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "corpusQ", sep = " - "), ".RData"))))
         } else {
             save(corpus, file = file.path(nameOfProject, nameOfWebsite, "Dataset", paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "corpusTM", sep = " - "), ".RData")))
-            message(paste("Corpus saved in", file.path(nameOfProject, nameOfWebsite, paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "corpusTM", sep = " - "), ".RData"))))
+            message(paste("Corpus of the 'tm' type saved in", file.path(nameOfProject, nameOfWebsite, paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "corpusTM", sep = " - "), ".RData"))))
         }
     }
     if (is.null(corpusDtm)==FALSE) {
@@ -113,5 +113,9 @@ SaveWebsite <- function(saveEnvironment = TRUE, dataset = NULL, corpus = NULL, c
     }
     if (exportXlsx == TRUE) {
         xlsx::write.xlsx(dataset, file.path(nameOfProject, nameOfWebsite, "Dataset", paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "dataset", sep = " - "), ".xlsx")))
+    }
+    if (exportTxt == TRUE) {
+        writeLines(paste(paste("Date:", dataset$date), paste("Title:", dataset$titles), paste("Link:", tempDataset$articlesLinks), paste("ID:", dataset$articlesId), dataset$articlesTxt, " ___  ______  ______  ______  ______  ______  ______  ______  ______  ___\n  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__\n (______)(______)(______)(______)(______)(______)(______)(______)(______)\n", sep = "\n"), file.path(nameOfProject, nameOfWebsite, "Dataset", paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "dataset", sep = " - "), ".txt")))
+        message(paste("Full dataset in in txt format saved in", file.path(nameOfProject, nameOfWebsite, paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "dataset", sep = " - "), ".txt"))))
     }
 }
