@@ -4,12 +4,15 @@
 \alias{CreateDtm}
 \title{Creates a Document Term Matrix (DTM).}
 \usage{
-CreateDtm(corpus, removeSparseTerms = NULL)
+CreateDtm(corpus, removeSparseTerms = NULL, stem = FALSE,
+  language = "english")
 }
 \arguments{
 \item{corpus}{A corpus as created by the 'tm' or 'quanteda' package including relevant metadata and typically created with castarter's CreateCorpus() function.}
 
-\item{removeSparseTerms}{A value between 0 and 1, to be passed to the removeSparseTerms function of the 'tm' function.}
+\item{removeSparseTerms}{A value between 0 and 1, to be passed to the removeSparseTerms function of the 'tm' function. Available only if applied to a corpus of the `tm` type.}
+
+\item{stem}{Logical, defaults to FALSE. If TRUE, applies stemming in the language defined by the `language` parameter. Available only if applied to a corpus of the `quanteda` type.}
 }
 \value{
 A Document Term Matrix (DTM).

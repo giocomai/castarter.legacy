@@ -206,15 +206,16 @@ StemCorpusDtm <- function(corpusDtm, stemmingDictionary) {
 #' Creates a Document Term Matrix (DTM).
 #'  
 #' @param corpus A corpus as created by the 'tm' or 'quanteda' package including relevant metadata and typically created with castarter's CreateCorpus() function.
-#' @param removeSparseTerms A value between 0 and 1, to be passed to the removeSparseTerms function of the 'tm' function.
+#' @param removeSparseTerms A value between 0 and 1, to be passed to the removeSparseTerms function of the 'tm' function. Available only if applied to a corpus of the `tm` type. 
+#' @param stem Logical, defaults to FALSE. If TRUE, applies stemming in the language defined by the `language` parameter. Available only if applied to a corpus of the `quanteda` type. 
 #' @return A Document Term Matrix (DTM).
 #' @keywords tm
 #' @export
 #' @examples
 #' dtm <- CreateDtm(corpus)
-CreateDtm <- function(corpus, removeSparseTerms = NULL){
+CreateDtm <- function(corpus, removeSparseTerms = NULL, stem = FALSE, language = "english"){
     if (quanteda::is.corpus(corpus)==TRUE) {
-        corpusDtm <- quanteda::dfm(x = corpus, groups=c("date", "nameOfWebsite"))
+        corpusDtm <- quanteda::dfm(x = corpus, groups=c("date", "nameOfWebsite"), stem = stem, language = language)
     } else {
         corpusDtm <- tm::DocumentTermMatrix(corpus)
         if (is.null(removeSparseTerms) == FALSE) {
