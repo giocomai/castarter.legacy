@@ -10,7 +10,7 @@ CastarterOptions <- settings::options_manager(nameOfProject = NULL, nameOfWebsit
 #' @return Nothing. Used for its side effects (stores settings).
 #' @export
 #' @examples
-#' SetCastarter(nameOfProject, nameOfWebsite)
+#' SetCastarter(nameOfProject = "nameOfProject", nameOfWebsite = "nameOfWebsite")
 SetCastarter <- function(...){
     # protect against the use of reserved words.
     settings::stop_if_reserved(...)

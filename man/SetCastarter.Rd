@@ -18,6 +18,6 @@ Nothing. Used for its side effects (stores settings).
 It allows to preliminary store options frequently used by 'castarter', thus removing the requirement to specify them each time a function is called.
 }
 \examples{
-SetCastarter(nameOfProject, nameOfWebsite)
+SetCastarter(nameOfProject = "nameOfProject", nameOfWebsite = "nameOfWebsite")
 }
 
