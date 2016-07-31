@@ -125,8 +125,8 @@ LoadAllDatasets <- function(nameOfProject, removeNAdates = TRUE) {
 #' @return A corpus as created by the 'tm' or 'quanteda' package including metadata. 
 #' @export
 #' @examples
-#' corpus <- ConvertToCorpus(dataset)
-ConvertToCorpus <- function(dataset, quanteda = FALSE) {
+#' corpus <- CreateCorpus(dataset)
+CreateCorpus <- function(dataset, quanteda = FALSE) {
     if (quanteda==TRUE) {
         corpus <- quanteda::corpus(dataset$articlesTxt, docnames = paste(as.Date(dataset$dates), dataset$articlesId, dataset$titles, sep = " - "), 
                                    docvars=data.frame(nameOfWebsite=dataset$nameOfWebsite, date=as.Date(dataset$dates), title=dataset$titles, links = dataset$articlesLinks, ID=dataset$articlesId))

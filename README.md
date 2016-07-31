@@ -1,7 +1,7 @@
 An introduction to 'castarter' - content analysis starter toolkit for R
 ================
 Giorgio Comai
-2016-07-18
+2016-07-31
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 Introduction
@@ -288,7 +288,7 @@ ShowDistribution(dataset)
 We can thus proceed and convert the dataset to a corpus object of the `tm` package for further analysis.
 
 ``` r
-corpus <- ConvertToCorpus(dataset)
+corpus <- CreateCorpus(dataset)
 ```
 
 The next few functions are dedicated to polishing up the corpus for quantitative analysis. Each step should be evaluated by the researcher, as it will have substantive impact on the final results. The following command allows to conduct a number of common operation on the corpus, such as transforming all text to lowercase, removing punctuation and removing numbers. These operations are enabled by default, but depending on the users' needs can easily be disabled (e.g. by adding the paramater `removePunctuation = FALSE`)
