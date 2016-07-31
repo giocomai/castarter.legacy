@@ -77,7 +77,7 @@ CreateLinks <- function(linkFirstChunk, linkSecondChunk = NULL, startPage = 1, e
         indexLinks <- gtools::mixedsort(indexLinks)
     }
     if (export == TRUE) {
-        base::writeLines(indexLinks, base::file.path(nameOfProject, nameOfWebsite, paste0(nameOfWebsite, "indexLinks.txt")))
+        base::writeLines(indexLinks, base::file.path(nameOfProject, nameOfWebsite, "Logs", paste(Sys.Date(), nameOfWebsite, "indexLinks.txt", sep = " - ")))
     }
     if (exportParameters == TRUE) {
         args <- c("linkFirstChunk", "linkSecondChunk", "startPage", "endPage", "increaseBy", "dateFormatCreateLinks", "firstYear", "lastYear", "leadingZero", "startDate", "endDate", "sortIndexLinks", "dateSeparator", "export", "reversedOrder", "exportParameters", "nameOfProject", "nameOfWebsite")
