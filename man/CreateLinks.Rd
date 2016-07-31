@@ -28,7 +28,9 @@ CreateLinks(linkFirstChunk, linkSecondChunk = NULL, startPage = 1,
 
 \item{exportParameters}{Defaults to FALSE. If TRUE, function parameters are exported in the nameOfProject/nameOfWebsite folder. They can be used to update the corpus. Requires parameters nameOfProject/nameOfWebsite.}
 
-\item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
+\item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. Not required if previously set with SetCastarter(nameOfProject = "nameOfProject", nameOfWebsite = "nameOfWebsite")}
+
+\item{nameOfWebsite}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder. Not required if previously set with SetCastarter(nameOfProject = "nameOfProject", nameOfWebsite = "nameOfWebsite")}
 }
 \value{
 A character vector of links to index pages.

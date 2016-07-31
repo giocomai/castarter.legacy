@@ -10,7 +10,8 @@
 #' @param leadingZero Defaults to TRUE. If TRUE, days and months of one digit are preceded by a zero (e.g. 07/05/2014).
 #' @param export Exports the links in a .txt file in the folder nameOfProject/nameOfWebsite.
 #' @param exportParameters Defaults to FALSE. If TRUE, function parameters are exported in the nameOfProject/nameOfWebsite folder. They can be used to update the corpus. Requires parameters nameOfProject/nameOfWebsite.
-#' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.
+#' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. Not required if previously set with SetCastarter(nameOfProject = "nameOfProject", nameOfWebsite = "nameOfWebsite")
+#' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder. Not required if previously set with SetCastarter(nameOfProject = "nameOfProject", nameOfWebsite = "nameOfWebsite")
 #' @return A character vector of links to index pages. 
 #' @export
 #' @examples
