@@ -5,7 +5,7 @@
 #' @param articlesHtml A character vector of html files.
 #' @param dateFormat A string used to extract the date. Available date formats options include dmY, dby, dBy, dBY, dbY, etc.
 #' @param minDate, maxDate Minimum and maximum possible dates in the format year-month-date, e.g. "2007-06-24". Introduces NA in the place of impossibly high or low dates.
-#' @param language Provide a language in order to extract name of months. Generic forms such as "english" or "russian", are usually accepted. See ?locales for more details. On linux, you can run system("locale -a", intern = TRUE) to see all available locales.
+#' @param language Provide a language in order to extract name of months. Defaults to the locale currently active in R (usually, the system language). Generic forms such as "english" or "russian", are usually accepted. See ?locales for more details. On linux, you can run system("locale -a", intern = TRUE) to see all available locales.
 #' @param encoding Defaults to NULL. If source is not in UTF, encoding can be specified here for conversion. A list of valid values can be found using iconvlist().
 #' @param keepAllString Logical, defaults to FALSE. If TRUE, it directly tries to parse the date with the given dateFormat, without trying to polish the string provided accordingly.
 #' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. Defaults to NULL, required for storing export parameters (with exportParameters = TRUE). This can be left blank if previously set with SetCastarter(nameOfProject = "nameOfProject", nameOfWebsite = "nameOfWebsite").
@@ -14,7 +14,7 @@
 #' @export
 #' @examples
 #' dates <- ExtractDates(articlesHtml)
-ExtractDates <- function(articlesHtml, dateFormat = "dmy", divClass = NULL, spanClass = NULL, customXpath = NULL, language = "english", customString = "", minDate = NULL, maxDate = NULL, encoding = NULL, keepAllString = FALSE, removeEverythingBefore = NULL, exportParameters = TRUE, nameOfProject = NULL, nameOfWebsite = NULL) {
+ExtractDates <- function(articlesHtml, dateFormat = "dmy", divClass = NULL, spanClass = NULL, customXpath = NULL, language = Sys.getlocale(category = "LC_TIME"), customString = "", minDate = NULL, maxDate = NULL, encoding = NULL, keepAllString = FALSE, removeEverythingBefore = NULL, exportParameters = TRUE, nameOfProject = NULL, nameOfWebsite = NULL) {
     if (gtools::invalid(nameOfProject) == TRUE) {
         nameOfProject <- CastarterOptions("nameOfProject")
     }
