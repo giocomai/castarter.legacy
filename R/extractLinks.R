@@ -89,7 +89,7 @@ ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = NULL, co
     titles <- as.character(allLinks$titles)
     links <- setNames(links, titles)
     if (export == TRUE) {
-        writeLines(links, file.path(nameOfProject, nameOfWebsite, paste0(nameOfWebsite, "articlesLinks.txt")))
+        writeLines(links, file.path(nameOfProject, nameOfWebsite, "Logs", paste(Sys.Date(), nameOfWebsite, "articlesLinks.txt", sep = " - ")))
     }
     if (exportParameters == TRUE) {
         args <- c("domain", "partOfLink", "indexHtml", "containerTypeExtractLinks", "containerClassExtractLinks", "divClassExtractLinks", "attributeTypeExtractLinks", "partOfLinkToExclude", "minLength", "maxLength", "indexLinks","sortLinks", "export", "appendString", "exportParameters", "nameOfProject", "nameOfWebsite")
