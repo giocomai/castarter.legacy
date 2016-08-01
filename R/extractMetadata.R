@@ -4,15 +4,17 @@
 #'  
 #' @param articlesHtml A character vector of html files.
 #' @param dateFormat A string used to extract the date. Available date formats options include dmY, dby, dBy, dBY, dbY, etc.
-#' @param language Provide a language in order to extract name of months. Generic forms such as "english" or "russian", are usually accepted. See ?locales for more details. On linux, you can run system("locale -a", intern = TRUE) to see all available locales.
 #' @param minDate, maxDate Minimum and maximum possible dates in the format year-month-date, e.g. "2007-06-24". Introduces NA in the place of impossibly high or low dates.
+#' @param language Provide a language in order to extract name of months. Generic forms such as "english" or "russian", are usually accepted. See ?locales for more details. On linux, you can run system("locale -a", intern = TRUE) to see all available locales.
+#' @param encoding Defaults to NULL. If source is not in UTF, encoding can be specified here for conversion. A list of valid values can be found using iconvlist().
 #' @param keepAllString Logical, defaults to FALSE. If TRUE, it directly tries to parse the date with the given dateFormat, without trying to polish the string provided accordingly.
-#' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. Required for storing export parameters (with exportParameters = TRUE).
+#' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. Defaults to NULL, required for storing export parameters (with exportParameters = TRUE). This can be left blank if previously set with SetCastarter(nameOfProject = "nameOfProject", nameOfWebsite = "nameOfWebsite").
+#' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder. Defaults to NULL, required for storing export parameters (with exportParameters = TRUE). This can be left blank if previously set with SetCastarter(nameOfProject = "nameOfProject", nameOfWebsite = "nameOfWebsite").
 #' @return A vector of the POSIXct class. 
 #' @export
 #' @examples
 #' dates <- ExtractDates(articlesHtml)
-ExtractDates <- function(articlesHtml, dateFormat = "dmY", language = "english", customString = "", minDate = NULL, maxDate = NULL, removeEverythingBefore = NULL, keepAllString = FALSE, exportParameters = TRUE, nameOfProject = NULL, nameOfWebsite = NULL) {
+ExtractDates <- function(articlesHtml, dateFormat = "dmy", divClass = NULL, spanClass = NULL, customXpath = NULL, language = "english", customString = "", minDate = NULL, maxDate = NULL, encoding = NULL, keepAllString = FALSE, removeEverythingBefore = NULL, exportParameters = TRUE, nameOfProject = NULL, nameOfWebsite = NULL) {
     if (gtools::invalid(nameOfProject) == TRUE) {
         nameOfProject <- CastarterOptions("nameOfProject")
     }
@@ -20,174 +22,7 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", language = "english",
         nameOfWebsite <- CastarterOptions("nameOfWebsite")
     }
     if (exportParameters == TRUE && exists("nameOfProject") == FALSE | exportParameters == TRUE && exists("nameOfWebsite") == FALSE) {
-    stop("If exportParameters == TRUE, both nameOfProject and nameOfWebsite must be defined.")    
-    }
-    articlesHtml <- iconv(articlesHtml, to = "utf8")
-    numberOfArticles <- length(articlesHtml)
-    datesTxt <- rep(NA, numberOfArticles)
-    if (is.null(removeEverythingBefore) == FALSE) {
-        articlesHtml <- base::gsub(base::paste0(".*", removeEverythingBefore), "", articlesHtml, fixed = FALSE)
-    }
-    if (keepAllString == TRUE) {
-        datesTxt <- articlesHtml
-    } else {
-        if (dateFormat == "dby" | dateFormat == "dBy" | dateFormat == "dBY" | dateFormat == "dbY") {
-            for (i in 1:numberOfArticles) {
-                dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]]?[[:digit:]][[:space:]]?[[:space:]][[:alpha:]]*[[:space:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]", 
-                                                               articlesHtml[i]))
-                if (length(dateTxt) == 0) {
-                    datesTxt[i] <- NA
-                } else {
-                    datesTxt[i] <- dateTxt
-                }
-            }
-        } else if (dateFormat == "YBd" | dateFormat == "ybd") {
-            for (i in 1:numberOfArticles) {
-                dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]]?[[:digit:]]?[[:digit:]][[:digit:]][[:space:]]?[[:punct:]]?[[:alpha:]]*[[:space:]]?[[:punct:]]?[[:digit:]][[:digit:]]?", articlesHtml[i]))
-                if (length(dateTxt) == 0) {
-                    datesTxt[i] <- NA
-                } else {
-                    datesTxt[i] <- dateTxt
-                }
-            }
-        } else if (dateFormat == "dB,Y") {
-            for (i in 1:numberOfArticles) {
-                dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]]?[[:digit:]][[:space:]][[:alpha:]]*,[[:space:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]?", 
-                                                               articlesHtml[i]))
-                if (length(dateTxt) == 0) {
-                    datesTxt[i] <- NA
-                } else {
-                    datesTxt[i] <- dateTxt
-                }
-            }
-        } else if (dateFormat == "db.'y") {
-            for (i in 1:numberOfArticles) {
-                dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]]?[[:digit:]][[:space:]][[:alpha:]]*.'[[:digit:]][[:digit:]][[:digit:]]?", 
-                                                               articlesHtml[i]))
-                if (length(dateTxt) == 0) {
-                    datesTxt[i] <- NA
-                } else {
-                    datesTxt[i] <- dateTxt
-                }
-            }
-        } else if (dateFormat == "Bd,Y" | dateFormat == "bd,Y") {
-            for (i in 1:numberOfArticles) {
-                dateTxt <- regmatches(articlesHtml[i], regexpr("[[:alpha:]]*[[:space:]][[:digit:]]?[[:digit:]],[[:space:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]?", 
-                                                               articlesHtml[i]))
-                if (length(dateTxt) == 0) {
-                    datesTxt[i] <- NA
-                } else {
-                    datesTxt[i] <- dateTxt
-                }
-            }
-        } else if (dateFormat == "xdBY") {
-            for (i in 1:numberOfArticles) {
-                dateTxt <- regmatches(articlesHtml[i], regexpr(paste0(customString, "[[:digit:]]?[[:digit:]][[:space:]][[:alpha:]]*[[:space:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]?"), 
-                                                               articlesHtml[i]))
-                if (length(dateTxt) == 0) {
-                    datesTxt[i] <- NA
-                } else {
-                    datesTxt[i] <- dateTxt
-                }
-            }
-            dateFormat <- "dBY"
-        } else if (dateFormat == "ymd" | dateFormat == "Ymd") {
-            for (i in 1:numberOfArticles) {
-                dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]][[:digit:]][[:digit:]][[:digit:]][[:punct:]]?[[:digit:]]?[[:digit:]][[:punct:]]?[[:digit:]]?[[:digit:]]", articlesHtml[i]))
-                if (length(dateTxt) == 0) {
-                    datesTxt[i] <- NA
-                } else {
-                    datesTxt[i] <- dateTxt
-                }
-            }
-        } else if (dateFormat == "dmy" | dateFormat == "mdy") {
-            for (i in 1:numberOfArticles) {
-                dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]]?[[:digit:]][[:punct:]][[:digit:]]?[[:digit:]][[:punct:]][[:digit:]][[:digit:]]", 
-                                                               articlesHtml[i]))
-                if (length(dateTxt) == 0) {
-                    datesTxt[i] <- NA
-                } else {
-                    datesTxt[i] <- dateTxt
-                }
-            }
-        } else if (dateFormat == "dmY" | dateFormat == "mdY") {
-            for (i in 1:numberOfArticles) {
-                dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]]?[[:digit:]][[:punct:]][[:digit:]]?[[:digit:]][[:punct:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]", 
-                                                               articlesHtml[i]))
-                if (length(dateTxt) == 0) {
-                    datesTxt[i] <- NA
-                } else {
-                    datesTxt[i] <- dateTxt
-                }
-            }
-        }
-    }
-    if (language == "ru" | language == "russian") {
-            monthsRu <- c("Января", "Февраля", "Марта", "Апреля", "Мая", "Июня", "Июля", "Августа", "Сентября", 
-                                       "Октября", "Ноября", "Декабря")
-            monthsEn <- month.name
-            monthsRu <- tolower(monthsRu)
-            datesTxt <- tolower(datesTxt)
-            for (i in 1:12) {
-                    datesTxt <- gsub(monthsRu[i], monthsEn[i], datesTxt)
-                }
-            dates <- lubridate::parse_date_time(datesTxt, dateFormat, locale = "en_GB.UTF-8")
-    } else {
-        dates <- lubridate::parse_date_time(datesTxt, dateFormat, locale = language)
-    }
-    if (is.null(minDate) == FALSE) {
-    dates[dates < as.POSIXct(minDate)] <- NA
-    }
-    if (is.null(maxDate) == FALSE) {
-        dates[dates > as.POSIXct(maxDate)] <- NA
-    }
-    if (exportParameters == TRUE) {
-        args <- c("dateFormat", "customStringExtractDates", "minDate", "maxDate", "keepAllString", "removeEverythingBeforeExtractDates")
-        param <- list(dateFormat, customString, minDate, maxDate, keepAllString, removeEverythingBefore)
-        for (i in 1:length(param)) {
-            if (is.null(param[[i]])==TRUE) {
-                param[[i]] <- "NULL"
-            }
-        }
-        param <- unlist(param)
-        updateParametersTemp <- data.frame(args, param, stringsAsFactors = FALSE)
-        if (file.exists(base::file.path(nameOfProject, nameOfWebsite, "Logs", paste(nameOfWebsite, "updateParameters.csv", sep = " - "))) == TRUE) {
-            updateParameters <- utils::read.table(base::file.path(nameOfProject, nameOfWebsite, "Logs", paste(nameOfWebsite, "updateParameters.csv", sep = " - ")), stringsAsFactors = FALSE)
-            for (i in 1:length(updateParametersTemp$args)) {
-                updateParameters$param[updateParameters$args == updateParametersTemp$args[i]] <- updateParametersTemp$param[i]
-                if (is.element(updateParametersTemp$args[i], updateParameters$args) == FALSE) {
-                    updateParameters <- rbind(updateParameters, updateParametersTemp[i,] )
-                }
-            }
-        } else {
-            updateParameters <- updateParametersTemp 
-        }
-        write.table(updateParameters, file = base::file.path(nameOfProject, nameOfWebsite, "Logs", paste(nameOfWebsite, "updateParameters.csv", sep = " - ")))
-    }
-    dates
-}
-
-#' Extracts dates from a vector of html files
-#' 
-#' Extracts dates from a vector of html files.
-#'  
-#' @param articlesHtml A character vector of html files.
-#' @param dateFormat A string used to extract the date. Available date formats options include dmY, dby, dBy, dBY, dbY, etc.
-#' @param minDate, maxDate Minimum and maximum possible dates in the format year-month-date, e.g. "2007-06-24". Introduces NA in the place of impossibly high or low dates.
-#' @param encoding Defaults to NULL. If source is not in UTF, encoding can be specified here for conversion. A list of valid values can be found using iconvlist().
-#' @param keepAllString Logical, defaults to FALSE. If TRUE, it directly tries to parse the date with the given dateFormat, without trying to polish the string provided accordingly.
-#' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. Defaults to NULL, required for storing export parameters (with exportParameters = TRUE).
-#' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder. Defaults to NULL, required for storing export parameters (with exportParameters = TRUE).
-#' @return A vector of the POSIXct class. 
-#' @export
-#' @examples
-#' dates <- ExtractDatesXpath(articlesHtml)
-ExtractDatesXpath <- function(articlesHtml, dateFormat = "dmy", divClass = NULL, spanClass = NULL, customXpath = NULL, language = "english", customString = "", minDate = NULL, maxDate = NULL, encoding = NULL, keepAllString = FALSE, exportParameters = TRUE, nameOfProject = NULL, nameOfWebsite = NULL) {
-    if (gtools::invalid(nameOfProject) == TRUE) {
-        nameOfProject <- CastarterOptions("nameOfProject")
-    }
-    if (gtools::invalid(nameOfWebsite) == TRUE) {
-        nameOfWebsite <- CastarterOptions("nameOfWebsite")
+        stop("If exportParameters == TRUE, both nameOfProject and nameOfWebsite must be defined either as parameters or previously with .")    
     }
     if (exportParameters == TRUE) {
         args <- c("dateFormat", "divClassDatesXpath", "spanClassDatesXpath", "customXpathDates", "customStringDates", "minDate", "maxDate", "keepAllString")
@@ -210,12 +45,14 @@ ExtractDatesXpath <- function(articlesHtml, dateFormat = "dmy", divClass = NULL,
         } else {
             updateParameters <- updateParametersTemp 
         }
-        write.table(updateParameters, file = base::file.path(nameOfProject, nameOfWebsite, paste(nameOfWebsite, "updateParameters.csv", sep = "-")))
+        write.table(updateParameters, file = base::file.path(nameOfProject, nameOfWebsite, "Logs", paste(nameOfWebsite, "updateParameters.csv", sep = " - ")))
     }
     numberOfArticles <- length(articlesHtml)
     datesTxt <- rep(NA, numberOfArticles)
     if (is.null(encoding) == FALSE) {
         articlesHtml <- iconv(articlesHtml, from = encoding, to = "utf8")
+    } else {
+        articlesHtml <- iconv(articlesHtml, to = "utf8")
     }
     if (gtools::invalid(divClass) == FALSE) {
         for (i in 1:numberOfArticles) {
@@ -258,8 +95,129 @@ ExtractDatesXpath <- function(articlesHtml, dateFormat = "dmy", divClass = NULL,
     }
     if (length(datesTxt) == 1 & is.na(datesTxt[1]) == TRUE) {
     } else {
-    ExtractDates(articlesHtml = datesTxt, dateFormat = dateFormat, language = language, keepAllString = FALSE, nameOfProject = nameOfProject, nameOfWebsite = nameOfWebsite)
+        if (exists(datesTxt) == TRUE) {
+            articlesHtml <- datesTxt
+        }
+        numberOfArticles <- length(articlesHtml)
+        datesTxt <- rep(NA, numberOfArticles)
+        if (is.null(removeEverythingBefore) == FALSE) {
+            articlesHtml <- base::gsub(base::paste0(".*", removeEverythingBefore), "", articlesHtml, fixed = FALSE)
+        }
+        if (keepAllString == TRUE) {
+            datesTxt <- articlesHtml
+        } else {
+            if (dateFormat == "dby" | dateFormat == "dBy" | dateFormat == "dBY" | dateFormat == "dbY") {
+                for (i in 1:numberOfArticles) {
+                    dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]]?[[:digit:]][[:space:]]?[[:space:]][[:alpha:]]*[[:space:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]", 
+                                                                   articlesHtml[i]))
+                    if (length(dateTxt) == 0) {
+                        datesTxt[i] <- NA
+                    } else {
+                        datesTxt[i] <- dateTxt
+                    }
+                }
+            } else if (dateFormat == "YBd" | dateFormat == "ybd") {
+                for (i in 1:numberOfArticles) {
+                    dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]]?[[:digit:]]?[[:digit:]][[:digit:]][[:space:]]?[[:punct:]]?[[:alpha:]]*[[:space:]]?[[:punct:]]?[[:digit:]][[:digit:]]?", articlesHtml[i]))
+                    if (length(dateTxt) == 0) {
+                        datesTxt[i] <- NA
+                    } else {
+                        datesTxt[i] <- dateTxt
+                    }
+                }
+            } else if (dateFormat == "dB,Y") {
+                for (i in 1:numberOfArticles) {
+                    dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]]?[[:digit:]][[:space:]][[:alpha:]]*,[[:space:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]?", 
+                                                                   articlesHtml[i]))
+                    if (length(dateTxt) == 0) {
+                        datesTxt[i] <- NA
+                    } else {
+                        datesTxt[i] <- dateTxt
+                    }
+                }
+            } else if (dateFormat == "db.'y") {
+                for (i in 1:numberOfArticles) {
+                    dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]]?[[:digit:]][[:space:]][[:alpha:]]*.'[[:digit:]][[:digit:]][[:digit:]]?", 
+                                                                   articlesHtml[i]))
+                    if (length(dateTxt) == 0) {
+                        datesTxt[i] <- NA
+                    } else {
+                        datesTxt[i] <- dateTxt
+                    }
+                }
+            } else if (dateFormat == "Bd,Y" | dateFormat == "bd,Y") {
+                for (i in 1:numberOfArticles) {
+                    dateTxt <- regmatches(articlesHtml[i], regexpr("[[:alpha:]]*[[:space:]][[:digit:]]?[[:digit:]],[[:space:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]?", 
+                                                                   articlesHtml[i]))
+                    if (length(dateTxt) == 0) {
+                        datesTxt[i] <- NA
+                    } else {
+                        datesTxt[i] <- dateTxt
+                    }
+                }
+            } else if (dateFormat == "xdBY") {
+                for (i in 1:numberOfArticles) {
+                    dateTxt <- regmatches(articlesHtml[i], regexpr(paste0(customString, "[[:digit:]]?[[:digit:]][[:space:]][[:alpha:]]*[[:space:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]?"), 
+                                                                   articlesHtml[i]))
+                    if (length(dateTxt) == 0) {
+                        datesTxt[i] <- NA
+                    } else {
+                        datesTxt[i] <- dateTxt
+                    }
+                }
+                dateFormat <- "dBY"
+            } else if (dateFormat == "ymd" | dateFormat == "Ymd") {
+                for (i in 1:numberOfArticles) {
+                    dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]][[:digit:]][[:digit:]][[:digit:]][[:punct:]]?[[:digit:]]?[[:digit:]][[:punct:]]?[[:digit:]]?[[:digit:]]", articlesHtml[i]))
+                    if (length(dateTxt) == 0) {
+                        datesTxt[i] <- NA
+                    } else {
+                        datesTxt[i] <- dateTxt
+                    }
+                }
+            } else if (dateFormat == "dmy" | dateFormat == "mdy") {
+                for (i in 1:numberOfArticles) {
+                    dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]]?[[:digit:]][[:punct:]][[:digit:]]?[[:digit:]][[:punct:]][[:digit:]][[:digit:]]", 
+                                                                   articlesHtml[i]))
+                    if (length(dateTxt) == 0) {
+                        datesTxt[i] <- NA
+                    } else {
+                        datesTxt[i] <- dateTxt
+                    }
+                }
+            } else if (dateFormat == "dmY" | dateFormat == "mdY") {
+                for (i in 1:numberOfArticles) {
+                    dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]]?[[:digit:]][[:punct:]][[:digit:]]?[[:digit:]][[:punct:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]", 
+                                                                   articlesHtml[i]))
+                    if (length(dateTxt) == 0) {
+                        datesTxt[i] <- NA
+                    } else {
+                        datesTxt[i] <- dateTxt
+                    }
+                }
+            }
+        }
+        if (language == "ru" | language == "russian") {
+            monthsRu <- c("Января", "Февраля", "Марта", "Апреля", "Мая", "Июня", "Июля", "Августа", "Сентября", 
+                          "Октября", "Ноября", "Декабря")
+            monthsEn <- month.name
+            monthsRu <- tolower(monthsRu)
+            datesTxt <- tolower(datesTxt)
+            for (i in 1:12) {
+                datesTxt <- gsub(monthsRu[i], monthsEn[i], datesTxt)
+            }
+            dates <- lubridate::parse_date_time(datesTxt, dateFormat, locale = "en_GB.UTF-8")
+        } else {
+            dates <- lubridate::parse_date_time(datesTxt, dateFormat, locale = language)
+        }
     }
+    if (is.null(minDate) == FALSE) {
+        dates[dates < as.POSIXct(minDate)] <- NA
+    }
+    if (is.null(maxDate) == FALSE) {
+        dates[dates > as.POSIXct(maxDate)] <- NA
+    }
+    return(dates)
 }
 
 #' Merge alternative sets of dates for a given dataset

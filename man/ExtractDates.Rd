@@ -4,9 +4,10 @@
 \alias{ExtractDates}
 \title{Extracts dates from a vector of html files}
 \usage{
-ExtractDates(articlesHtml, dateFormat = "dmY", language = "english",
-  customString = "", minDate = NULL, maxDate = NULL,
-  removeEverythingBefore = NULL, keepAllString = FALSE,
+ExtractDates(articlesHtml, dateFormat = "dmy", divClass = NULL,
+  spanClass = NULL, customXpath = NULL, language = "english",
+  customString = "", minDate = NULL, maxDate = NULL, encoding = NULL,
+  keepAllString = FALSE, removeEverythingBefore = NULL,
   exportParameters = TRUE, nameOfProject = NULL, nameOfWebsite = NULL)
 }
 \arguments{
@@ -18,9 +19,13 @@ ExtractDates(articlesHtml, dateFormat = "dmY", language = "english",
 
 \item{minDate, }{maxDate Minimum and maximum possible dates in the format year-month-date, e.g. "2007-06-24". Introduces NA in the place of impossibly high or low dates.}
 
+\item{encoding}{Defaults to NULL. If source is not in UTF, encoding can be specified here for conversion. A list of valid values can be found using iconvlist().}
+
 \item{keepAllString}{Logical, defaults to FALSE. If TRUE, it directly tries to parse the date with the given dateFormat, without trying to polish the string provided accordingly.}
 
-\item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. Required for storing export parameters (with exportParameters = TRUE).}
+\item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. Defaults to NULL, required for storing export parameters (with exportParameters = TRUE). This can be left blank if previously set with SetCastarter(nameOfProject = "nameOfProject", nameOfWebsite = "nameOfWebsite").}
+
+\item{nameOfWebsite}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder. Defaults to NULL, required for storing export parameters (with exportParameters = TRUE). This can be left blank if previously set with SetCastarter(nameOfProject = "nameOfProject", nameOfWebsite = "nameOfWebsite").}
 }
 \value{
 A vector of the POSIXct class.
