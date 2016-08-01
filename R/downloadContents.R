@@ -93,9 +93,9 @@ DownloadContents <- function(links, type = "articles", articlesHtml = NULL, size
         }
     }
     if (type=="articles") {
-        file.create(file.path(nameOfProject, nameOfWebsite, "Logs", paste(Sys.Date(), "Missing articles downloaded.txt", sep = " - ")))
+        file.create(file.path(nameOfProject, nameOfWebsite, "Logs", paste(Sys.Date(), "Articles downloaded.txt", sep = " - ")))
     } else if (type=="index") {
-        file.create(file.path(nameOfProject, nameOfWebsite, "Logs", paste(Sys.Date(), "Missing index files downloaded.txt", sep = " - ")))
+        file.create(file.path(nameOfProject, nameOfWebsite, "Logs", paste(Sys.Date(), "Index files downloaded.txt", sep = " - ")))
     }
     if (articlesHtmlProvided == TRUE) {
         articlesHtml
