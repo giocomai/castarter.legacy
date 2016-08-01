@@ -18,7 +18,7 @@
 #' indexLinks <- CreateLinks("http://www.example.com/news/")
 CreateLinks <- function(linkFirstChunk, linkSecondChunk = NULL, startPage = 1, endPage = 10, increaseBy = 1, dateFormat = NULL, 
                         firstYear = "", lastYear = "", leadingZero = TRUE, startDate = "", endDate = "", sortIndexLinks = FALSE, dateSeparator = "/", export = FALSE, 
-                        reversedOrder = FALSE, exportParameters = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
+                        reversedOrder = FALSE, exportParameters = TRUE, nameOfProject = NULL, nameOfWebsite = NULL) {
     if (gtools::invalid(nameOfProject) == TRUE) {
         nameOfProject <- CastarterOptions("nameOfProject")
     }

@@ -12,7 +12,7 @@
 #' @export
 #' @examples
 #' dates <- ExtractDates(articlesHtml)
-ExtractDates <- function(articlesHtml, dateFormat = "dmY", language = "english", customString = "", minDate = NULL, maxDate = NULL, removeEverythingBefore = NULL, keepAllString = FALSE, exportParameters = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
+ExtractDates <- function(articlesHtml, dateFormat = "dmY", language = "english", customString = "", minDate = NULL, maxDate = NULL, removeEverythingBefore = NULL, keepAllString = FALSE, exportParameters = TRUE, nameOfProject = NULL, nameOfWebsite = NULL) {
     if (gtools::invalid(nameOfProject) == TRUE) {
         nameOfProject <- CastarterOptions("nameOfProject")
     }
@@ -182,7 +182,7 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", language = "english",
 #' @export
 #' @examples
 #' dates <- ExtractDatesXpath(articlesHtml)
-ExtractDatesXpath <- function(articlesHtml, dateFormat = "dmy", divClass = NULL, spanClass = NULL, customXpath = NULL, language = "english", customString = "", minDate = NULL, maxDate = NULL, encoding = NULL, keepAllString = FALSE, exportParameters = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
+ExtractDatesXpath <- function(articlesHtml, dateFormat = "dmy", divClass = NULL, spanClass = NULL, customXpath = NULL, language = "english", customString = "", minDate = NULL, maxDate = NULL, encoding = NULL, keepAllString = FALSE, exportParameters = TRUE, nameOfProject = NULL, nameOfWebsite = NULL) {
     if (gtools::invalid(nameOfProject) == TRUE) {
         nameOfProject <- CastarterOptions("nameOfProject")
     }
@@ -313,7 +313,7 @@ MergeDates <- function(dates1, dates2, dates3 = "", minDate = "", maxDate = "") 
 #' @export
 #' @examples
 #' titles <- ExtractTitles(articlesHtml)
-ExtractTitles <- function(articlesHtml = NULL, articlesLinks = "", titlesExtractMethod = "indexLink", removePunctuation = FALSE, onlyStandardCharacters = FALSE, removeString = NULL, removeEverythingAfter = NULL, customXpath = "", maxCharacters = NULL, exportParameters = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
+ExtractTitles <- function(articlesHtml = NULL, articlesLinks = "", titlesExtractMethod = "indexLink", removePunctuation = FALSE, onlyStandardCharacters = FALSE, removeString = NULL, removeEverythingAfter = NULL, customXpath = "", maxCharacters = NULL, exportParameters = TRUE, nameOfProject = NULL, nameOfWebsite = NULL) {
     if (gtools::invalid(nameOfProject) == TRUE) {
         nameOfProject <- CastarterOptions("nameOfProject")
     }

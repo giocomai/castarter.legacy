@@ -8,7 +8,7 @@ CreateLinks(linkFirstChunk, linkSecondChunk = NULL, startPage = 1,
   endPage = 10, increaseBy = 1, dateFormat = NULL, firstYear = "",
   lastYear = "", leadingZero = TRUE, startDate = "", endDate = "",
   sortIndexLinks = FALSE, dateSeparator = "/", export = FALSE,
-  reversedOrder = FALSE, exportParameters = FALSE, nameOfProject = NULL,
+  reversedOrder = FALSE, exportParameters = TRUE, nameOfProject = NULL,
   nameOfWebsite = NULL)
 }
 \arguments{

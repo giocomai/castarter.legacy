@@ -7,7 +7,7 @@
 ExtractDatesXpath(articlesHtml, dateFormat = "dmy", divClass = NULL,
   spanClass = NULL, customXpath = NULL, language = "english",
   customString = "", minDate = NULL, maxDate = NULL, encoding = NULL,
-  keepAllString = FALSE, exportParameters = FALSE, nameOfProject = NULL,
+  keepAllString = FALSE, exportParameters = TRUE, nameOfProject = NULL,
   nameOfWebsite = NULL)
 }
 \arguments{
