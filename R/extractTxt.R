@@ -3,6 +3,7 @@
 #' Extracts textual contents from a vector of html files. 
 #'  
 #' @param articlesHtml A character vector of html files.
+#' @param metadata Defaults to NULL. A data.frame presumably created with ExportMetadata() including information on all articles. Number of rows must correspond to the number of articles to be elaborated. This is required when export == TRUE, in order to provide meaningful filenames.
 #' @param keepEverything Logical. If TRUE, the functions calls the boilerpipeR::KeepEverythingExtractor from boilerpipeR, instead of boilerpipeR::ArticleExtractor.
 #' @param textToBeRemoved A character vector of one or more strings. Provided strings are removed from each article. 
 #' @param export Logical, defaults to TRUE. If TRUE, textual contents are saved as individual txt files in a dedicated folder. Filename is based on the medatadata.

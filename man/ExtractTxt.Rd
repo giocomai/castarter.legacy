@@ -14,6 +14,8 @@ ExtractTxt(articlesHtml, metadata = NULL, export = FALSE,
 \arguments{
 \item{articlesHtml}{A character vector of html files.}
 
+\item{metadata}{Defaults to NULL. A data.frame presumably created with ExportMetadata() including information on all articles. Number of rows must correspond to the number of articles to be elaborated. This is required when export == TRUE, in order to provide meaningful filenames.}
+
 \item{export}{Logical, defaults to TRUE. If TRUE, textual contents are saved as individual txt files in a dedicated folder. Filename is based on the medatadata.}
 
 \item{maxTitleCharacters}{Maximum number of characters allowed in the title. Defaults to 80.}
