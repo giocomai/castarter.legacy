@@ -3,8 +3,8 @@
 #' Creates all the standard folders required by a 'castarter' project.
 #' @export
 #' @examples
-#' CreateFolderStructure(nameOfProject, nameOfWebsite)
-CreateFolderStructure <- function(nameOfProject = NULL, nameOfWebsite = NULL) {
+#' CreateFolders(nameOfProject, nameOfWebsite)
+CreateFolders <- function(nameOfProject = NULL, nameOfWebsite = NULL) {
     if (gtools::invalid(nameOfProject) == TRUE) {
         nameOfProject <- CastarterOptions("nameOfProject")
     }
