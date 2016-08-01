@@ -25,8 +25,8 @@ ExtractTxt <- function(articlesHtml, metadata = NULL, export = FALSE, maxTitleCh
         stop("If exportParameters == TRUE, both nameOfProject and nameOfWebsite must be defined either as parameters or previously with .")    
     }
     if (exportParameters == TRUE) {
-        args <- c("exportExtractTxt", "maxTitleCharacters", "textToBeRemovedExtractTxt", "divClassExtractTxt", "divIDExtractTxt", "removeEverythingAfterExtractTxt", "removeEverythingBeforeExtractTxt", "removePunctuationInFilename", "keepEverything")
-        param <- list(export, maxTitleCharacters, paste0(textToBeRemoved, collapse = "§§§"), divClass, divID, removeEverythingAfter, removeEverythingBefore, removePunctuationInFilename, keepEverything)
+        args <- c("exportExtractTxt", "maxTitleCharacters", "textToBeRemovedExtractTxt", "divClassExtractTxt", "divIDExtractTxt", "removeEverythingAfterExtractTxt", "removeEverythingBeforeExtractTxt", "removePunctuationInFilename", "keepEverything", "removeTitleFromTxt")
+        param <- list(export, maxTitleCharacters, paste0(textToBeRemoved, collapse = "§§§"), divClass, divID, removeEverythingAfter, removeEverythingBefore, removePunctuationInFilename, keepEverything, removeTitleFromTxt)
         for (i in 1:length(param)) {
             if (is.null(param[[i]])==TRUE) {
                 param[[i]] <- "NULL"
