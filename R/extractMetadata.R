@@ -494,12 +494,12 @@ CreateDatasetFromHtml <- function(nameOfProject = NULL, nameOfWebsite = NULL, ar
 
 #' Exports metadata
 #' 
-#' Exports metadata to a csv file.
+#' Exports metadata to a vector, csv or xlsx file.
 #'  
 #' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
 #' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
 #' @param exportXlsx If equal to TRUE, exports the complete dataset in the .xlsx file format in the Dataset sub-folder.
-#' @return A vector of the POSIXct class. 
+#' @return A vector of the data.frame class. 
 #' @export
 #' @examples
 #' metadata <- ExportMetadata(nameOfProject, nameOfWebsite, dates, articlesId, titles, language, articlesLinks)
@@ -527,9 +527,9 @@ ExportMetadata <- function(dates, articlesId, titles, language, articlesLinks, e
     if (accordingToDate == TRUE) {
         metadata <- metadata[order(metadata$dates), ]
     }
-    write.csv(metadata, file = file.path(nameOfProject, nameOfWebsite, paste(nameOfWebsite, "metadata.csv")), row.names = FALSE)
+    write.csv(metadata, file = file.path(nameOfProject, nameOfWebsite, "Dataset", paste(Sys.Date(), nameOfWebsite, "metadata.csv", sep = " - ")), row.names = FALSE)
     if (exportXlsx == TRUE) {
-        xlsx::write.xlsx(metadata, file = file.path(nameOfProject, nameOfWebsite, paste(nameOfWebsite, "metadata.xlsx")), row.names = FALSE)
+        xlsx::write.xlsx(metadata, file = file.path(nameOfProject, nameOfWebsite, "Dataset", paste(Sys.Date(), nameOfWebsite, "metadata.xlsx", sep = " - ")), row.names = FALSE)
     }
     metadata
 } 

@@ -17,10 +17,10 @@ ExportMetadata(dates, articlesId, titles, language, articlesLinks,
 \item{nameOfWebsite}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
 }
 \value{
-A vector of the POSIXct class.
+A vector of the data.frame class.
 }
 \description{
-Exports metadata to a csv file.
+Exports metadata to a vector, csv or xlsx file.
 }
 \examples{
 metadata <- ExportMetadata(nameOfProject, nameOfWebsite, dates, articlesId, titles, language, articlesLinks)
