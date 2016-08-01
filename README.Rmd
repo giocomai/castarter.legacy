@@ -56,8 +56,8 @@ setwd("/path/to/folder/")
 This step is of course optional.
 
 Then, it is time to create the folder structure where all outputs will be saved:
-```{r CreateFolderStructure, eval=FALSE, include=TRUE}
-CreateFolderStructure()
+```{r CreateFolders, eval=FALSE, include=TRUE}
+CreateFolders()
 ```
 This creates the following folders in the current working directory:
 
@@ -90,12 +90,20 @@ Clicking on the link to the last available page, at the time of this writing, sh
 http://www.europarl.europa.eu/news/en/news-room/press-release?start=5130
 
 There is clearly a pattern: each page shows 10 press releases, and as we go back in time, the URLs "tells" the content management system to skip the first x number of press releases before starting. This makes it easy to create the links to these index pages. In `castarter`, this can be done by using the following function:
-``` {r CreateLinks}
+``` {r CreateLinks, eval=FALSE, include=TRUE}
 indexLinks <- CreateLinks(
     linkFirstChunk = "http://www.europarl.europa.eu/news/en/news-room/press-release?start=",
     startPage = 0,
     endPage = 5130,
     increaseBy = 10)
+```
+``` {r CreateLinksEvalutate, eval=TRUE, include=FALSE}
+indexLinks <- CreateLinks(
+    linkFirstChunk = "http://www.europarl.europa.eu/news/en/news-room/press-release?start=",
+    startPage = 0,
+    endPage = 5130,
+    increaseBy = 10, 
+    exportParameters = FALSE)
 ```
 N.B. Another frequently found way for websites to provide access to their archives is by creating pages with dates directly in their URL. If, for example, a website offers its contents in the form of http://www.example.com/archive/2015-10-22, then it would be possible to generate the links for all the dates, say, between January 2012 and December 2015, with the following parameters: `CreateLinks(linkFirstChunk = "http://www.example.com/", startDate = "2012-01-01", endDate = "2015-12-31", dateSeparator = "-")`
 

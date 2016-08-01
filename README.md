@@ -1,7 +1,7 @@
 An introduction to 'castarter' - content analysis starter toolkit for R
 ================
 Giorgio Comai
-2016-07-31
+2016-08-01
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 Introduction
@@ -61,7 +61,7 @@ This step is of course optional.
 Then, it is time to create the folder structure where all outputs will be saved:
 
 ``` r
-CreateFolderStructure()
+CreateFolders()
 ```
 
 This creates the following folders in the current working directory:
