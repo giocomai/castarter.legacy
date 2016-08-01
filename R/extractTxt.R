@@ -14,12 +14,38 @@
 #' @export
 #' @examples
 #' articlesTxt <- ExtractTxt(articlesHtml, metadata)
-ExtractTxt <- function(articlesHtml, metadata = NULL, export = FALSE, maxTitleCharacters = 80, textToBeRemoved = NULL, divClass = NULL, divID = NULL, removeEverythingAfter = NULL, removeEverythingBefore = NULL, removePunctuationInFilename = TRUE, keepEverything = FALSE, exportParameters = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
+ExtractTxt <- function(articlesHtml, metadata = NULL, export = FALSE, maxTitleCharacters = 80, textToBeRemoved = NULL, divClass = NULL, divID = NULL, removeEverythingAfter = NULL, removeEverythingBefore = NULL, removePunctuationInFilename = TRUE, removeTitleFromTxt = FALSE, titles = NULL, keepEverything = FALSE, exportParameters = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
     if (gtools::invalid(nameOfProject) == TRUE) {
         nameOfProject <- CastarterOptions("nameOfProject")
     }
     if (gtools::invalid(nameOfWebsite) == TRUE) {
         nameOfWebsite <- CastarterOptions("nameOfWebsite")
+    }
+    if (exportParameters == TRUE && exists("nameOfProject") == FALSE | exportParameters == TRUE && exists("nameOfWebsite") == FALSE) {
+        stop("If exportParameters == TRUE, both nameOfProject and nameOfWebsite must be defined either as parameters or previously with .")    
+    }
+    if (exportParameters == TRUE) {
+        args <- c("exportExtractTxt", "maxTitleCharacters", "textToBeRemovedExtractTxt", "divClassExtractTxt", "divIDExtractTxt", "removeEverythingAfterExtractTxt", "removeEverythingBeforeExtractTxt", "removePunctuationInFilename", "keepEverything")
+        param <- list(export, maxTitleCharacters, paste0(textToBeRemoved, collapse = "§§§"), divClass, divID, removeEverythingAfter, removeEverythingBefore, removePunctuationInFilename, keepEverything)
+        for (i in 1:length(param)) {
+            if (is.null(param[[i]])==TRUE) {
+                param[[i]] <- "NULL"
+            }
+        }
+        param <- unlist(param)
+        updateParametersTemp <- data.frame(args, param, stringsAsFactors = FALSE)
+        if (file.exists(base::file.path(nameOfProject, nameOfWebsite, "Logs", paste(nameOfWebsite, "updateParameters.csv", sep = " - "))) == TRUE) {
+            updateParameters <- utils::read.table(base::file.path(nameOfProject, nameOfWebsite, "Logs", paste(nameOfWebsite, "updateParameters.csv", sep = " - ")), stringsAsFactors = FALSE)
+            for (i in 1:length(updateParametersTemp$args)) {
+                updateParameters$param[updateParameters$args == updateParametersTemp$args[i]] <- updateParametersTemp$param[i]
+                if (is.element(updateParametersTemp$args[i], updateParameters$args) == FALSE) {
+                    updateParameters <- rbind(updateParameters, updateParametersTemp[i,] )
+                }
+            }
+        } else {
+            updateParameters <- updateParametersTemp 
+        }
+        write.table(updateParameters, file = base::file.path(nameOfProject, nameOfWebsite, "Logs", paste(nameOfWebsite, "updateParameters.csv", sep = " - ")))
     }
     numberOfArticles <- length(articlesHtml)
     articlesTxt <- rep(NA, numberOfArticles)
@@ -64,6 +90,18 @@ ExtractTxt <- function(articlesHtml, metadata = NULL, export = FALSE, maxTitleCh
             articlesTxt[i] <- articleTxt
         }
     }
+    if (removeTitleFromTxt == TRUE) {
+        if (is.null(titles) == TRUE) {
+            if (is.null(metadata) == TRUE) {
+                stop("When removeTitleFromTxt, either metadata or titles must be provided.")
+            } else {
+                titles <- metadata$titles   
+            }
+        }
+        for (i in seq_along(articlesTxt)) {
+            articlesTxt[i] <- base::sub(pattern = titles[i], replacement = "", x = articlesTxt[i], fixed = TRUE)
+        }
+    }
     if (is.null(removeEverythingAfter) == FALSE) {
         articlesTxt <- base::gsub(base::paste0(removeEverythingAfter, ".*"), "", articlesTxt, fixed = FALSE)
     }
@@ -79,29 +117,6 @@ ExtractTxt <- function(articlesHtml, metadata = NULL, export = FALSE, maxTitleCh
         for (i in 1:length(articlesTxt)) {
             base::write(articlesTxt[i], file = txtFilenames[i])
         }
-    }
-    if (exportParameters == TRUE) {
-        args <- c("exportExtractTxt", "maxTitleCharacters", "textToBeRemovedExtractTxt", "divClassExtractTxt", "divIDExtractTxt", "removeEverythingAfterExtractTxt", "removeEverythingBeforeExtractTxt", "removePunctuationInFilename", "keepEverything")
-        param <- list(export, maxTitleCharacters, paste0(textToBeRemoved, collapse = "§§§"), divClass, divID, removeEverythingAfter, removeEverythingBefore, removePunctuationInFilename, keepEverything)
-        for (i in 1:length(param)) {
-            if (is.null(param[[i]])==TRUE) {
-                param[[i]] <- "NULL"
-            }
-        }
-        param <- unlist(param)
-        updateParametersTemp <- data.frame(args, param, stringsAsFactors = FALSE)
-        if (file.exists(base::file.path(nameOfProject, nameOfWebsite, "Logs", paste(nameOfWebsite, "updateParameters.csv", sep = " - "))) == TRUE) {
-            updateParameters <- utils::read.table(base::file.path(nameOfProject, nameOfWebsite, "Logs", paste(nameOfWebsite, "updateParameters.csv", sep = " - ")), stringsAsFactors = FALSE)
-            for (i in 1:length(updateParametersTemp$args)) {
-                updateParameters$param[updateParameters$args == updateParametersTemp$args[i]] <- updateParametersTemp$param[i]
-                if (is.element(updateParametersTemp$args[i], updateParameters$args) == FALSE) {
-                    updateParameters <- rbind(updateParameters, updateParametersTemp[i,] )
-                }
-            }
-        } else {
-            updateParameters <- updateParametersTemp 
-        }
-        write.table(updateParameters, file = base::file.path(nameOfProject, nameOfWebsite, "Logs", paste(nameOfWebsite, "updateParameters.csv", sep = " - ")))
     }
     articlesTxt
 } 
