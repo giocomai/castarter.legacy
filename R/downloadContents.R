@@ -109,15 +109,13 @@ DownloadContents <- function(links, type = "articles", articlesHtml = NULL, size
 #'  
 #' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
 #' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
-#' @return By default, returns nothing, used for its side effects (downloads html files in relevant folder). Download files can then be imported in a vector with the function ImportHtml. 
+#' @return A vector of Html files. As a side effect, html files are stored in the IndexHtml folder.
 #' @export
 #' @examples
 #' DownloadContentsForm(links)
 
-DownloadContentsForm <- function(linkFirstChunk, firstYear = "", lastYear = "", dateSeparator = "/", dateBy = "months", 
+DownloadContentsForm <- function(linkFirstChunk, startDate, endDate, dateSeparator = "-", dateBy = "months", 
                                  start = 1, nameOfProject, nameOfWebsite) {
-    startDate <- paste(firstYear, "01", "01", sep = dateSeparator)
-    endDate <- paste(lastYear, "12", "31", sep = dateSeparator)
     listOfDates <- seq(as.Date(startDate, "%Y-%m-%d"), as.Date(endDate, "%Y-%m-%d"), by = dateBy)
     listOfDates <- c(listOfDates, as.Date(endDate, "%Y-%m-%d"))
     numberOfIndexPages <- length(listOfDates) - 1

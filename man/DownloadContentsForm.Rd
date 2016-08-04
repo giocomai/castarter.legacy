@@ -4,9 +4,8 @@
 \alias{DownloadContentsForm}
 \title{Downloads html pages that are loaded through a web form.}
 \usage{
-DownloadContentsForm(linkFirstChunk, firstYear = "", lastYear = "",
-  dateSeparator = "/", dateBy = "months", start = 1, nameOfProject,
-  nameOfWebsite)
+DownloadContentsForm(linkFirstChunk, startDate, endDate, dateSeparator = "-",
+  dateBy = "months", start = 1, nameOfProject, nameOfWebsite)
 }
 \arguments{
 \item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
@@ -14,7 +13,7 @@ DownloadContentsForm(linkFirstChunk, firstYear = "", lastYear = "",
 \item{nameOfWebsite}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
 }
 \value{
-By default, returns nothing, used for its side effects (downloads html files in relevant folder). Download files can then be imported in a vector with the function ImportHtml.
+A vector of Html files. As a side effect, html files are stored in the IndexHtml folder.
 }
 \description{
 Downloads html pages that are loaded through a web form.
