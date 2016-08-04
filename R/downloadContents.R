@@ -114,8 +114,13 @@ DownloadContents <- function(links, type = "articles", articlesHtml = NULL, size
 #' @examples
 #' DownloadContentsForm(links)
 
-DownloadContentsForm <- function(linkFirstChunk, startDate, endDate, dateSeparator = "-", dateBy = "months", 
-                                 start = 1, nameOfProject, nameOfWebsite) {
+DownloadContentsForm <- function(linkFirstChunk, startDate, endDate, dateSeparator = "-", dateBy = "months", start = 1, nameOfProject = NULL, nameOfWebsite = NULL) {
+    if (gtools::invalid(nameOfProject) == TRUE) {
+        nameOfProject <- CastarterOptions("nameOfProject")
+    }
+    if (gtools::invalid(nameOfWebsite) == TRUE) {
+        nameOfWebsite <- CastarterOptions("nameOfWebsite")
+    }
     listOfDates <- seq(as.Date(startDate, "%Y-%m-%d"), as.Date(endDate, "%Y-%m-%d"), by = dateBy)
     listOfDates <- c(listOfDates, as.Date(endDate, "%Y-%m-%d"))
     numberOfIndexPages <- length(listOfDates) - 1

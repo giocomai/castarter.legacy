@@ -5,7 +5,8 @@
 \title{Downloads html pages that are loaded through a web form.}
 \usage{
 DownloadContentsForm(linkFirstChunk, startDate, endDate, dateSeparator = "-",
-  dateBy = "months", start = 1, nameOfProject, nameOfWebsite)
+  dateBy = "months", start = 1, nameOfProject = NULL,
+  nameOfWebsite = NULL)
 }
 \arguments{
 \item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
