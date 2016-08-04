@@ -128,7 +128,7 @@ DownloadContentsForm <- function(linkFirstChunk, startDate, endDate, dateSeparat
     indexHtmlFilenames <- file.path(nameOfProject, nameOfWebsite, "IndexHtml", paste0(listOfnumberOfIndexPages, ".html"))
     indexPagesHtml <- vector()
     for (i in start:numberOfIndexPages) {
-        indexPagesHtml[i] <- postForm(linkFirstChunk, datefrom = listOfDates[i], dateto = listOfDates[i + 1])
+        indexPagesHtml[i] <- RCurl::postForm(linkFirstChunk, datefrom = listOfDates[i], dateto = listOfDates[i + 1])
         print(paste("Downloading index page", i, "of", numberOfIndexPages), quote = FALSE)
         write(indexPagesHtml[i], file = indexHtmlFilenames[i])
     }
