@@ -101,3 +101,35 @@ DownloadContents <- function(links, type = "articles", articlesHtml = NULL, size
         articlesHtml
     }
 } 
+
+
+#' Downloads html pages that are loaded through a web form. 
+#' 
+#' Downloads html pages that are loaded through a web form. 
+#'  
+#' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
+#' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
+#' @return By default, returns nothing, used for its side effects (downloads html files in relevant folder). Download files can then be imported in a vector with the function ImportHtml. 
+#' @export
+#' @examples
+#' DownloadContentsForm(links)
+
+DownloadContentsForm <- function(linkFirstChunk, firstYear = "", lastYear = "", dateSeparator = "/", dateBy = "months", 
+                                 start = 1, nameOfProject, nameOfWebsite) {
+    startDate <- paste(firstYear, "01", "01", sep = dateSeparator)
+    endDate <- paste(lastYear, "12", "31", sep = dateSeparator)
+    listOfDates <- seq(as.Date(startDate, "%Y-%m-%d"), as.Date(endDate, "%Y-%m-%d"), by = dateBy)
+    listOfDates <- c(listOfDates, as.Date(endDate, "%Y-%m-%d"))
+    numberOfIndexPages <- length(listOfDates) - 1
+    listOfnumberOfIndexPages <- 1:numberOfIndexPages
+    indexHtmlFilenames <- file.path(nameOfProject, nameOfWebsite, "IndexHtml", paste0(listOfnumberOfIndexPages, ".html"))
+    indexPagesHtml <- vector()
+    for (i in start:numberOfIndexPages) {
+        indexPagesHtml[i] <- postForm(linkFirstChunk, datefrom = listOfDates[i], dateto = listOfDates[i + 1])
+        print(paste("Downloading index page", i, "of", numberOfIndexPages), quote = FALSE)
+        write(indexPagesHtml[i], file = indexHtmlFilenames[i])
+    }
+    dateDownloadedIndex <- date()
+    file.create(file.path(nameOfProject, nameOfWebsite, "Logs", paste(Sys.Date(), "Index downloaded.txt", sep = " - ")))
+    indexPagesHtml
+} 

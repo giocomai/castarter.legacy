@@ -108,23 +108,3 @@ CreateLinks <- function(linkFirstChunk, linkSecondChunk = NULL, startPage = 1, e
         indexLinks
     }
 }
-
-DownloadIndexPagesForm <- function(nameOfProject, nameOfWebsite, linkFirstChunk, firstYear = "", lastYear = "", dateSeparator = "/", dateBy = "months", 
-    start = 1) {
-    startDate <- paste(firstYear, "01", "01", sep = dateSeparator)
-    endDate <- paste(lastYear, "12", "31", sep = dateSeparator)
-    listOfDates <- seq(as.Date(startDate, "%Y-%m-%d"), as.Date(endDate, "%Y-%m-%d"), by = dateBy)
-    listOfDates <- c(listOfDates, as.Date(endDate, "%Y-%m-%d"))
-    numberOfIndexPages <- length(listOfDates) - 1
-    listOfnumberOfIndexPages <- 1:numberOfIndexPages
-    indexHtmlFilenames <- file.path(nameOfProject, nameOfWebsite, "IndexHtml", paste0(listOfnumberOfIndexPages, ".html"))
-    indexPagesHtml <- vector()
-    for (i in start:numberOfIndexPages) {
-        indexPagesHtml[i] <- postForm(linkFirstChunk, datefrom = listOfDates[i], dateto = listOfDates[i + 1])
-        print(paste("Downloading index page", i, "of", numberOfIndexPages), quote = FALSE)
-        write(indexPagesHtml[i], file = indexHtmlFilenames[i])
-    }
-    dateDownloadedIndex <- date()
-    file.create(file.path(nameOfProject, nameOfWebsite, "Logs", paste(Sys.Date(), "Index downloaded.txt", sep = " - ")))
-    indexPagesHtml
-} 
