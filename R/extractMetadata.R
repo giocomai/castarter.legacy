@@ -48,13 +48,13 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmy", divClass = NULL, span
         write.table(updateParameters, file = base::file.path(nameOfProject, nameOfWebsite, "Logs", paste(nameOfWebsite, "updateParameters.csv", sep = " - ")))
     }
     numberOfArticles <- length(articlesHtml)
-    datesTxt <- rep(NA, numberOfArticles)
     if (is.null(encoding) == FALSE) {
         articlesHtml <- iconv(articlesHtml, from = encoding, to = "UTF-8")
     } else {
         articlesHtml <- iconv(articlesHtml, to = "UTF-8")
     }
     if (gtools::invalid(divClass) == FALSE) {
+        datesTxt <- rep(NA, numberOfArticles)
         for (i in 1:numberOfArticles) {
             if (articlesHtml[i] != "") {
                 articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T, encoding = encoding)
@@ -68,6 +68,7 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmy", divClass = NULL, span
         }
     }
     if (gtools::invalid(spanClass)==FALSE) {
+        datesTxt <- rep(NA, numberOfArticles)
         for (i in 1:numberOfArticles) {
             articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T)
             tempStringXml <- XML::xpathSApply(articleHtmlParsed, paste0("//span[@class='", spanClass, "']"), XML::xmlValue)
@@ -80,6 +81,7 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmy", divClass = NULL, span
         }
     }
     if (gtools::invalid(customXpath) == FALSE) {
+        datesTxt <- rep(NA, numberOfArticles)
         for (i in 1:numberOfArticles) {
             if (articlesHtml[i] != "") {
                 articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T)
