@@ -7,8 +7,9 @@
 ExtractDates(articlesHtml, dateFormat = "dmy", divClass = NULL,
   spanClass = NULL, customXpath = NULL, language = Sys.getlocale(category
   = "LC_TIME"), customString = "", minDate = NULL, maxDate = NULL,
-  encoding = NULL, keepAllString = FALSE, removeEverythingBefore = NULL,
-  exportParameters = TRUE, nameOfProject = NULL, nameOfWebsite = NULL)
+  encoding = "UTF-8", keepAllString = FALSE,
+  removeEverythingBefore = NULL, exportParameters = TRUE,
+  nameOfProject = NULL, nameOfWebsite = NULL)
 }
 \arguments{
 \item{articlesHtml}{A character vector of html files.}
