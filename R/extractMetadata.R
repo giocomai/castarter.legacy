@@ -69,6 +69,7 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmy", divClass = NULL, span
     }
     if (gtools::invalid(spanClass)==FALSE) {
         datesTxt <- rep(NA, numberOfArticles)
+        for (i in 1:numberOfArticles) {
             articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T)
             tempStringXml <- XML::xpathSApply(articleHtmlParsed, paste0("//span[@class='", spanClass, "']"), XML::xmlValue)
             if (length(tempStringXml) == 0) {
