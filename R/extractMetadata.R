@@ -95,7 +95,7 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmy", divClass = NULL, span
     }
     if (length(datesTxt) == 1 & is.na(datesTxt[1]) == TRUE) {
     } else {
-        if (exists(datesTxt) == TRUE) {
+        if (exists("datesTxt") == TRUE) {
             articlesHtml <- datesTxt
         }
         numberOfArticles <- length(articlesHtml)
