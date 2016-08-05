@@ -537,10 +537,11 @@ ExportDataset <- function(articlesTxt, metadata, exportRdata = TRUE, exportCsv =
 #' @examples
 #' string <- ExtractDiv(articlesHtml, divClass = "nameOfDiv")
 ExtractXpath <- function(articlesHtml = NULL, divClass = NULL, spanClass = NULL, customXpath = NULL) {
+    txt <- rep(NA, length(articlesHtml))
     if (gtools::invalid(divClass) == FALSE) {
-        for (i in 1:numberOfArticles) {
+        for (i in seq_along(articlesHtml)) {
             if (articlesHtml[i] != "") {
-                articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T, encoding = encoding)
+                articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T)
                 if (length(XML::xpathSApply(articleHtmlParsed, paste0("//div[@class='", divClass, "']"), XML::xmlValue)) == 0) {
                     txt[i] <- NA
                     print(paste("String in article with ID", i, "could not be extracted."))
@@ -551,7 +552,7 @@ ExtractXpath <- function(articlesHtml = NULL, divClass = NULL, spanClass = NULL,
         }
     }
     if (gtools::invalid(spanClass)==FALSE) {
-        for (i in 1:numberOfArticles) {
+        for (i in seq_along(articlesHtml)) {
             articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T)
             tempStringXml <- XML::xpathSApply(articleHtmlParsed, paste0("//span[@class='", spanClass, "']"), XML::xmlValue)
             if (length(tempStringXml) == 0) {
@@ -563,7 +564,7 @@ ExtractXpath <- function(articlesHtml = NULL, divClass = NULL, spanClass = NULL,
         }
     }
     if (gtools::invalid(customXpath) == FALSE) {
-        for (i in 1:numberOfArticles) {
+        for (i in seq_along(articlesHtml)) {
             if (articlesHtml[i] != "") {
                 articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T)
                 tempStringXml <- XML::xpathSApply(articleHtmlParsed, customXpath, XML::xmlValue)
