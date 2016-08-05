@@ -284,18 +284,24 @@ ExtractTitles <- function(articlesHtml = NULL, articlesLinks = "", titlesExtract
     numberOfArticles <- length(articlesHtml)
     if (titlesExtractMethod == "htmlTitle") {
         for (i in 1:numberOfArticles) {
-            articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T, encoding = "UTF-8")
-            titles[i] <- XML::xpathSApply(articleHtmlParsed, "//title", XML::xmlValue)
+            if (articlesHtml[i]!="") {
+                articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T, encoding = "UTF-8")
+                titles[i] <- XML::xpathSApply(articleHtmlParsed, "//title", XML::xmlValue)
+            }
         }
     } else if (titlesExtractMethod == "htmlH2") {
         for (i in 1:numberOfArticles) {
-            articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T, encoding = "UTF-8")
-            titles[i] <- XML::xpathSApply(articleHtmlParsed, "//h2", XML::xmlValue)
+            if (articlesHtml[i]!="") {
+                articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T, encoding = "UTF-8")
+                titles[i] <- XML::xpathSApply(articleHtmlParsed, "//h2", XML::xmlValue)
+            }
         }
     } else if (titlesExtractMethod == "htmlH1") {
         for (i in 1:numberOfArticles) {
-            articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T, encoding = "UTF-8")
-            titles[i] <- XML::xpathSApply(articleHtmlParsed, "//h1", XML::xmlValue)
+            if (articlesHtml[i]!="") {
+                articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T, encoding = "UTF-8")
+                titles[i] <- XML::xpathSApply(articleHtmlParsed, "//h1", XML::xmlValue)
+            }
         }
     } else if (titlesExtractMethod == "customXpath") {
         for (i in 1:numberOfArticles) {
