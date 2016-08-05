@@ -526,3 +526,55 @@ ExportDataset <- function(articlesTxt, metadata, exportRdata = TRUE, exportCsv =
     }
     dataset
 } 
+
+#' Extracts string included in an html element
+#' 
+#' Extracts string included in an html element
+#'  
+#' @param articlesHtml A character vector of html files.
+#' @return A character vector with the contents of the given div or custom Xpath. 
+#' @export
+#' @examples
+#' string <- ExtractDiv(articlesHtml, divClass = "nameOfDiv")
+ExtractXpath <- function(articlesHtml = NULL, divClass = NULL, spanClass = NULL, customXpath = NULL) {
+    if (gtools::invalid(divClass) == FALSE) {
+        for (i in 1:numberOfArticles) {
+            if (articlesHtml[i] != "") {
+                articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T, encoding = encoding)
+                if (length(XML::xpathSApply(articleHtmlParsed, paste0("//div[@class='", divClass, "']"), XML::xmlValue)) == 0) {
+                    txt[i] <- NA
+                    print(paste("String in article with ID", i, "could not be extracted."))
+                } else {
+                    txt[i] <- XML::xpathSApply(articleHtmlParsed, paste0("//div[@class='", divClass, "']"), XML::xmlValue)
+                }
+            }
+        }
+    }
+    if (gtools::invalid(spanClass)==FALSE) {
+        for (i in 1:numberOfArticles) {
+            articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T)
+            tempStringXml <- XML::xpathSApply(articleHtmlParsed, paste0("//span[@class='", spanClass, "']"), XML::xmlValue)
+            if (length(tempStringXml) == 0) {
+                txt[i] <- NA
+                print(paste("String in article with ID", i, "could not be extracted."))
+            } else {
+                txt[i] <- tempStringXml
+            }
+        }
+    }
+    if (gtools::invalid(customXpath) == FALSE) {
+        for (i in 1:numberOfArticles) {
+            if (articlesHtml[i] != "") {
+                articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T)
+                tempStringXml <- XML::xpathSApply(articleHtmlParsed, customXpath, XML::xmlValue)
+                if (length(tempStringXml) == 0) {
+                    txt[i] <- NA
+                    print(paste("String in article with ID", i, "could not be extracted."))
+                } else {
+                    txt[i] <- tempStringXml
+                }
+            }
+        }
+    }
+    return(txt)
+}
