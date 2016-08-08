@@ -26,7 +26,7 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", divClass = NULL, divI
     }
     if (exportParameters == TRUE) {
         args <- c("dateFormat", "divClassExtractDates", "divIdExtractDates", "spanClassExtractDates", "customExtractDates", "customStringExtractDates", "minDate", "maxDate", "keepAllStringExtractDates")
-        param <- list(dateFormat, divClass, spanClass, customXpath, customString, minDate, maxDate, keepAllString)
+        param <- list(dateFormat, divClass, divId, spanClass, customXpath, customString, minDate, maxDate, keepAllString)
         for (i in 1:length(param)) {
             if (is.null(param[[i]])==TRUE) {
                 param[[i]] <- "NULL"
