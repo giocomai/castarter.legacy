@@ -267,7 +267,7 @@ MergeDates <- function(dates1, dates2, dates3 = "", minDate = "", maxDate = "") 
             dates[i] <- dates3[i]
         }
         if (is.null(minDate) == FALSE & is.null(maxDate) == FALSE) {
-            if (is.na(dates[i]) == FALSE & dates[i] < minDate | is.na(dates[i]) == FALSE & dates[i] > maxDate) {
+            if (is.na(dates[i]) == FALSE & dates[i] < as.POSIXct(minDate) | is.na(dates[i]) == FALSE & dates[i] > as.POSIXct(maxDate)) {
                 dates[i] <- NA
             }
         }
