@@ -4,12 +4,12 @@
 \alias{ExtractDates}
 \title{Extracts dates from a vector of html files}
 \usage{
-ExtractDates(articlesHtml, dateFormat = "dmy", divClass = NULL,
-  spanClass = NULL, customXpath = NULL, language = Sys.getlocale(category
-  = "LC_TIME"), customString = "", minDate = NULL, maxDate = NULL,
-  encoding = "UTF-8", keepAllString = FALSE,
-  removeEverythingBefore = NULL, exportParameters = TRUE,
-  nameOfProject = NULL, nameOfWebsite = NULL)
+ExtractDates(articlesHtml, dateFormat = "dmY", divClass = NULL,
+  divId = NULL, spanClass = NULL, customXpath = NULL,
+  language = Sys.getlocale(category = "LC_TIME"), customString = "",
+  minDate = NULL, maxDate = NULL, encoding = "UTF-8",
+  keepAllString = FALSE, removeEverythingBefore = NULL,
+  exportParameters = TRUE, nameOfProject = NULL, nameOfWebsite = NULL)
 }
 \arguments{
 \item{articlesHtml}{A character vector of html files.}

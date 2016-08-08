@@ -14,7 +14,7 @@
 #' @export
 #' @examples
 #' dates <- ExtractDates(articlesHtml)
-ExtractDates <- function(articlesHtml, dateFormat = "dmY", divClass = NULL, spanClass = NULL, customXpath = NULL, language = Sys.getlocale(category = "LC_TIME"), customString = "", minDate = NULL, maxDate = NULL, encoding = "UTF-8", keepAllString = FALSE, removeEverythingBefore = NULL, exportParameters = TRUE, nameOfProject = NULL, nameOfWebsite = NULL) {
+ExtractDates <- function(articlesHtml, dateFormat = "dmY", divClass = NULL, divId = NULL, spanClass = NULL, customXpath = NULL, language = Sys.getlocale(category = "LC_TIME"), customString = "", minDate = NULL, maxDate = NULL, encoding = "UTF-8", keepAllString = FALSE, removeEverythingBefore = NULL, exportParameters = TRUE, nameOfProject = NULL, nameOfWebsite = NULL) {
     if (gtools::invalid(nameOfProject) == TRUE) {
         nameOfProject <- CastarterOptions("nameOfProject")
     }
@@ -25,7 +25,7 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", divClass = NULL, span
         stop("If exportParameters == TRUE, both nameOfProject and nameOfWebsite must be defined either as parameters or previously with .")    
     }
     if (exportParameters == TRUE) {
-        args <- c("dateFormat", "divClassDatesXpath", "spanClassDatesXpath", "customXpathDates", "customStringDates", "minDate", "maxDate", "keepAllString")
+        args <- c("dateFormat", "divClassExtractDates", "divIdExtractDates", "spanClassExtractDates", "customExtractDates", "customStringExtractDates", "minDate", "maxDate", "keepAllStringExtractDates")
         param <- list(dateFormat, divClass, spanClass, customXpath, customString, minDate, maxDate, keepAllString)
         for (i in 1:length(param)) {
             if (is.null(param[[i]])==TRUE) {
@@ -53,6 +53,21 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", divClass = NULL, span
     } else {
         articlesHtml <- iconv(articlesHtml, to = "UTF-8")
     }
+    if (base::is.null(divId) == FALSE) {
+        datesTxt <- rep(NA, numberOfArticles)
+        for (i in 1:numberOfArticles) {
+            if (articlesHtml[i] != "") {
+                articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T, encoding = "UTF-8")
+                if (length(XML::xpathSApply(articleHtmlParsed, paste0("//div[@id='", divId, "']"), XML::xmlValue)) == 0) {
+                    datesTxt[i] <- NA
+                    print(paste("Date in article with ID", i, "could not be extracted."))
+                } else {
+                    datesTxt[i] <- XML::xpathSApply(articleHtmlParsed, paste0("//div[@id='", divId, "']"), XML::xmlValue)
+                }
+            }
+        }
+    }
+    
     if (gtools::invalid(divClass) == FALSE) {
         datesTxt <- rep(NA, numberOfArticles)
         for (i in 1:numberOfArticles) {
