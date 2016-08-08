@@ -3,7 +3,17 @@
 #' Extracts dates from a vector of html files.
 #'  
 #' @param articlesHtml A character vector of html files.
-#' @param dateFormat A string used to extract the date. Available date formats options include dmY, dby, dBy, dBY, dbY, etc.
+#' @param dateFormat A string expressing the date format. In line with standards (see ?strptime), 'd' stands for day, 'm' stands for month in figures, 'b' for months spelled out as words, 'y' as year without the century, 'Y' as year with four digits. Standard separation marks among parts of the date (e.g. '-', '/', '.') should not be included. The following date formats are available : 
+##' \itemize{
+##'  \item{"dmY"}{: Default.}
+##'  \item{"Ymd"}{: }
+##'  \item{"dbY"}{: }
+##'  \item{"YBd"}{: }
+##'  \item{"dB,Y"}{: }
+##'  \item{"db.'y"}{: }
+##'  \item{"Bd,Y"}{: }
+##'  \item{"xdBY"}{: customString must be provided.}
+##' }
 #' @param minDate, maxDate Minimum and maximum possible dates in the format year-month-date, e.g. "2007-06-24". Introduces NA in the place of impossibly high or low dates.
 #' @param language Provide a language in order to extract name of months. Defaults to the locale currently active in R (usually, the system language). Generic forms such as "english" or "russian", are usually accepted. See ?locales for more details. On linux, you can run system("locale -a", intern = TRUE) to see all available locales.
 #' @param encoding Defaults to NULL. If source is not in UTF, encoding can be specified here for conversion. A list of valid values can be found using iconvlist().

@@ -14,7 +14,17 @@ ExtractDates(articlesHtml, dateFormat = "dmY", divClass = NULL,
 \arguments{
 \item{articlesHtml}{A character vector of html files.}
 
-\item{dateFormat}{A string used to extract the date. Available date formats options include dmY, dby, dBy, dBY, dbY, etc.}
+\item{dateFormat}{A string expressing the date format. In line with standards (see ?strptime), 'd' stands for day, 'm' stands for month in figures, 'b' for months spelled out as words, 'y' as year without the century, 'Y' as year with four digits. Standard separation marks among parts of the date (e.g. '-', '/', '.') should not be included. The following date formats are available : 
+\itemize{
+ \item{"dmY"}{: Default.}
+ \item{"Ymd"}{: }
+ \item{"dbY"}{: }
+ \item{"YBd"}{: }
+ \item{"dB,Y"}{: }
+ \item{"db.'y"}{: }
+ \item{"Bd,Y"}{: }
+ \item{"xdBY"}{: customString must be provided.}
+}}
 
 \item{language}{Provide a language in order to extract name of months. Defaults to the locale currently active in R (usually, the system language). Generic forms such as "english" or "russian", are usually accepted. See ?locales for more details. On linux, you can run system("locale -a", intern = TRUE) to see all available locales.}
 
