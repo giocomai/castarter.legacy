@@ -257,14 +257,16 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", divClass = NULL, divI
 #' @export
 #' @examples
 #' dates <- MergeDates(dates1, dates2)
-MergeDates <- function(dates1, dates2, dates3 = "", minDate = NULL, maxDate = NULL) {
+MergeDates <- function(dates1, dates2, dates3 = NULL, minDate = NULL, maxDate = NULL) {
     dates <- dates1
     for (i in 1:length(dates)) {
         if (is.na(dates[i])) {
             dates[i] <- dates2[i]
         }
-        if (is.na(dates[i])) {
-            dates[i] <- dates3[i]
+        if (is.null(dates3)==FALSE) {
+            if (is.na(dates[i])) {
+                dates[i] <- dates3[i]
+            }
         }
         if (is.null(minDate) == FALSE & is.null(maxDate) == FALSE) {
             if (is.na(dates[i]) == FALSE & dates[i] < as.POSIXct(minDate) | is.na(dates[i]) == FALSE & dates[i] > as.POSIXct(maxDate)) {
