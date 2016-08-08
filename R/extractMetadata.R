@@ -257,7 +257,7 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", divClass = NULL, divI
 #' @export
 #' @examples
 #' dates <- MergeDates(dates1, dates2)
-MergeDates <- function(dates1, dates2, dates3 = "", minDate = "", maxDate = "") {
+MergeDates <- function(dates1, dates2, dates3 = "", minDate = NULL, maxDate = NULL) {
     dates <- dates1
     for (i in 1:length(dates)) {
         if (is.na(dates[i])) {
