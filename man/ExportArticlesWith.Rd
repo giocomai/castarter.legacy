@@ -4,7 +4,7 @@
 \alias{ExportArticlesWith}
 \title{Exports all articles that contain a given term.}
 \usage{
-ExportArticlesWith(dataset, term, nameOfProject = NULL,
+ExportArticlesWith(dataset, term, onlyNaDates = FALSE, nameOfProject = NULL,
   nameOfWebsite = NULL, txt = TRUE, csv = FALSE, xlsx = FALSE,
   data.frame = FALSE, includeOnly = NULL, sortBy = "date")
 }
@@ -12,6 +12,8 @@ ExportArticlesWith(dataset, term, nameOfProject = NULL,
 \item{dataset}{A dataset created with 'castarter'.}
 
 \item{term}{The term that determines which articles are exported.Must be a character vector of length = 1.}
+
+\item{onlyNaDates}{Logical, defaults to FALSE. Used to for troubleshooting dataset.}
 
 \item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
 
