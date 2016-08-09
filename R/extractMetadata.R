@@ -445,11 +445,11 @@ CreateDatasetFromHtml <- function(articlesLinks = NULL,
         args <- c("dateFormat", "divClass_ExtractDates", "spanClass_ExtractDates", "customXpath_ExtractDates", "language_ExtractDates", "removeEverythingBefore_ExtractDates",
                   "titlesExtractMethod", "removeString_ExtractTitles", "removeEverythingAfter_ExtractTitles",
                   "divClass_ExtractTxt", "divId_ExtractTxt", "removeString_ExtractTxt", "removeEverythingAfter_ExtractTxt", "removeEverythingBefore_ExtractTxt",
-                  "language_dataset", "encoding")
+                  "language", "encoding")
         param <- list(dateFormat, divClass_ExtractDates, spanClass_ExtractDates, customXpath_ExtractDates, language_ExtractDates, removeEverythingBefore_ExtractDates,
                       titlesExtractMethod, removeString_ExtractTitles, removeEverythingAfter_ExtractTitles, 
                       divClass_ExtractTxt, divId_ExtractTxt, removeString_ExtractTxt, removeEverythingAfter_ExtractTxt, removeEverythingBefore_ExtractTxt,
-                      language_dataset, encoding)
+                      language, encoding)
         for (i in 1:length(param)) {
             if (is.null(param[[i]])==TRUE) {
                 param[[i]] <- "NULL"
