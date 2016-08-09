@@ -4,14 +4,15 @@
 \alias{CreateDatasetFromHtml}
 \title{Extracts metadata and text from local html files}
 \usage{
-CreateDatasetFromHtml(nameOfProject = NULL, nameOfWebsite = NULL,
-  articlesLinks = NULL, dateFormat = NULL, ExtractDatesXpath = FALSE,
-  customXpathDate = NULL, titlesExtractMethod = "htmlTitle",
-  removeStringTitle = NULL, removeEverythingAfterTitle = NULL,
-  divClassDate = NULL, spanClassDate = NULL, language = NULL,
-  divClassTxt = NULL, divIdTxt = NULL, removeStringText = NULL,
-  encoding = NULL, removeEverythingAfter = NULL,
-  removeEverythingBefore = NULL, removeEverythingBeforeDate = NULL)
+CreateDatasetFromHtml(articlesLinks = NULL, dateFormat = NULL,
+  ExtractDatesXpath = FALSE, customXpathDate = NULL,
+  titlesExtractMethod = "htmlTitle", removeStringTitle = NULL,
+  removeEverythingAfterTitle = NULL, divClassDate = NULL,
+  spanClassDate = NULL, language = NULL, divClassTxt = NULL,
+  divIdTxt = NULL, removeStringText = NULL, encoding = NULL,
+  removeEverythingAfter = NULL, removeEverythingBefore = NULL,
+  removeEverythingBeforeDate = NULL, nameOfProject = NULL,
+  nameOfWebsite = NULL)
 }
 \arguments{
 \item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
@@ -25,6 +26,6 @@ A data.frame with the complete dataset.
 Extracts metadata and text from local html files.
 }
 \examples{
-dataset <- CreateDatasetFromHtml(nameOfProject, nameOfWebsite)
+dataset <- CreateDatasetFromHtml()
 }
 

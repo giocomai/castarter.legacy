@@ -425,8 +425,8 @@ ExtractArticleId <- function(nameOfProject = NULL, nameOfWebsite = NULL, accordi
 #' @return A data.frame with the complete dataset. 
 #' @export
 #' @examples
-#' dataset <- CreateDatasetFromHtml(nameOfProject, nameOfWebsite)
-CreateDatasetFromHtml <- function(nameOfProject = NULL, nameOfWebsite = NULL, articlesLinks = NULL, dateFormat = NULL, ExtractDatesXpath = FALSE, customXpathDate = NULL, titlesExtractMethod = "htmlTitle", removeStringTitle = NULL, removeEverythingAfterTitle = NULL, divClassDate = NULL, spanClassDate = NULL, language = NULL, divClassTxt = NULL, divIdTxt = NULL, removeStringText = NULL, encoding = NULL, removeEverythingAfter = NULL, removeEverythingBefore = NULL, removeEverythingBeforeDate = NULL) {
+#' dataset <- CreateDatasetFromHtml()
+CreateDatasetFromHtml <- function(articlesLinks = NULL, dateFormat = NULL, ExtractDatesXpath = FALSE, customXpathDate = NULL, titlesExtractMethod = "htmlTitle", removeStringTitle = NULL, removeEverythingAfterTitle = NULL, divClassDate = NULL, spanClassDate = NULL, language = NULL, divClassTxt = NULL, divIdTxt = NULL, removeStringText = NULL, encoding = NULL, removeEverythingAfter = NULL, removeEverythingBefore = NULL, removeEverythingBeforeDate = NULL, nameOfProject = NULL, nameOfWebsite = NULL) {
     if (gtools::invalid(nameOfProject) == TRUE) {
         nameOfProject <- CastarterOptions("nameOfProject")
     }
