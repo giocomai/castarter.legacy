@@ -430,7 +430,7 @@ CreateDatasetFromHtml <- function(articlesLinks = NULL,
                                   dateFormat = NULL, divClass_ExtractDates = NULL, spanClass_ExtractDates = NULL, customXpath_ExtractDates = NULL, language_ExtractDates = NULL, removeEverythingBefore_ExtractDates = NULL,
                                   titlesExtractMethod = "htmlTitle", removeString_ExtractTitles = NULL, removeEverythingAfter_ExtractTitles = NULL,
                                   divClass_ExtractTxt = NULL, divId_ExtractTxt = NULL, removeString_ExtractTxt = NULL, removeEverythingAfter_ExtractTxt = NULL, removeEverythingBefore_ExtractTxt = NULL, 
-                                  language_dataset = NULL, encoding = NULL,  
+                                  language = NULL, encoding = NULL,  
                                   exportParameters = TRUE, nameOfProject = NULL, nameOfWebsite = NULL) {
     if (gtools::invalid(nameOfProject) == TRUE) {
         nameOfProject <- CastarterOptions("nameOfProject")

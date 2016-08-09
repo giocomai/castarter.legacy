@@ -12,7 +12,7 @@ CreateDatasetFromHtml(articlesLinks = NULL, dateFormat = NULL,
   removeEverythingAfter_ExtractTitles = NULL, divClass_ExtractTxt = NULL,
   divId_ExtractTxt = NULL, removeString_ExtractTxt = NULL,
   removeEverythingAfter_ExtractTxt = NULL,
-  removeEverythingBefore_ExtractTxt = NULL, language_dataset = NULL,
+  removeEverythingBefore_ExtractTxt = NULL, language = NULL,
   encoding = NULL, exportParameters = TRUE, nameOfProject = NULL,
   nameOfWebsite = NULL)
 }
