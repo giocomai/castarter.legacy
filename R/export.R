@@ -11,9 +11,9 @@
 #' @param data.fram Logical, defaults to FALSE. If TRUE, the function outputs a data frame. If FALSE, function used only for its side effects (i.e. exporting to files)
 #' @export
 #' @examples
-#' ExportArticlesWith(dataset, "example", nameOfProject, nameOfWebsite)
+#' ExportArticlesWith(dataset, "example")
 
-ExportArticlesWith <- function(dataset, term, onlyNaDates = FALSE, nameOfProject = NULL, nameOfWebsite = NULL, txt = TRUE, csv = FALSE, xlsx = FALSE, data.frame = FALSE, includeOnly = NULL, sortBy = "date") {
+ExportArticlesWith <- function(dataset, term, onlyNaDates = FALSE, txt = TRUE, csv = FALSE, xlsx = FALSE, data.frame = FALSE, includeOnly = NULL, sortBy = "date", nameOfProject = NULL, nameOfWebsite = NULL) {
     if (gtools::invalid(nameOfProject) == TRUE) {
         nameOfProject <- CastarterOptions("nameOfProject")
     }

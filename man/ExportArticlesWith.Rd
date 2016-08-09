@@ -4,9 +4,9 @@
 \alias{ExportArticlesWith}
 \title{Exports all articles that contain a given term.}
 \usage{
-ExportArticlesWith(dataset, term, onlyNaDates = FALSE, nameOfProject = NULL,
-  nameOfWebsite = NULL, txt = TRUE, csv = FALSE, xlsx = FALSE,
-  data.frame = FALSE, includeOnly = NULL, sortBy = "date")
+ExportArticlesWith(dataset, term, onlyNaDates = FALSE, txt = TRUE,
+  csv = FALSE, xlsx = FALSE, data.frame = FALSE, includeOnly = NULL,
+  sortBy = "date", nameOfProject = NULL, nameOfWebsite = NULL)
 }
 \arguments{
 \item{dataset}{A dataset created with 'castarter'.}
@@ -15,15 +15,15 @@ ExportArticlesWith(dataset, term, onlyNaDates = FALSE, nameOfProject = NULL,
 
 \item{onlyNaDates}{Logical, defaults to FALSE. Used to for troubleshooting dataset.}
 
-\item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
-
-\item{nameOfWebsite}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.Defaults to NULL. If no nameOfWebsite is provided, exported files are saved in the nameOfProject/Outputs folder.}
-
 \item{txt}{Logical, defaults to TRUE. If TRUE, exports all articles including the term provided in a .txt file.}
 
 \item{csv}{Logical, defaults to FALSE. If TRUE, exports all articles including the term provided in a .csv file.}
 
 \item{xlsx}{Logical, defaults to FALSE. If TRUE, exports all articles including the term provided in a .xlsx file.}
+
+\item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
+
+\item{nameOfWebsite}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.Defaults to NULL. If no nameOfWebsite is provided, exported files are saved in the nameOfProject/Outputs folder.}
 
 \item{data.fram}{Logical, defaults to FALSE. If TRUE, the function outputs a data frame. If FALSE, function used only for its side effects (i.e. exporting to files)}
 }
@@ -31,6 +31,6 @@ ExportArticlesWith(dataset, term, onlyNaDates = FALSE, nameOfProject = NULL,
 Exports all articles that contain a given term.
 }
 \examples{
-ExportArticlesWith(dataset, "example", nameOfProject, nameOfWebsite)
+ExportArticlesWith(dataset, "example")
 }
 
