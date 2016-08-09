@@ -4,8 +4,8 @@
 \alias{UpdateDataset}
 \title{Updates a dataset}
 \usage{
-UpdateDataset(dataset, numberOfIndexPages = 10, wget = FALSE, wait = 3,
-  nameOfProject = NULL, nameOfWebsite = NULL)
+UpdateDataset(dataset, articlesLinksNew = NULL, numberOfIndexPages = 10,
+  wget = FALSE, wait = 3, nameOfProject = NULL, nameOfWebsite = NULL)
 }
 \arguments{
 \item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
