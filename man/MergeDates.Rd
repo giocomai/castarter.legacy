@@ -4,15 +4,20 @@
 \alias{MergeDates}
 \title{Merge alternative sets of dates for a given dataset}
 \usage{
-MergeDates(dates1, dates2, dates3 = NULL, minDate = NULL, maxDate = NULL)
+MergeDates(dates1, dates2, dates3 = NULL, minDate = NULL, maxDate = NULL,
+  fillMissingDates = FALSE, maxgap = 5)
 }
 \arguments{
 \item{dates1, }{dates2, dates3 Vectors of the POSIXct class to be merged. Where a value in dates1 is NA, MergeDates looks for a corresponding value in dates2 and dates3.}
 
 \item{minDate, }{maxDate Minimum and maximum possible dates in the format year-month-date, e.g. "2007-06-24". Introduces NA in the place of impossibly high or low dates.}
+
+\item{fillMissingDates}{Logical, defaults to FALSE. If TRUE fills missing NA dates with interpolated values. It is sensible to use this if dates are in a sequence, and if the corresponding articlesTxt includes actual contents (i.e. missing date is not effectively due to a missing article or a link included in the dataset by mistake)}
+
+\item{maxgap}{Integer, defaults to 5. Maximum number of consecutive NAs to fill.}
 }
 \value{
-A vector of the POSIXct class. .
+A vector of the POSIXct class.
 }
 \description{
 Merge alternative sets of dates for a given dataset.

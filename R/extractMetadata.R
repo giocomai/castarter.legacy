@@ -253,11 +253,13 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", divClass = NULL, divI
 #'  
 #' @param dates1, dates2, dates3 Vectors of the POSIXct class to be merged. Where a value in dates1 is NA, MergeDates looks for a corresponding value in dates2 and dates3.
 #' @param minDate, maxDate Minimum and maximum possible dates in the format year-month-date, e.g. "2007-06-24". Introduces NA in the place of impossibly high or low dates.
-#' @return A vector of the POSIXct class. . 
+#' @param fillMissingDates Logical, defaults to FALSE. If TRUE fills missing NA dates with interpolated values. It is sensible to use this if dates are in a sequence, and if the corresponding articlesTxt includes actual contents (i.e. missing date is not effectively due to a missing article or a link included in the dataset by mistake)
+#' @param maxgap Integer, defaults to 5. Maximum number of consecutive NAs to fill. 
+#' @return A vector of the POSIXct class.
 #' @export
 #' @examples
 #' dates <- MergeDates(dates1, dates2)
-MergeDates <- function(dates1, dates2, dates3 = NULL, minDate = NULL, maxDate = NULL) {
+MergeDates <- function(dates1, dates2, dates3 = NULL, minDate = NULL, maxDate = NULL, fillMissingDates = FALSE, maxgap = 5) {
     dates <- dates1
     for (i in 1:length(dates)) {
         if (is.na(dates[i])) {
@@ -273,6 +275,10 @@ MergeDates <- function(dates1, dates2, dates3 = NULL, minDate = NULL, maxDate = 
                 dates[i] <- NA
             }
         }
+    }
+    if (fillMissingDates == TRUE) {
+        dates <- zoo::na.approx(object = dates, na.rm = FALSE, maxgap = maxgap)
+        dates <- as.POSIXct(x = dates, origin = "1970-01-01")
     }
     dates
 }
