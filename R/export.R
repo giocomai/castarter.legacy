@@ -3,17 +3,17 @@
 #' @param dataset A dataset created with 'castarter'.
 #' @param term The term that determines which articles are exported.Must be a character vector of length = 1.
 #' @param onlyNaDates Logical, defaults to FALSE. Used to for troubleshooting dataset. 
-#' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
-#' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.Defaults to NULL. If no nameOfWebsite is provided, exported files are saved in the nameOfProject/Outputs folder.
 #' @param txt Logical, defaults to TRUE. If TRUE, exports all articles including the term provided in a .txt file.
 #' @param csv Logical, defaults to FALSE. If TRUE, exports all articles including the term provided in a .csv file.
 #' @param xlsx Logical, defaults to FALSE. If TRUE, exports all articles including the term provided in a .xlsx file.
-#' @param data.fram Logical, defaults to FALSE. If TRUE, the function outputs a data frame. If FALSE, function used only for its side effects (i.e. exporting to files)
+#' @param data.frame Logical, defaults to FALSE. If TRUE, the function outputs a data frame. If FALSE, function used only for its side effects (i.e. exporting to files)
+#' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
+#' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.Defaults to NULL. If no nameOfWebsite is provided, exported files are saved in the nameOfProject/Outputs folder.
 #' @export
 #' @examples
 #' ExportArticlesWith(dataset, "example")
 
-ExportArticlesWith <- function(dataset, term, onlyNaDates = FALSE, txt = TRUE, csv = FALSE, xlsx = FALSE, data.frame = FALSE, includeOnly = NULL, sortBy = "date", nameOfProject = NULL, nameOfWebsite = NULL) {
+ExportArticlesWith <- function(dataset, term, includeNaDates = TRUE, onlyNaDates = FALSE, txt = TRUE, csv = FALSE, xlsx = FALSE, data.frame = FALSE, includeOnly = NULL, sortBy = "date", nameOfProject = NULL, nameOfWebsite = NULL) {
     if (gtools::invalid(nameOfProject) == TRUE) {
         nameOfProject <- CastarterOptions("nameOfProject")
     }
@@ -22,6 +22,9 @@ ExportArticlesWith <- function(dataset, term, onlyNaDates = FALSE, txt = TRUE, c
     }
     if (onlyNaDates == TRUE) {
         dataset <- dataset[is.na(dataset$dates),]
+    }
+    if (includeNaDates == FALSE) {
+        dataset <- dataset[is.na(dataset$dates)==FALSE,]
     }
     # Export only items that include...
     tempDataset <- dataset[grep(term, dataset$articlesTxt, ignore.case = TRUE), ]
