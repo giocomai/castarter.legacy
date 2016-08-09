@@ -475,7 +475,7 @@ CreateDatasetFromHtml <- function(articlesLinks = NULL,
     dates <- as.POSIXct(rep(NA, numberOfArticles))
     articlesTxt <- rep(NA, numberOfArticles)
     if (titlesExtractMethod == "indexLink") {
-        titles <- ExtractTitles(articlesHtml = NULL, articlesLinks = articlesLinks, titlesExtractMethod = "indexLink", removeString = removeStringTitle, removeEverythingAfter = removeEverythingAfterTitle)
+        titles <- ExtractTitles(articlesHtml = NULL, articlesLinks = articlesLinks, titlesExtractMethod = "indexLink", removeString = removeString_ExtractTitles, removeEverythingAfter = removeEverythingAfter_ExtractTitles)
     } else {
         titles <- rep(NA, numberOfArticles)
     }
