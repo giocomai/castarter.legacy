@@ -5,13 +5,15 @@
 \title{Extracts metadata and text from local html files}
 \usage{
 CreateDatasetFromHtml(articlesLinks = NULL, dateFormat = NULL,
-  ExtractDatesXpath = FALSE, customXpathDate = NULL,
-  titlesExtractMethod = "htmlTitle", removeStringTitle = NULL,
-  removeEverythingAfterTitle = NULL, divClassDate = NULL,
-  spanClassDate = NULL, language = NULL, divClassTxt = NULL,
-  divIdTxt = NULL, removeStringText = NULL, encoding = NULL,
-  removeEverythingAfter = NULL, removeEverythingBefore = NULL,
-  removeEverythingBeforeDate = NULL, nameOfProject = NULL,
+  divClass_ExtractDates = NULL, spanClass_ExtractDates = NULL,
+  customXpath_ExtractDates = NULL, language_ExtractDates = NULL,
+  removeEverythingBefore_ExtractDates = NULL,
+  titlesExtractMethod = "htmlTitle", removeString_ExtractTitles = NULL,
+  removeEverythingAfter_ExtractTitles = NULL, divClass_ExtractTxt = NULL,
+  divId_ExtractTxt = NULL, removeString_ExtractTxt = NULL,
+  removeEverythingAfter_ExtractTxt = NULL,
+  removeEverythingBefore_ExtractTxt = NULL, language_dataset = NULL,
+  encoding = NULL, exportParameters = TRUE, nameOfProject = NULL,
   nameOfWebsite = NULL)
 }
 \arguments{
