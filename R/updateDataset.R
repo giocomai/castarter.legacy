@@ -15,7 +15,7 @@ UpdateDataset <- function(dataset, numberOfIndexPages = 10, wget = FALSE, wait =
     if (gtools::invalid(nameOfWebsite) == TRUE) {
         nameOfWebsite <- CastarterOptions("nameOfWebsite")
     }
-    params <- read.table(file = file.path(nameOfProject, nameOfWebsite, paste(nameOfWebsite, "updateParameters.csv", sep = "-")), stringsAsFactors = FALSE)
+    params <- read.table(file = file.path(nameOfProject, nameOfWebsite, paste(nameOfWebsite, "Logs", "updateParameters.csv", sep = "-")), stringsAsFactors = FALSE)
     params$param[params$param == "NULL"] <- NA
     params$param[params$param == ""] <- NA
     CreateFolderStructure(nameOfProject = nameOfProject, nameOfWebsite = nameOfWebsite)
