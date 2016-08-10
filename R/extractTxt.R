@@ -56,6 +56,7 @@ ExtractTxt <- function(articlesHtml, metadata = NULL, export = FALSE, maxTitleCh
         }
         txtFilenames <- paste0(file.path(nameOfProject, nameOfWebsite, "Txt", paste0(paste(metadata$dates, metadata$nameOfWebsite, metadata$articlesId, substring(titles, 1, maxTitleCharacters), sep = " - "), ".txt")))
     }
+    pb <- txtProgressBar(min = 1, max = numberOfArticles, style = 3)
     if (is.null(divClass) == FALSE) {
         for (i in 1:numberOfArticles) {
             if (articlesHtml[i] != "") {
@@ -66,6 +67,7 @@ ExtractTxt <- function(articlesHtml, metadata = NULL, export = FALSE, maxTitleCh
                 } else {
                     articlesTxt[i] <- XML::xpathSApply(articleHtmlParsed, paste0("//div[@class='", divClass, "']"), XML::xmlValue)
                 }
+                setTxtProgressBar(pb, i)
             }
         }
     } else if (is.null(divId) == FALSE) {
@@ -78,10 +80,10 @@ ExtractTxt <- function(articlesHtml, metadata = NULL, export = FALSE, maxTitleCh
                 } else {
                     articlesTxt[i] <- XML::xpathSApply(articleHtmlParsed, paste0("//div[@id='", divId, "']"), XML::xmlValue)
                 }
+                setTxtProgressBar(pb, i)
             }
         }
     } else {
-        pb <- txtProgressBar(min = 1, max = numberOfArticles, style = 3)
         for (i in 1:numberOfArticles) {
             if (keepEverything == TRUE) {
                 articleTxt <- boilerpipeR::KeepEverythingExtractor(articlesHtml[i])
@@ -91,8 +93,8 @@ ExtractTxt <- function(articlesHtml, metadata = NULL, export = FALSE, maxTitleCh
             articlesTxt[i] <- articleTxt
             setTxtProgressBar(pb, i)
         }
-        close(pb)
     }
+    close(pb)
     if (removeTitleFromTxt == TRUE) {
         if (is.null(titles) == TRUE) {
             if (is.null(metadata) == TRUE) {
