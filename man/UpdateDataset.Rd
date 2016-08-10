@@ -4,7 +4,7 @@
 \alias{UpdateDataset}
 \title{Updates a dataset}
 \usage{
-UpdateDataset(dataset, articlesLinksNew = NULL, numberOfIndexPages = 10,
+UpdateDataset(dataset, articlesLinks = NULL, numberOfIndexPages = 10,
   wget = FALSE, wait = 3, nameOfProject = NULL, nameOfWebsite = NULL)
 }
 \arguments{

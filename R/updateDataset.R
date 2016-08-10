@@ -8,7 +8,7 @@
 #' @export
 #' @examples
 #' dataset <- UpdateDataset(dataset)
-UpdateDataset <- function(dataset, articlesLinksNew = NULL, numberOfIndexPages = 10, wget = FALSE, wait = 3, nameOfProject = NULL, nameOfWebsite = NULL) {
+UpdateDataset <- function(dataset, articlesLinks = NULL, numberOfIndexPages = 10, wget = FALSE, wait = 3, nameOfProject = NULL, nameOfWebsite = NULL) {
     if (gtools::invalid(nameOfProject) == TRUE) {
         nameOfProject <- CastarterOptions("nameOfProject")
     }
@@ -19,12 +19,12 @@ UpdateDataset <- function(dataset, articlesLinksNew = NULL, numberOfIndexPages =
     params$param[params$param == "NULL"] <- NA
     params$param[params$param == ""] <- NA
     castarter::CreateFolders(nameOfProject = nameOfProject, nameOfWebsite = nameOfWebsite)
-    if (base::is.null(articlesLinksNew)==TRUE) {
+    if (base::is.null(articlesLinks)==TRUE) {
         indexLinks <- CreateLinks(linkFirstChunk = params$param[params$args=="linkFirstChunk"], linkSecondChunk = params$param[params$args=="linkSecondChunk"], startPage = as.integer(params$param[params$args=="startPage"]), endPage = sum(as.integer(params$param[params$args=="startPage"]), numberOfIndexPages), increaseBy = as.integer(params$param[params$args=="increaseBy"]), sortIndexLinks  = as.logical(params$param[params$args=="sortIndexLinks"]))
         indexHtml <- DownloadIndex(nameOfProject = nameOfProject, nameOfWebsite = nameOfWebsite, indexLinks = indexLinks, wget = wget, wait = wait)
-        articlesLinksNew <- ExtractLinks(domain = params$param[params$args=="domain"], partOfLink = params$param[params$args=="partOfLink"], indexHtml = indexHtml, containerType = params$param[params$args=="containerTypeExtractLinks"], containerClass = params$param[params$args=="containerClassExtractLinks"], divClass = params$param[params$args=="divClassExtractLinks"], partOfLinkToExclude = strsplit(params$param[params$args=="partOfLinkToExclude"], "§§§"))
-        articlesLinksNew <- articlesLinksNew[is.element(articlesLinksNew, dataset$articlesLinks)==FALSE]
+        articlesLinks <- ExtractLinks(domain = params$param[params$args=="domain"], partOfLink = params$param[params$args=="partOfLink"], indexHtml = indexHtml, containerType = params$param[params$args=="containerTypeExtractLinks"], containerClass = params$param[params$args=="containerClassExtractLinks"], divClass = params$param[params$args=="divClassExtractLinks"], partOfLinkToExclude = strsplit(params$param[params$args=="partOfLinkToExclude"], "§§§"))
     }
+    articlesLinks <- articlesLinks[is.element(articlesLinks, dataset$articlesLinks)==FALSE]
     previousLength <- length(dataset$articlesLinks)
     articlesLinks <- c(dataset$articlesLinks, articlesLinksNew)
     DownloadContents(links = articlesLinks, type = "articles", nameOfProject = nameOfProject, nameOfWebsite = nameOfWebsite, wget = wget, missingArticles = TRUE, wait = wait, start = sum(previousLength, 1))
