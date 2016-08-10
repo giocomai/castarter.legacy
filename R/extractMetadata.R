@@ -291,7 +291,7 @@ MergeDates <- function(dates1, dates2, dates3 = NULL, minDate = NULL, maxDate = 
 #' @param articlesHtml A character vector of html files.
 #' @param articlesLinks A named character vector, typically created by the ExtractArticlesLinks function.
 #' @param removeString A character vector of one or more strings to be removed from the extracted title.
-#' @param titlesExtractMethod Title extract method, to be given as a text string. Available options are:
+#' @param method Title extract method, to be given as a text string. Available options are:
 ##' \itemize{
 ##'  \item{"indexLink"}{: Default. Extract the title from articlesLinks (required). Titles are taken from the textual element of the link taken from the index pages. }
 ##'  \item{"htmlTitle"}{: Extract the title from the Html <title> field, usually shown on the top bar of web browsers.}
@@ -306,7 +306,7 @@ MergeDates <- function(dates1, dates2, dates3 = NULL, minDate = NULL, maxDate = 
 #' @export
 #' @examples
 #' titles <- ExtractTitles(articlesHtml)
-ExtractTitles <- function(articlesHtml = NULL, articlesLinks = "", method = "indexLink", removePunctuation = FALSE, onlyStandardCharacters = FALSE, removeString = NULL, removeEverythingAfter = NULL, customXpath = "", maxCharacters = NULL, exportParameters = TRUE, nameOfProject = NULL, nameOfWebsite = NULL) {
+ExtractTitles <- function(articlesHtml = NULL, articlesLinks = "", method = "htmlTitle", removePunctuation = FALSE, onlyStandardCharacters = FALSE, removeString = NULL, removeEverythingAfter = NULL, customXpath = "", maxCharacters = NULL, exportParameters = TRUE, nameOfProject = NULL, nameOfWebsite = NULL) {
     if (gtools::invalid(nameOfProject) == TRUE) {
         nameOfProject <- CastarterOptions("nameOfProject")
     }
@@ -338,35 +338,35 @@ ExtractTitles <- function(articlesHtml = NULL, articlesLinks = "", method = "ind
     }
     titles <- vector()
     numberOfArticles <- length(articlesHtml)
-    if (titlesExtractMethod == "htmlTitle") {
+    if (method == "htmlTitle") {
         for (i in 1:numberOfArticles) {
             if (articlesHtml[i]!="") {
                 articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T, encoding = "UTF-8")
                 titles[i] <- XML::xpathSApply(articleHtmlParsed, "//title", XML::xmlValue)
             }
         }
-    } else if (titlesExtractMethod == "htmlH2") {
+    } else if (method == "htmlH2") {
         for (i in 1:numberOfArticles) {
             if (articlesHtml[i]!="") {
                 articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T, encoding = "UTF-8")
                 titles[i] <- XML::xpathSApply(articleHtmlParsed, "//h2", XML::xmlValue)
             }
         }
-    } else if (titlesExtractMethod == "htmlH1") {
+    } else if (method == "htmlH1") {
         for (i in 1:numberOfArticles) {
             if (articlesHtml[i]!="") {
                 articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T, encoding = "UTF-8")
                 titles[i] <- XML::xpathSApply(articleHtmlParsed, "//h1", XML::xmlValue)
             }
         }
-    } else if (titlesExtractMethod == "customXpath") {
+    } else if (method == "customXpath") {
         for (i in 1:numberOfArticles) {
         articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T, encoding = "UTF-8")
         titles[i] <- XML::xpathSApply(articleHtmlParsed, customXpath, XML::xmlValue)
         }
-    } else if (titlesExtractMethod == "indexLink") {
+    } else if (method == "indexLink") {
         titles <- names(articlesLinks)
-    } else if (titlesExtractMethod == "beginning") {
+    } else if (method == "beginning") {
         titles <- ExtractTxt(articlesHtml, export = FALSE, keepEverything = TRUE)
     }
     if (gtools::invalid(removeString) == FALSE) {
@@ -428,7 +428,7 @@ ExtractArticleId <- function(nameOfProject = NULL, nameOfWebsite = NULL, accordi
 #' dataset <- CreateDatasetFromHtml()
 CreateDatasetFromHtml <- function(articlesLinks = NULL,
                                   dateFormat = NULL, divClass_ExtractDates = NULL, spanClass_ExtractDates = NULL, customXpath_ExtractDates = NULL, language_ExtractDates = NULL, removeEverythingBefore_ExtractDates = NULL,
-                                  titlesExtractMethod = "htmlTitle", removeString_ExtractTitles = NULL, removeEverythingAfter_ExtractTitles = NULL,
+                                  method_ExtractTitles = "htmlTitle", removeString_ExtractTitles = NULL, removeEverythingAfter_ExtractTitles = NULL,
                                   divClass_ExtractTxt = NULL, divId_ExtractTxt = NULL, removeString_ExtractTxt = NULL, removeEverythingAfter_ExtractTxt = NULL, removeEverythingBefore_ExtractTxt = NULL, 
                                   language = NULL, encoding = NULL,  
                                   exportParameters = TRUE, nameOfProject = NULL, nameOfWebsite = NULL) {

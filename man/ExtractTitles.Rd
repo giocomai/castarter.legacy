@@ -5,7 +5,7 @@
 \title{Extracts titles of individual pages}
 \usage{
 ExtractTitles(articlesHtml = NULL, articlesLinks = "",
-  method = "indexLink", removePunctuation = FALSE,
+  method = "htmlTitle", removePunctuation = FALSE,
   onlyStandardCharacters = FALSE, removeString = NULL,
   removeEverythingAfter = NULL, customXpath = "", maxCharacters = NULL,
   exportParameters = TRUE, nameOfProject = NULL, nameOfWebsite = NULL)
@@ -15,13 +15,7 @@ ExtractTitles(articlesHtml = NULL, articlesLinks = "",
 
 \item{articlesLinks}{A named character vector, typically created by the ExtractArticlesLinks function.}
 
-\item{removeString}{A character vector of one or more strings to be removed from the extracted title.}
-
-\item{removeEverythingAfter}{Removes everything after given string.}
-
-\item{maxCharacters}{An integer. Defines the maximum number of characters to be kept in the output for each title.}
-
-\item{titlesExtractMethod}{Title extract method, to be given as a text string. Available options are:
+\item{method}{Title extract method, to be given as a text string. Available options are:
 \itemize{
  \item{"indexLink"}{: Default. Extract the title from articlesLinks (required). Titles are taken from the textual element of the link taken from the index pages. }
  \item{"htmlTitle"}{: Extract the title from the Html <title> field, usually shown on the top bar of web browsers.}
@@ -30,6 +24,12 @@ ExtractTitles(articlesHtml = NULL, articlesLinks = "",
  \item{"customXpath"}{: Allows to input a custom Xpath to extract the title.}
  \item{"beginning"}{: Outputs as title the first textual elements found in the html file. Title length can be defined with the 'maxCharacters' option.}
 }}
+
+\item{removeString}{A character vector of one or more strings to be removed from the extracted title.}
+
+\item{removeEverythingAfter}{Removes everything after given string.}
+
+\item{maxCharacters}{An integer. Defines the maximum number of characters to be kept in the output for each title.}
 }
 \value{
 A character vector of article titles.
