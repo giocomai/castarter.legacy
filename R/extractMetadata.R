@@ -77,7 +77,6 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", divClass = NULL, divI
             }
         }
     }
-    
     if (gtools::invalid(divClass) == FALSE) {
         datesTxt <- rep(NA, numberOfArticles)
         for (i in 1:numberOfArticles) {
@@ -120,11 +119,12 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", divClass = NULL, divI
             }
         }
     }
-    if (length(datesTxt) == 1 & is.na(datesTxt[1]) == TRUE) {
-    } else {
-        if (exists("datesTxt") == TRUE) {
+    if (exists("datesTxt") == TRUE) {
+        if (length(datesTxt) == 1 & is.na(datesTxt[1]) == TRUE) {
+        } else {
             articlesHtml <- datesTxt
         }
+    } else {
         numberOfArticles <- length(articlesHtml)
         datesTxt <- rep(NA, numberOfArticles)
         if (is.null(removeEverythingBefore) == FALSE) {
@@ -154,8 +154,7 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", divClass = NULL, divI
                 }
             } else if (dateFormat == "dB,Y") {
                 for (i in 1:numberOfArticles) {
-                    dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]]?[[:digit:]][[:space:]][[:alpha:]]*,[[:space:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]?", 
-                                                                   articlesHtml[i]))
+                    dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]]?[[:digit:]][[:space:]][[:alpha:]]*,[[:space:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]?", articlesHtml[i]))
                     if (length(dateTxt) == 0) {
                         datesTxt[i] <- NA
                     } else {
@@ -163,9 +162,9 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", divClass = NULL, divI
                     }
                 }
             } else if (dateFormat == "db.'y") {
+                datesTxt <- rep(NA, numberOfArticles)
                 for (i in 1:numberOfArticles) {
-                    dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]]?[[:digit:]][[:space:]][[:alpha:]]*.'[[:digit:]][[:digit:]][[:digit:]]?", 
-                                                                   articlesHtml[i]))
+                    dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]]?[[:digit:]][[:space:]][[:alpha:]]*.'[[:digit:]][[:digit:]][[:digit:]]?", articlesHtml[i]))
                     if (length(dateTxt) == 0) {
                         datesTxt[i] <- NA
                     } else {
