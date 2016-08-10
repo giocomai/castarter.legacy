@@ -81,6 +81,7 @@ ExtractTxt <- function(articlesHtml, metadata = NULL, export = FALSE, maxTitleCh
             }
         }
     } else {
+        pb <- txtProgressBar(min = 1, max = numberOfArticles, style = 3)
         for (i in 1:numberOfArticles) {
             if (keepEverything == TRUE) {
                 articleTxt <- boilerpipeR::KeepEverythingExtractor(articlesHtml[i])
@@ -88,7 +89,9 @@ ExtractTxt <- function(articlesHtml, metadata = NULL, export = FALSE, maxTitleCh
                 articleTxt <- boilerpipeR::ArticleExtractor(articlesHtml[i])
             }
             articlesTxt[i] <- articleTxt
+            setTxtProgressBar(pb, i)
         }
+        close(pb)
     }
     if (removeTitleFromTxt == TRUE) {
         if (is.null(titles) == TRUE) {
