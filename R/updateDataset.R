@@ -15,7 +15,7 @@ UpdateDataset <- function(dataset, articlesLinks = NULL, numberOfIndexPages = 10
     if (gtools::invalid(nameOfWebsite) == TRUE) {
         nameOfWebsite <- CastarterOptions("nameOfWebsite")
     }
-    params <- read.table(file = file.path(nameOfProject, nameOfWebsite, "Logs", paste(nameOfWebsite, "updateParameters.csv", sep = "-")), stringsAsFactors = FALSE)
+    params <- read.table(file = file.path(nameOfProject, nameOfWebsite, "Logs", paste(nameOfWebsite, "updateParameters.csv", sep = " - ")), stringsAsFactors = FALSE)
     params$param[params$param == "NULL"] <- NA
     params$param[params$param == ""] <- NA
     castarter::CreateFolders(nameOfProject = nameOfProject, nameOfWebsite = nameOfWebsite)
