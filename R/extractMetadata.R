@@ -314,7 +314,7 @@ ExtractTitles <- function(articlesHtml = NULL, articlesLinks = "", method = "htm
     }
     if (exportParameters == TRUE) {
         args <- c("method_ExtractTitles", "removePunctuation_ExtractTitles", "onlyStandardCharacters_ExtractTitles", "removeString_ExtractTitles", "removeEverythingAfter_ExtractTitles", "customXpath_ExtractTitles", "maxCharacters_ExtractTitles")
-        param <- list(method, removePunctuation, onlyStandardCharacters, removeString, removeEverythingAfter, customXpath, maxCharacters)
+        param <- list(method, removePunctuation, onlyStandardCharacters, paste0(removeString, collapse = "§§§"), removeEverythingAfter, customXpath, maxCharacters)
         for (i in 1:length(param)) {
             if (is.null(param[[i]])==TRUE) {
                 param[[i]] <- "NULL"
