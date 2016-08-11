@@ -477,8 +477,8 @@ CreateDatasetFromHtml <- function(articlesLinks = NULL,
     numberOfArticles <- length(htmlFilesList)
     dates <- as.POSIXct(rep(NA, numberOfArticles))
     articlesTxt <- rep(NA, numberOfArticles)
-    if (titlesExtractMethod == "indexLink") {
-        titles <- ExtractTitles(articlesHtml = NULL, articlesLinks = articlesLinks, titlesExtractMethod = "indexLink", removeString = removeString_ExtractTitles, removeEverythingAfter = removeEverythingAfter_ExtractTitles)
+    if (method_ExtractTitles == "indexLink") {
+        titles <- ExtractTitles(articlesHtml = NULL, articlesLinks = articlesLinks, method = "indexLink", removeString = removeString_ExtractTitles, removeEverythingAfter = removeEverythingAfter_ExtractTitles)
     } else {
         titles <- rep(NA, numberOfArticles)
     }
@@ -500,8 +500,8 @@ CreateDatasetFromHtml <- function(articlesLinks = NULL,
             dates[i] <- NA
         }
         articlesTxt[i] <- ExtractTxt(articlesHtml = htmlFile, export = FALSE, removeEverythingAfter = removeEverythingAfter_ExtractTxt, removeEverythingBefore = removeEverythingBefore_ExtractTxt, divClass = divClass_ExtractTxt, divID = divId_ExtractTxt, textToBeRemoved = removeString_ExtractTxt)
-        if (titlesExtractMethod != "indexLink") {
-            titleTemp <- ExtractTitles(articlesHtml = htmlFile, titlesExtractMethod = titlesExtractMethod, removeString = removeString_ExtractTitles)
+        if (method_ExtractTitles != "indexLink") {
+            titleTemp <- ExtractTitles(articlesHtml = htmlFile, method = method_ExtractTitles, removeString = removeString_ExtractTitles)
             if (length(titleTemp) == 1) {
                 titles[i] <- titleTemp
             } else {
