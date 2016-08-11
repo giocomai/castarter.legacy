@@ -8,7 +8,7 @@
 #' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
 #' @param method Defaults to "auto". Method is passed to the function utils::download.file(); available options are "internal", "wininet" (Windows only) "libcurl", "wget" and "curl". For more information see ?utils::download.file()
 #' @param missingArticles Logical, defaults to TRUE. If TRUE, verifies if a downloaded html file exists for each element in articlesLinks; when there is no such file, it downloads it.
-#' @param linksToDownload A numeric vector. Only corresponding links will be downloaded: links[linksToDownload]
+#' @param linksToDownload A logical vector. Only links corresponding to TRUE will be downloaded: links[linksToDownload]
 #' @param wgetSystem Logical, defaults to FALSE. Calls wget as a system command through the system() function. Wget must be previously installed on the system. 
 #' @param start Integer. Only links with position higher than start in the links vector will be downloaded: links[start:length(links)]
 #' @return By default, returns nothing, used for its side effects (downloads html files in relevant folder). Download files can then be imported in a vector with the function ImportHtml. 
@@ -38,7 +38,9 @@ DownloadContents <- function(links, type = "articles", articlesHtml = NULL, size
     }
     if (is.null(linksToDownload) == TRUE) {
         smallFiles <- htmlFilesList[htmlFileSize < size]
-        linksToDownload <- as.integer(base::regmatches(x = smallFiles, m = regexpr("[[:digit:]]+", smallFiles)))
+        smallFilesId <- as.integer(base::regmatches(x = smallFiles, m = regexpr("[[:digit:]]+", smallFiles)))
+        linksToDownload <- rep(x = FALSE, times = length(links))
+        linksToDownload[smallFilesId] <- TRUE
     }
     linksToDownload[1:start-1] <- FALSE
     if (is.null(articlesHtml) == TRUE) {

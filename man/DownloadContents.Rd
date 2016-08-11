@@ -14,7 +14,7 @@ DownloadContents(links, type = "articles", articlesHtml = NULL,
 
 \item{type}{Accepted values are either "articles" (default), or "index"; it defines the folder where files are stored.}
 
-\item{linksToDownload}{A numeric vector. Only corresponding links will be downloaded: links[linksToDownload]}
+\item{linksToDownload}{A logical vector. Only links corresponding to TRUE will be downloaded: links[linksToDownload]}
 
 \item{wgetSystem}{Logical, defaults to FALSE. Calls wget as a system command through the system() function. Wget must be previously installed on the system.}
 
