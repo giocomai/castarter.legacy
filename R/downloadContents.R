@@ -33,12 +33,12 @@ DownloadContents <- function(links, type = "articles", articlesHtml = NULL, size
     htmlFileSize <- file.info(htmlFilesList)["size"]
     articlesId <- 1:length(links)
     if (missingArticles == TRUE) {
-        # articlesId <- as.integer(regmatches(htmlFilesList, regexpr("[[:digit:]]+", htmlFilesList)))
         articlesHtmlFilenamesInTheory <- file.path(htmlFilePath, paste0(articlesId, ".html"))
         linksToDownload <- !is.element(articlesHtmlFilenamesInTheory, htmlFilesList)
     }
     if (is.null(linksToDownload) == TRUE) {
-        linksToDownload <- htmlFileSize < size
+        smallFiles <- htmlFilesList[htmlFileSize < size]
+        linksToDownload <- as.integer(base::regmatches(x = smallFiles, m = regexpr("[[:digit:]]+", smallFiles)))
     }
     linksToDownload[1:start-1] <- FALSE
     if (is.null(articlesHtml) == TRUE) {
