@@ -374,15 +374,19 @@ ExtractTitles <- function(articlesHtml = NULL, articlesLinks = "", method = "htm
     if (gtools::invalid(removeEverythingAfter) == FALSE) {
         titles <- gsub(paste0(removeEverythingAfter, ".*"), replacement = "", x = titles)
     }
-    if (onlyStandardCharacters == TRUE) {
-        titles <- gsub("[^A-Za-z0-9 ]", "-", titles)
-        titles <- gsub("  ", " ", titles)
-        titles <- gsub("--", "-", titles)
+    if (gtools::invalid(onlyStandardCharacters) == FALSE) {
+        if (onlyStandardCharacters == TRUE) {
+            titles <- gsub("[^A-Za-z0-9 ]", "-", titles)
+            titles <- gsub("  ", " ", titles)
+            titles <- gsub("--", "-", titles)
+        }
     }
-    if (removePunctuation == TRUE) {
-        titles <- gsub("[[:punct:]]", "-", titles)
-        titles <- gsub("  ", " ", titles)
-        titles <- gsub("--", "-", titles)
+    if (gtools::invalid(removePunctuation == FALSE)) {
+        if (removePunctuation == TRUE) {
+            titles <- gsub("[[:punct:]]", "-", titles)
+            titles <- gsub("  ", " ", titles)
+            titles <- gsub("--", "-", titles)
+        }
     }
     if (gtools::invalid(maxCharacters) == FALSE) {
     titles <- substring(titles, 1, maxCharacters)
