@@ -431,7 +431,7 @@ ExtractArticleId <- function(nameOfProject = NULL, nameOfWebsite = NULL, accordi
 #' dataset <- CreateDatasetFromHtml()
 CreateDatasetFromHtml <- function(articlesLinks = NULL,
                                   dateFormat = NULL, divClass_ExtractDates = NULL, spanClass_ExtractDates = NULL, customXpath_ExtractDates = NULL, language_ExtractDates = NULL, removeEverythingBefore_ExtractDates = NULL,
-                                  method_ExtractTitles = "htmlTitle", removeString_ExtractTitles = NULL, removeEverythingAfter_ExtractTitles = NULL,
+                                  method_ExtractTitles = "htmlTitle", removeString_ExtractTitles = NULL, removeEverythingAfter_ExtractTitles = NULL, removePunctuation_ExtractTitles = NULL,
                                   divClass_ExtractTxt = NULL, divId_ExtractTxt = NULL, removeString_ExtractTxt = NULL, removeEverythingAfter_ExtractTxt = NULL, removeEverythingBefore_ExtractTxt = NULL, 
                                   language = NULL, encoding = NULL,  
                                   exportParameters = TRUE, nameOfProject = NULL, nameOfWebsite = NULL) {
@@ -446,11 +446,11 @@ CreateDatasetFromHtml <- function(articlesLinks = NULL,
     }
     if (exportParameters == TRUE) {
         args <- c("dateFormat", "divClass_ExtractDates", "spanClass_ExtractDates", "customXpath_ExtractDates", "language_ExtractDates", "removeEverythingBefore_ExtractDates",
-                  "method_ExtractTitles", "removeString_ExtractTitles", "removeEverythingAfter_ExtractTitles",
+                  "method_ExtractTitles", "removeString_ExtractTitles", "removeEverythingAfter_ExtractTitles", "removePunctuation_ExtractTitles",
                   "divClass_ExtractTxt", "divId_ExtractTxt", "removeString_ExtractTxt", "removeEverythingAfter_ExtractTxt", "removeEverythingBefore_ExtractTxt",
                   "language", "encoding")
         param <- list(dateFormat, divClass_ExtractDates, spanClass_ExtractDates, customXpath_ExtractDates, language_ExtractDates, removeEverythingBefore_ExtractDates,
-                      method_ExtractTitles, removeString_ExtractTitles, removeEverythingAfter_ExtractTitles, 
+                      method_ExtractTitles, removeString_ExtractTitles, removeEverythingAfter_ExtractTitles, removePunctuation_ExtractTitles,
                       divClass_ExtractTxt, divId_ExtractTxt, removeString_ExtractTxt, removeEverythingAfter_ExtractTxt, removeEverythingBefore_ExtractTxt,
                       language, encoding)
         for (i in 1:length(param)) {
