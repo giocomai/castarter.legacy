@@ -446,11 +446,11 @@ CreateDatasetFromHtml <- function(articlesLinks = NULL,
     }
     if (exportParameters == TRUE) {
         args <- c("dateFormat", "divClass_ExtractDates", "spanClass_ExtractDates", "customXpath_ExtractDates", "language_ExtractDates", "removeEverythingBefore_ExtractDates",
-                  "titlesExtractMethod", "removeString_ExtractTitles", "removeEverythingAfter_ExtractTitles",
+                  "method_ExtractTitles", "removeString_ExtractTitles", "removeEverythingAfter_ExtractTitles",
                   "divClass_ExtractTxt", "divId_ExtractTxt", "removeString_ExtractTxt", "removeEverythingAfter_ExtractTxt", "removeEverythingBefore_ExtractTxt",
                   "language", "encoding")
         param <- list(dateFormat, divClass_ExtractDates, spanClass_ExtractDates, customXpath_ExtractDates, language_ExtractDates, removeEverythingBefore_ExtractDates,
-                      titlesExtractMethod, removeString_ExtractTitles, removeEverythingAfter_ExtractTitles, 
+                      method_ExtractTitles, removeString_ExtractTitles, removeEverythingAfter_ExtractTitles, 
                       divClass_ExtractTxt, divId_ExtractTxt, removeString_ExtractTxt, removeEverythingAfter_ExtractTxt, removeEverythingBefore_ExtractTxt,
                       language, encoding)
         for (i in 1:length(param)) {
