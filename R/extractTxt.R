@@ -5,7 +5,7 @@
 #' @param articlesHtml A character vector of html files.
 #' @param metadata Defaults to NULL. A data.frame presumably created with ExportMetadata() including information on all articles. Number of rows must correspond to the number of articles to be elaborated. This is required when export == TRUE, in order to provide meaningful filenames.
 #' @param keepEverything Logical. If TRUE, the functions calls the boilerpipeR::KeepEverythingExtractor from boilerpipeR, instead of boilerpipeR::ArticleExtractor.
-#' @param textToBeRemoved A character vector of one or more strings. Provided strings are removed from each article. 
+#' @param stringToBeRemoved A character vector of one or more strings. Provided strings are removed from each article. 
 #' @param export Logical, defaults to TRUE. If TRUE, textual contents are saved as individual txt files in a dedicated folder. Filename is based on the medatadata.
 #' @param maxTitleCharacters Maximum number of characters allowed in the title. Defaults to 80. 
 #' @param divClass If provided, all text included in the chosen div is outputted. 
@@ -14,7 +14,7 @@
 #' @export
 #' @examples
 #' articlesTxt <- ExtractTxt(articlesHtml, metadata)
-ExtractTxt <- function(articlesHtml, metadata = NULL, export = FALSE, maxTitleCharacters = 80, textToBeRemoved = NULL, divClass = NULL, divId = NULL, removeEverythingAfter = NULL, removeEverythingBefore = NULL, removePunctuationInFilename = TRUE, removeTitleFromTxt = FALSE, titles = NULL, keepEverything = FALSE, exportParameters = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
+ExtractTxt <- function(articlesHtml, metadata = NULL, export = FALSE, maxTitleCharacters = 80, stringToBeRemoved = NULL, divClass = NULL, divId = NULL, removeEverythingAfter = NULL, removeEverythingBefore = NULL, removePunctuationInFilename = TRUE, removeTitleFromTxt = FALSE, titles = NULL, keepEverything = FALSE, exportParameters = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
     if (gtools::invalid(nameOfProject) == TRUE) {
         nameOfProject <- CastarterOptions("nameOfProject")
     }
@@ -25,8 +25,8 @@ ExtractTxt <- function(articlesHtml, metadata = NULL, export = FALSE, maxTitleCh
         stop("If exportParameters == TRUE, both nameOfProject and nameOfWebsite must be defined either as parameters or previously with .")    
     }
     if (exportParameters == TRUE) {
-        args <- c("exportExtractTxt", "maxTitleCharacters", "textToBeRemovedExtractTxt", "divClassExtractTxt", "divIdExtractTxt", "removeEverythingAfterExtractTxt", "removeEverythingBeforeExtractTxt", "removePunctuationInFilename", "keepEverything", "removeTitleFromTxt")
-        param <- list(export, maxTitleCharacters, paste0(textToBeRemoved, collapse = "§§§"), divClass, divId, removeEverythingAfter, removeEverythingBefore, removePunctuationInFilename, keepEverything, removeTitleFromTxt)
+        args <- c("export_ExtractTxt", "maxTitleCharacters", "stringToBeRemoved_ExtractTxt", "divClass_ExtractTxt", "divId_ExtractTxt", "removeEverythingAfter_ExtractTxt", "removeEverythingBefore_ExtractTxt", "removePunctuationInFilename", "keepEverything_ExtractTxt", "removeTitleFromTxt")
+        param <- list(export, maxTitleCharacters, paste0(stringToBeRemoved, collapse = "§§§"), divClass, divId, removeEverythingAfter, removeEverythingBefore, removePunctuationInFilename, keepEverything, removeTitleFromTxt)
         for (i in 1:length(param)) {
             if (is.null(param[[i]])==TRUE) {
                 param[[i]] <- "NULL"
@@ -113,9 +113,9 @@ ExtractTxt <- function(articlesHtml, metadata = NULL, export = FALSE, maxTitleCh
     if (is.null(removeEverythingBefore) == FALSE) {
         articlesTxt <- base::gsub(base::paste0(".*", removeEverythingBefore), "", articlesTxt, fixed = FALSE)
     }
-    if (is.null(textToBeRemoved) == FALSE) {
-        for (i in 1:length(textToBeRemoved)) {
-            articlesTxt <- gsub(textToBeRemoved[i], "", articlesTxt, fixed = TRUE)
+    if (is.null(stringToBeRemoved) == FALSE) {
+        for (i in 1:length(stringToBeRemoved)) {
+            articlesTxt <- gsub(stringToBeRemoved[i], "", articlesTxt, fixed = TRUE)
         }
     }
     if (export == TRUE) {
