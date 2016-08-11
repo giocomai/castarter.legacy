@@ -124,118 +124,116 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", divClass = NULL, divI
         } else {
             articlesHtml <- datesTxt
         }
+    }
+    numberOfArticles <- length(articlesHtml)
+    datesTxt <- rep(NA, numberOfArticles)
+    if (is.null(removeEverythingBefore) == FALSE) {
+        articlesHtml <- base::gsub(base::paste0(".*", removeEverythingBefore), "", articlesHtml, fixed = FALSE)
+    }
+    if (keepAllString == TRUE) {
+        datesTxt <- articlesHtml
     } else {
-        numberOfArticles <- length(articlesHtml)
-        datesTxt <- rep(NA, numberOfArticles)
-        if (is.null(removeEverythingBefore) == FALSE) {
-            articlesHtml <- base::gsub(base::paste0(".*", removeEverythingBefore), "", articlesHtml, fixed = FALSE)
-        }
-        if (keepAllString == TRUE) {
-            datesTxt <- articlesHtml
-        } else {
-            if (dateFormat == "dby" | dateFormat == "dBy" | dateFormat == "dBY" | dateFormat == "dbY") {
-                for (i in 1:numberOfArticles) {
-                    dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]]?[[:digit:]][[:space:]]?[[:space:]][[:alpha:]]*[[:space:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]", 
-                                                                   articlesHtml[i]))
-                    if (length(dateTxt) == 0) {
-                        datesTxt[i] <- NA
-                    } else {
-                        datesTxt[i] <- dateTxt
-                    }
+        if (dateFormat == "dby" | dateFormat == "dBy" | dateFormat == "dBY" | dateFormat == "dbY") {
+            for (i in 1:numberOfArticles) {
+                dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]]?[[:digit:]][[:space:]]?[[:space:]][[:alpha:]]*[[:space:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]", 
+                                                               articlesHtml[i]))
+                if (length(dateTxt) == 0) {
+                    datesTxt[i] <- NA
+                } else {
+                    datesTxt[i] <- dateTxt
                 }
-            } else if (dateFormat == "YBd" | dateFormat == "ybd") {
-                for (i in 1:numberOfArticles) {
-                    dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]]?[[:digit:]]?[[:digit:]][[:digit:]][[:space:]]?[[:punct:]]?[[:alpha:]]*[[:space:]]?[[:punct:]]?[[:digit:]][[:digit:]]?", articlesHtml[i]))
-                    if (length(dateTxt) == 0) {
-                        datesTxt[i] <- NA
-                    } else {
-                        datesTxt[i] <- dateTxt
-                    }
+            }
+        } else if (dateFormat == "YBd" | dateFormat == "ybd") {
+            for (i in 1:numberOfArticles) {
+                dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]]?[[:digit:]]?[[:digit:]][[:digit:]][[:space:]]?[[:punct:]]?[[:alpha:]]*[[:space:]]?[[:punct:]]?[[:digit:]][[:digit:]]?", articlesHtml[i]))
+                if (length(dateTxt) == 0) {
+                    datesTxt[i] <- NA
+                } else {
+                    datesTxt[i] <- dateTxt
                 }
-            } else if (dateFormat == "dB,Y") {
-                for (i in 1:numberOfArticles) {
-                    dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]]?[[:digit:]][[:space:]][[:alpha:]]*,[[:space:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]?", articlesHtml[i]))
-                    if (length(dateTxt) == 0) {
-                        datesTxt[i] <- NA
-                    } else {
-                        datesTxt[i] <- dateTxt
-                    }
+            }
+        } else if (dateFormat == "dB,Y") {
+            for (i in 1:numberOfArticles) {
+                dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]]?[[:digit:]][[:space:]][[:alpha:]]*,[[:space:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]?", articlesHtml[i]))
+                if (length(dateTxt) == 0) {
+                    datesTxt[i] <- NA
+                } else {
+                    datesTxt[i] <- dateTxt
                 }
-            } else if (dateFormat == "db.'y") {
-                datesTxt <- rep(NA, numberOfArticles)
-                for (i in 1:numberOfArticles) {
-                    dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]]?[[:digit:]][[:space:]][[:alpha:]]*.'[[:digit:]][[:digit:]][[:digit:]]?", articlesHtml[i]))
-                    if (length(dateTxt) == 0) {
-                        datesTxt[i] <- NA
-                    } else {
-                        datesTxt[i] <- dateTxt
-                    }
+            }
+        } else if (dateFormat == "db.'y") {
+            datesTxt <- rep(NA, numberOfArticles)
+            for (i in 1:numberOfArticles) {
+                dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]]?[[:digit:]][[:space:]][[:alpha:]]*.'[[:digit:]][[:digit:]][[:digit:]]?", articlesHtml[i]))
+                if (length(dateTxt) == 0) {
+                    datesTxt[i] <- NA
+                } else {
+                    datesTxt[i] <- dateTxt
                 }
-            } else if (dateFormat == "Bd,Y" | dateFormat == "bd,Y") {
-                for (i in 1:numberOfArticles) {
-                    dateTxt <- regmatches(articlesHtml[i], regexpr("[[:alpha:]]*[[:space:]][[:digit:]]?[[:digit:]],[[:space:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]?", 
-                                                                   articlesHtml[i]))
-                    if (length(dateTxt) == 0) {
-                        datesTxt[i] <- NA
-                    } else {
-                        datesTxt[i] <- dateTxt
-                    }
+            }
+        } else if (dateFormat == "Bd,Y" | dateFormat == "bd,Y") {
+            for (i in 1:numberOfArticles) {
+                dateTxt <- regmatches(articlesHtml[i], regexpr("[[:alpha:]]*[[:space:]][[:digit:]]?[[:digit:]],[[:space:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]?", 
+                                                               articlesHtml[i]))
+                if (length(dateTxt) == 0) {
+                    datesTxt[i] <- NA
+                } else {
+                    datesTxt[i] <- dateTxt
                 }
-            } else if (dateFormat == "xdBY") {
-                for (i in 1:numberOfArticles) {
-                    dateTxt <- regmatches(articlesHtml[i], regexpr(paste0(customString, "[[:digit:]]?[[:digit:]][[:space:]][[:alpha:]]*[[:space:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]?"), 
-                                                                   articlesHtml[i]))
-                    if (length(dateTxt) == 0) {
-                        datesTxt[i] <- NA
-                    } else {
-                        datesTxt[i] <- dateTxt
-                    }
+            }
+        } else if (dateFormat == "xdBY") {
+            for (i in 1:numberOfArticles) {
+                dateTxt <- regmatches(articlesHtml[i], regexpr(paste0(customString, "[[:digit:]]?[[:digit:]][[:space:]][[:alpha:]]*[[:space:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]?"), 
+                                                               articlesHtml[i]))
+                if (length(dateTxt) == 0) {
+                    datesTxt[i] <- NA
+                } else {
+                    datesTxt[i] <- dateTxt
                 }
-                dateFormat <- "dBY"
-            } else if (dateFormat == "ymd" | dateFormat == "Ymd") {
-                for (i in 1:numberOfArticles) {
-                    dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]][[:digit:]][[:digit:]][[:digit:]][[:punct:]]?[[:digit:]]?[[:digit:]][[:punct:]]?[[:digit:]]?[[:digit:]]", articlesHtml[i]))
-                    if (length(dateTxt) == 0) {
-                        datesTxt[i] <- NA
-                    } else {
-                        datesTxt[i] <- dateTxt
-                    }
+            }
+            dateFormat <- "dBY"
+        } else if (dateFormat == "ymd" | dateFormat == "Ymd") {
+            for (i in 1:numberOfArticles) {
+                dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]][[:digit:]][[:digit:]][[:digit:]][[:punct:]]?[[:digit:]]?[[:digit:]][[:punct:]]?[[:digit:]]?[[:digit:]]", articlesHtml[i]))
+                if (length(dateTxt) == 0) {
+                    datesTxt[i] <- NA
+                } else {
+                    datesTxt[i] <- dateTxt
                 }
-            } else if (dateFormat == "dmy" | dateFormat == "mdy") {
-                for (i in 1:numberOfArticles) {
-                    dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]]?[[:digit:]][[:punct:]][[:digit:]]?[[:digit:]][[:punct:]][[:digit:]][[:digit:]]", 
-                                                                   articlesHtml[i]))
-                    if (length(dateTxt) == 0) {
-                        datesTxt[i] <- NA
-                    } else {
-                        datesTxt[i] <- dateTxt
-                    }
+            }
+        } else if (dateFormat == "dmy" | dateFormat == "mdy") {
+            for (i in 1:numberOfArticles) {
+                dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]]?[[:digit:]][[:punct:]][[:digit:]]?[[:digit:]][[:punct:]][[:digit:]][[:digit:]]", 
+                                                               articlesHtml[i]))
+                if (length(dateTxt) == 0) {
+                    datesTxt[i] <- NA
+                } else {
+                    datesTxt[i] <- dateTxt
                 }
-            } else if (dateFormat == "dmY" | dateFormat == "mdY") {
-                for (i in 1:numberOfArticles) {
-                    dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]]?[[:digit:]][[:punct:]][[:digit:]]?[[:digit:]][[:punct:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]", 
-                                                                   articlesHtml[i]))
-                    if (length(dateTxt) == 0) {
-                        datesTxt[i] <- NA
-                    } else {
-                        datesTxt[i] <- dateTxt
-                    }
+            }
+        } else if (dateFormat == "dmY" | dateFormat == "mdY") {
+            for (i in 1:numberOfArticles) {
+                dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]]?[[:digit:]][[:punct:]][[:digit:]]?[[:digit:]][[:punct:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]", articlesHtml[i]))
+                if (length(dateTxt) == 0) {
+                    datesTxt[i] <- NA
+                } else {
+                    datesTxt[i] <- dateTxt
                 }
             }
         }
-        if (language == "ru" | language == "russian") {
-            monthsRu <- c("Января", "Февраля", "Марта", "Апреля", "Мая", "Июня", "Июля", "Августа", "Сентября", 
-                          "Октября", "Ноября", "Декабря")
-            monthsEn <- month.name
-            monthsRu <- tolower(monthsRu)
-            datesTxt <- tolower(datesTxt)
-            for (i in 1:12) {
-                datesTxt <- gsub(monthsRu[i], monthsEn[i], datesTxt)
-            }
-            dates <- lubridate::parse_date_time(datesTxt, dateFormat, locale = "en_GB.UTF-8")
-        } else {
-            dates <- lubridate::parse_date_time(datesTxt, dateFormat, locale = language)
+    }
+    if (language == "ru" | language == "russian") {
+        monthsRu <- c("Января", "Февраля", "Марта", "Апреля", "Мая", "Июня", "Июля", "Августа", "Сентября", 
+                      "Октября", "Ноября", "Декабря")
+        monthsEn <- month.name
+        monthsRu <- tolower(monthsRu)
+        datesTxt <- tolower(datesTxt)
+        for (i in 1:12) {
+            datesTxt <- gsub(monthsRu[i], monthsEn[i], datesTxt)
         }
+        dates <- lubridate::parse_date_time(datesTxt, dateFormat, locale = "en_GB.UTF-8")
+    } else {
+        dates <- lubridate::parse_date_time(datesTxt, dateFormat, locale = language)
     }
     if (is.null(minDate) == FALSE) {
         dates[dates < as.POSIXct(minDate)] <- NA
