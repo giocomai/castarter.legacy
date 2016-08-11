@@ -2,6 +2,7 @@
 #' 
 #' Updates a dataset given a previously created parameters export file.
 #'  
+#' @param dataset A 'castarter' dataset.
 #' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
 #' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
 #' @return A castarter dataset.
@@ -24,7 +25,7 @@ UpdateDataset <- function(dataset, articlesLinks = NULL, numberOfIndexPages = 10
         indexHtml <- DownloadIndex(nameOfProject = nameOfProject, nameOfWebsite = nameOfWebsite, indexLinks = indexLinks, wget = wget, wait = wait)
         articlesLinks <- ExtractLinks(domain = params$param[params$args=="domain"], partOfLink = params$param[params$args=="partOfLink"], indexHtml = indexHtml, containerType = params$param[params$args=="containerTypeExtractLinks"], containerClass = params$param[params$args=="containerClassExtractLinks"], divClass = params$param[params$args=="divClassExtractLinks"], partOfLinkToExclude = strsplit(params$param[params$args=="partOfLinkToExclude"], "§§§"))
     }
-    articlesLinks <- articlesLinks[is.element(articlesLinks, dataset$articlesLinks)==FALSE]
+    articlesLinksNew <- articlesLinks[is.element(articlesLinks, dataset$articlesLinks)==FALSE]
     previousLength <- length(dataset$articlesLinks)
     articlesLinks <- c(dataset$articlesLinks, articlesLinksNew)
     DownloadContents(links = articlesLinks, type = "articles", nameOfProject = nameOfProject, nameOfWebsite = nameOfWebsite, wget = wget, missingArticles = TRUE, wait = wait, start = sum(previousLength, 1))
