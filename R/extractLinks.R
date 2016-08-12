@@ -27,6 +27,7 @@ ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = NULL, co
     }
     numberOfIndexPages <- length(indexHtml)
     allLinks <- data.frame()
+    pb <- txtProgressBar(min = 1, max = numberOfArticles, style = 3, title = "Extracting links")
     for (i in 1:numberOfIndexPages) {
         if (indexHtml[i] != "") {
             indexPageHtmlParsed <- XML::htmlTreeParse(indexHtml[i], useInternalNodes = T, encoding = "UTF-8")
@@ -51,7 +52,9 @@ ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = NULL, co
             links <- cbind(links, titles)
             allLinks <- rbind(links, allLinks)
         }
+        setTxtProgressBar(pb, i)
     }
+    close(pb)
     allLinks <- as.data.frame(allLinks, stringsAsFactors = FALSE)
     allLinks <- unique(allLinks)
     allLinksFiltered <- allLinks[0,]
