@@ -35,7 +35,7 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", divClass = NULL, divI
         stop("If exportParameters == TRUE, both nameOfProject and nameOfWebsite must be defined either as parameters or previously with .")    
     }
     if (exportParameters == TRUE) {
-        args <- c("dateFormat", "divClass_ExtractDates", "divId_ExtractDates", "spanClass_ExtractDates", "customXpath_ExtractDates", "customString_ExtractDates", "minDate", "maxDate", "keepAllString_ExtractDates")
+        args <- c("dateFormat_ExtractDates", "divClass_ExtractDates", "divId_ExtractDates", "spanClass_ExtractDates", "customXpath_ExtractDates", "customString_ExtractDates", "minDate", "maxDate", "keepAllString_ExtractDates")
         param <- list(dateFormat, divClass, divId, spanClass, customXpath, customString, minDate, maxDate, keepAllString)
         for (i in 1:length(param)) {
             if (is.null(param[[i]])==TRUE) {
@@ -443,7 +443,7 @@ CreateDatasetFromHtml <- function(articlesLinks = NULL,
         stop("If exportParameters == TRUE, both nameOfProject and nameOfWebsite must be defined either as parameters or previously with .")    
     }
     if (exportParameters == TRUE) {
-        args <- c("dateFormat", "divClass_ExtractDates", "spanClass_ExtractDates", "customXpath_ExtractDates", "language_ExtractDates", "removeEverythingBefore_ExtractDates",
+        args <- c("dateFormat_ExtractDates", "divClass_ExtractDates", "spanClass_ExtractDates", "customXpath_ExtractDates", "language_ExtractDates", "removeEverythingBefore_ExtractDates",
                   "method_ExtractTitles", "removeString_ExtractTitles", "removeEverythingAfter_ExtractTitles", "removePunctuation_ExtractTitles",
                   "divClass_ExtractTxt", "divId_ExtractTxt", "removeString_ExtractTxt", "removeEverythingAfter_ExtractTxt", "removeEverythingBefore_ExtractTxt",
                   "language", "encoding")
