@@ -401,8 +401,8 @@ ExtractTitles <- function(articlesHtml = NULL, articlesLinks = "", method = "htm
 #' @return A vector of the integer class. 
 #' @export
 #' @examples
-#' articlesId <- ExtractArticleId(nameOfProject, nameOfWebsite)
-ExtractArticleId <- function(nameOfProject = NULL, nameOfWebsite = NULL, accordingToDate = FALSE, dates = NULL) {
+#' articlesId <- ExtractId(nameOfProject, nameOfWebsite)
+ExtractId <- function(nameOfProject = NULL, nameOfWebsite = NULL, accordingToDate = FALSE, dates = NULL) {
     if (gtools::invalid(nameOfProject) == TRUE) {
         nameOfProject <- CastarterOptions("nameOfProject")
     }
