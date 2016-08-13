@@ -6,7 +6,7 @@
 \usage{
 ExtractTxt(articlesHtml, metadata = NULL, export = FALSE,
   maxTitleCharacters = 80, stringToBeRemoved = NULL, divClass = NULL,
-  divId = NULL, removeEverythingAfter = NULL,
+  divId = NULL, customXpath = NULL, removeEverythingAfter = NULL,
   removeEverythingBefore = NULL, removePunctuationInFilename = TRUE,
   removeTitleFromTxt = FALSE, titles = NULL, keepEverything = FALSE,
   exportParameters = TRUE, nameOfProject = NULL, nameOfWebsite = NULL)

@@ -14,7 +14,7 @@
 #' @export
 #' @examples
 #' articlesTxt <- ExtractTxt(articlesHtml, metadata)
-ExtractTxt <- function(articlesHtml, metadata = NULL, export = FALSE, maxTitleCharacters = 80, stringToBeRemoved = NULL, divClass = NULL, divId = NULL, removeEverythingAfter = NULL, removeEverythingBefore = NULL, removePunctuationInFilename = TRUE, removeTitleFromTxt = FALSE, titles = NULL, keepEverything = FALSE, exportParameters = TRUE, nameOfProject = NULL, nameOfWebsite = NULL) {
+ExtractTxt <- function(articlesHtml, metadata = NULL, export = FALSE, maxTitleCharacters = 80, stringToBeRemoved = NULL, divClass = NULL, divId = NULL, customXpath = NULL, removeEverythingAfter = NULL, removeEverythingBefore = NULL, removePunctuationInFilename = TRUE, removeTitleFromTxt = FALSE, titles = NULL, keepEverything = FALSE, exportParameters = TRUE, nameOfProject = NULL, nameOfWebsite = NULL) {
     if (gtools::invalid(nameOfProject) == TRUE) {
         nameOfProject <- CastarterOptions("nameOfProject")
     }
@@ -25,8 +25,8 @@ ExtractTxt <- function(articlesHtml, metadata = NULL, export = FALSE, maxTitleCh
         stop("If exportParameters == TRUE, both nameOfProject and nameOfWebsite must be defined either as parameters or previously with .")    
     }
     if (exportParameters == TRUE) {
-        args <- c("export_ExtractTxt", "maxTitleCharacters", "stringToBeRemoved_ExtractTxt", "divClass_ExtractTxt", "divId_ExtractTxt", "removeEverythingAfter_ExtractTxt", "removeEverythingBefore_ExtractTxt", "removePunctuationInFilename", "keepEverything_ExtractTxt", "removeTitleFromTxt")
-        param <- list(export, maxTitleCharacters, paste0(stringToBeRemoved, collapse = "§§§"), divClass, divId, removeEverythingAfter, removeEverythingBefore, removePunctuationInFilename, keepEverything, removeTitleFromTxt)
+        args <- c("export_ExtractTxt", "maxTitleCharacters", "stringToBeRemoved_ExtractTxt", "divClass_ExtractTxt", "divId_ExtractTxt", "customXpath_ExtractTxt", "removeEverythingAfter_ExtractTxt", "removeEverythingBefore_ExtractTxt", "removePunctuationInFilename", "keepEverything_ExtractTxt", "removeTitleFromTxt")
+        param <- list(export, maxTitleCharacters, paste0(stringToBeRemoved, collapse = "§§§"), divClass, divId, customXpath, removeEverythingAfter, removeEverythingBefore, removePunctuationInFilename, keepEverything, removeTitleFromTxt)
         for (i in 1:length(param)) {
             if (is.null(param[[i]])==TRUE) {
                 param[[i]] <- "NULL"
@@ -79,6 +79,20 @@ ExtractTxt <- function(articlesHtml, metadata = NULL, export = FALSE, maxTitleCh
                     print(paste("Text div in article with ID", i, "could not be extracted."))
                 } else {
                     articlesTxt[i] <- XML::xpathSApply(articleHtmlParsed, paste0("//div[@id='", divId, "']"), XML::xmlValue)
+                }
+                setTxtProgressBar(pb, i)
+            }
+        }
+    } else if (is.null(customXpath) == FALSE) {
+        for (i in 1:numberOfArticles) {
+            if (articlesHtml[i] != "") {
+                articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T, encoding = "UTF-8")
+                extractedTemp <- XML::xpathSApply(articleHtmlParsed, customXpath, XML::xmlValue)
+                if (length(extractedTemp) == 0) {
+                    articlesHtml[i] <- NA
+                    print(paste("Text in article with ID", i, "could not be extracted."))
+                } else {
+                    articlesTxt[i] <- extractedTemp
                 }
                 setTxtProgressBar(pb, i)
             }
