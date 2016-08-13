@@ -618,6 +618,7 @@ ExportDataset <- function(articlesTxt, metadata, exportRdata = TRUE, exportCsv =
 #' string <- ExtractDiv(articlesHtml, divClass = "nameOfDiv")
 ExtractXpath <- function(articlesHtml = NULL, divClass = NULL, spanClass = NULL, customXpath = NULL) {
     txt <- rep(NA, length(articlesHtml))
+    pb <- txtProgressBar(min = 1, max = length(articlesHtml), style = 3)
     if (gtools::invalid(divClass) == FALSE) {
         for (i in seq_along(articlesHtml)) {
             if (articlesHtml[i] != "") {
@@ -629,6 +630,7 @@ ExtractXpath <- function(articlesHtml = NULL, divClass = NULL, spanClass = NULL,
                     txt[i] <- XML::xpathSApply(articleHtmlParsed, paste0("//div[@class='", divClass, "']"), XML::xmlValue)
                 }
             }
+            setTxtProgressBar(pb, i)
         }
     }
     if (gtools::invalid(spanClass)==FALSE) {
@@ -641,6 +643,7 @@ ExtractXpath <- function(articlesHtml = NULL, divClass = NULL, spanClass = NULL,
             } else {
                 txt[i] <- tempStringXml
             }
+            setTxtProgressBar(pb, i)
         }
     }
     if (gtools::invalid(customXpath) == FALSE) {
@@ -655,7 +658,9 @@ ExtractXpath <- function(articlesHtml = NULL, divClass = NULL, spanClass = NULL,
                     txt[i] <- tempStringXml
                 }
             }
+            setTxtProgressBar(pb, i)
         }
     }
+    close(pb)
     return(txt)
 }
