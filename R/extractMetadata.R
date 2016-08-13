@@ -335,7 +335,7 @@ ExtractTitles <- function(articlesHtml = NULL, articlesLinks = "", method = "htm
     }
     titles <- vector()
     numberOfArticles <- length(articlesHtml)
-    pb <- txtProgressBar(min = 1, max = numberOfArticles, style = 3, title = "Extracting titles")
+    pb <- txtProgressBar(min = 0, max = numberOfArticles, style = 3, title = "Extracting titles")
     if (method == "htmlTitle") {
         for (i in 1:numberOfArticles) {
             if (articlesHtml[i]!="") {
@@ -616,9 +616,9 @@ ExportDataset <- function(articlesTxt, metadata, exportRdata = TRUE, exportCsv =
 #' @export
 #' @examples
 #' string <- ExtractDiv(articlesHtml, divClass = "nameOfDiv")
-ExtractXpath <- function(articlesHtml = NULL, divClass = NULL, spanClass = NULL, customXpath = NULL) {
+ExtractXpath <- function(articlesHtml, divClass = NULL, spanClass = NULL, customXpath = NULL) {
     txt <- rep(NA, length(articlesHtml))
-    pb <- txtProgressBar(min = 1, max = length(articlesHtml), style = 3)
+    pb <- txtProgressBar(min = 0, max = length(articlesHtml), style = 3)
     if (gtools::invalid(divClass) == FALSE) {
         for (i in seq_along(articlesHtml)) {
             if (articlesHtml[i] != "") {

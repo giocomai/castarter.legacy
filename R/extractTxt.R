@@ -56,7 +56,7 @@ ExtractTxt <- function(articlesHtml, metadata = NULL, export = FALSE, maxTitleCh
         }
         txtFilenames <- paste0(file.path(nameOfProject, nameOfWebsite, "Txt", paste0(paste(metadata$dates, metadata$nameOfWebsite, metadata$articlesId, substring(titles, 1, maxTitleCharacters), sep = " - "), ".txt")))
     }
-    pb <- txtProgressBar(min = 1, max = numberOfArticles, style = 3, title = "Extracting titles")
+    pb <- txtProgressBar(min = 0, max = numberOfArticles, style = 3, title = "Extracting titles")
     if (is.null(divClass) == FALSE) {
         for (i in 1:numberOfArticles) {
             if (articlesHtml[i] != "") {

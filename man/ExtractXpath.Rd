@@ -4,7 +4,7 @@
 \alias{ExtractXpath}
 \title{Extracts string included in an html element}
 \usage{
-ExtractXpath(articlesHtml = NULL, divClass = NULL, spanClass = NULL,
+ExtractXpath(articlesHtml, divClass = NULL, spanClass = NULL,
   customXpath = NULL)
 }
 \arguments{
