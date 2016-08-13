@@ -335,12 +335,14 @@ ExtractTitles <- function(articlesHtml = NULL, articlesLinks = "", method = "htm
     }
     titles <- vector()
     numberOfArticles <- length(articlesHtml)
+    pb <- txtProgressBar(min = 1, max = numberOfArticles, style = 3, title = "Extracting titles")
     if (method == "htmlTitle") {
         for (i in 1:numberOfArticles) {
             if (articlesHtml[i]!="") {
                 articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T, encoding = "UTF-8")
                 titles[i] <- XML::xpathSApply(articleHtmlParsed, "//title", XML::xmlValue)
             }
+            setTxtProgressBar(pb, i)
         }
     } else if (method == "htmlH2") {
         for (i in 1:numberOfArticles) {
@@ -348,6 +350,7 @@ ExtractTitles <- function(articlesHtml = NULL, articlesLinks = "", method = "htm
                 articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T, encoding = "UTF-8")
                 titles[i] <- XML::xpathSApply(articleHtmlParsed, "//h2", XML::xmlValue)
             }
+            setTxtProgressBar(pb, i)
         }
     } else if (method == "htmlH1") {
         for (i in 1:numberOfArticles) {
@@ -355,11 +358,15 @@ ExtractTitles <- function(articlesHtml = NULL, articlesLinks = "", method = "htm
                 articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T, encoding = "UTF-8")
                 titles[i] <- XML::xpathSApply(articleHtmlParsed, "//h1", XML::xmlValue)
             }
+            setTxtProgressBar(pb, i)
         }
     } else if (method == "customXpath") {
         for (i in 1:numberOfArticles) {
-        articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T, encoding = "UTF-8")
-        titles[i] <- XML::xpathSApply(articleHtmlParsed, customXpath, XML::xmlValue)
+            if (articlesHtml[i]!="") {
+                articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T, encoding = "UTF-8")
+                titles[i] <- XML::xpathSApply(articleHtmlParsed, customXpath, XML::xmlValue)
+            }
+            setTxtProgressBar(pb, i)
         }
     } else if (method == "indexLink") {
         titles <- names(articlesLinks)
@@ -389,7 +396,8 @@ ExtractTitles <- function(articlesHtml = NULL, articlesLinks = "", method = "htm
     if (gtools::invalid(maxCharacters) == FALSE) {
     titles <- substring(titles, 1, maxCharacters)
     }
-    titles
+    close(pb)
+    return(titles)
 }
 
 #' Extracts articlesId from filename
