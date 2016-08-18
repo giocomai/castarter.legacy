@@ -13,9 +13,9 @@ CreateDatasetFromHtml(articlesLinks = NULL, dateFormat = NULL,
   removePunctuation_ExtractTitles = NULL, divClass_ExtractTxt = NULL,
   divId_ExtractTxt = NULL, removeString_ExtractTxt = NULL,
   removeEverythingAfter_ExtractTxt = NULL,
-  removeEverythingBefore_ExtractTxt = NULL, language = NULL,
-  encoding = NULL, exportParameters = TRUE, nameOfProject = NULL,
-  nameOfWebsite = NULL)
+  removeEverythingBefore_ExtractTxt = NULL, removeTitleFromTxt = FALSE,
+  customXpath_ExtractTxt = NULL, language = NULL, encoding = NULL,
+  exportParameters = TRUE, nameOfProject = NULL, nameOfWebsite = NULL)
 }
 \arguments{
 \item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}

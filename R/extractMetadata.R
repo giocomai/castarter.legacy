@@ -479,6 +479,7 @@ CreateDatasetFromHtml <- function(articlesLinks = NULL,
         }
         write.table(updateParameters, file = base::file.path(nameOfProject, nameOfWebsite, "Logs", paste(nameOfWebsite, "updateParameters.csv", sep = " - ")))
     }
+    castarter::CreateFolders(nameOfProject = nameOfProject, nameOfWebsite = nameOfWebsite)
     htmlFilesList <- gtools::mixedsort(list.files(file.path(nameOfProject, nameOfWebsite, "Html"), pattern = "\\.html$", full.names = TRUE))
     numberOfArticles <- length(htmlFilesList)
     dates <- as.POSIXct(rep(NA, numberOfArticles))
