@@ -58,12 +58,12 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", divClass = NULL, divI
         write.table(updateParameters, file = base::file.path(nameOfProject, nameOfWebsite, "Logs", paste(nameOfWebsite, "updateParameters.csv", sep = " - ")))
     }
     numberOfArticles <- length(articlesHtml)
-    if (is.null(encoding) == FALSE) {
+    if (gtools::invalid(encoding) == FALSE) {
         articlesHtml <- iconv(articlesHtml, from = encoding, to = "UTF-8")
     } else {
         articlesHtml <- iconv(articlesHtml, to = "UTF-8")
     }
-    if (base::is.null(divId) == FALSE) {
+    if (gtools::invalid(divId) == FALSE) {
         datesTxt <- rep(NA, numberOfArticles)
         for (i in 1:numberOfArticles) {
             if (articlesHtml[i] != "") {
