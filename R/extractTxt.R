@@ -57,7 +57,7 @@ ExtractTxt <- function(articlesHtml, metadata = NULL, export = FALSE, maxTitleCh
         txtFilenames <- paste0(file.path(nameOfProject, nameOfWebsite, "Txt", paste0(paste(metadata$dates, metadata$nameOfWebsite, metadata$articlesId, substring(titles, 1, maxTitleCharacters), sep = " - "), ".txt")))
     }
     pb <- txtProgressBar(min = 0, max = numberOfArticles, style = 3, title = "Extracting titles")
-    if (is.null(divClass) == FALSE) {
+    if (gtools::invalid(divClass) == FALSE) {
         for (i in 1:numberOfArticles) {
             if (articlesHtml[i] != "") {
                 articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T, encoding = "UTF-8")
@@ -70,7 +70,7 @@ ExtractTxt <- function(articlesHtml, metadata = NULL, export = FALSE, maxTitleCh
                 setTxtProgressBar(pb, i)
             }
         }
-    } else if (is.null(divId) == FALSE) {
+    } else if (gtools::invalid(divId) == FALSE) {
         for (i in 1:numberOfArticles) {
             if (articlesHtml[i] != "") {
                 articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T, encoding = "UTF-8")
@@ -83,7 +83,7 @@ ExtractTxt <- function(articlesHtml, metadata = NULL, export = FALSE, maxTitleCh
                 setTxtProgressBar(pb, i)
             }
         }
-    } else if (is.null(customXpath) == FALSE) {
+    } else if (gtools::invalid(customXpath) == FALSE) {
         for (i in 1:numberOfArticles) {
             if (articlesHtml[i] != "") {
                 articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T, encoding = "UTF-8")
