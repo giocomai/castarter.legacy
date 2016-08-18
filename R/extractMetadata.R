@@ -35,8 +35,8 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", divClass = NULL, divI
         stop("If exportParameters == TRUE, both nameOfProject and nameOfWebsite must be defined either as parameters or previously with .")    
     }
     if (exportParameters == TRUE) {
-        args <- c("dateFormat_ExtractDates", "divClass_ExtractDates", "divId_ExtractDates", "spanClass_ExtractDates", "customXpath_ExtractDates", "customString_ExtractDates", "minDate", "maxDate", "keepAllString_ExtractDates")
-        param <- list(dateFormat, divClass, divId, spanClass, customXpath, customString, minDate, maxDate, keepAllString)
+        args <- c("dateFormat_ExtractDates", "divClass_ExtractDates", "divId_ExtractDates", "spanClass_ExtractDates", "customXpath_ExtractDates", "customString_ExtractDates", "minDate", "maxDate", "keepAllString_ExtractDates", "removeEverythingBefore_ExtractDates")
+        param <- list(dateFormat, divClass, divId, spanClass, customXpath, customString, minDate, maxDate, keepAllString, removeEverythingBefore)
         for (i in 1:length(param)) {
             if (is.null(param[[i]])==TRUE) {
                 param[[i]] <- "NULL"
