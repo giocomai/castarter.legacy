@@ -121,13 +121,13 @@ ExtractTxt <- function(articlesHtml, metadata = NULL, export = FALSE, maxTitleCh
             articlesTxt[i] <- base::sub(pattern = titles[i], replacement = "", x = articlesTxt[i], fixed = TRUE)
         }
     }
-    if (is.null(removeEverythingAfter) == FALSE) {
+    if (gtools::invalid(removeEverythingAfter) == FALSE) {
         articlesTxt <- base::gsub(base::paste0(removeEverythingAfter, ".*"), "", articlesTxt, fixed = FALSE)
     }
-    if (is.null(removeEverythingBefore) == FALSE) {
+    if (gtools::invalid(removeEverythingBefore) == FALSE) {
         articlesTxt <- base::gsub(base::paste0(".*", removeEverythingBefore), "", articlesTxt, fixed = FALSE)
     }
-    if (is.null(stringToBeRemoved) == FALSE) {
+    if (gtools::invalid(stringToBeRemoved) == FALSE) {
         for (i in 1:length(stringToBeRemoved)) {
             articlesTxt <- gsub(stringToBeRemoved[i], "", articlesTxt, fixed = TRUE)
         }
@@ -137,5 +137,5 @@ ExtractTxt <- function(articlesHtml, metadata = NULL, export = FALSE, maxTitleCh
             base::write(articlesTxt[i], file = txtFilenames[i])
         }
     }
-    articlesTxt
+    return(articlesTxt)
 } 
