@@ -438,7 +438,7 @@ ExtractId <- function(nameOfProject = NULL, nameOfWebsite = NULL, accordingToDat
 CreateDatasetFromHtml <- function(articlesLinks = NULL,
                                   dateFormat = NULL, divClass_ExtractDates = NULL, spanClass_ExtractDates = NULL, customXpath_ExtractDates = NULL, language_ExtractDates = Sys.getlocale(category = "LC_TIME"), removeEverythingBefore_ExtractDates = NULL,
                                   method_ExtractTitles = "htmlTitle", removeString_ExtractTitles = NULL, removeEverythingAfter_ExtractTitles = NULL, removePunctuation_ExtractTitles = NULL,
-                                  divClass_ExtractTxt = NULL, divId_ExtractTxt = NULL, stringToBeRemoved_ExtractTxt = NULL, removeEverythingAfter_ExtractTxt = NULL, removeEverythingBefore_ExtractTxt = NULL, removeTitleFromTxt = FALSE, customXpath_ExtractTxt = NULL,
+                                  divClass_ExtractTxt = NULL, divId_ExtractTxt = NULL, removeString_ExtractTxt = NULL, removeEverythingAfter_ExtractTxt = NULL, removeEverythingBefore_ExtractTxt = NULL, removeTitleFromTxt = FALSE, customXpath_ExtractTxt = NULL,
                                   language = NULL, encoding = NULL,  
                                   exportParameters = TRUE, nameOfProject = NULL, nameOfWebsite = NULL) {
     if (gtools::invalid(nameOfProject) == TRUE) {
@@ -457,7 +457,7 @@ CreateDatasetFromHtml <- function(articlesLinks = NULL,
                   "language", "encoding")
         param <- list(dateFormat, divClass_ExtractDates, spanClass_ExtractDates, customXpath_ExtractDates, language_ExtractDates, removeEverythingBefore_ExtractDates,
                       method_ExtractTitles, removeString_ExtractTitles, removeEverythingAfter_ExtractTitles, removePunctuation_ExtractTitles,
-                      divClass_ExtractTxt, divId_ExtractTxt, stringToBeRemoved_ExtractTxt, removeEverythingAfter_ExtractTxt, removeEverythingBefore_ExtractTxt,
+                      divClass_ExtractTxt, divId_ExtractTxt, removeString_ExtractTxt, removeEverythingAfter_ExtractTxt, removeEverythingBefore_ExtractTxt,
                       language, encoding)
         for (i in 1:length(param)) {
             if (is.null(param[[i]])==TRUE) {
@@ -506,7 +506,7 @@ CreateDatasetFromHtml <- function(articlesLinks = NULL,
         } else {
             dates[i] <- NA
         }
-        articlesTxt[i] <- ExtractTxt(articlesHtml = htmlFile, export = FALSE, removeEverythingAfter = removeEverythingAfter_ExtractTxt, removeEverythingBefore = removeEverythingBefore_ExtractTxt, divClass = divClass_ExtractTxt, divId = divId_ExtractTxt, stringToBeRemoved = stringToBeRemoved_ExtractTxt, customXpath = customXpath_ExtractTxt, exportParameters = FALSE)
+        articlesTxt[i] <- ExtractTxt(articlesHtml = htmlFile, export = FALSE, removeEverythingAfter = removeEverythingAfter_ExtractTxt, removeEverythingBefore = removeEverythingBefore_ExtractTxt, divClass = divClass_ExtractTxt, divId = divId_ExtractTxt, removeString = removeString_ExtractTxt, customXpath = customXpath_ExtractTxt, exportParameters = FALSE)
         if (method_ExtractTitles != "indexLink") {
             titleTemp <- ExtractTitles(articlesHtml = htmlFile, method = method_ExtractTitles, removeString = removeString_ExtractTitles)
             if (length(titleTemp) == 1) {
