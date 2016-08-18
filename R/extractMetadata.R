@@ -485,7 +485,7 @@ CreateDatasetFromHtml <- function(articlesLinks = NULL,
     dates <- as.POSIXct(rep(NA, numberOfArticles))
     articlesTxt <- rep(NA, numberOfArticles)
     if (method_ExtractTitles == "indexLink") {
-        titles <- ExtractTitles(articlesHtml = NULL, articlesLinks = articlesLinks, method = "indexLink", removeString = removeString_ExtractTitles, removeEverythingAfter = removeEverythingAfter_ExtractTitles)
+        titles <- ExtractTitles(articlesHtml = NULL, articlesLinks = articlesLinks, method = "indexLink", removeString = removeString_ExtractTitles, removeEverythingAfter = removeEverythingAfter_ExtractTitles, exportParameters = FALSE)
     } else {
         titles <- rep(NA, numberOfArticles)
     }
@@ -500,13 +500,13 @@ CreateDatasetFromHtml <- function(articlesLinks = NULL,
         if (is.null(encoding) == FALSE) {
             htmlFile <- iconv(htmlFile, from = encoding, to = "utf8")
         }
-        dateTemp <- ExtractDates(articlesHtml = htmlFile, dateFormat = dateFormat, divClass = divClass_ExtractDates, spanClass = spanClass_ExtractDates, customXpath = customXpath_ExtractDates, language = language_ExtractDates, removeEverythingBefore = removeEverythingBefore_ExtractDates)
+        dateTemp <- ExtractDates(articlesHtml = htmlFile, dateFormat = dateFormat, divClass = divClass_ExtractDates, spanClass = spanClass_ExtractDates, customXpath = customXpath_ExtractDates, language = language_ExtractDates, removeEverythingBefore = removeEverythingBefore_ExtractDates, exportParameters = FALSE)
         if (length(dateTemp) == 1) {
             dates[i] <- dateTemp
         } else {
             dates[i] <- NA
         }
-        articlesTxt[i] <- ExtractTxt(articlesHtml = htmlFile, export = FALSE, removeEverythingAfter = removeEverythingAfter_ExtractTxt, removeEverythingBefore = removeEverythingBefore_ExtractTxt, divClass = divClass_ExtractTxt, divId = divId_ExtractTxt, stringToBeRemoved = stringToBeRemoved_ExtractTxt, customXpath = customXpath_ExtractTxt)
+        articlesTxt[i] <- ExtractTxt(articlesHtml = htmlFile, export = FALSE, removeEverythingAfter = removeEverythingAfter_ExtractTxt, removeEverythingBefore = removeEverythingBefore_ExtractTxt, divClass = divClass_ExtractTxt, divId = divId_ExtractTxt, stringToBeRemoved = stringToBeRemoved_ExtractTxt, customXpath = customXpath_ExtractTxt, exportParameters = FALSE)
         if (method_ExtractTitles != "indexLink") {
             titleTemp <- ExtractTitles(articlesHtml = htmlFile, method = method_ExtractTitles, removeString = removeString_ExtractTitles)
             if (length(titleTemp) == 1) {
