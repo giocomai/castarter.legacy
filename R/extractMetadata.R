@@ -438,7 +438,7 @@ ExtractId <- function(nameOfProject = NULL, nameOfWebsite = NULL, accordingToDat
 CreateDatasetFromHtml <- function(articlesLinks = NULL,
                                   dateFormat = NULL, divClass_ExtractDates = NULL, spanClass_ExtractDates = NULL, customXpath_ExtractDates = NULL, language_ExtractDates = NULL, removeEverythingBefore_ExtractDates = NULL,
                                   method_ExtractTitles = "htmlTitle", removeString_ExtractTitles = NULL, removeEverythingAfter_ExtractTitles = NULL, removePunctuation_ExtractTitles = NULL,
-                                  divClass_ExtractTxt = NULL, divId_ExtractTxt = NULL, removeString_ExtractTxt = NULL, removeEverythingAfter_ExtractTxt = NULL, removeEverythingBefore_ExtractTxt = NULL, 
+                                  divClass_ExtractTxt = NULL, divId_ExtractTxt = NULL, removeString_ExtractTxt = NULL, removeEverythingAfter_ExtractTxt = NULL, removeEverythingBefore_ExtractTxt = NULL, removeTitleFromTxt = FALSE, customXpath_ExtractTxt = NULL,
                                   language = NULL, encoding = NULL,  
                                   exportParameters = TRUE, nameOfProject = NULL, nameOfWebsite = NULL) {
     if (gtools::invalid(nameOfProject) == TRUE) {
@@ -505,7 +505,7 @@ CreateDatasetFromHtml <- function(articlesLinks = NULL,
         } else {
             dates[i] <- NA
         }
-        articlesTxt[i] <- ExtractTxt(articlesHtml = htmlFile, export = FALSE, removeEverythingAfter = removeEverythingAfter_ExtractTxt, removeEverythingBefore = removeEverythingBefore_ExtractTxt, divClass = divClass_ExtractTxt, divID = divId_ExtractTxt, textToBeRemoved = removeString_ExtractTxt)
+        articlesTxt[i] <- ExtractTxt(articlesHtml = htmlFile, export = FALSE, removeEverythingAfter = removeEverythingAfter_ExtractTxt, removeEverythingBefore = removeEverythingBefore_ExtractTxt, divClass = divClass_ExtractTxt, divID = divId_ExtractTxt, textToBeRemoved = removeString_ExtractTxt, customXpath = customXpath_ExtractTxt)
         if (method_ExtractTitles != "indexLink") {
             titleTemp <- ExtractTitles(articlesHtml = htmlFile, method = method_ExtractTitles, removeString = removeString_ExtractTitles)
             if (length(titleTemp) == 1) {
