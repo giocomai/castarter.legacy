@@ -457,7 +457,7 @@ CreateDatasetFromHtml <- function(articlesLinks = NULL,
                   "language", "encoding")
         param <- list(dateFormat, divClass_ExtractDates, spanClass_ExtractDates, customXpath_ExtractDates, language_ExtractDates, removeEverythingBefore_ExtractDates,
                       method_ExtractTitles, removeString_ExtractTitles, removeEverythingAfter_ExtractTitles, removePunctuation_ExtractTitles,
-                      divClass_ExtractTxt, divId_ExtractTxt, removeString_ExtractTxt, removeEverythingAfter_ExtractTxt, removeEverythingBefore_ExtractTxt,
+                      divClass_ExtractTxt, divId_ExtractTxt, stringToBeRemoved_ExtractTxt, removeEverythingAfter_ExtractTxt, removeEverythingBefore_ExtractTxt,
                       language, encoding)
         for (i in 1:length(param)) {
             if (is.null(param[[i]])==TRUE) {
@@ -506,7 +506,7 @@ CreateDatasetFromHtml <- function(articlesLinks = NULL,
         } else {
             dates[i] <- NA
         }
-        articlesTxt[i] <- ExtractTxt(articlesHtml = htmlFile, export = FALSE, removeEverythingAfter = removeEverythingAfter_ExtractTxt, removeEverythingBefore = removeEverythingBefore_ExtractTxt, divClass = divClass_ExtractTxt, divID = divId_ExtractTxt, textToBeRemoved = removeString_ExtractTxt, customXpath = customXpath_ExtractTxt)
+        articlesTxt[i] <- ExtractTxt(articlesHtml = htmlFile, export = FALSE, removeEverythingAfter = removeEverythingAfter_ExtractTxt, removeEverythingBefore = removeEverythingBefore_ExtractTxt, divClass = divClass_ExtractTxt, divId = divId_ExtractTxt, stringToBeRemoved = stringToBeRemoved_ExtractTxt, customXpath = customXpath_ExtractTxt)
         if (method_ExtractTitles != "indexLink") {
             titleTemp <- ExtractTitles(articlesHtml = htmlFile, method = method_ExtractTitles, removeString = removeString_ExtractTitles)
             if (length(titleTemp) == 1) {

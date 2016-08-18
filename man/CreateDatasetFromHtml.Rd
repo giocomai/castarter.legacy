@@ -6,7 +6,8 @@
 \usage{
 CreateDatasetFromHtml(articlesLinks = NULL, dateFormat = NULL,
   divClass_ExtractDates = NULL, spanClass_ExtractDates = NULL,
-  customXpath_ExtractDates = NULL, language_ExtractDates = NULL,
+  customXpath_ExtractDates = NULL,
+  language_ExtractDates = Sys.getlocale(category = "LC_TIME"),
   removeEverythingBefore_ExtractDates = NULL,
   method_ExtractTitles = "htmlTitle", removeString_ExtractTitles = NULL,
   removeEverythingAfter_ExtractTitles = NULL,
