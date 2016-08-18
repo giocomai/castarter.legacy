@@ -19,6 +19,8 @@ UpdateDataset <- function(dataset, articlesLinks = NULL, numberOfIndexPages = 10
     params <- read.table(file = file.path(nameOfProject, nameOfWebsite, "Logs", paste(nameOfWebsite, "updateParameters.csv", sep = " - ")), stringsAsFactors = FALSE)
     params$param[params$param == "NULL"] <- NA
     params$param[params$param == ""] <- NA
+    params$param[params$param == "FALSE"] <- FALSE
+    params$param[params$param == "TRUE"] <- TRUE
     castarter::CreateFolders(nameOfProject = nameOfProject, nameOfWebsite = nameOfWebsite)
     if (base::is.null(articlesLinks)==TRUE) {
         indexLinks <- CreateLinks(linkFirstChunk = params$param[params$args=="linkFirstChunk"], linkSecondChunk = params$param[params$args=="linkSecondChunk"], startPage = as.integer(params$param[params$args=="startPage"]), endPage = sum(as.integer(params$param[params$args=="startPage"]), numberOfIndexPages), increaseBy = as.integer(params$param[params$args=="increaseBy"]), sortIndexLinks  = as.logical(params$param[params$args=="sortIndexLinks"]))
