@@ -19,6 +19,7 @@ UpdateDataset <- function(dataset, articlesLinks = NULL, numberOfIndexPages = 10
     params <- read.table(file = file.path(nameOfProject, nameOfWebsite, "Logs", paste(nameOfWebsite, "updateParameters.csv", sep = " - ")), stringsAsFactors = FALSE)
     params$param[params$param == "NULL"] <- NA
     params$param[params$param == ""] <- NA
+    params$param[params$param == "NA"] <- NA
     params$param[params$param == "FALSE"] <- FALSE
     params$param[params$param == "TRUE"] <- TRUE
     castarter::CreateFolders(nameOfProject = nameOfProject, nameOfWebsite = nameOfWebsite)
