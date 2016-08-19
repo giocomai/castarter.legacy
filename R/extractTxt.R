@@ -69,7 +69,9 @@ ExtractTxt <- function(articlesHtml, metadata = NULL, export = FALSE, maxTitleCh
                 } else {
                     articlesTxt[i] <- XML::xpathSApply(articleHtmlParsed, paste0("//div[@class='", divClass, "']"), XML::xmlValue)
                 }
-                setTxtProgressBar(pb, i)
+                if (progressBar == TRUE) {
+                    setTxtProgressBar(pb, i)
+                }
             }
         }
     } else if (gtools::invalid(divId) == FALSE) {
@@ -82,7 +84,9 @@ ExtractTxt <- function(articlesHtml, metadata = NULL, export = FALSE, maxTitleCh
                 } else {
                     articlesTxt[i] <- XML::xpathSApply(articleHtmlParsed, paste0("//div[@id='", divId, "']"), XML::xmlValue)
                 }
-                setTxtProgressBar(pb, i)
+                if (progressBar == TRUE) {
+                    setTxtProgressBar(pb, i)
+                }
             }
         }
     } else if (gtools::invalid(customXpath) == FALSE) {
@@ -96,7 +100,9 @@ ExtractTxt <- function(articlesHtml, metadata = NULL, export = FALSE, maxTitleCh
                 } else {
                     articlesTxt[i] <- extractedTemp
                 }
-                setTxtProgressBar(pb, i)
+                if (progressBar == TRUE) {
+                    setTxtProgressBar(pb, i)
+                }
             }
         }
     } else {
