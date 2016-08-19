@@ -303,7 +303,7 @@ MergeDates <- function(dates1, dates2, dates3 = NULL, minDate = NULL, maxDate = 
 #' @export
 #' @examples
 #' titles <- ExtractTitles(articlesHtml)
-ExtractTitles <- function(articlesHtml = NULL, articlesLinks = "", method = "htmlTitle", removePunctuation = FALSE, onlyStandardCharacters = FALSE, removeString = NULL, removeEverythingAfter = NULL, customXpath = "", maxCharacters = NULL, exportParameters = TRUE, nameOfProject = NULL, nameOfWebsite = NULL) {
+ExtractTitles <- function(articlesHtml = NULL, articlesLinks = "", method = "htmlTitle", removePunctuation = FALSE, onlyStandardCharacters = FALSE, removeString = NULL, removeEverythingAfter = NULL, customXpath = "", maxCharacters = NULL, progressBar = TRUE, exportParameters = TRUE, nameOfProject = NULL, nameOfWebsite = NULL) {
     if (gtools::invalid(nameOfProject) == TRUE) {
         nameOfProject <- CastarterOptions("nameOfProject")
     }
@@ -335,14 +335,18 @@ ExtractTitles <- function(articlesHtml = NULL, articlesLinks = "", method = "htm
     }
     titles <- vector()
     numberOfArticles <- length(articlesHtml)
-    pb <- txtProgressBar(min = 0, max = numberOfArticles, style = 3, title = "Extracting titles")
+    if (progressBar == TRUE) {
+        pb <- txtProgressBar(min = 0, max = numberOfArticles, style = 3, title = "Extracting titles")
+    }
     if (method == "htmlTitle") {
         for (i in 1:numberOfArticles) {
             if (articlesHtml[i]!="") {
                 articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T, encoding = "UTF-8")
                 titles[i] <- XML::xpathSApply(articleHtmlParsed, "//title", XML::xmlValue)
             }
-            setTxtProgressBar(pb, i)
+            if (progressBar == TRUE) {
+                setTxtProgressBar(pb, i)
+            }
         }
     } else if (method == "htmlH2") {
         for (i in 1:numberOfArticles) {
@@ -350,7 +354,9 @@ ExtractTitles <- function(articlesHtml = NULL, articlesLinks = "", method = "htm
                 articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T, encoding = "UTF-8")
                 titles[i] <- XML::xpathSApply(articleHtmlParsed, "//h2", XML::xmlValue)
             }
-            setTxtProgressBar(pb, i)
+            if (progressBar == TRUE) {
+                setTxtProgressBar(pb, i)
+            }
         }
     } else if (method == "htmlH1") {
         for (i in 1:numberOfArticles) {
@@ -358,7 +364,9 @@ ExtractTitles <- function(articlesHtml = NULL, articlesLinks = "", method = "htm
                 articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T, encoding = "UTF-8")
                 titles[i] <- XML::xpathSApply(articleHtmlParsed, "//h1", XML::xmlValue)
             }
-            setTxtProgressBar(pb, i)
+            if (progressBar == TRUE) {
+                setTxtProgressBar(pb, i)
+            }
         }
     } else if (method == "customXpath") {
         for (i in 1:numberOfArticles) {
@@ -366,7 +374,9 @@ ExtractTitles <- function(articlesHtml = NULL, articlesLinks = "", method = "htm
                 articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T, encoding = "UTF-8")
                 titles[i] <- XML::xpathSApply(articleHtmlParsed, customXpath, XML::xmlValue)
             }
-            setTxtProgressBar(pb, i)
+            if (progressBar == TRUE) {
+                setTxtProgressBar(pb, i)
+            }
         }
     } else if (method == "indexLink") {
         titles <- names(articlesLinks)
@@ -394,9 +404,11 @@ ExtractTitles <- function(articlesHtml = NULL, articlesLinks = "", method = "htm
         }
     }
     if (gtools::invalid(maxCharacters) == FALSE) {
-    titles <- substring(titles, 1, maxCharacters)
+        titles <- substring(titles, 1, maxCharacters)
     }
-    close(pb)
+    if (progressBar == TRUE) {
+        close(pb)
+    }
     return(titles)
 }
 
