@@ -519,9 +519,9 @@ CreateDatasetFromHtml <- function(articlesLinks = NULL,
         } else {
             dates[i] <- NA
         }
-        articlesTxt[i] <- ExtractTxt(articlesHtml = htmlFile, export = FALSE, removeEverythingAfter = removeEverythingAfter_ExtractTxt, removeEverythingBefore = removeEverythingBefore_ExtractTxt, divClass = divClass_ExtractTxt, divId = divId_ExtractTxt, removeString = removeString_ExtractTxt, customXpath = customXpath_ExtractTxt, exportParameters = FALSE)
+        articlesTxt[i] <- ExtractTxt(articlesHtml = htmlFile, export = FALSE, removeEverythingAfter = removeEverythingAfter_ExtractTxt, removeEverythingBefore = removeEverythingBefore_ExtractTxt, divClass = divClass_ExtractTxt, divId = divId_ExtractTxt, removeString = removeString_ExtractTxt, customXpath = customXpath_ExtractTxt, progressBar = FALSE, exportParameters = FALSE)
         if (method_ExtractTitles != "indexLink") {
-            titleTemp <- ExtractTitles(articlesHtml = htmlFile, method = method_ExtractTitles, removeString = removeString_ExtractTitles)
+            titleTemp <- ExtractTitles(articlesHtml = htmlFile, method = method_ExtractTitles, removeString = removeString_ExtractTitles, progressBar = FALSE)
             if (length(titleTemp) == 1) {
                 titles[i] <- titleTemp
             } else {
