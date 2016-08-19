@@ -439,7 +439,8 @@ CreateDatasetFromHtml <- function(articlesLinks = NULL,
                                   dateFormat = NULL, divClass_ExtractDates = NULL, spanClass_ExtractDates = NULL, customXpath_ExtractDates = NULL, language_ExtractDates = Sys.getlocale(category = "LC_TIME"), removeEverythingBefore_ExtractDates = NULL,
                                   method_ExtractTitles = "htmlTitle", removeString_ExtractTitles = NULL, removeEverythingAfter_ExtractTitles = NULL, removePunctuation_ExtractTitles = NULL,
                                   divClass_ExtractTxt = NULL, divId_ExtractTxt = NULL, removeString_ExtractTxt = NULL, removeEverythingAfter_ExtractTxt = NULL, removeEverythingBefore_ExtractTxt = NULL, removeTitleFromTxt = FALSE, customXpath_ExtractTxt = NULL,
-                                  language = NULL, encoding = NULL,  
+                                  language = NULL, encoding = NULL,
+                                  logProgress = FALSE,
                                   exportParameters = TRUE, nameOfProject = NULL, nameOfWebsite = NULL) {
     if (gtools::invalid(nameOfProject) == TRUE) {
         nameOfProject <- CastarterOptions("nameOfProject")
@@ -516,6 +517,9 @@ CreateDatasetFromHtml <- function(articlesLinks = NULL,
             }
         }
         x <- x + 1
+        if (logProgress == TRUE) {
+            write(paste("Html file", x, "processed."), file = file.path(nameOfProject, nameOfWebsite,"Logs", "CreateDatasetFromHtmlProgress.log"))
+        }
         if (is.element(x, xlist)) {
             print(paste("Processed", x, "of", numberOfArticles, "articles."))
         }
