@@ -130,7 +130,9 @@ ExtractTxt <- function(articlesHtml, metadata = NULL, export = FALSE, maxTitleCh
             }
         }
         for (i in seq_along(articlesTxt)) {
-            articlesTxt[i] <- base::sub(pattern = titles[i], replacement = "", x = articlesTxt[i], fixed = TRUE)
+            if (titles[i]!="") {
+                articlesTxt[i] <- base::sub(pattern = titles[i], replacement = "", x = articlesTxt[i], fixed = TRUE)
+            }
         }
     }
     if (gtools::invalid(removeEverythingAfter) == FALSE) {
