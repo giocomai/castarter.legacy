@@ -6,8 +6,9 @@
 \usage{
 ShowTS(terms, corpusDtm = NULL, corpus = NULL, specificWebsites = NULL,
   startDate = NULL, endDate = NULL, rollingAverage = 30,
-  align = "center", export = FALSE, allWebsitesAsOne = FALSE,
-  dygraphs = FALSE, nameOfProject = NULL, nameOfWebsite = NULL)
+  align = "center", verticalLine = NULL, export = FALSE,
+  allWebsitesAsOne = FALSE, dygraphs = FALSE, nameOfProject = NULL,
+  nameOfWebsite = NULL)
 }
 \arguments{
 \item{terms}{A character vector with one or more words to be analysed, or a 'quanteda' dictionary if corpus/corpusDtm are also of the 'quanteda' type.}
@@ -23,6 +24,8 @@ ShowTS(terms, corpusDtm = NULL, corpus = NULL, specificWebsites = NULL,
 \item{rollingAverage}{Integer, defaults to 30. Number of days used to calculate word frequency as shown in the time series. Time series shows word frequency for each date as an average of the N number of days (N=rollingAverage) following the correspondent date.}
 
 \item{align}{Defaults to "center", can be either "left", "right" or "center" and refers to the way the rolling average is calculated.}
+
+\item{verticalLine}{Defaults to NULL. Draws a vertical dotted line at the date provided. If given, value must correspond to one or more dates in the YMD format, e.g. "2016-08-17".}
 
 \item{export}{Logical, defaults to FALSE. If TRUE, saves the time series in both png and pdf format. If nameOfProject and nameOfWebsite are provided, in saves the timeseries in the "Outputs" subfolder.}
 
