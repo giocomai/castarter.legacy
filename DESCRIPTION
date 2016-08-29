@@ -37,7 +37,9 @@ Imports:
     quanteda,
     tidyr,
     reshape2,
-    shiny
+    shiny,
+    svglite,
+    mgcv
 Suggests:
     knitr
 VignetteBuilder: knitr
