@@ -14,7 +14,7 @@
 #' @examples
 #' ShowShare(dataset, breaks = "months", nameOfProject, nameOfWebsite)
 
-ShowShare <- function(dataset, terms, breaks = "years", startDate = NULL, export = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
+ShowShare <- function(dataset, terms, breaks = "years", startDate = NULL, customTitle = NULL, export = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
     if (length(terms) > 1) {
         terms <- paste(tolower(terms), collapse = "\\b|")
     }
@@ -56,6 +56,9 @@ ShowShare <- function(dataset, terms, breaks = "years", startDate = NULL, export
     }
     if (breaks == "months") {
         graph <- graph + ggplot2::scale_x_discrete(labels = zoo::as.yearmon(DTterms$dates[order(DTterms$dates)]))
+    }
+    if (is.null(customTitle)==FALSE) {
+        graph <- graph + ggplot2::ggtitle(label = customTitle)
     }
     if (export == TRUE) {
         graph

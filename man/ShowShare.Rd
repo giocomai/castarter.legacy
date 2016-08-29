@@ -5,7 +5,8 @@
 \title{Shows share of articles including reference to a specific terms}
 \usage{
 ShowShare(dataset, terms, breaks = "years", startDate = NULL,
-  export = FALSE, nameOfProject = NULL, nameOfWebsite = NULL)
+  customTitle = NULL, export = FALSE, nameOfProject = NULL,
+  nameOfWebsite = NULL)
 }
 \arguments{
 \item{dataset}{A dataset created with 'castarter'.}
