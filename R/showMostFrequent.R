@@ -66,7 +66,7 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, specificTerms 
         }
     } else {
         if (is.null(specificTerms) == FALSE) {
-            corpusDtm <- corpusDtm[,base::match(specificTerms, colnames(corpusDtm))]
+            corpusDtm <- corpusDtm[,base::match(specificTerms, colnames(corpusDtm), nomatch = 0)]
         }
             freq <- sort(slam::col_sums(corpusDtm, na.rm = TRUE), decreasing = TRUE)
     }
