@@ -15,7 +15,7 @@
 #' @param export Logical, defaults to FALSE. If TRUE, saves the time series in both png and pdf format. If nameOfProject and nameOfWebsite are provided, in saves the barchart in the "Outputs" subfolder. 
 #' @param title A character vector, defaults to NULL.It allows to customize the title of the exported barchart file. 
 #' @param tipology A data.frame of two columns, one named "term" and one named "type". If provided, and if type=="barchart", colors are used to differentiate terms belonging to different types. Example: tipology <- data.frame(term = c("apple", "orange", "bear", "lion"), type = c("fruit", "fruit", "animal", "animal"))
-#' @param invert Logical, defaults to FALSE. If TRUE, inverts websites and terms in the barcharts mapping, i.e. specificTerms determine the color while the website are on the y axis.
+#' @param invert Logical, defaults to FALSE. If TRUE, inverts websites and terms in the barcharts mapping, i.e. terms determine the color while the website are on the y axis.
 #' @return A data.frame, barchart, or wordcloud as defined with the 'mode' parameter.
 #' @export
 #' @examples
@@ -33,11 +33,11 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, terms = NULL, 
         number <- length(dim(corpusDtm)[2])
     }
     if (quanteda::is.dfm(corpusDtm)==TRUE) {
-        if (as.character(class(specificTerms))=="dictionary") {
-            termsDic <- specificTerms
+        if (as.character(class(terms))=="dictionary") {
+            termsDic <- terms
         } else {
-            termsL <- as.list(specificTerms)
-            termsL <- setNames(object = termsL, nm = specificTerms)
+            termsL <- as.list(terms)
+            termsL <- setNames(object = termsL, nm = terms)
             termsDic <- quanteda::dictionary(x = termsL)
         }
         if (relFreq == TRUE) {
@@ -65,8 +65,8 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, terms = NULL, 
             freq <- quanteda::topfeatures(x = corpusDtm, n = number)
         }
     } else {
-        if (is.null(specificTerms) == FALSE) {
-            corpusDtm <- corpusDtm[,base::match(specificTerms, colnames(corpusDtm), nomatch = 0)]
+        if (is.null(terms) == FALSE) {
+            corpusDtm <- corpusDtm[,base::match(terms, colnames(corpusDtm), nomatch = 0)]
         }
             freq <- sort(slam::col_sums(corpusDtm, na.rm = TRUE), decreasing = TRUE)
     }
@@ -78,7 +78,7 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, terms = NULL, 
     if (byWebsite==FALSE&byDate==TRUE&quanteda::is.dfm(corpusDtm)==FALSE) {
         time <- as.character(strptime(as.POSIXct(unlist(NLP::meta(corpus, "datetimestamp")), origin = "1970-01-01"), "%Y-%m-%d"))
         dates <- unique(lubridate::year(time))
-        corpusDtm <- corpusDtm[,base::match(specificTerms, colnames(corpusDtm))]
+        corpusDtm <- corpusDtm[,base::match(terms, colnames(corpusDtm))]
         wordFrequency <- data.frame()
         for (i in seq_along(dates)) {
             temp <- sort(slam::col_sums(corpusDtm[lubridate::year(time)==dates[i],], na.rm = TRUE), decreasing = TRUE)
@@ -119,7 +119,7 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, terms = NULL, 
                 if (invert == FALSE) {
                     barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = reorder(term, -freq), y = freq, fill = type)) + ggplot2::geom_bar(stat = "identity", position="dodge") + ggplot2::coord_flip() + ggplot2::ylab("Word frequency") + ggplot2::xlab("") + ggplot2::labs(fill="")
                 } else if (invert == TRUE) {
-                    if (length(specificTerms)==1) {
+                    if (length(terms)==1) {
                         barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = type, y = freq)) + ggplot2::geom_bar(stat = "identity", position="dodge") + ggplot2::coord_flip() + ggplot2::ylab("Word frequency") + ggplot2::xlab("")
                     } else {
                         barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = type, y = freq, fill = term)) + ggplot2::geom_bar(stat = "identity", position="dodge") + ggplot2::coord_flip() + ggplot2::ylab("Word frequency") + ggplot2::xlab("") + ggplot2::labs(fill="Term")

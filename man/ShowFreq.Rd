@@ -28,7 +28,7 @@ ShowFreq(corpusDtm, mode = "data.frame", number = 10, terms = NULL,
 
 \item{tipology}{A data.frame of two columns, one named "term" and one named "type". If provided, and if type=="barchart", colors are used to differentiate terms belonging to different types. Example: tipology <- data.frame(term = c("apple", "orange", "bear", "lion"), type = c("fruit", "fruit", "animal", "animal"))}
 
-\item{invert}{Logical, defaults to FALSE. If TRUE, inverts websites and terms in the barcharts mapping, i.e. specificTerms determine the color while the website are on the y axis.}
+\item{invert}{Logical, defaults to FALSE. If TRUE, inverts websites and terms in the barcharts mapping, i.e. terms determine the color while the website are on the y axis.}
 
 \item{title}{A character vector, defaults to NULL.It allows to customize the title of the exported barchart file.}
 }
