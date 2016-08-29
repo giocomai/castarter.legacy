@@ -4,12 +4,11 @@
 \alias{ShowFreq}
 \title{Shows most frequent terms in a corpus}
 \usage{
-ShowFreq(corpusDtm, mode = "data.frame", number = 10,
-  specificTerms = NULL, corpus = NULL, stemCompletion = FALSE,
-  corpusOriginal = "", minFrequency = 0, export = FALSE,
-  customTitle = NULL, tipology = NULL, byDate = FALSE,
-  byWebsite = FALSE, stacked = FALSE, relFreq = FALSE, invert = FALSE,
-  nameOfProject = NULL, nameOfWebsite = NULL)
+ShowFreq(corpusDtm, mode = "data.frame", number = 10, terms = NULL,
+  corpus = NULL, stemCompletion = FALSE, corpusOriginal = "",
+  minFrequency = 0, export = FALSE, customTitle = NULL, tipology = NULL,
+  byDate = FALSE, byWebsite = FALSE, stacked = FALSE, relFreq = FALSE,
+  invert = FALSE, nameOfProject = NULL, nameOfWebsite = NULL)
 }
 \arguments{
 \item{corpusDtm}{A document-term matrix created with the 'TM' package or a document-feature matrix of the 'quanteda' type.}
@@ -21,7 +20,7 @@ ShowFreq(corpusDtm, mode = "data.frame", number = 10,
  \item{"wordcloud"}{: Outputs a wordcloud.}
 }}
 
-\item{specificTerms}{A character vector, defaults to NULL. If specificTerms is provided, only terms included in this vector will be included in the output.}
+\item{terms}{A character vector, defaults to NULL. If provided, only terms included in this vector will be included in the output.}
 
 \item{corpus}{Required only if corpusDtm is not of the 'quanteda' type. A corpus as created by the 'tm' package including relevant metadata and typically created with castarter's CreateCorpus() function.}
 

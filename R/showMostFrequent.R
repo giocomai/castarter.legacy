@@ -11,7 +11,7 @@
 ##' }
 ##'
 #' @param corpus Required only if corpusDtm is not of the 'quanteda' type. A corpus as created by the 'tm' package including relevant metadata and typically created with castarter's CreateCorpus() function. 
-#' @param specificTerms A character vector, defaults to NULL. If specificTerms is provided, only terms included in this vector will be included in the output.
+#' @param terms A character vector, defaults to NULL. If provided, only terms included in this vector will be included in the output.
 #' @param export Logical, defaults to FALSE. If TRUE, saves the time series in both png and pdf format. If nameOfProject and nameOfWebsite are provided, in saves the barchart in the "Outputs" subfolder. 
 #' @param title A character vector, defaults to NULL.It allows to customize the title of the exported barchart file. 
 #' @param tipology A data.frame of two columns, one named "term" and one named "type". If provided, and if type=="barchart", colors are used to differentiate terms belonging to different types. Example: tipology <- data.frame(term = c("apple", "orange", "bear", "lion"), type = c("fruit", "fruit", "animal", "animal"))
@@ -22,7 +22,7 @@
 #' corpusDtm <- DocumentTermMatrix(corpus).
 #' ShowFreq(corpusDtm)
 
-ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, specificTerms = NULL, corpus = NULL, stemCompletion = FALSE, corpusOriginal = "", minFrequency = 0, export = FALSE, customTitle = NULL, tipology = NULL, byDate = FALSE, byWebsite = FALSE, stacked = FALSE, relFreq = FALSE, invert = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
+ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, terms = NULL, corpus = NULL, stemCompletion = FALSE, corpusOriginal = "", minFrequency = 0, export = FALSE, customTitle = NULL, tipology = NULL, byDate = FALSE, byWebsite = FALSE, stacked = FALSE, relFreq = FALSE, invert = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
     if (gtools::invalid(nameOfProject) == TRUE) {
         nameOfProject <- CastarterOptions("nameOfProject")
     }
