@@ -79,7 +79,7 @@ server <- function(input, output) {
     output$graph <- reactivePlot(function() {
         specificTerms <- stringr::str_trim(unlist(strsplit(x = input$term, split = ',')), side = 'both')
         if (input$graphType == 'Time series') {
-            graph <- ShowTS(terms = specificTerms, corpusDtm = corpusDtm, startDate = input$startDate, endDate = input$endDate, rollingAverage = input$rollingAvg)
+            graph <- ShowTS(terms = specificTerms, corpus = corpus, corpusDtm = corpusDtm, startDate = input$startDate, endDate = input$endDate, rollingAverage = input$rollingAvg)
             if (input$smoothLine == TRUE) {
                 graph <- graph + ggplot2::stat_smooth(size = 1.2)
             }
