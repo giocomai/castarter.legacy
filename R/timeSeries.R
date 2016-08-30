@@ -28,6 +28,7 @@ ShowTS <- function(terms, corpusDtm = NULL, corpus = NULL, specificWebsites = NU
         time <- as.character(strptime(as.POSIXct(quanteda::docvars(corpus, "date"), origin = "1970-01-01"), "%Y-%m-%d"))
         nameOfWebsitesIncluded <- as.character(quanteda::docvars(corpus, "nameOfWebsite"))
     } else {
+        time <- as.character(strptime(as.POSIXct(unlist(NLP::meta(corpus, "datetimestamp")), origin = "1970-01-01"), "%Y-%m-%d"))
         nameOfWebsitesIncluded <- as.character(unlist(NLP::meta(corpus, "author")))
         if (is.null(corpusDtm) == FALSE) {
             if (quanteda::is.dfm(corpusDtm) == FALSE) {
@@ -37,8 +38,6 @@ ShowTS <- function(terms, corpusDtm = NULL, corpus = NULL, specificWebsites = NU
                 if (is.null(endDate)==FALSE) {
                     corpus <- corpus[NLP::meta(corpus, "datetimestamp") < as.POSIXct(endDate)]
                 }
-                time <- as.character(strptime(as.POSIXct(unlist(NLP::meta(corpus, "datetimestamp")), origin = "1970-01-01"), "%Y-%m-%d"))
-                nameOfWebsitesIncluded <- as.character(unlist(NLP::meta(corpus, "author")))
             }
         }
     }
