@@ -105,10 +105,11 @@ ShowTS <- function(terms, corpusDtm = NULL, corpus = NULL, specificWebsites = NU
     }
     if (quanteda::is.dfm(corpusDtm)==TRUE) {
         dailyFreqZoo <- zoo::zoo(dailyFreq[2:length(dailyFreq)], dailyFreq$Date)
+        dailyFreqZoo <- merge(dailyFreqZoo, zoo::zoo(, seq(start(dailyFreqZoo), end(dailyFreqZoo), "day")), fill = NA)
     } else {
         names(dimnames(frequencyOfterms)) <- NULL
         termSeries <- zoo::zoo(frequencyOfterms/c(tapply(slam::row_sums(corpusDtm), time, sum)), order.by = as.POSIXct(rownames(frequencyOfterms)))
-        dailyFreqZoo <- merge(termSeries, zoo::zoo(, seq(start(termSeries), end(termSeries), "DSTday")), fill = NaN)
+        dailyFreqZoo <- merge(termSeries, zoo::zoo(, seq(start(termSeries), end(termSeries), "DSTday")), fill = NA)
     }
     if (rollingAverage != "") {
         dailyFreqZoo <- zoo::rollapply(dailyFreqZoo, rollingAverage, align = align, mean, na.rm = TRUE)
