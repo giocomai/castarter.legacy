@@ -1,11 +1,11 @@
 Package: castarter
 Type: Package
-Title: Content Analysis Starter toolkit for R
-Version: 0.1.0.9016
-Date: 2016-08-29
+Title: Content analysis starter toolkit for R
+Version: 0.1.0.9017
+Date: 2016-08-30
 Author: Giorgio Comai <giorgiocomai@gmail.com>
 Maintainer: Giorgio Comai <giorgiocomai@gmail.com>
-Description: castarter is an R package that smooths the process of extracting
+Description: castarter is an R package that facilitates the process of extracting
     text and metadata from online websites and of preparing them for quantitative or
     qualitative content analysis.
 License: GPL-3
