@@ -132,6 +132,7 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, terms = NULL, 
         } else {
             barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = reorder(term, -freq), y = freq)) + ggplot2::geom_bar(stat = "identity") + ggplot2::coord_flip() + ggplot2::ylab("Word frequency") + ggplot2::xlab("")
         }
+        barchart <- barchart + ggplot2::scale_fill_brewer(palette = "Dark2")
         if (is.null(customTitle) == FALSE) {
             barchart <- barchart + ggplot2::ggtitle(customTitle)
         } else {
