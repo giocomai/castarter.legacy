@@ -1,7 +1,7 @@
 An introduction to 'castarter' - content analysis starter toolkit for R
 ================
 Giorgio Comai
-2016-08-12
+2016-08-30
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 Introduction
@@ -267,7 +267,7 @@ ShowDistribution(dataset)
 
 ![](data/readme/README-Show%20distribution-1.png)
 
-N.B. All `castarter` time series functions default to a rolling average of 30 days. This can be changed, for example `ShowDistribution(dataset, , rollingAverage = 90)` or `ShowDistribution(dataset, , rollingAverage = 1)`
+N.B. All `castarter` time series functions default to a rolling average of 30 days. This can be changed, for example `ShowDistribution(dataset, rollingAverage = 90)` or `ShowDistribution(dataset, rollingAverage = 1)`
 
 In this case we see that, as is common for many websites, the first few months include only occasional publications To have more consistent results, it might be advisable to exclude that period, and to set a clear cutoff date on 1 June 2016.
 
@@ -400,7 +400,7 @@ ShowFreq(corpusDtm, mode = "wordcloud", number = 100)
 N.B. After stemming, stemmed words are provided. This may be curious, but is usually more useful to provide a list of terms we are specifically interested in.
 
 ``` r
-ShowFreq(corpusDtm = corpusDtm, mode = "barchart", specificTerms = c("environment", "humanright", "migrant"))
+ShowFreq(corpusDtm = corpusDtm, mode = "barchart", terms = c("environment", "humanright", "migrant"))
 ```
 
 ![](data/readme/README-Show%20specific%20terms%20barchart-1.png)
@@ -429,6 +429,19 @@ ShowShare(dataset = dataset, terms = "migration", breaks = "years")
 
 N.B. Notice that the \`ShowShare' function is based on the dataset, and thus does not consider stemming.
 
+Quickly create a basic ShinyApp with your own dataset
+-----------------------------------------------------
+
+In order to explore quickly the dataset, `castarter` offers a function that quickly creates a web interface that exposes some `castarter` functions. Once the dataset has been created, it is possible to create this web interface (known as a ShinyApp) with the following commands:
+
+``` r
+SetCastarter(nameOfProject = "EuropeanUnion", nameOfWebsite = "EuropeanParliament")
+dataset <- LoadDatasets()
+CreateShinyApp(dataset = dataset)
+```
+
+This will produce a web interface similar to [this one](https://giocomai.shinyapps.io/ArmeniaPresident/).
+
 Disclaimer
 ----------
 
@@ -451,7 +464,6 @@ Forthcoming features:
 -   enhancing date extraction;
 -   enhancing support for updating datasets (see `?UpdateDataset`);
 -   enhancing support for larger datasets, including by improving direct import from html files without importing them into R first through `CreateDatasetFromHtml`;
--   facilitating creation of a web interface through integration with shiny ([see preliminary example](https://giocomai.shinyapps.io/ArmeniaPresident/))
 -   reducing dependencies;
 -   polishing and speeding up code.
 
