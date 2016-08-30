@@ -87,9 +87,9 @@ server <- function(input, output) {
                 graph <- graph + ggplot2::stat_smooth(size = 1.2, method = 'lm')
             }
         } else if (input$graphType == 'Barchart') {
-            graph <- ShowFreq(corpusDtm = corpusDtm, mode = 'barchart', specificTerms = specificTerms)
+            graph <- ShowFreq(corpusDtm = corpusDtm, mode = 'barchart', terms = specificTerms)
         } else if (input$graphType == 'Barchart by year') {
-            graph <- ShowFreq(corpusDtm = corpusDtm, mode = 'barchart', specificTerms = specificTerms, byDate = TRUE, invert = TRUE)
+            graph <- ShowFreq(corpusDtm = corpusDtm, mode = 'barchart', terms = specificTerms, byDate = TRUE, invert = TRUE)
         }
         print(graph)
     }
