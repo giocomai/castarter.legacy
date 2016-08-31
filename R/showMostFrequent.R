@@ -206,14 +206,14 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, terms = NULL, 
             barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = reorder(term, -freq), y = freq)) + ggplot2::geom_bar(stat = "identity") + ggplot2::coord_flip() + ggplot2::xlab("")
         }
         barchart <- barchart + ggplot2::scale_fill_brewer(palette = "Dark2")
+        if (byDate == TRUE&length(terms)==1) {
+            barchart <-  barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = factor(type, levels=rev(levels(type))), y = freq)) + ggplot2::geom_bar(stat = "identity", position="dodge") + ggplot2::coord_flip() + ggplot2::xlab("")
+        }
         if (percent == TRUE&relFreq == TRUE) {
             barchart <- barchart + ggplot2::scale_y_continuous(labels = scales::percent) +
                 ggplot2::ylab("Frequency of term as % of all words")
         } else {
             barchart <- barchart + ggplot2::ylab("Word frequency") 
-        }
-        if (byDate == TRUE&length(terms)==1) {
-            barchart <-  barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = factor(type, levels=rev(levels(type))), y = freq)) + ggplot2::geom_bar(stat = "identity", position="dodge") + ggplot2::coord_flip() + ggplot2::xlab("")
         }
         if (is.null(customTitle) == FALSE) {
             barchart <- barchart + ggplot2::ggtitle(customTitle)
