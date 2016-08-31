@@ -30,7 +30,7 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, terms = NULL, 
         nameOfWebsite <- CastarterOptions("nameOfWebsite")
     }
     if (number == "all") {
-        number <- length(dim(corpusDtm)[2])
+        number <- ncol(corpusDtm)
     }
     if (quanteda::is.dfm(corpusDtm)==TRUE) {
         if (as.character(class(terms))=="dictionary") {
