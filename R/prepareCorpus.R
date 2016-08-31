@@ -8,12 +8,13 @@
 ##'  \item{"dataset"}{: Outputs a 'castarter' dataset as data.frame. This is the default option.}
 ##'  \item{"corpus"}{: Outputs a corpus.}
 ##' }
+#' @param removeNAdates Logical, defaults to TRUE. If TRUE, dataset items that do not have a date in the records are not imported.
 #' @return A data frame including all loaded datasets.
 #' @export
 #' @examples
 #' projectsAndWebsites <- c("ProjectX/Website1", "ProjectY/Website3", "ProjectZ/Website2")
 #' allDatasets <- LoadDatasets(projectsAndWebsites)
-LoadDatasets <- function(projectsAndWebsites = NULL, type = "dataset", removeNAdates = FALSE) {
+LoadDatasets <- function(projectsAndWebsites = NULL, type = "dataset", removeNAdates = TRUE) {
     if (gtools::invalid(projectsAndWebsites) == TRUE) {
         nameOfProject <- CastarterOptions("nameOfProject")
         nameOfWebsite <- CastarterOptions("nameOfWebsite")
