@@ -4,12 +4,12 @@
 \alias{CreateCorpus}
 \title{Converts a 'castarter' dataset into a 'tm' corpus.}
 \usage{
-CreateCorpus(dataset, quanteda = FALSE)
+CreateCorpus(dataset, quanteda = TRUE)
 }
 \arguments{
 \item{dataset}{A data.frame created by 'castarter' including metadata and full text articles to be converted into a corpus.}
 
-\item{Logical, }{defaults to FAlSE. If TRUE generates corpus of the 'quanteda' package, otherwise of the 'tm' package.}
+\item{quanteda}{Logical, defaults to TRUE. If TRUE generates corpus of the 'quanteda' package, otherwise of the 'tm' package.}
 }
 \value{
 A corpus as created by the 'tm' or 'quanteda' package including metadata.

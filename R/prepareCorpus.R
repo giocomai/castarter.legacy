@@ -122,12 +122,12 @@ LoadAllDatasets <- function(nameOfProject, removeNAdates = TRUE) {
 #' Takes a dataset created with 'castarter' and converts it into a 'tm' corpus. Metadata are automatically imported.
 #'  
 #' @param dataset A data.frame created by 'castarter' including metadata and full text articles to be converted into a corpus. 
-#' @param Logical, defaults to FAlSE. If TRUE generates corpus of the 'quanteda' package, otherwise of the 'tm' package. 
+#' @param quanteda Logical, defaults to TRUE. If TRUE generates corpus of the 'quanteda' package, otherwise of the 'tm' package. 
 #' @return A corpus as created by the 'tm' or 'quanteda' package including metadata. 
 #' @export
 #' @examples
 #' corpus <- CreateCorpus(dataset)
-CreateCorpus <- function(dataset, quanteda = FALSE) {
+CreateCorpus <- function(dataset, quanteda = TRUE) {
     if (quanteda==TRUE) {
         corpus <- quanteda::corpus(dataset$articlesTxt, docnames = paste(as.Date(dataset$dates), dataset$articlesId, dataset$titles, sep = " - "), 
                                    docvars=data.frame(nameOfWebsite=dataset$nameOfWebsite, date=as.Date(dataset$dates), title=dataset$titles, links = dataset$articlesLinks, ID=dataset$articlesId))
