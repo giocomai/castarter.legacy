@@ -18,7 +18,7 @@ AnalyseTerms(corpus, nameOfProject, specificTerms, mode = "graph",
 \item{corpusDtm}{A document-term matrix. If provided, computation is faster.}
 }
 \description{
-Compares frequency of specific words across websites.
+To be incorporated into ShowFreq
 }
 \examples{
 AnalyseTerms(corpus, nameOfProject, specificTerms)

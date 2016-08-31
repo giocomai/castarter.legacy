@@ -1,4 +1,6 @@
-#' Compares frequency of specific words across websites. 
+#' Compares frequency of specific words across websites.
+#' 
+#' To be incorporated into ShowFreq
 #' 
 #' @param corpus A TM corpus. 
 #' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.
@@ -26,7 +28,7 @@ AnalyseTerms <- function(corpus, nameOfProject, specificTerms, mode = "graph", i
      }
      for (i in 1:length(byWebsite)) {
         dtmTemp <- corpusDtm[byWebsite[, i], ]
-        mostFrequent <- castarter::ShowMostFrequent(dtmTemp, mode = "data.frame", number = "all", specificTerms = specificTerms)
+        mostFrequent <- castarter::ShowFreq(dtmTemp, mode = "data.frame", number = "all", specificTerms = specificTerms)
         totalWords <- sum(dtmTemp)
         mostFrequentByWebsite[i, 1] <- names(byWebsite)[i]
         for (j in 1:length(specificTerms)) {
