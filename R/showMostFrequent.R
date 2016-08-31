@@ -43,12 +43,23 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, terms = NULL, 
         if (byWebsite==TRUE) {
             namesOfWebsites <- unique(sapply(strsplit(x = quanteda::docnames(corpusDtm),
                                                       split = ".", fixed = TRUE),function(x) x[2]))
+            if (relFreq == TRUE) {
+                totalWords <- data.frame(namesOfWebsites, totalWords = NA)
+                for (i in seq_along(namesOfWebsites)) {
+                    totalWords$totalWords[i] <- sum(corpusDtm[grepl(pattern = namesOfWebsites[i], quanteda::docnames(corpusDtm))])
+                }
+            }
+            corpusDtm <- quanteda::applyDictionary(corpusDtm, termsDic)
             wordFrequency <- data.frame()
             for (i in seq_along(namesOfWebsites)) {
                 temp <- quanteda::topfeatures(x = corpusDtm[grepl(pattern = namesOfWebsites[i],
-                                                                  quanteda::docnames(corpusDtm))], n = number)
+                                                                  quanteda::docnames(corpusDtm))],
+                                              n = number)
                 tempDF <- data.frame(term = names(temp), freq = temp, type = namesOfWebsites[i])
                 wordFrequency <- rbind(wordFrequency, tempDF)
+            }
+            if (relFreq == TRUE) {
+                wordFrequency$freq <- wordFrequency$freq/totalWords$totalWords
             }
         } else if (byDate == TRUE) {
             dates <- unique(lubridate::year(sapply(strsplit(x = quanteda::docnames(corpusDtm),
