@@ -66,6 +66,13 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, terms = NULL, 
         } else if (byDate == TRUE) {
             dates <- unique(lubridate::year(sapply(strsplit(x = quanteda::docnames(corpusDtm),
                                                             split = ".", fixed = TRUE),function(x) x[1])))
+            if (relFreq == TRUE) {
+                totalWords <- data.frame(dates, totalWords = NA)
+                for (i in seq_along(dates)) {
+                    totalWords$totalWords[i] <- sum(corpusDtm[grepl(pattern = dates[i], quanteda::docnames(corpusDtm))])
+                }
+            }
+            corpusDtm <- quanteda::applyDictionary(corpusDtm, termsDic)
             wordFrequency <- data.frame()
             for (i in seq_along(dates)) {
                 temp <- quanteda::topfeatures(x = corpusDtm[grepl(pattern = dates[i],
@@ -74,6 +81,9 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, terms = NULL, 
                 wordFrequency <- rbind(wordFrequency, tempDF)
             }
             wordFrequency$type <- as.factor(wordFrequency$type)
+            if (relFreq == TRUE) {
+                wordFrequency$freq <- wordFrequency$freq/totalWords$totalWords
+            }
         } else {
             if (relFreq == TRUE) {
                 corpusDtm <- quanteda::weight(corpusDtm, "relFreq")
@@ -196,16 +206,19 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, terms = NULL, 
             barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = reorder(term, -freq), y = freq)) + ggplot2::geom_bar(stat = "identity") + ggplot2::coord_flip() + ggplot2::xlab("")
         }
         barchart <- barchart + ggplot2::scale_fill_brewer(palette = "Dark2")
-        if (is.null(customTitle) == FALSE) {
-            barchart <- barchart + ggplot2::ggtitle(customTitle)
-        } else {
-            barchart <- barchart + ggplot2::ggtitle("Word frequency barchart")
-        }
         if (percent == TRUE&relFreq == TRUE) {
             barchart <- barchart + ggplot2::scale_y_continuous(labels = scales::percent) +
                 ggplot2::ylab("Frequency of term as % of all words")
         } else {
             barchart <- barchart + ggplot2::ylab("Word frequency") 
+        }
+        if (byDate == TRUE&length(terms)==1) {
+            barchart <-  barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = factor(type, levels=rev(levels(type))), y = freq)) + ggplot2::geom_bar(stat = "identity", position="dodge") + ggplot2::coord_flip() + ggplot2::xlab("")
+        }
+        if (is.null(customTitle) == FALSE) {
+            barchart <- barchart + ggplot2::ggtitle(customTitle)
+        } else {
+            barchart <- barchart + ggplot2::ggtitle("Word frequency barchart")
         }
         if (export == TRUE) {
             if (is.null(customTitle)) {
