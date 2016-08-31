@@ -8,8 +8,8 @@ ShowFreq(corpusDtm, mode = "data.frame", number = 10, terms = NULL,
   corpus = NULL, order = TRUE, stemCompletion = FALSE,
   corpusOriginal = "", minFrequency = 0, export = FALSE,
   customTitle = NULL, tipology = NULL, byDate = FALSE,
-  byWebsite = FALSE, stacked = FALSE, relFreq = FALSE, invert = FALSE,
-  nameOfProject = NULL, nameOfWebsite = NULL)
+  byWebsite = FALSE, stacked = FALSE, relFreq = FALSE, percent = TRUE,
+  invert = FALSE, nameOfProject = NULL, nameOfWebsite = NULL)
 }
 \arguments{
 \item{corpusDtm}{A document-term matrix created with the 'TM' package or a document-feature matrix of the 'quanteda' type.}
@@ -27,11 +27,15 @@ ShowFreq(corpusDtm, mode = "data.frame", number = 10, terms = NULL,
 
 \item{export}{Logical, defaults to FALSE. If TRUE, saves the time series in both png and pdf format. If nameOfProject and nameOfWebsite are provided, in saves the barchart in the "Outputs" subfolder.}
 
+\item{customTitle}{A character vector, defaults to NULL.It allows to customize the title of the exported barchart file.}
+
 \item{tipology}{A data.frame of two columns, one named "term" and one named "type". If provided, and if type=="barchart", colors are used to differentiate terms belonging to different types. Example: tipology <- data.frame(term = c("apple", "orange", "bear", "lion"), type = c("fruit", "fruit", "animal", "animal"))}
 
-\item{invert}{Logical, defaults to FALSE. If TRUE, inverts websites and terms in the barcharts mapping, i.e. terms determine the color while the website are on the y axis.}
+\item{relFreq}{Logical, defaults to FALSE. If TRUE, relative word frequency is given in the output. If FALSE, absolute number of occurrences is given.}
 
-\item{title}{A character vector, defaults to NULL.It allows to customize the title of the exported barchart file.}
+\item{percent}{Logical, defaults to TRUE. If relFreq==TRUE, labels word frequency as a percentage. It is ignored if relFreq==FALSE.}
+
+\item{invert}{Logical, defaults to FALSE. If TRUE, inverts websites and terms in the barcharts mapping, i.e. terms determine the color while the website are on the y axis.}
 }
 \value{
 A data.frame, barchart, or wordcloud as defined with the 'mode' parameter.
