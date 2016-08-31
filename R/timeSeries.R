@@ -6,6 +6,7 @@
 #' @param specificWebsites Character vector of the names of one or more websites included in the corpus. Only selected websites will be included in the analysis.
 #' @param startDate, endDate Character vector with date in the format year-month-date, e.g. "2015-07-14". Given dates are included, e.g. if you wish to include all of 2015, set startDate="2015-01-01", endDate"2015-12-31")
 #' @param verticalLine Defaults to NULL. Draws a vertical dotted line at the date provided. If given, value must correspond to one or more dates in the YMD format, e.g. "2016-08-17". 
+#' @param smoothLine Logical, defaults to FALSE. If TRUE draws a smooth line over the time series. 
 #' @param customTitle A character vector, defaults to NULL. If provided, it overrides default graph title. 
 #' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
 #' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
@@ -17,7 +18,7 @@
 #' @examples
 #' ShowTS(corpus, terms = c("word1", "word2"))
 
-ShowTS <- function(terms, corpusDtm = NULL, corpus = NULL, specificWebsites = NULL, startDate = NULL, endDate = NULL, rollingAverage = 30, align = "center", verticalLine = NULL, customTitle = NULL, export = FALSE, allWebsitesAsOne = FALSE, dygraphs = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
+ShowTS <- function(terms, corpusDtm = NULL, corpus = NULL, specificWebsites = NULL, startDate = NULL, endDate = NULL, rollingAverage = 30, align = "center", verticalLine = NULL, smoothLine = FALSE, customTitle = NULL, export = FALSE, allWebsitesAsOne = FALSE, dygraphs = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
     if (gtools::invalid(nameOfProject) == TRUE) {
         nameOfProject <- CastarterOptions("nameOfProject")
     }
@@ -143,6 +144,9 @@ ShowTS <- function(terms, corpusDtm = NULL, corpus = NULL, specificWebsites = NU
     }
     if (is.null(customTitle) == FALSE) {
         timeSeries <- timeSeries + ggplot2::ggtitle(customTitle)
+    }
+    if (smoothLine == TRUE) {
+        timeSeries <- timeSeries + ggplot2::stat_smooth(size=1.2)
     }
     if (export == TRUE) {
         timeSeries

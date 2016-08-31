@@ -6,9 +6,9 @@
 \usage{
 ShowTS(terms, corpusDtm = NULL, corpus = NULL, specificWebsites = NULL,
   startDate = NULL, endDate = NULL, rollingAverage = 30,
-  align = "center", verticalLine = NULL, customTitle = NULL,
-  export = FALSE, allWebsitesAsOne = FALSE, dygraphs = FALSE,
-  nameOfProject = NULL, nameOfWebsite = NULL)
+  align = "center", verticalLine = NULL, smoothLine = FALSE,
+  customTitle = NULL, export = FALSE, allWebsitesAsOne = FALSE,
+  dygraphs = FALSE, nameOfProject = NULL, nameOfWebsite = NULL)
 }
 \arguments{
 \item{terms}{A character vector with one or more words to be analysed, or a 'quanteda' dictionary if corpus/corpusDtm are also of the 'quanteda' type.}
@@ -26,6 +26,8 @@ ShowTS(terms, corpusDtm = NULL, corpus = NULL, specificWebsites = NULL,
 \item{align}{Defaults to "center", can be either "left", "right" or "center" and refers to the way the rolling average is calculated.}
 
 \item{verticalLine}{Defaults to NULL. Draws a vertical dotted line at the date provided. If given, value must correspond to one or more dates in the YMD format, e.g. "2016-08-17".}
+
+\item{smoothLine}{Logical, defaults to FALSE. If TRUE draws a smooth line over the time series.}
 
 \item{customTitle}{A character vector, defaults to NULL. If provided, it overrides default graph title.}
 
