@@ -40,10 +40,6 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, terms = NULL, 
             termsL <- setNames(object = termsL, nm = terms)
             termsDic <- quanteda::dictionary(x = termsL)
         }
-        if (relFreq == TRUE) {
-            corpusDtm <- quanteda::weight(corpusDtm, "relFreq")
-        }
-        corpusDtm <- quanteda::applyDictionary(corpusDtm, termsDic)
         if (byWebsite==TRUE) {
             namesOfWebsites <- unique(sapply(strsplit(x = quanteda::docnames(corpusDtm),
                                                       split = ".", fixed = TRUE),function(x) x[2]))
@@ -66,6 +62,10 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, terms = NULL, 
             }
             wordFrequency$type <- as.factor(wordFrequency$type)
         } else {
+            if (relFreq == TRUE) {
+                corpusDtm <- quanteda::weight(corpusDtm, "relFreq")
+            }
+            corpusDtm <- quanteda::applyDictionary(corpusDtm, termsDic)
             freq <- quanteda::topfeatures(x = corpusDtm, n = number)
         }
     } else {
