@@ -69,10 +69,10 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, terms = NULL, 
             freq <- quanteda::topfeatures(x = corpusDtm, n = number)
         }
     } else {
-        if (is.null(terms) == FALSE) {
+        if (is.null(terms) == FALSE&relFreq==FALSE) {
             corpusDtm <- corpusDtm[,base::match(terms, colnames(corpusDtm), nomatch = 0)]
         }
-            freq <- sort(slam::col_sums(corpusDtm, na.rm = TRUE), decreasing = TRUE)
+        freq <- sort(slam::col_sums(corpusDtm, na.rm = TRUE), decreasing = TRUE)
     }
     if (byWebsite==FALSE&byDate==FALSE) {
         wordFrequency <- data.frame(term = names(freq), freq = freq)[1:number, ]
@@ -92,6 +92,39 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, terms = NULL, 
             wordFrequency <- rbind(wordFrequency, tempDF)
         }
         wordFrequency$type <- as.factor(wordFrequency$type)
+    }
+    if (byWebsite==TRUE&byDate==FALSE&quanteda::is.dfm(corpusDtm)==FALSE) {
+        namesOfWebsites <- levels(as.factor(unlist(NLP::meta(corpus, "author"))))
+        byWebsiteL <- data.frame(matrix(NA, nrow = length(corpus), ncol = length(namesOfWebsites)))
+        names(byWebsiteL) <- namesOfWebsites
+        for (i in 1:length(namesOfWebsites)) {
+            byWebsiteL[, i] <- NLP::meta(corpus, "author") == namesOfWebsites[i]
+        }
+        mostFrequentByWebsite <- as.data.frame(matrix(nrow = length(byWebsiteL), ncol = length(terms) + 1))
+        colnames(mostFrequentByWebsite)[1] <- "nameOfWebsite"
+        for (i in 1:length(terms)) {
+            colnames(mostFrequentByWebsite)[i + 1] <- terms[i]
+        }
+        for (i in 1:length(byWebsiteL)) {
+            dtmTemp <- corpusDtm[byWebsiteL[, i], ]
+            mostFrequent <- castarter::ShowFreq(corpusDtm = dtmTemp, mode = "data.frame", number = "all", terms = terms)
+            totalWords <- sum(dtmTemp)
+            mostFrequentByWebsite[i, 1] <- names(byWebsiteL)[i]
+            for (j in 1:length(terms)) {
+                value <- mostFrequent$freq[mostFrequent$term == terms[j]]
+                if (length(value) == 0) {
+                    value <- 0
+                } else {
+                    if (relFreq == FALSE) {
+                        mostFrequentByWebsite[i, j + 1] <- value
+                    } else {
+                        mostFrequentByWebsite[i, j + 1] <- value/totalWords
+                    }
+                }
+            }
+        }
+        wordFrequency <- mostFrequentByWebsite
+        colnames(wordFrequency) <- c("type", "freq")
     }
     if (stemCompletion == TRUE) {
         wordFrequency$term <- tm::stemCompletion(wordFrequency$term, corpusOriginal)
