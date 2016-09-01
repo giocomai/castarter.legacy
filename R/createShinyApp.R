@@ -9,7 +9,7 @@
 #' @export
 #' @examples
 #' CreateShinyApp(dataset)
-CreateShinyApp <- function(dataset, nameOfProject = NULL, nameOfWebsite = NULL) {
+CreateShinyApp <- function(dataset, terms = "europ*", nameOfProject = NULL, nameOfWebsite = NULL) {
     if (gtools::invalid(nameOfProject) == TRUE) {
         nameOfProject <- CastarterOptions("nameOfProject")
     }
@@ -39,7 +39,8 @@ library('stringi')
 # required for ggplot stat_smooth
 library('mgcv')
 SetCastarter(nameOfProject = '", nameOfProject, "', nameOfWebsite = '", nameOfWebsite,"')",
-"# load dataset
+"
+# load dataset
 load(file = file.path('data', 'dataset.RData'))
 # find earliest and latest date
 dailyFreq <- data.frame(docs = quanteda::docnames(corpusDtm), quanteda::as.data.frame(corpusDtm))
@@ -55,7 +56,7 @@ ui <- fluidPage(
         #inputs
         sidebarPanel(
             radioButtons(inputId = 'graphType', label = 'Select type of graph', choices = c('Time series', 'Barchart', 'Barchart by year')),
-            textInput(inputId = 'term', label = 'Term(s) to be analysed', value = 'europe*, russia*, america*'),
+            textInput(inputId = 'term', label = 'Term(s) to be analysed', value = '", terms, "'),
             conditionalPanel(
                 condition = \"input.graphType == 'Time series'\",
                 dateInput(inputId = 'startDate', label = 'startDate', value = minDate, min = minDate, max = maxDate, format = 'yyyy-mm-dd', startview = 'year', weekstart = 0, language = 'en', width = NULL),
