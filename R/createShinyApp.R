@@ -71,7 +71,8 @@ checkboxInput(inputId = 'kwic', label = 'Show keywords in context', value = FALS
             ),
 conditionalPanel(
 condition = \"input.graphType == 'Barchart'\",
-radioButtons(inputId = 'barchartType', label = 'Select type of barchart', choices = c('Barchart', 'Barchart by year', 'Barchart by website'))
+radioButtons(inputId = 'barchartType', label = 'Select type of barchart', choices = c('Barchart by website', 'Barchart by year and website', 'Barchart by year (merge multiple sources)', 'Barchart (merge multiple sources)')),
+radioButtons(inputId = 'relFreq', label = 'Frequency', choices = c('Relative frequency', 'Absolute number of occurrences'))
 )
         ),
         mainPanel(
@@ -94,10 +95,23 @@ server <- function(input, output) {
                 graph <- graph + ggplot2::stat_smooth(size = 1.2, method = 'lm')
             }
         } else if (input$graphType == 'Barchart') {
-            graph <- ShowFreq(corpusDtm = corpusDtm, mode = 'barchart', terms = specificTerms)
-        } else if (input$graphType == 'Barchart by year') {
-            graph <- ShowFreq(corpusDtm = corpusDtm, mode = 'barchart', terms = specificTerms, byDate = TRUE, invert = TRUE)
-        }
+if (input$relFreq=='Relative frequency') {
+relFreq <- TRUE
+} else {
+relFreq <- FALSE
+}
+if (input$barchartType == 'Barchart (merge multiple sources)') {
+graph <- ShowFreq(corpusDtm = corpusDtm, mode = 'barchart', terms = specificTerms, byDate = FALSE, byWebsite = FALSE, relFreq = relFreq)
+} else if (input$barchartType == 'Barchart by year') {
+            graph <- ShowFreq(corpusDtm = corpusDtm, mode = 'barchart', terms = specificTerms, byDate = TRUE, invert = TRUE, relFreq = relFreq)
+} else if (input$barchartType == 'Barchart by website') {
+graph <- ShowFreq(corpusDtm = corpusDtm, mode = 'barchart', terms = specificTerms, byDate = FALSE, byWebsite = TRUE, invert = TRUE, relFreq = relFreq)
+} else if (input$barchartType == 'Barchart by year and website') {
+graph <- ShowFreq(corpusDtm = corpusDtm, mode = 'barchart', terms = specificTerms, byDate = TRUE, byWebsite = TRUE, invert = TRUE, relFreq = relFreq)
+} else if (input$barchartType == 'Barchart by year (merge multiple sources)') {
+graph <- ShowFreq(corpusDtm = corpusDtm, mode = 'barchart', terms = specificTerms, byDate = FALSE, byWebsite = TRUE, invert = TRUE, relFreq = relFreq)
+}
+}
         print(graph)
     }
     )
