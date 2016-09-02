@@ -61,14 +61,18 @@ ui <- fluidPage(
                 condition = \"input.graphType == 'Time series'\",
                 dateInput(inputId = 'startDate', label = 'startDate', value = minDate, min = minDate, max = maxDate, format = 'yyyy-mm-dd', startview = 'year', weekstart = 0, language = 'en', width = NULL),
                 dateInput(inputId = 'endDate', label = 'endDate', value = maxDate, min = minDate, max = maxDate, format = 'yyyy-mm-dd', startview = 'year', weekstart = 0, language = 'en', width = NULL),
-checkboxInput(inputId = 'dygraphs', label = 'Show interactive time series', value = FALSE),
                 sliderInput(inputId = 'rollingAvg',
                             label = 'Rolling average (days)',
                             value = 90, min = 1, max = 90),
                 checkboxInput(inputId = 'smoothLine', label = 'Smooth', value = FALSE),
                 checkboxInput(inputId = 'trendLine', label = 'Linear smooth', value = FALSE),
-                checkboxInput(inputId = 'kwic', label = 'Show keywords in context', value = FALSE)
-            )
+                checkboxInput(inputId = 'dygraphs', label = 'Show interactive time series', value = FALSE),
+checkboxInput(inputId = 'kwic', label = 'Show keywords in context', value = FALSE)
+            ),
+conditionalPanel(
+condition = \"input.graphType == 'Barchart'\",
+radioButtons(inputId = 'barchartType', label = 'Select type of barchart', choices = c('Barchart', 'Barchart by year', 'Barchart by website'))
+)
         ),
         mainPanel(
             plotOutput('graph'),
