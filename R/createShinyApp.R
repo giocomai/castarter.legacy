@@ -55,22 +55,24 @@ ui <- fluidPage(
     sidebarLayout(
         #inputs
         sidebarPanel(
-            radioButtons(inputId = 'graphType', label = 'Select type of graph', choices = c('Time series', 'Barchart', 'Barchart by year')),
+            radioButtons(inputId = 'graphType', label = 'Select type of graph', choices = c('Time series', 'Barchart')),
             textInput(inputId = 'term', label = 'Term(s) to be analysed', value = '", terms, "'),
             conditionalPanel(
                 condition = \"input.graphType == 'Time series'\",
                 dateInput(inputId = 'startDate', label = 'startDate', value = minDate, min = minDate, max = maxDate, format = 'yyyy-mm-dd', startview = 'year', weekstart = 0, language = 'en', width = NULL),
                 dateInput(inputId = 'endDate', label = 'endDate', value = maxDate, min = minDate, max = maxDate, format = 'yyyy-mm-dd', startview = 'year', weekstart = 0, language = 'en', width = NULL),
+checkboxInput(inputId = 'dygraphs', label = 'Show interactive time series', value = FALSE),
                 sliderInput(inputId = 'rollingAvg',
                             label = 'Rolling average (days)',
                             value = 90, min = 1, max = 90),
-                checkboxInput(inputId = 'smoothLine', label = 'Smooth', value = TRUE),
+                checkboxInput(inputId = 'smoothLine', label = 'Smooth', value = FALSE),
                 checkboxInput(inputId = 'trendLine', label = 'Linear smooth', value = FALSE),
                 checkboxInput(inputId = 'kwic', label = 'Show keywords in context', value = FALSE)
             )
         ),
         mainPanel(
-            plotOutput('graph')
+            plotOutput('graph'),
+dygraphs::dygraphOutput('dygraphs')
         )
     ),
     fluidRow(dataTableOutput('kwic'))
@@ -109,6 +111,12 @@ server <- function(input, output) {
       }
       }, escape = FALSE
       )
+output$dygraphs <- dygraphs::renderDygraph({
+        if (input$dygraphs==TRUE) {
+        specificTerms <- stringr::str_trim(unlist(strsplit(x = input$term, split = ',')), side = 'both')
+        ShowTS(terms = specificTerms, corpus = corpus, corpusDtm = corpusDtm, startDate = input$startDate, endDate = input$endDate, rollingAverage = input$rollingAvg, dygraphs = TRUE)
+        }
+    })
       }
 
       shinyApp(ui = ui, server = server)"), file = file.path(nameOfProject, nameOfWebsite, "Outputs", "shinyApp", "app.R"))
