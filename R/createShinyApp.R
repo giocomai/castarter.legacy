@@ -102,14 +102,12 @@ relFreq <- FALSE
 }
 if (input$barchartType == 'Barchart (merge multiple sources)') {
 graph <- ShowFreq(corpusDtm = corpusDtm, mode = 'barchart', terms = specificTerms, byDate = FALSE, byWebsite = FALSE, relFreq = relFreq)
-} else if (input$barchartType == 'Barchart by year') {
+} else if (input$barchartType == 'Barchart by year (merge multiple sources)') {
             graph <- ShowFreq(corpusDtm = corpusDtm, mode = 'barchart', terms = specificTerms, byDate = TRUE, invert = TRUE, relFreq = relFreq)
 } else if (input$barchartType == 'Barchart by website') {
 graph <- ShowFreq(corpusDtm = corpusDtm, mode = 'barchart', terms = specificTerms, byDate = FALSE, byWebsite = TRUE, invert = TRUE, relFreq = relFreq)
 } else if (input$barchartType == 'Barchart by year and website') {
 graph <- ShowFreq(corpusDtm = corpusDtm, mode = 'barchart', terms = specificTerms, byDate = TRUE, byWebsite = TRUE, invert = TRUE, relFreq = relFreq)
-} else if (input$barchartType == 'Barchart by year (merge multiple sources)') {
-graph <- ShowFreq(corpusDtm = corpusDtm, mode = 'barchart', terms = specificTerms, byDate = FALSE, byWebsite = TRUE, invert = TRUE, relFreq = relFreq)
 }
 }
         print(graph)
