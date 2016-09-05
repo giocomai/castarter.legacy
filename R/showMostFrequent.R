@@ -35,6 +35,7 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, terms = NULL, 
         number <- ncol(corpusDtm)
     }
     if (quanteda::is.dfm(corpusDtm)==TRUE) {
+        corpusDtmDocnames <- quanteda::docnames(corpusDtm)
         if (as.character(class(terms))=="dictionary") {
             termsDic <- terms
         } else {
@@ -42,7 +43,29 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, terms = NULL, 
             termsL <- setNames(object = termsL, nm = terms)
             termsDic <- quanteda::dictionary(x = termsL)
         }
-        if (byWebsite==TRUE) {
+        if (byWebsite == TRUE & byDate == TRUE) {
+            namesOfWebsites <- unique(sapply(strsplit(x = corpusDtmDocnames,
+                                                      split = ".", fixed = TRUE),function(x) x[2]))
+            dates <- unique(lubridate::year(sapply(strsplit(x = corpusDtmDocnames,
+                                                            split = ".", fixed = TRUE),function(x) x[1])))
+            if (relFreq == TRUE) {
+                totalWords <- data.frame(namesOfWebsites = as.character(sapply(namesOfWebsites, rep, times = length(dates))), dates, totalWords = NA)
+                for (i in 1:nrow(totalWords)) {
+                    totalWords$totalWords[i] <- sum(corpusDtm[grepl(pattern = paste(totalWords$dates[i], totalWords$namesOfWebsites[i], sep = ".*"), corpusDtmDocnames)])
+                }
+            }
+            corpusDtm <- quanteda::applyDictionary(corpusDtm, termsDic)
+            wordFrequency <- data.frame()
+            for (i in 1:nrow(totalWords)) {
+                temp <- quanteda::topfeatures(x = corpusDtm[grepl(pattern = paste(totalWords$dates[i], totalWords$namesOfWebsites[i], sep = ".*"), corpusDtmDocnames)],
+                                              n = number)
+                tempDF <- data.frame(term = names(temp), freq = temp, type = totalWords$namesOfWebsites[i], dates = totalWords$dates[i])
+                wordFrequency <- rbind(wordFrequency, tempDF)
+            }
+            if (relFreq == TRUE) {
+                wordFrequency$freq <- wordFrequency$freq/totalWords$totalWords
+            }
+        } else if (byWebsite==TRUE & byDate == FALSE) {
             namesOfWebsites <- unique(sapply(strsplit(x = quanteda::docnames(corpusDtm),
                                                       split = ".", fixed = TRUE),function(x) x[2]))
             if (relFreq == TRUE) {
@@ -63,7 +86,7 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, terms = NULL, 
             if (relFreq == TRUE) {
                 wordFrequency$freq <- wordFrequency$freq/totalWords$totalWords
             }
-        } else if (byDate == TRUE) {
+        } else if (byDate == TRUE & byWebsite == FALSE) {
             dates <- unique(lubridate::year(sapply(strsplit(x = quanteda::docnames(corpusDtm),
                                                             split = ".", fixed = TRUE),function(x) x[1])))
             if (relFreq == TRUE) {
