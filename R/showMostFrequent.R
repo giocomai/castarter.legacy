@@ -66,19 +66,19 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, terms = NULL, 
                 wordFrequency$freq <- wordFrequency$freq/totalWords$totalWords
             }
         } else if (byWebsite==TRUE & byDate == FALSE) {
-            namesOfWebsites <- unique(sapply(strsplit(x = quanteda::docnames(corpusDtm),
+            namesOfWebsites <- unique(sapply(strsplit(x = corpusDtmDocnames,
                                                       split = ".", fixed = TRUE),function(x) x[2]))
             if (relFreq == TRUE) {
                 totalWords <- data.frame(namesOfWebsites, totalWords = NA)
                 for (i in seq_along(namesOfWebsites)) {
-                    totalWords$totalWords[i] <- sum(corpusDtm[grepl(pattern = namesOfWebsites[i], quanteda::docnames(corpusDtm))])
+                    totalWords$totalWords[i] <- sum(corpusDtm[grepl(pattern = namesOfWebsites[i], corpusDtmDocnames)])
                 }
             }
             corpusDtm <- quanteda::applyDictionary(corpusDtm, termsDic)
             wordFrequency <- data.frame()
             for (i in seq_along(namesOfWebsites)) {
                 temp <- quanteda::topfeatures(x = corpusDtm[grepl(pattern = namesOfWebsites[i],
-                                                                  quanteda::docnames(corpusDtm))],
+                                                                  corpusDtmDocnames)],
                                               n = number)
                 tempDF <- data.frame(term = names(temp), freq = temp, type = namesOfWebsites[i])
                 wordFrequency <- rbind(wordFrequency, tempDF)
@@ -87,19 +87,19 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, terms = NULL, 
                 wordFrequency$freq <- wordFrequency$freq/totalWords$totalWords
             }
         } else if (byDate == TRUE & byWebsite == FALSE) {
-            dates <- unique(lubridate::year(sapply(strsplit(x = quanteda::docnames(corpusDtm),
+            dates <- unique(lubridate::year(sapply(strsplit(x = corpusDtmDocnames,
                                                             split = ".", fixed = TRUE),function(x) x[1])))
             if (relFreq == TRUE) {
                 totalWords <- data.frame(dates, totalWords = NA)
                 for (i in seq_along(dates)) {
-                    totalWords$totalWords[i] <- sum(corpusDtm[grepl(pattern = dates[i], quanteda::docnames(corpusDtm))])
+                    totalWords$totalWords[i] <- sum(corpusDtm[grepl(pattern = dates[i], corpusDtmDocnames)])
                 }
             }
             corpusDtm <- quanteda::applyDictionary(corpusDtm, termsDic)
             wordFrequency <- data.frame()
             for (i in seq_along(dates)) {
                 temp <- quanteda::topfeatures(x = corpusDtm[grepl(pattern = dates[i],
-                                                                  quanteda::docnames(corpusDtm))], n = number)
+                                                                  corpusDtmDocnames)], n = number)
                 tempDF <- data.frame(term = names(temp), freq = temp, type = dates[i])
                 wordFrequency <- rbind(wordFrequency, tempDF)
             }
