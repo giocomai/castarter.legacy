@@ -65,7 +65,7 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, terms = NULL, 
             if (relFreq == TRUE) {
                 wordFrequency$freq <- wordFrequency$freq/totalWords$totalWords
             }
-            rownames(test) <- NULL
+            rownames(wordFrequency) <- NULL
         } else if (byWebsite==TRUE & byDate == FALSE) {
             namesOfWebsites <- unique(sapply(strsplit(x = corpusDtmDocnames,
                                                       split = ".", fixed = TRUE),function(x) x[2]))
@@ -231,7 +231,11 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, terms = NULL, 
         }
         barchart <- barchart + ggplot2::scale_fill_brewer(palette = "Dark2")
         if (byDate == TRUE&length(terms)==1) {
+            if (byWebsite == TRUE) {
+                barchart <-  barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = factor(type, levels=rev(levels(type))), y = freq, fill = as.factor(dates))) + ggplot2::geom_bar(stat = "identity", position="dodge") + ggplot2::coord_flip() + ggplot2::xlab("")
+            } else {
             barchart <-  barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = factor(type, levels=rev(levels(type))), y = freq)) + ggplot2::geom_bar(stat = "identity", position="dodge") + ggplot2::coord_flip() + ggplot2::xlab("")
+            }
         }
         if (percent == TRUE&relFreq == TRUE) {
             barchart <- barchart + ggplot2::scale_y_continuous(labels = scales::percent) +
