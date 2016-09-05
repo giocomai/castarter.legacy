@@ -65,6 +65,7 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, terms = NULL, 
             if (relFreq == TRUE) {
                 wordFrequency$freq <- wordFrequency$freq/totalWords$totalWords
             }
+            rownames(test) <- NULL
         } else if (byWebsite==TRUE & byDate == FALSE) {
             namesOfWebsites <- unique(sapply(strsplit(x = corpusDtmDocnames,
                                                       split = ".", fixed = TRUE),function(x) x[2]))
