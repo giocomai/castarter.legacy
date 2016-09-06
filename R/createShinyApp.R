@@ -9,7 +9,7 @@
 #' @export
 #' @examples
 #' CreateShinyApp(dataset)
-CreateShinyApp <- function(dataset, terms = "europ*", nameOfProject = NULL, nameOfWebsite = NULL) {
+CreateShinyApp <- function(dataset, terms = "europ*", customTitle = NULL, nameOfProject = NULL, nameOfWebsite = NULL) {
     if (gtools::invalid(nameOfProject) == TRUE) {
         nameOfProject <- CastarterOptions("nameOfProject")
     }
@@ -30,7 +30,9 @@ CreateShinyApp <- function(dataset, terms = "europ*", nameOfProject = NULL, name
     corpusDtm <- castarter::CreateDtm(corpus = corpus)
     rm(dataset)
     save(list = c("corpus", "corpusDtm"), file = file.path(nameOfProject, nameOfWebsite, "Outputs", "shinyApp", "data", "dataset.RData"))
-
+if (is.null(x = customTitle)==TRUE) {
+    customTitle <- nameOfWebsite
+}
     write(x = paste0(
     "library('shiny')
 library('ggplot2')
@@ -51,12 +53,12 @@ maxDate <- max(dailyFreq$Date)
 
 ui <- fluidPage(
     # Application title
-    titlePanel('", nameOfWebsite, "'),
+    titlePanel('", customTitle, "'),
     sidebarLayout(
         #inputs
         sidebarPanel(
             radioButtons(inputId = 'graphType', label = 'Select type of graph', choices = c('Time series', 'Barchart')),
-            textInput(inputId = 'term', label = 'Term(s) to be analysed', value = '", terms, "'),
+            textInput(inputId = 'term', label = 'Terms to be analysed (comma-separated, if more than one)', value = '", terms, "'),
             conditionalPanel(
                 condition = \"input.graphType == 'Time series'\",
                 dateInput(inputId = 'startDate', label = 'startDate', value = minDate, min = minDate, max = maxDate, format = 'yyyy-mm-dd', startview = 'year', weekstart = 0, language = 'en', width = NULL),
