@@ -48,8 +48,8 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, terms = NULL, 
                                                       split = ".", fixed = TRUE),function(x) x[2]))
             dates <- unique(lubridate::year(sapply(strsplit(x = corpusDtmDocnames,
                                                             split = ".", fixed = TRUE),function(x) x[1])))
+            totalWords <- data.frame(namesOfWebsites = as.character(sapply(namesOfWebsites, rep, times = length(dates))), dates, totalWords = NA)
             if (relFreq == TRUE) {
-                totalWords <- data.frame(namesOfWebsites = as.character(sapply(namesOfWebsites, rep, times = length(dates))), dates, totalWords = NA)
                 for (i in 1:nrow(totalWords)) {
                     totalWords$totalWords[i] <- sum(corpusDtm[grepl(pattern = paste(totalWords$dates[i], totalWords$namesOfWebsites[i], sep = ".*"), corpusDtmDocnames)])
                 }
@@ -67,6 +67,7 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, terms = NULL, 
             }
             rownames(wordFrequency) <- NULL
             wordFrequency$dates <- as.factor(wordFrequency$dates)
+            wordFrequency$dates <- factor(wordFrequency$dates, levels=rev(levels(wordFrequency$dates)))
             colnames(wordFrequency)[colnames(wordFrequency)=="dates"] <- "Year"
         } else if (byWebsite==TRUE & byDate == FALSE) {
             namesOfWebsites <- unique(sapply(strsplit(x = corpusDtmDocnames,
@@ -209,7 +210,7 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, terms = NULL, 
         } else if (byWebsite == TRUE | byDate == TRUE) {
             if (stacked == TRUE) {
                 if (invert == FALSE) {
-                    barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = reorder(term, -freq), y = freq, fill = type)) + ggplot2::geom_bar(stat = "identity") + ggplot2::coord_flip() + ggplot2::xlab("") + ggplot2::labs(fill="")
+                    barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = reorder(term, -freq), y = freq, fill = type)) + ggplot2::geom_bar(stat = "identity") + ggplot2::coord_flip() + ggplot2::xlab("") + ggplot2::labs(fill="") 
                 } else if (invert == TRUE) {
                     barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = type, y = freq, fill = term)) + ggplot2::geom_bar(stat = "identity") + ggplot2::coord_flip() + ggplot2::xlab("") + ggplot2::labs(fill="Term")
                 }
@@ -234,7 +235,7 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, terms = NULL, 
         barchart <- barchart + ggplot2::scale_fill_brewer(palette = "Dark2")
         if (byDate == TRUE&length(terms)==1) {
             if (byWebsite == TRUE) {
-                barchart <-  barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = factor(type, levels=rev(levels(type))), y = freq, fill = Year)) + ggplot2::geom_bar(stat = "identity", position="dodge") + ggplot2::coord_flip() + ggplot2::xlab("")
+                barchart <-  barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = factor(type, levels=rev(levels(type))), y = freq, fill = Year)) + ggplot2::geom_bar(stat = "identity", position="dodge") + ggplot2::coord_flip() + ggplot2::xlab("") + scale_fill_discrete(guide = guide_legend(reverse=TRUE))
             } else {
             barchart <-  barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = factor(type, levels=rev(levels(type))), y = freq)) + ggplot2::geom_bar(stat = "identity", position="dodge") + ggplot2::coord_flip() + ggplot2::xlab("")
             }
@@ -248,7 +249,7 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, terms = NULL, 
         if (is.null(customTitle) == FALSE) {
             barchart <- barchart + ggplot2::ggtitle(customTitle)
         } else {
-            barchart <- barchart + ggplot2::ggtitle("Word frequency barchart")
+            barchart <- barchart + ggplot2::ggtitle(paste("Word frequency barchart for", paste(terms, collapse = ", ")))
         }
         if (export == TRUE) {
             if (is.null(customTitle)) {
