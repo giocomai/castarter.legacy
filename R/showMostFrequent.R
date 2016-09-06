@@ -66,6 +66,8 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, terms = NULL, 
                 wordFrequency$freq <- wordFrequency$freq/totalWords$totalWords
             }
             rownames(wordFrequency) <- NULL
+            wordFrequency$dates <- as.factor(wordFrequency$dates)
+            colnames(wordFrequency)[colnames(wordFrequency)=="dates"] <- "Year"
         } else if (byWebsite==TRUE & byDate == FALSE) {
             namesOfWebsites <- unique(sapply(strsplit(x = corpusDtmDocnames,
                                                       split = ".", fixed = TRUE),function(x) x[2]))
@@ -232,7 +234,7 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, terms = NULL, 
         barchart <- barchart + ggplot2::scale_fill_brewer(palette = "Dark2")
         if (byDate == TRUE&length(terms)==1) {
             if (byWebsite == TRUE) {
-                barchart <-  barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = factor(type, levels=rev(levels(type))), y = freq, fill = as.factor(dates))) + ggplot2::geom_bar(stat = "identity", position="dodge") + ggplot2::coord_flip() + ggplot2::xlab("")
+                barchart <-  barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = factor(type, levels=rev(levels(type))), y = freq, fill = Year)) + ggplot2::geom_bar(stat = "identity", position="dodge") + ggplot2::coord_flip() + ggplot2::xlab("")
             } else {
             barchart <-  barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = factor(type, levels=rev(levels(type))), y = freq)) + ggplot2::geom_bar(stat = "identity", position="dodge") + ggplot2::coord_flip() + ggplot2::xlab("")
             }
