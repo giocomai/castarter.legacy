@@ -205,7 +205,7 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, terms = NULL, 
                         wordFrequency$tipology[i] <- NA
                     }
                 }
-                barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = reorder(term, -freq), y = freq, fill = type)) + ggplot2::geom_bar(stat = "identity") + ggplot2::coord_flip() + ggplot2::xlab("") + ggplot2::labs(fill="Type")
+                barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = reorder(term, freq), y = freq, fill = tipology)) + ggplot2::geom_bar(stat = "identity") + ggplot2::coord_flip() + ggplot2::xlab("") + ggplot2::labs(fill="Type")
             }
         } else if (byWebsite == TRUE | byDate == TRUE) {
             if (stacked == TRUE) {
