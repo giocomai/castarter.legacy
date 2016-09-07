@@ -8,7 +8,7 @@ ShowFreq(corpusDtm, mode = "data.frame", number = 10, terms = NULL,
   corpus = NULL, order = TRUE, stemCompletion = FALSE,
   corpusOriginal = "", minFrequency = 0, export = FALSE,
   customTitle = NULL, tipology = NULL, byDate = FALSE,
-  byWebsite = FALSE, stacked = FALSE, relFreq = FALSE, percent = TRUE,
+  byWebsite = FALSE, stacked = FALSE, relFreq = TRUE, percent = TRUE,
   invert = FALSE, nameOfProject = NULL, nameOfWebsite = NULL)
 }
 \arguments{
