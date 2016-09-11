@@ -235,7 +235,7 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, terms = NULL, 
         barchart <- barchart + ggplot2::scale_fill_brewer(palette = "Dark2")
         if (byDate == TRUE&length(terms)==1) {
             if (byWebsite == TRUE) {
-                barchart <-  barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = factor(type, levels=rev(levels(type))), y = freq, fill = Year)) + ggplot2::geom_bar(stat = "identity", position="dodge") + ggplot2::coord_flip() + ggplot2::xlab("") + scale_fill_discrete(guide = guide_legend(reverse=TRUE))
+                barchart <-  barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = factor(type, levels=rev(levels(type))), y = freq, fill = Year)) + ggplot2::geom_bar(stat = "identity", position="dodge") + ggplot2::coord_flip() + ggplot2::xlab("") + ggplot2::scale_fill_discrete(guide = guide_legend(reverse=TRUE))
             } else {
             barchart <-  barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = factor(type, levels=rev(levels(type))), y = freq)) + ggplot2::geom_bar(stat = "identity", position="dodge") + ggplot2::coord_flip() + ggplot2::xlab("")
             }
