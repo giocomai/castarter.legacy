@@ -87,7 +87,7 @@ dygraphs::dygraphOutput('dygraphs')
 
 server <- function(input, output) {
     output$graph <- reactivePlot(function() {
-        specificTerms <- stringr::str_trim(unlist(strsplit(x = input$term, split = ',')), side = 'both')
+        specificTerms <- stringi::stri_trim_both(unlist(strsplit(x = input$term, split = ',')))
         if (input$graphType == 'Time series') {
             graph <- ShowTS(terms = specificTerms, corpus = corpus, corpusDtm = corpusDtm, startDate = input$startDate, endDate = input$endDate, rollingAverage = input$rollingAvg)
             if (input$smoothLine == TRUE) {
@@ -117,7 +117,7 @@ graph <- ShowFreq(corpusDtm = corpusDtm, mode = 'barchart', terms = specificTerm
     )
     output$kwic <- renderDataTable({
         if (input$kwic == TRUE) {
-            stringKwic <- stringr::str_trim(unlist(strsplit(x = input$term, split = ',')), side = 'both')
+            stringKwic <- stringi::stri_trim_both(unlist(strsplit(x = input$term, split = ',')))
             stringKwic <- paste(stringKwic, collapse = '|')
       context <- quanteda::kwic(x = corpus, keywords = stringKwic, window = 7, case_insensitive = TRUE)
       id <- stringr::str_extract(string = as.character(context$docname), pattern = ' - [[:digit:]]+')
@@ -131,7 +131,7 @@ graph <- ShowFreq(corpusDtm = corpusDtm, mode = 'barchart', terms = specificTerm
       )
 output$dygraphs <- dygraphs::renderDygraph({
         if (input$dygraphs==TRUE) {
-        specificTerms <- stringr::str_trim(unlist(strsplit(x = input$term, split = ',')), side = 'both')
+        specificTerms <- stringi::stri_trim_both(unlist(strsplit(x = input$term, split = ',')))
         ShowTS(terms = specificTerms, corpus = corpus, corpusDtm = corpusDtm, startDate = input$startDate, endDate = input$endDate, rollingAverage = input$rollingAvg, dygraphs = TRUE)
         }
     })
