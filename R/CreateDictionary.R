@@ -9,6 +9,9 @@
 #' CreateDictionary(terms = c("fruit=apple+orange", "animals=cat+dog+cow"))
 
 CreateDictionary <- function(terms) {
+    if (grepl(pattern = ",", x = terms)) {
+        terms <- stringi::stri_trim_both(unlist(strsplit(x = input$term, split = ',')))
+    }
     termsSplit <- stringi::stri_split_fixed(str = terms, pattern = "=")
     termNames <- rep(NA, length(termsSplit))
     termsL <- list()
