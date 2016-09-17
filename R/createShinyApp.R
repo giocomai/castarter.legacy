@@ -58,7 +58,7 @@ ui <- fluidPage(
         #inputs
         sidebarPanel(
             radioButtons(inputId = 'graphType', label = 'Select type of graph', choices = c('Time series', 'Barchart')),
-            textInput(inputId = 'term', label = 'Terms to be analysed (comma-separated, if more than one)', value = '", terms, "'),
+            textInput(inputId = 'term', label = 'Terms to be analysed (comma-separated, if more than one; to merge mutliple terms in calculations, use the format: fruit=apple+orange, animals=cat+dog+cow)', value = '", terms, "'),
             conditionalPanel(
                 condition = \"input.graphType == 'Time series'\",
                 dateInput(inputId = 'startDate', label = 'startDate', value = minDate, min = minDate, max = maxDate, format = 'yyyy-mm-dd', startview = 'year', weekstart = 0, language = 'en', width = NULL),
@@ -88,6 +88,9 @@ dygraphs::dygraphOutput('dygraphs')
 server <- function(input, output) {
     output$graph <- reactivePlot(function() {
         specificTerms <- stringi::stri_trim_both(unlist(strsplit(x = input$term, split = ',')))
+if (grepl(pattern = '+', x = specificTerms, fixed = TRUE)) {
+specificTerms <- castarter::CreateDictionary(terms = specificTerms)
+}
         if (input$graphType == 'Time series') {
             graph <- ShowTS(terms = specificTerms, corpus = corpus, corpusDtm = corpusDtm, startDate = input$startDate, endDate = input$endDate, rollingAverage = input$rollingAvg)
             if (input$smoothLine == TRUE) {
