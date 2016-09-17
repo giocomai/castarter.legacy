@@ -2,11 +2,11 @@
 #' 
 #' Create dictionaries to be used by castarter functions such as ShowFreq or ShowTS 
 #'  
-#' @param terms A character vector in the format: c("Fruit=Apple+Orange", "Animals=cow+sheep+dog")
+#' @param terms A character vector in the format: c("fruit=apple+orange", "animals=cat+dog+cow")
 #' @return A dictionary of the 'quanteda' type. 
 #' @export
 #' @examples
-#' CreateDictionary(terms = c("Fruit=Apple+Orange", "Animals=cow+sheep+dog"))
+#' CreateDictionary(terms = c("fruit=apple+orange", "animals=cat+dog+cow"))
 
 CreateDictionary <- function(terms) {
     termsSplit <- stringi::stri_split_fixed(str = terms, pattern = "=")

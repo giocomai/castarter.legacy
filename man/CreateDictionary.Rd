@@ -7,7 +7,7 @@
 CreateDictionary(terms)
 }
 \arguments{
-\item{terms}{A character vector in the format: c("Fruit=Apple+Orange", "Animals=cow+sheep+dog")}
+\item{terms}{A character vector in the format: c("fruit=apple+orange", "animals=cat+dog+cow")}
 }
 \value{
 A dictionary of the 'quanteda' type.
@@ -16,6 +16,6 @@ A dictionary of the 'quanteda' type.
 Create dictionaries to be used by castarter functions such as ShowFreq or ShowTS
 }
 \examples{
-CreateDictionary(terms = c("Fruit=Apple+Orange", "Animals=cow+sheep+dog"))
+CreateDictionary(terms = c("fruit=apple+orange", "animals=cat+dog+cow"))
 }
 
