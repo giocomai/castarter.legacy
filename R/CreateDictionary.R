@@ -13,8 +13,8 @@ CreateDictionary <- function(terms) {
     termNames <- rep(NA, length(termsSplit))
     termsL <- list()
     for (i in seq_along(termsSplit)) {
-        termNames[i] <- termsSplit[[i]][1]
-        termsL[[i]] <- unlist(stringi::stri_split_fixed(str = termsSplit[[i]][2], pattern = "+"))
+        termNames[i] <- stringi::stri_trim_both(termsSplit[[i]][1])
+        termsL[[i]] <- stringi::stri_trim_both(unlist(stringi::stri_split_fixed(str = termsSplit[[i]][2], pattern = "+")))
     }
     termsL <- setNames(object = termsL, nm = termNames)
     termsDic <- quanteda::dictionary(x = termsL)
