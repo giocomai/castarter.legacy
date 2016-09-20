@@ -58,7 +58,7 @@ ui <- fluidPage(
         #inputs
         sidebarPanel(
             radioButtons(inputId = 'graphType', label = 'Select type of graph', choices = c('Time series', 'Barchart')),
-            textInput(inputId = 'term', label = 'Terms to be analysed (comma-separated, if more than one)', value = '", terms, "'),
+            textInput(inputId = 'term', label = 'Terms to be analysed (comma-separated, if more than one; to merge mutliple terms in calculations, use the format: fruit=apple+orange, animals=cat+dog+cow)', value = '", terms, "'),
             conditionalPanel(
                 condition = \"input.graphType == 'Time series'\",
                 dateInput(inputId = 'startDate', label = 'startDate', value = minDate, min = minDate, max = maxDate, format = 'yyyy-mm-dd', startview = 'year', weekstart = 0, language = 'en', width = NULL),
@@ -87,7 +87,10 @@ dygraphs::dygraphOutput('dygraphs')
 
 server <- function(input, output) {
     output$graph <- reactivePlot(function() {
-        specificTerms <- stringr::str_trim(unlist(strsplit(x = input$term, split = ',')), side = 'both')
+        specificTerms <- stringi::stri_trim_both(unlist(strsplit(x = input$term, split = ',')))
+if (grepl(pattern = '+', x = specificTerms, fixed = TRUE)) {
+specificTerms <- castarter::CreateDictionary(terms = specificTerms)
+}
         if (input$graphType == 'Time series') {
             graph <- ShowTS(terms = specificTerms, corpus = corpus, corpusDtm = corpusDtm, startDate = input$startDate, endDate = input$endDate, rollingAverage = input$rollingAvg)
             if (input$smoothLine == TRUE) {
@@ -117,7 +120,7 @@ graph <- ShowFreq(corpusDtm = corpusDtm, mode = 'barchart', terms = specificTerm
     )
     output$kwic <- renderDataTable({
         if (input$kwic == TRUE) {
-            stringKwic <- stringr::str_trim(unlist(strsplit(x = input$term, split = ',')), side = 'both')
+            stringKwic <- stringi::stri_trim_both(unlist(strsplit(x = input$term, split = ',')))
             stringKwic <- paste(stringKwic, collapse = '|')
       context <- quanteda::kwic(x = corpus, keywords = stringKwic, window = 7, case_insensitive = TRUE)
       id <- stringr::str_extract(string = as.character(context$docname), pattern = ' - [[:digit:]]+')
@@ -131,7 +134,7 @@ graph <- ShowFreq(corpusDtm = corpusDtm, mode = 'barchart', terms = specificTerm
       )
 output$dygraphs <- dygraphs::renderDygraph({
         if (input$dygraphs==TRUE) {
-        specificTerms <- stringr::str_trim(unlist(strsplit(x = input$term, split = ',')), side = 'both')
+        specificTerms <- stringi::stri_trim_both(unlist(strsplit(x = input$term, split = ',')))
         ShowTS(terms = specificTerms, corpus = corpus, corpusDtm = corpusDtm, startDate = input$startDate, endDate = input$endDate, rollingAverage = input$rollingAvg, dygraphs = TRUE)
         }
     })
