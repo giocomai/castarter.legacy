@@ -244,7 +244,7 @@ ShowDistribution(dataset)
 
 We can thus proceed and convert the dataset to a corpus object of the `tm` package for further analysis.
 ```{r Convert to corpus}
-corpus <- CreateCorpus(dataset)
+corpus <- CreateCorpus(dataset, quanteda = FALSE)
 ```
 The next few functions are dedicated to polishing up the corpus for quantitative analysis. Each step should be evaluated by the researcher, as it will have substantive impact on the final results.
 The following  command allows to conduct a number of common operation on the corpus, such as transforming all text to lowercase, removing punctuation and removing numbers. These operations are enabled by default, but depending on the users' needs can easily be disabled (e.g. by adding the paramater `removePunctuation = FALSE`)
@@ -349,7 +349,7 @@ dataset <- LoadDatasets()
 CreateShinyApp(dataset = dataset)
 ```
 
-This will produce a web interface similar to [this one](https://giocomai.shinyapps.io/ArmeniaPresident/).
+This will produce a web interface similar to [this one](https://giocomai.shinyapps.io/SouthCaucasusPresidents/).
 
 ## Disclaimer
 `castarter` is under active development:
@@ -382,6 +382,7 @@ Some examples of analysis of media contents conducted with `castarter` are avail
 Interactive example:
 
 * [Armenia's president website](https://giocomai.shinyapps.io/ArmeniaPresident/)
+* [Official websites of South Caucasus presidents](https://giocomai.shinyapps.io/SouthCaucasusPresidents/)
 
 ## About the author
 Giorgio Comai is doctoral researcher at the School of Law and Government, Dublin City University, and a member of the Marie Curie ITN network “Post-Soviet tensions”. You can find out more about his work on his [personal website](http://giorgiocomai.eu/). He is on Twitter: https://twitter.com/giocomai.
