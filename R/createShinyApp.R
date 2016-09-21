@@ -58,7 +58,7 @@ ui <- fluidPage(
         #inputs
         sidebarPanel(
             radioButtons(inputId = 'graphType', label = 'Select type of graph', choices = c('Time series', 'Barchart')),
-            textInput(inputId = 'term', label = 'Terms to be analysed (comma-separated, if more than one; to merge mutliple terms in calculations, use the format: fruit=apple+orange, animals=cat+dog+cow)', value = '", terms, "'),
+            textInput(inputId = 'term', label = 'Terms to be analysed*', value = '", terms, "'),
             conditionalPanel(
                 condition = \"input.graphType == 'Time series'\",
                 dateInput(inputId = 'startDate', label = 'startDate', value = minDate, min = minDate, max = maxDate, format = 'yyyy-mm-dd', startview = 'year', weekstart = 0, language = 'en', width = NULL),
@@ -69,7 +69,8 @@ ui <- fluidPage(
                 checkboxInput(inputId = 'smoothLine', label = 'Smooth', value = FALSE),
                 checkboxInput(inputId = 'trendLine', label = 'Linear smooth', value = FALSE),
                 checkboxInput(inputId = 'dygraphs', label = 'Show interactive time series', value = FALSE),
-checkboxInput(inputId = 'kwic', label = 'Show keywords in context', value = FALSE)
+checkboxInput(inputId = 'kwic', label = 'Show keywords in context', value = FALSE),
+p('* If more than one, terms must be comma-separated; to merge mutliple terms in calculations, use the format: Russia=Russia*+Moscow+Putin, Europe=Europ*+EU+Brussels')
             ),
 conditionalPanel(
 condition = \"input.graphType == 'Barchart'\",
