@@ -12,7 +12,7 @@
 #' @param maxLength If a link is longer than the number of characters given in maxLength, it is excluded from the output.
 #' @param sortLinks Defaults to TRUE. If TRUE, links are sorted in aphabetical order. 
 #' @param appendString If provided, appends given string to the extracted articles. Typically used to create links for print or mobile versions of the extracted page.
-#' @param removeString If provided, remove given string from links.
+#' @param removeString If provided, remove given string (or strings) from links.
 #' @param exportParameters Defaults to FALSE. If TRUE, function parameters are exported in the nameOfProject/nameOfWebsite folder. They can be used to update the corpus. 
 #' @return A named character vector of links to articles. Name of the link may be the article title. 
 #' @export
@@ -90,7 +90,9 @@ ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = NULL, co
     }
     links <- as.character(allLinks$links)
     if (gtools::invalid(removeString)==FALSE) {
-        links <- gsub(pattern = removeString, replacement = "", x = links, fixed = TRUE)
+        for (i in seq_along(removeString)) {
+            links <- gsub(pattern = removeString[i], replacement = "", x = links, fixed = TRUE)
+        }
     }
     links <- paste0(links, appendString)
     titles <- as.character(allLinks$titles)
@@ -100,7 +102,7 @@ ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = NULL, co
     }
     if (exportParameters == TRUE) {
         args <- c("domain", "partOfLink", "indexHtml", "containerTypeExtractLinks", "containerClassExtractLinks", "divClassExtractLinks", "attributeTypeExtractLinks", "partOfLinkToExclude", "minLength", "maxLength", "indexLinks","sortLinks", "export", "appendStringExtractLinks", "removeStringExtractLinks", "exportParameters", "nameOfProject", "nameOfWebsite")
-        param <- list(domain, partOfLink, "indexHtml", containerType, containerClass, divClass, attributeType, paste(partOfLinkToExclude, collapse = "§§§"), minLength, maxLength, "indexLinks", sortLinks, export, appendString, removeString, exportParameters, nameOfProject, nameOfWebsite)
+        param <- list(domain, partOfLink, "indexHtml", containerType, containerClass, divClass, attributeType, paste(partOfLinkToExclude, collapse = "§§§"), minLength, maxLength, "indexLinks", sortLinks, export, appendString, paste(removeString, collapse = "§§§"), exportParameters, nameOfProject, nameOfWebsite)
         for (i in 1:length(param)) {
             if (is.null(param[[i]])==TRUE) {
                 param[[i]] <- "NULL"

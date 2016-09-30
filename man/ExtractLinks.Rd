@@ -32,7 +32,7 @@ ExtractLinks(domain, partOfLink, indexHtml, containerType = NULL,
 
 \item{appendString}{If provided, appends given string to the extracted articles. Typically used to create links for print or mobile versions of the extracted page.}
 
-\item{removeString}{If provided, remove given string from links.}
+\item{removeString}{If provided, remove given string (or strings) from links.}
 
 \item{exportParameters}{Defaults to FALSE. If TRUE, function parameters are exported in the nameOfProject/nameOfWebsite folder. They can be used to update the corpus.}
 }
