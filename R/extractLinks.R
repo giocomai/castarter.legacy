@@ -12,13 +12,14 @@
 #' @param maxLength If a link is longer than the number of characters given in maxLength, it is excluded from the output.
 #' @param sortLinks Defaults to TRUE. If TRUE, links are sorted in aphabetical order. 
 #' @param appendString If provided, appends given string to the extracted articles. Typically used to create links for print or mobile versions of the extracted page.
+#' @param removeString If provided, remove given string from links.
 #' @param exportParameters Defaults to FALSE. If TRUE, function parameters are exported in the nameOfProject/nameOfWebsite folder. They can be used to update the corpus. 
 #' @return A named character vector of links to articles. Name of the link may be the article title. 
 #' @export
 #' @examples
 #' articlesLinks <- ExtractLinks(domain = "http://www.example.com/", partOfLink = "news/", indexHtml)
 ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = NULL, containerClass = NULL, divClass = NULL, attributeType = NULL, partOfLinkToExclude = NULL, minLength = NULL, maxLength = NULL, indexLinks = NULL,
-    sortLinks = TRUE, export = FALSE, appendString = NULL, exportParameters = TRUE, nameOfProject = NULL, nameOfWebsite = NULL) {
+    sortLinks = TRUE, export = FALSE, appendString = NULL, removeString = NULL, exportParameters = TRUE, nameOfProject = NULL, nameOfWebsite = NULL) {
     if (gtools::invalid(nameOfProject) == TRUE) {
         nameOfProject <- CastarterOptions("nameOfProject")
     }
@@ -88,6 +89,9 @@ ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = NULL, co
         allLinks <- allLinks[gtools::mixedorder(allLinks$links), ]
     }
     links <- as.character(allLinks$links)
+    if (gtools::invalid(removeString)==FALSE) {
+        links <- gsub(pattern = removeString, replacement = "", x = links, fixed = TRUE)
+    }
     links <- paste0(links, appendString)
     titles <- as.character(allLinks$titles)
     links <- setNames(links, titles)
@@ -95,8 +99,8 @@ ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = NULL, co
         writeLines(links, file.path(nameOfProject, nameOfWebsite, "Logs", paste(Sys.Date(), nameOfWebsite, "articlesLinks.txt", sep = " - ")))
     }
     if (exportParameters == TRUE) {
-        args <- c("domain", "partOfLink", "indexHtml", "containerTypeExtractLinks", "containerClassExtractLinks", "divClassExtractLinks", "attributeTypeExtractLinks", "partOfLinkToExclude", "minLength", "maxLength", "indexLinks","sortLinks", "export", "appendString", "exportParameters", "nameOfProject", "nameOfWebsite")
-        param <- list(domain, partOfLink, "indexHtml", containerType, containerClass, divClass, attributeType, paste(partOfLinkToExclude, collapse = "§§§"), minLength, maxLength, "indexLinks", sortLinks, export, appendString, exportParameters, nameOfProject, nameOfWebsite)
+        args <- c("domain", "partOfLink", "indexHtml", "containerTypeExtractLinks", "containerClassExtractLinks", "divClassExtractLinks", "attributeTypeExtractLinks", "partOfLinkToExclude", "minLength", "maxLength", "indexLinks","sortLinks", "export", "appendStringExtractLinks", "removeStringExtractLinks", "exportParameters", "nameOfProject", "nameOfWebsite")
+        param <- list(domain, partOfLink, "indexHtml", containerType, containerClass, divClass, attributeType, paste(partOfLinkToExclude, collapse = "§§§"), minLength, maxLength, "indexLinks", sortLinks, export, appendString, removeString, exportParameters, nameOfProject, nameOfWebsite)
         for (i in 1:length(param)) {
             if (is.null(param[[i]])==TRUE) {
                 param[[i]] <- "NULL"

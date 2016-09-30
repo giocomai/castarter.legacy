@@ -8,8 +8,8 @@ ExtractLinks(domain, partOfLink, indexHtml, containerType = NULL,
   containerClass = NULL, divClass = NULL, attributeType = NULL,
   partOfLinkToExclude = NULL, minLength = NULL, maxLength = NULL,
   indexLinks = NULL, sortLinks = TRUE, export = FALSE,
-  appendString = NULL, exportParameters = TRUE, nameOfProject = NULL,
-  nameOfWebsite = NULL)
+  appendString = NULL, removeString = NULL, exportParameters = TRUE,
+  nameOfProject = NULL, nameOfWebsite = NULL)
 }
 \arguments{
 \item{domain}{Web domain of the website. Will be added at the beginning of each link found.If links in the page already include the full web address this should be ignored. Defaults to "".}
@@ -31,6 +31,8 @@ ExtractLinks(domain, partOfLink, indexHtml, containerType = NULL,
 \item{sortLinks}{Defaults to TRUE. If TRUE, links are sorted in aphabetical order.}
 
 \item{appendString}{If provided, appends given string to the extracted articles. Typically used to create links for print or mobile versions of the extracted page.}
+
+\item{removeString}{If provided, remove given string from links.}
 
 \item{exportParameters}{Defaults to FALSE. If TRUE, function parameters are exported in the nameOfProject/nameOfWebsite folder. They can be used to update the corpus.}
 }
