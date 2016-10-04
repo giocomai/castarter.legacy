@@ -25,7 +25,7 @@ UpdateDataset <- function(dataset, articlesLinks = NULL, numberOfIndexPages = 10
     castarter::CreateFolders(project = project, website = website)
     if (base::is.null(articlesLinks)==TRUE) {
         indexLinks <- CreateLinks(linkFirstChunk = params$param[params$args=="linkFirstChunk"], linkSecondChunk = params$param[params$args=="linkSecondChunk"], startPage = as.integer(params$param[params$args=="startPage"]), endPage = sum(as.integer(params$param[params$args=="startPage"]), numberOfIndexPages), increaseBy = as.integer(params$param[params$args=="increaseBy"]), sortIndexLinks  = as.logical(params$param[params$args=="sortIndexLinks"]))
-        DownloadContents(links = indexLinks, wait = wait)
+        DownloadContents(links = indexLinks, type = "index", wait = wait)
         indexHtml <- ImportHtml(from = "index")
         articlesLinks <- ExtractLinks(domain = params$param[params$args=="domain"], partOfLink = params$param[params$args=="partOfLink"], indexHtml = indexHtml, containerType = params$param[params$args=="containerTypeExtractLinks"], containerClass = params$param[params$args=="containerClassExtractLinks"], divClass = params$param[params$args=="divClassExtractLinks"], partOfLinkToExclude = strsplit(params$param[params$args=="partOfLinkToExclude"], "§§§"))
     }
