@@ -58,6 +58,9 @@ LoadDatasets <- function(projectsAndWebsites = NULL, type = "dataset", removeNAd
         allDatasets <- data.frame()
         for (i in 1:length(lastSavedDatasets)) {
             load(lastSavedDatasets[i])
+            # introduced for backward compatibility with datasets created with castarter ver<0.2
+            colnames(x = dataset)[colnames(dataset)=="nameOfProject"]<-"project"
+            colnames(x = dataset)[colnames(dataset)=="nameOfWebsite"]<-"website"
             allDatasets <- rbind(allDatasets, dataset)
             rm(dataset)
         }
@@ -108,6 +111,9 @@ LoadAllDatasets <- function(project, removeNAdates = TRUE) {
     allDatasets <- data.frame()
     for (i in 1:length(lastSavedDatasets)) {
         load(lastSavedDatasets[i])
+        # introduced for backward compatibility with datasets created with castarter ver<0.2
+        colnames(x = dataset)[colnames(dataset)=="nameOfProject"]<-"project"
+        colnames(x = dataset)[colnames(dataset)=="nameOfWebsite"]<-"website"
         allDatasets <- rbind(allDatasets, dataset)
         rm(dataset)
     }
