@@ -3,26 +3,26 @@
 #' To be incorporated into ShowFreq
 #' 
 #' @param corpus A TM corpus. 
-#' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.
+#' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.
 #' @param specificTerms Character vector of terms to be compared. 
 #' @param corpusDtm A document-term matrix. If provided, computation is faster. 
 #' @export
 #' @examples
-#' AnalyseTerms(corpus, nameOfProject, specificTerms)
+#' AnalyseTerms(corpus, project, specificTerms)
 
-AnalyseTerms <- function(corpus, nameOfProject, specificTerms, mode = "graph", includeOnly = NULL, order = TRUE, tipology = NULL, frequency = "relative", corpusDtm = NULL) {
+AnalyseTerms <- function(corpus, project, specificTerms, mode = "graph", includeOnly = NULL, order = TRUE, tipology = NULL, frequency = "relative", corpusDtm = NULL) {
      namesOfWebsites <- levels(as.factor(unlist(NLP::meta(corpus, "author"))))
      if (is.null(corpusDtm) == TRUE) {
          corpusDtm <- CreateDtm(corpus)
      }
-     byWebsiteAll <- DivideByWebsite(corpus = corpus, nameOfProject = nameOfProject)
+     byWebsiteAll <- DivideByWebsite(corpus = corpus, project = project)
      if (is.null(includeOnly) == FALSE) {
           byWebsite <- byWebsiteAll[, includeOnly]
      } else {
           byWebsite <- byWebsiteAll
      }
      mostFrequentByWebsite <- as.data.frame(matrix(nrow = length(byWebsite), ncol = length(specificTerms) + 1))
-     colnames(mostFrequentByWebsite)[1] <- "nameOfWebsite"
+     colnames(mostFrequentByWebsite)[1] <- "website"
      for (i in 1:length(specificTerms)) {
           colnames(mostFrequentByWebsite)[i + 1] <- specificTerms[i]
      }
@@ -48,13 +48,13 @@ AnalyseTerms <- function(corpus, nameOfProject, specificTerms, mode = "graph", i
         mostFrequentByWebsite$Type <- NA
         tipology$Type <- as.character(tipology$Type)
         for (i in 1:length(mostFrequentByWebsite[, 1])) {
-            if (is.element(mostFrequentByWebsite$nameOfWebsite[i], tipology$nameOfWebsite)) {
-                mostFrequentByWebsite$Type[i] <- tipology$Type[tipology$nameOfWebsite == mostFrequentByWebsite$nameOfWebsite[i]]
+            if (is.element(mostFrequentByWebsite$website[i], tipology$website)) {
+                mostFrequentByWebsite$Type[i] <- tipology$Type[tipology$website == mostFrequentByWebsite$website[i]]
             } else {
                 mostFrequentByWebsite$Type[i] <- NA
             }
         }
-        # mostFrequentByWebsite$nameOfWebsite <- reorder(mostFrequentByWebsite$nameOfWebsite, mostFrequentByWebsite$nameOfWebsite)
+        # mostFrequentByWebsite$website <- reorder(mostFrequentByWebsite$website, mostFrequentByWebsite$website)
     }
     if (order == TRUE) {
         mostFrequentByWebsite <- mostFrequentByWebsite[order(mostFrequentByWebsite[, 2]), ]
@@ -62,22 +62,22 @@ AnalyseTerms <- function(corpus, nameOfProject, specificTerms, mode = "graph", i
     }
     if (mode == "graph") {
         if (is.null(tipology) == FALSE) {
-            mostFrequentByWebsiteLong <- reshape2::melt(mostFrequentByWebsite, id.vars = c("nameOfWebsite", "Type"), measure.vars = specificTerms, value.name = "frequency")
+            mostFrequentByWebsiteLong <- reshape2::melt(mostFrequentByWebsite, id.vars = c("website", "Type"), measure.vars = specificTerms, value.name = "frequency")
         } else {
-            mostFrequentByWebsiteLong <- reshape2::melt(mostFrequentByWebsite, id.vars = "nameOfWebsite", measure.vars = specificTerms, value.name = "frequency")
+            mostFrequentByWebsiteLong <- reshape2::melt(mostFrequentByWebsite, id.vars = "website", measure.vars = specificTerms, value.name = "frequency")
         }
         names(mostFrequentByWebsiteLong)[names(mostFrequentByWebsiteLong) == "variable"] <- "Term"
-        mostFrequentByWebsiteLong$nameOfWebsite <- as.factor(mostFrequentByWebsiteLong$nameOfWebsite)
+        mostFrequentByWebsiteLong$website <- as.factor(mostFrequentByWebsiteLong$website)
         # mostFrequentByWebsiteLong$Type <- as.factor(mostFrequentByWebsiteLong$Type)
-        # factor(mostFrequentByWebsiteLong$nameOfWebsite, levels = rev(levels(mostFrequentByWebsiteLong$Type)))
+        # factor(mostFrequentByWebsiteLong$website, levels = rev(levels(mostFrequentByWebsiteLong$Type)))
         mentionterms <- paste(dQuote(rev(specificTerms)), collapse = ", ")
         if (length(specificTerms)>1) {
-            mostFrequentByWebsite <- ggplot2::ggplot(mostFrequentByWebsiteLong, ggplot2::aes(x = nameOfWebsite, y = frequency, fill = Term))
+            mostFrequentByWebsite <- ggplot2::ggplot(mostFrequentByWebsiteLong, ggplot2::aes(x = website, y = frequency, fill = Term))
         } else {
             if (is.null(tipology) == FALSE) {
-                mostFrequentByWebsite <- ggplot2::ggplot(mostFrequentByWebsiteLong, ggplot2::aes(x = nameOfWebsite, y = frequency, fill = Type))
+                mostFrequentByWebsite <- ggplot2::ggplot(mostFrequentByWebsiteLong, ggplot2::aes(x = website, y = frequency, fill = Type))
             } else {
-                mostFrequentByWebsite <- ggplot2::ggplot(mostFrequentByWebsiteLong, ggplot2::aes(x = nameOfWebsite, y = frequency))
+                mostFrequentByWebsite <- ggplot2::ggplot(mostFrequentByWebsiteLong, ggplot2::aes(x = website, y = frequency))
             }
         }
         mostFrequentByWebsite <- mostFrequentByWebsite + ggplot2::geom_bar(stat = "identity", position = "dodge") +
@@ -88,7 +88,7 @@ AnalyseTerms <- function(corpus, nameOfProject, specificTerms, mode = "graph", i
             mostFrequentByWebsite <- mostFrequentByWebsite + ggplot2::scale_y_continuous(name = "Frequency of term") + ggplot2::guides(fill = ggplot2::guide_legend(reverse = FALSE)) + ggplot2::coord_flip()
         }
         if (order == TRUE) {
-            mostFrequentByWebsite <- mostFrequentByWebsite + ggplot2::scale_x_discrete(name = "", limits = dataframeMostFrequentByWebsite$nameOfWebsite)
+            mostFrequentByWebsite <- mostFrequentByWebsite + ggplot2::scale_x_discrete(name = "", limits = dataframeMostFrequentByWebsite$website)
         }
     }
     mostFrequentByWebsite

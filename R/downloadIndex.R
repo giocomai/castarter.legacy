@@ -8,22 +8,22 @@
 #' @param increaseBy Defines by how much the number in the link should be increased in the numerical sequence. Defaults to 1.
 #' @param dateFormat A charachter string that defines the format of the date to incldue in the link. Available options are: "Y" (e.g. 2015), "Ym" (2015-10), "Ymd" (e.g. 2015-10-24).
 #' @param leadingZero Defaults to TRUE. If TRUE, days and months of one digit are preceded by a zero (e.g. 07/05/2014).
-#' @param export Exports the links in a .txt file in the folder nameOfProject/nameOfWebsite.
-#' @param exportParameters Defaults to FALSE. If TRUE, function parameters are exported in the nameOfProject/nameOfWebsite folder. They can be used to update the corpus. Requires parameters nameOfProject/nameOfWebsite.
-#' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. Not required if previously set with SetCastarter(nameOfProject = "nameOfProject", nameOfWebsite = "nameOfWebsite")
-#' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder. Not required if previously set with SetCastarter(nameOfProject = "nameOfProject", nameOfWebsite = "nameOfWebsite")
+#' @param export Exports the links in a .txt file in the folder project/website.
+#' @param exportParameters Defaults to FALSE. If TRUE, function parameters are exported in the project/website folder. They can be used to update the corpus. Requires parameters project/website.
+#' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. Not required if previously set with SetCastarter(project = "project", website = "website")
+#' @param website Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder. Not required if previously set with SetCastarter(project = "project", website = "website")
 #' @return A character vector of links to index pages. 
 #' @export
 #' @examples
 #' indexLinks <- CreateLinks("http://www.example.com/news/")
 CreateLinks <- function(linkFirstChunk, linkSecondChunk = NULL, startPage = 1, endPage = 10, increaseBy = 1, dateFormat = NULL, 
                         firstYear = "", lastYear = "", leadingZero = TRUE, startDate = "", endDate = "", sortIndexLinks = FALSE, dateSeparator = "/", export = FALSE, 
-                        reversedOrder = FALSE, exportParameters = TRUE, nameOfProject = NULL, nameOfWebsite = NULL) {
-    if (gtools::invalid(nameOfProject) == TRUE) {
-        nameOfProject <- CastarterOptions("nameOfProject")
+                        reversedOrder = FALSE, exportParameters = TRUE, project = NULL, website = NULL) {
+    if (gtools::invalid(project) == TRUE) {
+        project <- CastarterOptions("project")
     }
-    if (gtools::invalid(nameOfWebsite) == TRUE) {
-        nameOfWebsite <- CastarterOptions("nameOfWebsite")
+    if (gtools::invalid(website) == TRUE) {
+        website <- CastarterOptions("website")
     }
     if (gtools::invalid(dateFormat) == FALSE) {
         if (dateFormat == "ym" | dateFormat == "Ym") {
@@ -77,11 +77,11 @@ CreateLinks <- function(linkFirstChunk, linkSecondChunk = NULL, startPage = 1, e
         indexLinks <- gtools::mixedsort(indexLinks)
     }
     if (export == TRUE) {
-        base::writeLines(indexLinks, base::file.path(nameOfProject, nameOfWebsite, "Logs", paste(Sys.Date(), nameOfWebsite, "indexLinks.txt", sep = " - ")))
+        base::writeLines(indexLinks, base::file.path(project, website, "Logs", paste(Sys.Date(), website, "indexLinks.txt", sep = " - ")))
     }
     if (exportParameters == TRUE) {
-        args <- c("linkFirstChunk", "linkSecondChunk", "startPage", "endPage", "increaseBy", "dateFormat_CreateLinks", "firstYear", "lastYear", "leadingZero", "startDate", "endDate", "sortIndexLinks", "dateSeparator", "export", "reversedOrder", "exportParameters", "nameOfProject", "nameOfWebsite")
-        param <- list(linkFirstChunk, linkSecondChunk, startPage, endPage, increaseBy, dateFormat, firstYear, lastYear, leadingZero, startDate, endDate, sortIndexLinks, dateSeparator, export, reversedOrder, exportParameters, nameOfProject, nameOfWebsite)
+        args <- c("linkFirstChunk", "linkSecondChunk", "startPage", "endPage", "increaseBy", "dateFormat_CreateLinks", "firstYear", "lastYear", "leadingZero", "startDate", "endDate", "sortIndexLinks", "dateSeparator", "export", "reversedOrder", "exportParameters", "project", "website")
+        param <- list(linkFirstChunk, linkSecondChunk, startPage, endPage, increaseBy, dateFormat, firstYear, lastYear, leadingZero, startDate, endDate, sortIndexLinks, dateSeparator, export, reversedOrder, exportParameters, project, website)
         for (i in 1:length(param)) {
             if (is.null(param[[i]])==TRUE) {
                 param[[i]] <- "NULL"
@@ -89,8 +89,8 @@ CreateLinks <- function(linkFirstChunk, linkSecondChunk = NULL, startPage = 1, e
         }
         param <- unlist(param)
         updateParametersTemp <- data.frame(args, param, stringsAsFactors = FALSE)
-        if (file.exists(base::file.path(nameOfProject, nameOfWebsite, "Logs", paste(nameOfWebsite, "updateParameters.csv", sep = " - "))) == TRUE) {
-            updateParameters <- utils::read.table(base::file.path(nameOfProject, nameOfWebsite, "Logs", paste(nameOfWebsite, "updateParameters.csv", sep = " - ")), stringsAsFactors = FALSE)
+        if (file.exists(base::file.path(project, website, "Logs", paste(website, "updateParameters.csv", sep = " - "))) == TRUE) {
+            updateParameters <- utils::read.table(base::file.path(project, website, "Logs", paste(website, "updateParameters.csv", sep = " - ")), stringsAsFactors = FALSE)
             for (i in 1:length(updateParametersTemp$args)) {
                 updateParameters$param[updateParameters$args == updateParametersTemp$args[i]] <- updateParametersTemp$param[i]
                 if (is.element(updateParametersTemp$args[i], updateParameters$args) == FALSE) {
@@ -100,7 +100,7 @@ CreateLinks <- function(linkFirstChunk, linkSecondChunk = NULL, startPage = 1, e
         } else {
             updateParameters <- updateParametersTemp 
         }
-        write.table(updateParameters, file = base::file.path(nameOfProject, nameOfWebsite, "Logs", paste(nameOfWebsite, "updateParameters.csv", sep = " - ")))
+        write.table(updateParameters, file = base::file.path(project, website, "Logs", paste(website, "updateParameters.csv", sep = " - ")))
     }
     if (reversedOrder == TRUE) {
         base::rev(indexLinks)

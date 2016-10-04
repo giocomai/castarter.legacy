@@ -4,13 +4,13 @@
 \alias{ArchiveFolders}
 \title{Archives Html, Txt, and IndexHtml folders in .tar.gz files.}
 \usage{
-ArchiveFolders(nameOfProject = NULL, nameOfWebsite = NULL,
+ArchiveFolders(project = NULL, website = NULL,
   removeArchivedFolders = FALSE)
 }
 \arguments{
-\item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
+\item{project}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
 
-\item{nameOfWebsite}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
+\item{website}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
 
 \item{removeArchivedFolders}{If equal to TRUE, it removes the folders and the original html and txt files from the hard disk, after having archived them.}
 }
@@ -22,6 +22,6 @@ It archives  Html, Txt, and IndexHtml folders in .tar.gz files, and stores them 
 If the option removeArchivedFolders is enabled, the function actually deletes files from the hard disk. Files are removed only after they have been successfully stored in compressed .tar.gz file, but it is recommended to backup valuable data before enabling this option.
 }
 \examples{
-ArchiveFolders(nameOfProject, nameOfWebsite, removeArchivedFolders = FALSE))
+ArchiveFolders(project, website, removeArchivedFolders = FALSE))
 }
 

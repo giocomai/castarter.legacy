@@ -5,8 +5,7 @@
 \title{Shows share of articles including reference to a specific terms}
 \usage{
 ShowShare(dataset, terms, breaks = "years", startDate = NULL,
-  customTitle = NULL, export = FALSE, nameOfProject = NULL,
-  nameOfWebsite = NULL)
+  customTitle = NULL, export = FALSE, project = NULL, website = NULL)
 }
 \arguments{
 \item{dataset}{A dataset created with 'castarter'.}
@@ -17,11 +16,11 @@ ShowShare(dataset, terms, breaks = "years", startDate = NULL,
 
 \item{startDate, }{endDate Character vector with date in the format year-month-date, e.g. "2015-07-14".}
 
-\item{export}{Logical, defaults to FALSE. If TRUE, saves the graph in both png and pdf format. If nameOfProject and nameOfWebsite are provided, in saves the timeseries in the correspondent "Outputs" subfolder.}
+\item{export}{Logical, defaults to FALSE. If TRUE, saves the graph in both png and pdf format. If project and website are provided, in saves the timeseries in the correspondent "Outputs" subfolder.}
 
-\item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
+\item{project}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
 
-\item{nameOfWebsite}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
+\item{website}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
 }
 \value{
 A ggplot2 barchart showing shares of articles including reference to a specific terms.
@@ -30,6 +29,6 @@ A ggplot2 barchart showing shares of articles including reference to a specific 
 Shows share of articles including reference to a specific terms.Ignores article that don't have a date in the metadata (dates=NA).
 }
 \examples{
-ShowShare(dataset, breaks = "months", nameOfProject, nameOfWebsite)
+ShowShare(dataset, breaks = "months", project, website)
 }
 

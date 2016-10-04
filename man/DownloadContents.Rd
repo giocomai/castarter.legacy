@@ -7,7 +7,7 @@
 DownloadContents(links, type = "articles", articlesHtml = NULL,
   size = 500, linksToDownload = NULL, wgetSystem = FALSE,
   method = "auto", missingArticles = TRUE, start = 1, wait = 1,
-  createScript = FALSE, nameOfProject = NULL, nameOfWebsite = NULL)
+  createScript = FALSE, project = NULL, website = NULL)
 }
 \arguments{
 \item{links}{A character vector of links, commonly generated either with the function CreateLinks or ExtractLinks.}
@@ -24,9 +24,9 @@ DownloadContents(links, type = "articles", articlesHtml = NULL,
 
 \item{start}{Integer. Only links with position higher than start in the links vector will be downloaded: links[start:length(links)]}
 
-\item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
+\item{project}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
 
-\item{nameOfWebsite}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
+\item{website}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
 }
 \value{
 By default, returns nothing, used for its side effects (downloads html files in relevant folder). Download files can then be imported in a vector with the function ImportHtml.

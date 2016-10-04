@@ -3,24 +3,24 @@
 #' Creates and starts a Shiny App exposing basic 'castarter' functions based on the given dataset
 #'
 #' @param dataset A 'castarter' dataset or a corpus created with 'castarter' of the quanteda type.
-#' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.
-#' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
+#' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.
+#' @param website Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
 #' @return Nothing, used for side effects: a shiny app is created in the Outputs folder.
 #' @export
 #' @examples
 #' CreateShinyApp(dataset)
-CreateShinyApp <- function(dataset, terms = "europ*", customTitle = NULL, nameOfProject = NULL, nameOfWebsite = NULL) {
-    if (gtools::invalid(nameOfProject) == TRUE) {
-        nameOfProject <- CastarterOptions("nameOfProject")
+CreateShinyApp <- function(dataset, terms = "europ*", customTitle = NULL, project = NULL, website = NULL) {
+    if (gtools::invalid(project) == TRUE) {
+        project <- CastarterOptions("project")
     }
-    if (gtools::invalid(nameOfWebsite) == TRUE) {
-        nameOfWebsite <- CastarterOptions("nameOfWebsite")
+    if (gtools::invalid(website) == TRUE) {
+        website <- CastarterOptions("website")
     }
-    if (!file.exists(file.path(nameOfProject, nameOfWebsite, "Outputs", "shinyApp"))) {
-        dir.create(file.path(nameOfProject, nameOfWebsite, "Outputs", "shinyApp"))
+    if (!file.exists(file.path(project, website, "Outputs", "shinyApp"))) {
+        dir.create(file.path(project, website, "Outputs", "shinyApp"))
     }
-    if (!file.exists(file.path(nameOfProject, nameOfWebsite, "Outputs", "shinyApp", "data"))) {
-        dir.create(file.path(nameOfProject, nameOfWebsite, "Outputs", "shinyApp", "data"))
+    if (!file.exists(file.path(project, website, "Outputs", "shinyApp", "data"))) {
+        dir.create(file.path(project, website, "Outputs", "shinyApp", "data"))
     }
     if (quanteda::is.corpus(dataset)==TRUE) {
         corpus <- dataset
@@ -29,9 +29,9 @@ CreateShinyApp <- function(dataset, terms = "europ*", customTitle = NULL, nameOf
     }
     corpusDtm <- castarter::CreateDtm(corpus = corpus)
     rm(dataset)
-    save(list = c("corpus", "corpusDtm"), file = file.path(nameOfProject, nameOfWebsite, "Outputs", "shinyApp", "data", "dataset.RData"))
+    save(list = c("corpus", "corpusDtm"), file = file.path(project, website, "Outputs", "shinyApp", "data", "dataset.RData"))
 if (is.null(x = customTitle)==TRUE) {
-    customTitle <- nameOfWebsite
+    customTitle <- website
 }
     write(x = paste0(
     "library('shiny')
@@ -40,13 +40,13 @@ library('castarter')
 library('stringi')
 # required for ggplot stat_smooth
 library('mgcv')
-SetCastarter(nameOfProject = '", nameOfProject, "', nameOfWebsite = '", nameOfWebsite,"')",
+SetCastarter(project = '", project, "', website = '", website,"')",
 "
 # load dataset
 load(file = file.path('data', 'dataset.RData'))
 # find earliest and latest date
 dailyFreq <- data.frame(docs = quanteda::docnames(corpusDtm), quanteda::as.data.frame(corpusDtm))
-dailyFreq <- tidyr::separate(data = dailyFreq, col = docs, into = c('Date','nameOfWebsite'), sep = '\\\\.')
+dailyFreq <- tidyr::separate(data = dailyFreq, col = docs, into = c('Date','website'), sep = '\\\\.')
 dailyFreq$Date <- as.Date(dailyFreq$Date)
 minDate <- min(dailyFreq$Date)
 maxDate <- max(dailyFreq$Date)
@@ -141,6 +141,6 @@ output$dygraphs <- dygraphs::renderDygraph({
     })
       }
 
-      shinyApp(ui = ui, server = server)"), file = file.path(nameOfProject, nameOfWebsite, "Outputs", "shinyApp", "app.R"))
-shiny::runApp(file.path(nameOfProject, nameOfWebsite, "Outputs", "shinyApp"), display.mode = "normal")
+      shinyApp(ui = ui, server = server)"), file = file.path(project, website, "Outputs", "shinyApp", "app.R"))
+shiny::runApp(file.path(project, website, "Outputs", "shinyApp"), display.mode = "normal")
 }

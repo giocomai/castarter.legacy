@@ -13,18 +13,18 @@
 #' @param sortLinks Defaults to TRUE. If TRUE, links are sorted in aphabetical order. 
 #' @param appendString If provided, appends given string to the extracted articles. Typically used to create links for print or mobile versions of the extracted page.
 #' @param removeString If provided, remove given string (or strings) from links.
-#' @param exportParameters Defaults to FALSE. If TRUE, function parameters are exported in the nameOfProject/nameOfWebsite folder. They can be used to update the corpus. 
+#' @param exportParameters Defaults to FALSE. If TRUE, function parameters are exported in the project/website folder. They can be used to update the corpus. 
 #' @return A named character vector of links to articles. Name of the link may be the article title. 
 #' @export
 #' @examples
 #' articlesLinks <- ExtractLinks(domain = "http://www.example.com/", partOfLink = "news/", indexHtml)
 ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = NULL, containerClass = NULL, divClass = NULL, attributeType = NULL, partOfLinkToExclude = NULL, minLength = NULL, maxLength = NULL, indexLinks = NULL,
-    sortLinks = TRUE, export = FALSE, appendString = NULL, removeString = NULL, exportParameters = TRUE, nameOfProject = NULL, nameOfWebsite = NULL) {
-    if (gtools::invalid(nameOfProject) == TRUE) {
-        nameOfProject <- CastarterOptions("nameOfProject")
+    sortLinks = TRUE, export = FALSE, appendString = NULL, removeString = NULL, exportParameters = TRUE, project = NULL, website = NULL) {
+    if (gtools::invalid(project) == TRUE) {
+        project <- CastarterOptions("project")
     }
-    if (gtools::invalid(nameOfWebsite) == TRUE) {
-        nameOfWebsite <- CastarterOptions("nameOfWebsite")
+    if (gtools::invalid(website) == TRUE) {
+        website <- CastarterOptions("website")
     }
     numberOfIndexPages <- length(indexHtml)
     allLinks <- data.frame()
@@ -98,11 +98,11 @@ ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = NULL, co
     titles <- as.character(allLinks$titles)
     links <- setNames(links, titles)
     if (export == TRUE) {
-        writeLines(links, file.path(nameOfProject, nameOfWebsite, "Logs", paste(Sys.Date(), nameOfWebsite, "articlesLinks.txt", sep = " - ")))
+        writeLines(links, file.path(project, website, "Logs", paste(Sys.Date(), website, "articlesLinks.txt", sep = " - ")))
     }
     if (exportParameters == TRUE) {
-        args <- c("domain", "partOfLink", "indexHtml", "containerTypeExtractLinks", "containerClassExtractLinks", "divClassExtractLinks", "attributeTypeExtractLinks", "partOfLinkToExclude", "minLength", "maxLength", "indexLinks","sortLinks", "export", "appendStringExtractLinks", "removeStringExtractLinks", "exportParameters", "nameOfProject", "nameOfWebsite")
-        param <- list(domain, partOfLink, "indexHtml", containerType, containerClass, divClass, attributeType, paste(partOfLinkToExclude, collapse = "§§§"), minLength, maxLength, "indexLinks", sortLinks, export, appendString, paste(removeString, collapse = "§§§"), exportParameters, nameOfProject, nameOfWebsite)
+        args <- c("domain", "partOfLink", "indexHtml", "containerTypeExtractLinks", "containerClassExtractLinks", "divClassExtractLinks", "attributeTypeExtractLinks", "partOfLinkToExclude", "minLength", "maxLength", "indexLinks","sortLinks", "export", "appendStringExtractLinks", "removeStringExtractLinks", "exportParameters", "project", "website")
+        param <- list(domain, partOfLink, "indexHtml", containerType, containerClass, divClass, attributeType, paste(partOfLinkToExclude, collapse = "§§§"), minLength, maxLength, "indexLinks", sortLinks, export, appendString, paste(removeString, collapse = "§§§"), exportParameters, project, website)
         for (i in 1:length(param)) {
             if (is.null(param[[i]])==TRUE) {
                 param[[i]] <- "NULL"
@@ -110,8 +110,8 @@ ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = NULL, co
         }
         param <- unlist(param)
         updateParametersTemp <- as.data.frame(cbind(args, param), stringsAsFactors = FALSE)
-        if (file.exists(base::file.path(nameOfProject, nameOfWebsite, "Logs", paste(nameOfWebsite, "updateParameters.csv", sep = " - "))) == TRUE) {
-            updateParameters <- utils::read.table(base::file.path(nameOfProject, nameOfWebsite, "Logs", paste(nameOfWebsite, "updateParameters.csv", sep = " - ")), stringsAsFactors = FALSE)
+        if (file.exists(base::file.path(project, website, "Logs", paste(website, "updateParameters.csv", sep = " - "))) == TRUE) {
+            updateParameters <- utils::read.table(base::file.path(project, website, "Logs", paste(website, "updateParameters.csv", sep = " - ")), stringsAsFactors = FALSE)
             for (i in 1:length(updateParametersTemp$args)) {
                 updateParameters$param[updateParameters$args == updateParametersTemp$args[i]] <- updateParametersTemp$param[i]
                 if (is.element(updateParametersTemp$args[i], updateParameters$args) == FALSE) {
@@ -121,7 +121,7 @@ ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = NULL, co
         } else {
             updateParameters <- updateParametersTemp 
         }
-        write.table(updateParameters, file = base::file.path(nameOfProject, nameOfWebsite, "Logs", paste(nameOfWebsite, "updateParameters.csv", sep = " - ")))
+        write.table(updateParameters, file = base::file.path(project, website, "Logs", paste(website, "updateParameters.csv", sep = " - ")))
     }
     links
 } 

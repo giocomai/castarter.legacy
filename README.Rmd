@@ -45,9 +45,9 @@ In order to explain the functioning of `castarter`, this document will now proce
 ## Prepare the environment
 First, define the name of project and the name of website. In this case, the project will be called "EuropeanUnion", assuming other websites to be analysed later may be of other EU institutions.
 ``` {r SetCastarter}
-SetCastarter(nameOfProject = "EuropeanUnion", nameOfWebsite = "EuropeanParliament")
+SetCastarter(project = "EuropeanUnion", website = "EuropeanParliament")
 ```
-This stores nameOfProject and nameOfWebsite as options that can be retrieved by all `castarter` functions automatically, without the need to inputting them each time a function requires to save or load files. 
+This stores the names of project and website as options that can be retrieved by all `castarter` functions automatically, without the need to inputting them each time a function requires to save or load files. 
 
 At this stage, one may consider setting the root working folder, if one does not wish to use R's default, with:
 ```{r Set folder, eval=FALSE, include=TRUE}
@@ -71,7 +71,7 @@ This creates the following folders in the current working directory:
         + Outputs
         + Txt
         
-Notice that there is no need to provide nameOfProject and nameOfWebsite to the function `CreateFolderStructure()`, since they are retrieved from the previously set options.
+Notice that there is no need to provide names of project and website to the function `CreateFolders()`, since they are retrieved from the previously set options.
 
 ## Download index pages
 
@@ -223,6 +223,8 @@ dataset <- LoadDatasets(projectsAndWebsites = "EuropeanUnion/EuropeanParliament"
 ```
 ```{r Actually import the dataset, eval=TRUE, include=FALSE}
 load(file = "2016-06-02 - EuropeanUnion - EuropeanParliament - dataset.RData")
+colnames(x = dataset)[colnames(dataset)=="nameOfProject"]<-"project"
+colnames(x = dataset)[colnames(dataset)=="nameOfWebsite"]<-"website"
 ```
 First, it is however advisable to have a quick look at the distribution of the dataset to see if there are oddities that require further attention.
 ```{r Show distribution}
@@ -344,7 +346,7 @@ N.B. Notice that the `ShowShare' function is based on the dataset, and thus does
 ## Quickly create a basic ShinyApp with your own dataset
 In order to explore quickly the dataset, `castarter` offers a function that quickly creates a web interface that exposes some `castarter` functions. Once the dataset has been created, it is possible to create this web interface (known as a ShinyApp) with the following commands:
 ```{r CreateShinyApp, eval=FALSE}
-SetCastarter(nameOfProject = "EuropeanUnion", nameOfWebsite = "EuropeanParliament")
+SetCastarter(project = "EuropeanUnion", website = "EuropeanParliament")
 dataset <- LoadDatasets()
 CreateShinyApp(dataset = dataset)
 ```

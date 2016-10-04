@@ -4,12 +4,12 @@
 \alias{CreateFolders}
 \title{Creates the folder structure needed by 'castarter'.}
 \usage{
-CreateFolders(nameOfProject = NULL, nameOfWebsite = NULL)
+CreateFolders(project = NULL, website = NULL)
 }
 \description{
 Creates all the standard folders required by a 'castarter' project.
 }
 \examples{
-CreateFolders(nameOfProject, nameOfWebsite)
+CreateFolders(project, website)
 }
 

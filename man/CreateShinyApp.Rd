@@ -5,14 +5,14 @@
 \title{Creates and starts a Shiny App exposing basic 'castarter' functions based on the given dataset}
 \usage{
 CreateShinyApp(dataset, terms = "europ*", customTitle = NULL,
-  nameOfProject = NULL, nameOfWebsite = NULL)
+  project = NULL, website = NULL)
 }
 \arguments{
 \item{dataset}{A 'castarter' dataset or a corpus created with 'castarter' of the quanteda type.}
 
-\item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
+\item{project}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
 
-\item{nameOfWebsite}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
+\item{website}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
 }
 \value{
 Nothing, used for side effects: a shiny app is created in the Outputs folder.

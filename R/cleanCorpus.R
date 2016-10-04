@@ -10,12 +10,12 @@
 #' originalCombination <- "European Union"
 #' toBeUsed <- "europeanunion"
 #' wordCombinations <- AddWordCombinations(originalCombination, toBeUsed)
-AddWordCombinations <- function(wordCombinations = NULL, originalCombination = NULL, toBeUsed = NULL, nameOfProject = NULL, dfedit = FALSE, importExport = FALSE) {
-    if (gtools::invalid(nameOfProject) == TRUE) {
-        nameOfProject <- CastarterOptions("nameOfProject")
+AddWordCombinations <- function(wordCombinations = NULL, originalCombination = NULL, toBeUsed = NULL, project = NULL, dfedit = FALSE, importExport = FALSE) {
+    if (gtools::invalid(project) == TRUE) {
+        project <- CastarterOptions("project")
     }
-    if (importExport == TRUE & file.exists(file.path(nameOfProject, paste(nameOfProject, "wordCombinations.csv"))) == TRUE) {
-        wordCombinations <- read.csv(file = file.path(nameOfProject, paste(nameOfProject, "wordCombinations.csv")), header = TRUE, quote = "", stringsAsFactors = FALSE)
+    if (importExport == TRUE & file.exists(file.path(project, paste(project, "wordCombinations.csv"))) == TRUE) {
+        wordCombinations <- read.csv(file = file.path(project, paste(project, "wordCombinations.csv")), header = TRUE, quote = "", stringsAsFactors = FALSE)
     } else {
         if (is.null(wordCombinations) == TRUE) {
             wordCombinations <- data.frame(originalCombination = character(0), toBeUsed = character(0))
@@ -32,7 +32,7 @@ AddWordCombinations <- function(wordCombinations = NULL, originalCombination = N
     wordCombinations <- unique(wordCombinations)
     wordCombinations <- data.frame(lapply(wordCombinations, as.character), stringsAsFactors = FALSE)
     if (importExport == TRUE) {
-        write.csv(wordCombinations, file = file.path(nameOfProject, paste(nameOfProject, "wordCombinations.csv")), row.names = FALSE, quote = FALSE)
+        write.csv(wordCombinations, file = file.path(project, paste(project, "wordCombinations.csv")), row.names = FALSE, quote = FALSE)
     }
     wordCombinations
 }
@@ -62,7 +62,7 @@ CombineWords <- function(corpus, wordCombinations) {
 #' Adds stopwords to the default list.
 #'  
 #' @param newStopwords A character vector of words.
-#' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
+#' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
 #' @param importExport Defaults to FALSE. If TRUE, saves stopwords in a txt file in the project folder, and imports changes made in the txt file.
 #' @param includeDefault Logical, defaults to TRUE. Includes default list of stopwords included in the 'tm' package. 
 #' @param language Passed to the stopwords function of the TM package to provide a default list of stopwords. 
@@ -71,17 +71,17 @@ CombineWords <- function(corpus, wordCombinations) {
 #' @export
 #' @examples
 #' newStopwords <- c("will", "also", "can")
-#' stopwords <- AddStopwords(newStopwords, nameOfProject, includeDefault = TRUE, language = "en")
+#' stopwords <- AddStopwords(newStopwords, project, includeDefault = TRUE, language = "en")
 
-AddStopwords <- function(newStopwords = NULL, nameOfProject = NULL, includeDefault = TRUE, language = "en", importExport = FALSE) {
-    if (gtools::invalid(nameOfProject) == TRUE) {
-        nameOfProject <- CastarterOptions("nameOfProject")
+AddStopwords <- function(newStopwords = NULL, project = NULL, includeDefault = TRUE, language = "en", importExport = FALSE) {
+    if (gtools::invalid(project) == TRUE) {
+        project <- CastarterOptions("project")
     }
-    if (is.null(nameOfProject)==FALSE & importExport == TRUE) {
-        if (file.exists(file.path(nameOfProject, paste(nameOfProject, "stopwords.txt")))) {
-            stopwords <- as.vector(readLines(con = file.path(nameOfProject, paste(nameOfProject, "stopwords.txt"))))
+    if (is.null(project)==FALSE & importExport == TRUE) {
+        if (file.exists(file.path(project, paste(project, "stopwords.txt")))) {
+            stopwords <- as.vector(readLines(con = file.path(project, paste(project, "stopwords.txt"))))
         } else {
-            writeLines(newStopwords, con = file.path(nameOfProject, paste(nameOfProject, "stopwords.txt")))
+            writeLines(newStopwords, con = file.path(project, paste(project, "stopwords.txt")))
         }
     }
     if (is.null(newStopwords) == FALSE) {
@@ -103,8 +103,8 @@ AddStopwords <- function(newStopwords = NULL, nameOfProject = NULL, includeDefau
         }
     }
     stopwords <- unique(as.character(stopwords[stopwords != ""]))
-    if (is.null(nameOfProject)==FALSE & importExport == TRUE) {
-        writeLines(stopwords, con = file.path(nameOfProject, paste(nameOfProject, "stopwords.txt")))
+    if (is.null(project)==FALSE & importExport == TRUE) {
+        writeLines(stopwords, con = file.path(project, paste(project, "stopwords.txt")))
     }
     stopwords
 }
@@ -162,26 +162,26 @@ CleanCorpus <- function(corpus, stripWhitespace = TRUE, toLowerCase = TRUE, remo
 #' Allows to export a stemming dictionary in csv format.
 #'  
 #' @param corpusDtm A document-term matrix.
-#' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
-#' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
+#' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
+#' @param website Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
 #' @param stopwords A character vector of stopwords. 
 #' @return .A data.frame with words before and after stemming.
 #' @export
 #' @examples
-#' stemmingDictionary <- ExportStemmingDictionary(corpus, nameOfProject)
-ExportStemmingDictionary <- function(corpusDtm, nameOfProject = NULL, stopwords = "", language = "english") {
-    if (gtools::invalid(nameOfProject) == TRUE) {
-        nameOfProject <- CastarterOptions("nameOfProject")
+#' stemmingDictionary <- ExportStemmingDictionary(corpus, project)
+ExportStemmingDictionary <- function(corpusDtm, project = NULL, stopwords = "", language = "english") {
+    if (gtools::invalid(project) == TRUE) {
+        project <- CastarterOptions("project")
     }
     stemmingDictionary <- data.frame(row.names = colnames(corpusDtm), occurrences = slam::col_sums(corpusDtm), stemmedTerm = SnowballC::wordStem(colnames(corpusDtm), language), 
                                      stopword = ifelse(colnames(corpusDtm) %in% stopwords, "stopword", ""), stringsAsFactors = FALSE)
     stemmingDictionary[Terms(corpusDtm) %in% stopwords, "stemmedTerm"] <- ""
-    #if (!file.exists(file.path(nameOfProject, paste(nameOfProject, "stemmingDictionary.csv")))) {
-        write.csv(stemmingDictionary, file = file.path(nameOfProject, paste(nameOfProject, "stemmingDictionary.csv")), row.names = TRUE)
+    #if (!file.exists(file.path(project, paste(project, "stemmingDictionary.csv")))) {
+        write.csv(stemmingDictionary, file = file.path(project, paste(project, "stemmingDictionary.csv")), row.names = TRUE)
     #}
 #     if (stemmingEditMode != "none") {
 #         stemmingDictionary0 <- stemmingDictionary
-#         stemmingDictionary1 <- read.csv(file = file.path(nameOfProject, paste(nameOfProject, "stemmingDictionary.csv")), header = TRUE, row.names = 1)
+#         stemmingDictionary1 <- read.csv(file = file.path(project, paste(project, "stemmingDictionary.csv")), header = TRUE, row.names = 1)
 #         stemmingDictionaryMerged <- merge(stemmingDictionary0, stemmingDictionary1, by = "row.names", all.x = TRUE)
 #         stemmingDictionaryMissing <- is.na(stemmingDictionaryMerged$stemmedTerm.y)
 #         for (i in 1:length(stemmingDictionaryMissing)) {
@@ -191,7 +191,7 @@ ExportStemmingDictionary <- function(corpusDtm, nameOfProject = NULL, stopwords 
 #         if (stemmingEditMode == "dfedit") {
 #             stemmingDictionary <- dfedit(stemmingDictionary)
 #         }
-#         write.csv(stemmingDictionary, file = file.path(nameOfProject, paste(nameOfProject, "stemmingDictionary.csv")), row.names = TRUE)
+#         write.csv(stemmingDictionary, file = file.path(project, paste(project, "stemmingDictionary.csv")), row.names = TRUE)
 #     }
     stemmingDictionary
 }
@@ -215,7 +215,7 @@ StemCorpusDtm <- function(corpusDtm, stemmingDictionary) {
 #' dtm <- CreateDtm(corpus)
 CreateDtm <- function(corpus, removeSparseTerms = NULL, stem = FALSE, language = "english"){
     if (quanteda::is.corpus(corpus)==TRUE) {
-        corpusDtm <- quanteda::dfm(x = corpus, groups=c("date", "nameOfWebsite"), stem = stem, language = language)
+        corpusDtm <- quanteda::dfm(x = corpus, groups=c("date", "website"), stem = stem, language = language)
     } else {
         corpusDtm <- tm::DocumentTermMatrix(corpus)
         if (is.null(removeSparseTerms) == FALSE) {

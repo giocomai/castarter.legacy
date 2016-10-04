@@ -18,21 +18,21 @@
 #' @param language Provide a language in order to extract name of months. Defaults to the locale currently active in R (usually, the system language). Generic forms such as "english" or "russian", are usually accepted. See ?locales for more details. On linux, you can run system("locale -a", intern = TRUE) to see all available locales.
 #' @param encoding Defaults to NULL. If source is not in UTF, encoding can be specified here for conversion. A list of valid values can be found using iconvlist().
 #' @param keepAllString Logical, defaults to FALSE. If TRUE, it directly tries to parse the date with the given dateFormat, without trying to polish the string provided accordingly.
-#' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. Defaults to NULL, required for storing export parameters (with exportParameters = TRUE). This can be left blank if previously set with SetCastarter(nameOfProject = "nameOfProject", nameOfWebsite = "nameOfWebsite").
-#' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder. Defaults to NULL, required for storing export parameters (with exportParameters = TRUE). This can be left blank if previously set with SetCastarter(nameOfProject = "nameOfProject", nameOfWebsite = "nameOfWebsite").
+#' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. Defaults to NULL, required for storing export parameters (with exportParameters = TRUE). This can be left blank if previously set with SetCastarter(project = "project", website = "website").
+#' @param website Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder. Defaults to NULL, required for storing export parameters (with exportParameters = TRUE). This can be left blank if previously set with SetCastarter(project = "project", website = "website").
 #' @return A vector of the POSIXct class. 
 #' @export
 #' @examples
 #' dates <- ExtractDates(articlesHtml)
-ExtractDates <- function(articlesHtml, dateFormat = "dmY", divClass = NULL, divId = NULL, spanClass = NULL, customXpath = NULL, language = Sys.getlocale(category = "LC_TIME"), customString = "", minDate = NULL, maxDate = NULL, encoding = "UTF-8", keepAllString = FALSE, removeEverythingBefore = NULL, exportParameters = TRUE, nameOfProject = NULL, nameOfWebsite = NULL) {
-    if (gtools::invalid(nameOfProject) == TRUE) {
-        nameOfProject <- CastarterOptions("nameOfProject")
+ExtractDates <- function(articlesHtml, dateFormat = "dmY", divClass = NULL, divId = NULL, spanClass = NULL, customXpath = NULL, language = Sys.getlocale(category = "LC_TIME"), customString = "", minDate = NULL, maxDate = NULL, encoding = "UTF-8", keepAllString = FALSE, removeEverythingBefore = NULL, exportParameters = TRUE, project = NULL, website = NULL) {
+    if (gtools::invalid(project) == TRUE) {
+        project <- CastarterOptions("project")
     }
-    if (gtools::invalid(nameOfWebsite) == TRUE) {
-        nameOfWebsite <- CastarterOptions("nameOfWebsite")
+    if (gtools::invalid(website) == TRUE) {
+        website <- CastarterOptions("website")
     }
-    if (exportParameters == TRUE && exists("nameOfProject") == FALSE | exportParameters == TRUE && exists("nameOfWebsite") == FALSE) {
-        stop("If exportParameters == TRUE, both nameOfProject and nameOfWebsite must be defined either as parameters or previously with .")    
+    if (exportParameters == TRUE && exists("project") == FALSE | exportParameters == TRUE && exists("website") == FALSE) {
+        stop("If exportParameters == TRUE, both project and website must be defined either as parameters or previously with .")    
     }
     if (exportParameters == TRUE) {
         args <- c("dateFormat_ExtractDates", "divClass_ExtractDates", "divId_ExtractDates", "spanClass_ExtractDates", "customXpath_ExtractDates", "customString_ExtractDates", "minDate", "maxDate", "keepAllString_ExtractDates", "removeEverythingBefore_ExtractDates")
@@ -44,8 +44,8 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", divClass = NULL, divI
         }
         param <- unlist(param)
         updateParametersTemp <- data.frame(args, param, stringsAsFactors = FALSE)
-        if (file.exists(base::file.path(nameOfProject, nameOfWebsite, "Logs", paste(nameOfWebsite, "updateParameters.csv", sep = " - "))) == TRUE) {
-            updateParameters <- utils::read.table(base::file.path(nameOfProject, nameOfWebsite, "Logs", paste(nameOfWebsite, "updateParameters.csv", sep = " - ")), stringsAsFactors = FALSE)
+        if (file.exists(base::file.path(project, website, "Logs", paste(website, "updateParameters.csv", sep = " - "))) == TRUE) {
+            updateParameters <- utils::read.table(base::file.path(project, website, "Logs", paste(website, "updateParameters.csv", sep = " - ")), stringsAsFactors = FALSE)
             for (i in 1:length(updateParametersTemp$args)) {
                 updateParameters$param[updateParameters$args == updateParametersTemp$args[i]] <- updateParametersTemp$param[i]
                 if (is.element(updateParametersTemp$args[i], updateParameters$args) == FALSE) {
@@ -55,7 +55,7 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", divClass = NULL, divI
         } else {
             updateParameters <- updateParametersTemp 
         }
-        write.table(updateParameters, file = base::file.path(nameOfProject, nameOfWebsite, "Logs", paste(nameOfWebsite, "updateParameters.csv", sep = " - ")))
+        write.table(updateParameters, file = base::file.path(project, website, "Logs", paste(website, "updateParameters.csv", sep = " - ")))
     }
     numberOfArticles <- length(articlesHtml)
     if (gtools::invalid(encoding) == FALSE) {
@@ -303,12 +303,12 @@ MergeDates <- function(dates1, dates2, dates3 = NULL, minDate = NULL, maxDate = 
 #' @export
 #' @examples
 #' titles <- ExtractTitles(articlesHtml)
-ExtractTitles <- function(articlesHtml = NULL, articlesLinks = "", method = "htmlTitle", removePunctuation = FALSE, onlyStandardCharacters = FALSE, removeString = NULL, removeEverythingAfter = NULL, customXpath = "", maxCharacters = NULL, progressBar = TRUE, exportParameters = TRUE, nameOfProject = NULL, nameOfWebsite = NULL) {
-    if (gtools::invalid(nameOfProject) == TRUE) {
-        nameOfProject <- CastarterOptions("nameOfProject")
+ExtractTitles <- function(articlesHtml = NULL, articlesLinks = "", method = "htmlTitle", removePunctuation = FALSE, onlyStandardCharacters = FALSE, removeString = NULL, removeEverythingAfter = NULL, customXpath = "", maxCharacters = NULL, progressBar = TRUE, exportParameters = TRUE, project = NULL, website = NULL) {
+    if (gtools::invalid(project) == TRUE) {
+        project <- CastarterOptions("project")
     }
-    if (gtools::invalid(nameOfWebsite) == TRUE) {
-        nameOfWebsite <- CastarterOptions("nameOfWebsite")
+    if (gtools::invalid(website) == TRUE) {
+        website <- CastarterOptions("website")
     }
     if (exportParameters == TRUE) {
         args <- c("method_ExtractTitles", "removePunctuation_ExtractTitles", "onlyStandardCharacters_ExtractTitles", "removeString_ExtractTitles", "removeEverythingAfter_ExtractTitles", "customXpath_ExtractTitles", "maxCharacters_ExtractTitles")
@@ -320,8 +320,8 @@ ExtractTitles <- function(articlesHtml = NULL, articlesLinks = "", method = "htm
         }
         param <- unlist(param)
         updateParametersTemp <- data.frame(args, param, stringsAsFactors = FALSE)
-        if (file.exists(base::file.path(nameOfProject, nameOfWebsite, "Logs", paste(nameOfWebsite, "updateParameters.csv", sep = " - "))) == TRUE) {
-            updateParameters <- utils::read.table(base::file.path(nameOfProject, nameOfWebsite, "Logs", paste(nameOfWebsite, "updateParameters.csv", sep = " - ")), stringsAsFactors = FALSE)
+        if (file.exists(base::file.path(project, website, "Logs", paste(website, "updateParameters.csv", sep = " - "))) == TRUE) {
+            updateParameters <- utils::read.table(base::file.path(project, website, "Logs", paste(website, "updateParameters.csv", sep = " - ")), stringsAsFactors = FALSE)
             for (i in 1:length(updateParametersTemp$args)) {
                 updateParameters$param[updateParameters$args == updateParametersTemp$args[i]] <- updateParametersTemp$param[i]
                 if (is.element(updateParametersTemp$args[i], updateParameters$args) == FALSE) {
@@ -331,7 +331,7 @@ ExtractTitles <- function(articlesHtml = NULL, articlesLinks = "", method = "htm
         } else {
             updateParameters <- updateParametersTemp 
         }
-        write.table(updateParameters, file = base::file.path(nameOfProject, nameOfWebsite, "Logs", paste(nameOfWebsite, "updateParameters.csv", sep = " - ")))
+        write.table(updateParameters, file = base::file.path(project, website, "Logs", paste(website, "updateParameters.csv", sep = " - ")))
     }
     titles <- vector()
     numberOfArticles <- length(articlesHtml)
@@ -416,20 +416,20 @@ ExtractTitles <- function(articlesHtml = NULL, articlesLinks = "", method = "htm
 #' 
 #' Extracts articlesId from filename
 #'  
-#' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
-#' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.Defaults to NULL. If no nameOfWebsite is provided, exported files are saved in the nameOfProject/Outputs folder.
+#' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
+#' @param website Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.Defaults to NULL. If no website is provided, exported files are saved in the project/Outputs folder.
 #' @return A vector of the integer class. 
 #' @export
 #' @examples
-#' articlesId <- ExtractId(nameOfProject, nameOfWebsite)
-ExtractId <- function(nameOfProject = NULL, nameOfWebsite = NULL, accordingToDate = FALSE, dates = NULL) {
-    if (gtools::invalid(nameOfProject) == TRUE) {
-        nameOfProject <- CastarterOptions("nameOfProject")
+#' articlesId <- ExtractId(project, website)
+ExtractId <- function(project = NULL, website = NULL, accordingToDate = FALSE, dates = NULL) {
+    if (gtools::invalid(project) == TRUE) {
+        project <- CastarterOptions("project")
     }
-    if (gtools::invalid(nameOfWebsite) == TRUE) {
-        nameOfWebsite <- CastarterOptions("nameOfWebsite")
+    if (gtools::invalid(website) == TRUE) {
+        website <- CastarterOptions("website")
     }
-    htmlFilesList <- gtools::mixedsort(list.files(file.path(nameOfProject, nameOfWebsite, "Html")))
+    htmlFilesList <- gtools::mixedsort(list.files(file.path(project, website, "Html")))
     if (accordingToDate == TRUE) {
         htmlFilesList <- htmlFilesList[order(dates)]
     }
@@ -441,8 +441,8 @@ ExtractId <- function(nameOfProject = NULL, nameOfWebsite = NULL, accordingToDat
 #' 
 #' Extracts metadata and text from local html files.
 #'  
-#' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
-#' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.Defaults to NULL. If no nameOfWebsite is provided, exported files are saved in the nameOfProject/Outputs folder.
+#' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
+#' @param website Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.Defaults to NULL. If no website is provided, exported files are saved in the project/Outputs folder.
 #' @return A data.frame with the complete dataset. 
 #' @export
 #' @examples
@@ -453,15 +453,15 @@ CreateDatasetFromHtml <- function(articlesLinks = NULL,
                                   divClass_ExtractTxt = NULL, divId_ExtractTxt = NULL, removeString_ExtractTxt = NULL, removeEverythingAfter_ExtractTxt = NULL, removeEverythingBefore_ExtractTxt = NULL, removeTitleFromTxt = FALSE, customXpath_ExtractTxt = NULL,
                                   language = "English", encoding = NULL,
                                   logProgress = FALSE,
-                                  exportParameters = TRUE, nameOfProject = NULL, nameOfWebsite = NULL) {
-    if (gtools::invalid(nameOfProject) == TRUE) {
-        nameOfProject <- CastarterOptions("nameOfProject")
+                                  exportParameters = TRUE, project = NULL, website = NULL) {
+    if (gtools::invalid(project) == TRUE) {
+        project <- CastarterOptions("project")
     }
-    if (gtools::invalid(nameOfWebsite) == TRUE) {
-        nameOfWebsite <- CastarterOptions("nameOfWebsite")
+    if (gtools::invalid(website) == TRUE) {
+        website <- CastarterOptions("website")
     }
-    if (exportParameters == TRUE && exists("nameOfProject") == FALSE | exportParameters == TRUE && exists("nameOfWebsite") == FALSE) {
-        stop("If exportParameters == TRUE, both nameOfProject and nameOfWebsite must be defined either as parameters or previously with .")    
+    if (exportParameters == TRUE && exists("project") == FALSE | exportParameters == TRUE && exists("website") == FALSE) {
+        stop("If exportParameters == TRUE, both project and website must be defined either as parameters or previously with .")    
     }
     if (exportParameters == TRUE) {
         args <- c("dateFormat_ExtractDates", "divClass_ExtractDates", "spanClass_ExtractDates", "customXpath_ExtractDates", "language_ExtractDates", "removeEverythingBefore_ExtractDates",
@@ -479,8 +479,8 @@ CreateDatasetFromHtml <- function(articlesLinks = NULL,
         }
         param <- unlist(param)
         updateParametersTemp <- data.frame(args, param, stringsAsFactors = FALSE)
-        if (file.exists(base::file.path(nameOfProject, nameOfWebsite, "Logs", paste(nameOfWebsite, "updateParameters.csv", sep = " - "))) == TRUE) {
-            updateParameters <- utils::read.table(base::file.path(nameOfProject, nameOfWebsite, "Logs", paste(nameOfWebsite, "updateParameters.csv", sep = " - ")), stringsAsFactors = FALSE)
+        if (file.exists(base::file.path(project, website, "Logs", paste(website, "updateParameters.csv", sep = " - "))) == TRUE) {
+            updateParameters <- utils::read.table(base::file.path(project, website, "Logs", paste(website, "updateParameters.csv", sep = " - ")), stringsAsFactors = FALSE)
             for (i in 1:length(updateParametersTemp$args)) {
                 updateParameters$param[updateParameters$args == updateParametersTemp$args[i]] <- updateParametersTemp$param[i]
                 if (is.element(updateParametersTemp$args[i], updateParameters$args) == FALSE) {
@@ -490,10 +490,10 @@ CreateDatasetFromHtml <- function(articlesLinks = NULL,
         } else {
             updateParameters <- updateParametersTemp 
         }
-        write.table(updateParameters, file = base::file.path(nameOfProject, nameOfWebsite, "Logs", paste(nameOfWebsite, "updateParameters.csv", sep = " - ")))
+        write.table(updateParameters, file = base::file.path(project, website, "Logs", paste(website, "updateParameters.csv", sep = " - ")))
     }
-    castarter::CreateFolders(nameOfProject = nameOfProject, nameOfWebsite = nameOfWebsite)
-    htmlFilesList <- gtools::mixedsort(list.files(file.path(nameOfProject, nameOfWebsite, "Html"), pattern = "\\.html$", full.names = TRUE))
+    castarter::CreateFolders(project = project, website = website)
+    htmlFilesList <- gtools::mixedsort(list.files(file.path(project, website, "Html"), pattern = "\\.html$", full.names = TRUE))
     numberOfArticles <- length(htmlFilesList)
     dates <- as.POSIXct(rep(NA, numberOfArticles))
     articlesTxt <- rep(NA, numberOfArticles)
@@ -530,20 +530,20 @@ CreateDatasetFromHtml <- function(articlesLinks = NULL,
         }
         x <- x + 1
         if (logProgress == TRUE) {
-            write(paste("Html file", x, "processed."), file = file.path(nameOfProject, nameOfWebsite,"Logs", "CreateDatasetFromHtmlProgress.log"))
+            write(paste("Html file", x, "processed."), file = file.path(project, website,"Logs", "CreateDatasetFromHtmlProgress.log"))
         }
         if (is.element(x, xlist)) {
             print(paste("Processed", x, "of", numberOfArticles, "articles."))
         }
     }
-    articlesId <- ExtractId(nameOfProject, nameOfWebsite)
+    articlesId <- ExtractId(project, website)
     if (is.null(articlesLinks) == FALSE) {
-        dataset <- data.frame(nameOfProject, nameOfWebsite, dates, articlesId, titles, language, articlesLinks, articlesTxt, check.names = FALSE, stringsAsFactors = FALSE)
+        dataset <- data.frame(project, website, dates, articlesId, titles, language, articlesLinks, articlesTxt, check.names = FALSE, stringsAsFactors = FALSE)
     } else {
-        dataset <- data.frame(nameOfProject, nameOfWebsite, dates, articlesId, titles, language, articlesTxt, check.names = FALSE, stringsAsFactors = FALSE)        
+        dataset <- data.frame(project, website, dates, articlesId, titles, language, articlesTxt, check.names = FALSE, stringsAsFactors = FALSE)        
     }
-    save(dataset, file = file.path(nameOfProject, nameOfWebsite, "Dataset", paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "dataset", sep = " - "), ".RData")))
-    print(paste("Dataset saved in", file.path(nameOfProject, nameOfWebsite, paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "dataset", sep = " - "), ".RData"))))
+    save(dataset, file = file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".RData")))
+    print(paste("Dataset saved in", file.path(project, website, paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".RData"))))
     invisible(dataset)
 }
 
@@ -551,23 +551,23 @@ CreateDatasetFromHtml <- function(articlesLinks = NULL,
 #' 
 #' Exports metadata to a vector, csv or xlsx file.
 #'  
-#' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
-#' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
+#' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
+#' @param website Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
 #' @param exportXlsx If equal to TRUE, exports the complete dataset in the .xlsx file format in the Dataset sub-folder.
 #' @return A vector of the data.frame class. 
 #' @export
 #' @examples
-#' metadata <- ExportMetadata(nameOfProject, nameOfWebsite, dates, articlesId, titles, language, articlesLinks)
-ExportMetadata <- function(dates, articlesId, titles, language, articlesLinks, exportXlsx = FALSE, accordingToDate = FALSE, ignoreNAdates = FALSE, onlyExistingHtmlFiles = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
-    if (gtools::invalid(nameOfProject) == TRUE) {
-        nameOfProject <- CastarterOptions("nameOfProject")
+#' metadata <- ExportMetadata(project, website, dates, articlesId, titles, language, articlesLinks)
+ExportMetadata <- function(dates, articlesId, titles, language, articlesLinks, exportXlsx = FALSE, accordingToDate = FALSE, ignoreNAdates = FALSE, onlyExistingHtmlFiles = FALSE, project = NULL, website = NULL) {
+    if (gtools::invalid(project) == TRUE) {
+        project <- CastarterOptions("project")
     }
-    if (gtools::invalid(nameOfWebsite) == TRUE) {
-        nameOfWebsite <- CastarterOptions("nameOfWebsite")
+    if (gtools::invalid(website) == TRUE) {
+        website <- CastarterOptions("website")
     }
     ignoreVector <- NULL
     if (onlyExistingHtmlFiles == TRUE) {
-        htmlFilesList <- gtools::mixedsort(list.files(file.path(nameOfProject, nameOfWebsite, "Html"), full.names = TRUE))
+        htmlFilesList <- gtools::mixedsort(list.files(file.path(project, website, "Html"), full.names = TRUE))
         articlesId <- as.integer(regmatches(htmlFilesList, regexpr("[[:digit:]]+", htmlFilesList)))
         articlesIdInTheory <- 1:length(articlesLinks)
         ignoreVector <- !is.element(articlesId, articlesIdInTheory)
@@ -578,13 +578,13 @@ ExportMetadata <- function(dates, articlesId, titles, language, articlesLinks, e
     if (is.null(ignoreVector) == FALSE) {
         articlesLinks <- articlesLinks[ignoreVector]
     }
-    metadata <- data.frame(nameOfProject, nameOfWebsite, dates, articlesId, titles, language, articlesLinks, check.names = FALSE, stringsAsFactors = FALSE)
+    metadata <- data.frame(project, website, dates, articlesId, titles, language, articlesLinks, check.names = FALSE, stringsAsFactors = FALSE)
     if (accordingToDate == TRUE) {
         metadata <- metadata[order(metadata$dates), ]
     }
-    write.csv(metadata, file = file.path(nameOfProject, nameOfWebsite, "Dataset", paste(Sys.Date(), nameOfWebsite, "metadata.csv", sep = " - ")), row.names = FALSE)
+    write.csv(metadata, file = file.path(project, website, "Dataset", paste(Sys.Date(), website, "metadata.csv", sep = " - ")), row.names = FALSE)
     if (exportXlsx == TRUE) {
-        xlsx::write.xlsx(metadata, file = file.path(nameOfProject, nameOfWebsite, "Dataset", paste(Sys.Date(), nameOfWebsite, "metadata.xlsx", sep = " - ")), row.names = FALSE)
+        xlsx::write.xlsx(metadata, file = file.path(project, website, "Dataset", paste(Sys.Date(), website, "metadata.xlsx", sep = " - ")), row.names = FALSE)
     }
     metadata
 } 
@@ -593,33 +593,33 @@ ExportMetadata <- function(dates, articlesId, titles, language, articlesLinks, e
 #' 
 #' Exports dataset to a data.frame, with options to save it as an R object, and export it as a .csv or .xlsx file.
 #'  
-#' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
-#' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
+#' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
+#' @param website Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
 #' @param exportCsv If equal to TRUE, exports the complete dataset in the .csv file format in the Dataset sub-folder.
 #' @param exportXlsx If equal to TRUE, exports the complete dataset in the .xlsx file format in the Dataset sub-folder.
 #' @return A data.frame, a 'castarter' dataset.
 #' @export
 #' @examples
-#' dataset <- ExportDataset(articlesTxt, metadata, nameOfProject, nameOfWebsite)
-ExportDataset <- function(articlesTxt, metadata, exportRdata = TRUE, exportCsv = FALSE, exportXlsx = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
-    if (gtools::invalid(nameOfProject) == TRUE) {
-        nameOfProject <- CastarterOptions("nameOfProject")
+#' dataset <- ExportDataset(articlesTxt, metadata, project, website)
+ExportDataset <- function(articlesTxt, metadata, exportRdata = TRUE, exportCsv = FALSE, exportXlsx = FALSE, project = NULL, website = NULL) {
+    if (gtools::invalid(project) == TRUE) {
+        project <- CastarterOptions("project")
     }
-    if (gtools::invalid(nameOfWebsite) == TRUE) {
-        nameOfProject <- CastarterOptions("nameOfWebsite")
+    if (gtools::invalid(website) == TRUE) {
+        project <- CastarterOptions("website")
     }
     dataset <- cbind(metadata, articlesTxt, stringsAsFactors = FALSE)
     if (exportRdata == TRUE) {
-        save(dataset, file = file.path(nameOfProject, nameOfWebsite, "Dataset", paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "dataset", sep = " - "), ".RData")))
-        print(paste("Dataset saved in", file.path(nameOfProject, nameOfWebsite, paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "dataset", sep = " - "), ".RData"))))
+        save(dataset, file = file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".RData")))
+        print(paste("Dataset saved in", file.path(project, website, paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".RData"))))
     }
     if (exportCsv == TRUE) {
-        utils::write.csv(dataset, file.path(nameOfProject, nameOfWebsite, "Dataset", paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "dataset", sep = " - "), ".csv")))
-        print(paste("Dataset saved as .csv file in", file.path(nameOfProject, nameOfWebsite, "Dataset", paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "dataset", sep = " - "), ".csv"))))
+        utils::write.csv(dataset, file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".csv")))
+        print(paste("Dataset saved as .csv file in", file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".csv"))))
     }
     if (exportXlsx == TRUE) {
-        xlsx::write.xlsx(dataset, file.path(nameOfProject, nameOfWebsite, "Dataset", paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "dataset", sep = " - "), ".xlsx")))
-        print(paste("Dataset saved as .xlsx file in", file.path(nameOfProject, nameOfWebsite, "Dataset", paste0(paste(Sys.Date(), nameOfProject, nameOfWebsite, "dataset", sep = " - "), ".xlsx"))))
+        xlsx::write.xlsx(dataset, file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".xlsx")))
+        print(paste("Dataset saved as .xlsx file in", file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".xlsx"))))
     }
     dataset
 } 

@@ -4,18 +4,18 @@
 \alias{ImportHtml}
 \title{Imports html files into a character vector.}
 \usage{
-ImportHtml(from = "articles", sample = NULL, nameOfProject = NULL,
-  nameOfWebsite = NULL, pathToHtmlFolder = "", sort = TRUE,
-  recursive = FALSE, includePath = FALSE)
+ImportHtml(from = "articles", sample = NULL, project = NULL,
+  website = NULL, pathToHtmlFolder = "", sort = TRUE, recursive = FALSE,
+  includePath = FALSE)
 }
 \arguments{
 \item{from}{Allows to choose which type of contents to import. Can be either "articles" or "index".}
 
 \item{sample}{Defaults to NULL. If a numeric value n is provided, then instead of importing all html files it imports n random files.}
 
-\item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
+\item{project}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
 
-\item{nameOfWebsite}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
+\item{website}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
 
 \item{sort}{Logical, defaults to TRUE. For folders downloaded through 'castarter' (e.g. with DownloadContents) this should be left to TRUE, otherwise mismatch between articlesLinks and imported documents is due to occur.}
 
@@ -28,6 +28,6 @@ A character vector of html file, or a data frame if includePath is set to TRUE.
 Imports html files already downloaded into a character vector.
 }
 \examples{
-articlesHtml <- ImportHtml(from = articles, nameOfProject, nameOfWebsite)
+articlesHtml <- ImportHtml(from = articles, project, website)
 }
 

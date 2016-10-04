@@ -5,13 +5,12 @@
 \title{Downloads html pages that are loaded through a web form.}
 \usage{
 DownloadContentsForm(linkFirstChunk, startDate, endDate, dateSeparator = "-",
-  dateBy = "months", start = 1, nameOfProject = NULL,
-  nameOfWebsite = NULL)
+  dateBy = "months", start = 1, project = NULL, website = NULL)
 }
 \arguments{
-\item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
+\item{project}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
 
-\item{nameOfWebsite}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
+\item{website}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
 }
 \value{
 A vector of Html files. As a side effect, html files are stored in the IndexHtml folder.

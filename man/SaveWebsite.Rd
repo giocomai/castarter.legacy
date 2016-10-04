@@ -5,17 +5,17 @@
 \title{Saves working environment and dataset.}
 \usage{
 SaveWebsite(saveEnvironment = TRUE, dataset = NULL, corpus = NULL,
-  corpusDtm = NULL, nameOfProject = NULL, nameOfWebsite = NULL,
-  exportCsv = FALSE, exportTxt = FALSE, exportXlsx = FALSE)
+  corpusDtm = NULL, project = NULL, website = NULL, exportCsv = FALSE,
+  exportTxt = FALSE, exportXlsx = FALSE)
 }
 \arguments{
 \item{saveEnvironment}{Logical, defaults to TRUE. If TRUE, saves environment as .Rdata in the correspodning website folder.}
 
 \item{dataset}{A 'castarter' dataset. Required to export dataset in its dedicated folder if no metadata and articlesTxt are found in the environment, e.g. because dataset has been created through CreateDatasetFromHtml() function.}
 
-\item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
+\item{project}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
 
-\item{nameOfWebsite}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
+\item{website}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
 
 \item{exportCsv}{Logical, defaults to FALSE. If TRUE, exports the complete dataset in the .csv file format in the Dataset sub-folder.}
 
@@ -29,6 +29,6 @@ It saves the working environment in the website folder, the dataset as an .Rdata
 It assumes that previous operations have been completed, and both a 'metadata' and an 'articlesTxt' object exist. If they don't, it just prints this to the console.
 }
 \examples{
-SaveWebsite(nameOfProject, nameOfWebsite)
+SaveWebsite(project, website)
 }
 

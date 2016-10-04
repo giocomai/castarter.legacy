@@ -9,7 +9,7 @@ ShowFreq(corpusDtm, mode = "data.frame", number = 10, terms = NULL,
   corpusOriginal = "", minFrequency = 0, export = FALSE,
   customTitle = NULL, tipology = NULL, byDate = FALSE,
   byWebsite = FALSE, stacked = FALSE, relFreq = TRUE, percent = TRUE,
-  invert = FALSE, nameOfProject = NULL, nameOfWebsite = NULL)
+  invert = FALSE, project = NULL, website = NULL)
 }
 \arguments{
 \item{corpusDtm}{A document-term matrix created with the 'TM' package or a document-feature matrix of the 'quanteda' type.}
@@ -25,7 +25,7 @@ ShowFreq(corpusDtm, mode = "data.frame", number = 10, terms = NULL,
 
 \item{corpus}{Required only if corpusDtm is not of the 'quanteda' type. A corpus as created by the 'tm' package including relevant metadata and typically created with castarter's CreateCorpus() function.}
 
-\item{export}{Logical, defaults to FALSE. If TRUE, saves the time series in both png and pdf format. If nameOfProject and nameOfWebsite are provided, in saves the barchart in the "Outputs" subfolder.}
+\item{export}{Logical, defaults to FALSE. If TRUE, saves the time series in both png and pdf format. If project and website are provided, in saves the barchart in the "Outputs" subfolder.}
 
 \item{customTitle}{A character vector, defaults to NULL.It allows to customize the title of the exported barchart file.}
 

@@ -4,10 +4,10 @@
 \alias{LoadAllDatasets}
 \title{Loads all datasets of a 'castarter' project.}
 \usage{
-LoadAllDatasets(nameOfProject, removeNAdates = TRUE)
+LoadAllDatasets(project, removeNAdates = TRUE)
 }
 \arguments{
-\item{nameOfProject}{The name of the project whose datasets are to be imported.}
+\item{project}{The name of the project whose datasets are to be imported.}
 }
 \value{
 A data frame including all datasets of a project.
@@ -16,6 +16,6 @@ A data frame including all datasets of a project.
 Takes all datasets from all websites in a project and outputs them in a data frame.
 }
 \examples{
-allDatasets <- LoadAllDatasets(nameOfProject)
+allDatasets <- LoadAllDatasets(project)
 }
 

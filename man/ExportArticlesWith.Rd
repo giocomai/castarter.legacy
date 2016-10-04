@@ -7,7 +7,7 @@
 ExportArticlesWith(dataset, term, includeNaDates = TRUE,
   onlyNaDates = FALSE, txt = TRUE, csv = FALSE, xlsx = FALSE,
   data.frame = FALSE, includeOnly = NULL, sortBy = "date",
-  nameOfProject = NULL, nameOfWebsite = NULL)
+  project = NULL, website = NULL)
 }
 \arguments{
 \item{dataset}{A dataset created with 'castarter'.}
@@ -24,9 +24,9 @@ ExportArticlesWith(dataset, term, includeNaDates = TRUE,
 
 \item{data.frame}{Logical, defaults to FALSE. If TRUE, the function outputs a data frame. If FALSE, function used only for its side effects (i.e. exporting to files)}
 
-\item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
+\item{project}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
 
-\item{nameOfWebsite}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.Defaults to NULL. If no nameOfWebsite is provided, exported files are saved in the nameOfProject/Outputs folder.}
+\item{website}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.Defaults to NULL. If no website is provided, exported files are saved in the project/Outputs folder.}
 }
 \description{
 Exports all articles that contain a given term.

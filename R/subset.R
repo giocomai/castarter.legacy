@@ -31,8 +31,8 @@ SubsetDataset <- function(dataset, terms = NULL, startDate = NULL, endDate = NUL
 #' @return A data.frame
 #' @export
 #' @examples
-#' DivideByWebsite(corpus, nameOfProject)
-DivideByWebsite <- function(corpus, nameOfProject) {
+#' DivideByWebsite(corpus, project)
+DivideByWebsite <- function(corpus, project) {
     listOfWebsites <- levels(as.factor(unlist(NLP::meta(corpus, "author"))))
     byWebsite <- data.frame(matrix(NA, nrow = length(corpus), ncol = length(listOfWebsites)))
     names(byWebsite) <- listOfWebsites

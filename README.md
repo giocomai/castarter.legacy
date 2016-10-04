@@ -1,7 +1,7 @@
 An introduction to 'castarter' - content analysis starter toolkit for R
 ================
 Giorgio Comai
-2016-09-20
+2016-10-04
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 Introduction
@@ -45,10 +45,10 @@ Prepare the environment
 First, define the name of project and the name of website. In this case, the project will be called "EuropeanUnion", assuming other websites to be analysed later may be of other EU institutions.
 
 ``` r
-SetCastarter(nameOfProject = "EuropeanUnion", nameOfWebsite = "EuropeanParliament")
+SetCastarter(project = "EuropeanUnion", website = "EuropeanParliament")
 ```
 
-This stores nameOfProject and nameOfWebsite as options that can be retrieved by all `castarter` functions automatically, without the need to inputting them each time a function requires to save or load files.
+This stores the names of project and website as options that can be retrieved by all `castarter` functions automatically, without the need to inputting them each time a function requires to save or load files.
 
 At this stage, one may consider setting the root working folder, if one does not wish to use R's default, with:
 
@@ -76,7 +76,7 @@ This creates the following folders in the current working directory:
         -   Outputs
         -   Txt
 
-Notice that there is no need to provide nameOfProject and nameOfWebsite to the function `CreateFolderStructure()`, since they are retrieved from the previously set options.
+Notice that there is no need to provide names of project and website to the function `CreateFolders()`, since they are retrieved from the previously set options.
 
 Download index pages
 --------------------
@@ -435,7 +435,7 @@ Quickly create a basic ShinyApp with your own dataset
 In order to explore quickly the dataset, `castarter` offers a function that quickly creates a web interface that exposes some `castarter` functions. Once the dataset has been created, it is possible to create this web interface (known as a ShinyApp) with the following commands:
 
 ``` r
-SetCastarter(nameOfProject = "EuropeanUnion", nameOfWebsite = "EuropeanParliament")
+SetCastarter(project = "EuropeanUnion", website = "EuropeanParliament")
 dataset <- LoadDatasets()
 CreateShinyApp(dataset = dataset)
 ```

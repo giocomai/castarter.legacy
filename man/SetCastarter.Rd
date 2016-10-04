@@ -7,9 +7,9 @@
 SetCastarter(...)
 }
 \arguments{
-\item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
+\item{project}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
 
-\item{nameOfWebsite}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
+\item{website}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
 }
 \value{
 Nothing. Used for its side effects (stores settings).
@@ -18,6 +18,6 @@ Nothing. Used for its side effects (stores settings).
 It allows to preliminary store options frequently used by 'castarter', thus removing the requirement to specify them each time a function is called.
 }
 \examples{
-SetCastarter(nameOfProject = "nameOfProject", nameOfWebsite = "nameOfWebsite")
+SetCastarter(project = "project", website = "website")
 }
 

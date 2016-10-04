@@ -8,8 +8,8 @@ CreateLinks(linkFirstChunk, linkSecondChunk = NULL, startPage = 1,
   endPage = 10, increaseBy = 1, dateFormat = NULL, firstYear = "",
   lastYear = "", leadingZero = TRUE, startDate = "", endDate = "",
   sortIndexLinks = FALSE, dateSeparator = "/", export = FALSE,
-  reversedOrder = FALSE, exportParameters = TRUE, nameOfProject = NULL,
-  nameOfWebsite = NULL)
+  reversedOrder = FALSE, exportParameters = TRUE, project = NULL,
+  website = NULL)
 }
 \arguments{
 \item{linkFirstChunk}{First part of index link that does not change in other index pages.}
@@ -24,13 +24,13 @@ CreateLinks(linkFirstChunk, linkSecondChunk = NULL, startPage = 1,
 
 \item{leadingZero}{Defaults to TRUE. If TRUE, days and months of one digit are preceded by a zero (e.g. 07/05/2014).}
 
-\item{export}{Exports the links in a .txt file in the folder nameOfProject/nameOfWebsite.}
+\item{export}{Exports the links in a .txt file in the folder project/website.}
 
-\item{exportParameters}{Defaults to FALSE. If TRUE, function parameters are exported in the nameOfProject/nameOfWebsite folder. They can be used to update the corpus. Requires parameters nameOfProject/nameOfWebsite.}
+\item{exportParameters}{Defaults to FALSE. If TRUE, function parameters are exported in the project/website folder. They can be used to update the corpus. Requires parameters project/website.}
 
-\item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. Not required if previously set with SetCastarter(nameOfProject = "nameOfProject", nameOfWebsite = "nameOfWebsite")}
+\item{project}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. Not required if previously set with SetCastarter(project = "project", website = "website")}
 
-\item{nameOfWebsite}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder. Not required if previously set with SetCastarter(nameOfProject = "nameOfProject", nameOfWebsite = "nameOfWebsite")}
+\item{website}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder. Not required if previously set with SetCastarter(project = "project", website = "website")}
 }
 \value{
 A character vector of links to index pages.

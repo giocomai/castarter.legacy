@@ -8,7 +8,7 @@ LoadDatasets(projectsAndWebsites = NULL, type = "dataset",
   removeNAdates = TRUE)
 }
 \arguments{
-\item{projectsAndWebsites}{A character vector listing websites to be loaded in the format "nameOfProject/nameOfWebsite". If none is given, it will check if nameOfProject and nameOfWebsite have been set with `SetCastarter()`}
+\item{projectsAndWebsites}{A character vector listing websites to be loaded in the format "project/website". If none is given, it will check if project and website have been set with `SetCastarter()`}
 
 \item{type}{Defines the format in which the dataset will be loaded. Available options are:
 \itemize{

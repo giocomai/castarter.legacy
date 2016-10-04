@@ -8,7 +8,7 @@ UploadDatasets(projectsAndWebsites, server, user, pwd, dataset = TRUE,
   corpusQ = TRUE, corpusDtmQ = TRUE)
 }
 \arguments{
-\item{projectsAndWebsites}{A character vector listing websites to be loaded in the format "nameOfProject/nameOfWebsite".}
+\item{projectsAndWebsites}{A character vector listing websites to be loaded in the format "project/website".}
 }
 \value{
 Nothing. Used for its side effects (uploading datasets to an ftp server).

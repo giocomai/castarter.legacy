@@ -4,7 +4,7 @@
 \alias{DivideByWebsite}
 \title{Divide corpus by website}
 \usage{
-DivideByWebsite(corpus, nameOfProject)
+DivideByWebsite(corpus, project)
 }
 \arguments{
 \item{corpus}{A corpus as created by the 'tm' package including metadata.}
@@ -16,6 +16,6 @@ A data.frame
 Divide corpus by website
 }
 \examples{
-DivideByWebsite(corpus, nameOfProject)
+DivideByWebsite(corpus, project)
 }
 

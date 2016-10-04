@@ -4,25 +4,25 @@
 #'  
 #' @param from Allows to choose which type of contents to import. Can be either "articles" or "index".
 #' @param sample Defaults to NULL. If a numeric value n is provided, then instead of importing all html files it imports n random files.
-#' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
-#' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
+#' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
+#' @param website Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
 #' @param sort Logical, defaults to TRUE. For folders downloaded through 'castarter' (e.g. with DownloadContents) this should be left to TRUE, otherwise mismatch between articlesLinks and imported documents is due to occur. 
 #' @param recursive Value is passed to list.files function when using the pathToHtmlFolder option.
 #' @return A character vector of html file, or a data frame if includePath is set to TRUE. 
 #' @export
 #' @examples
-#' articlesHtml <- ImportHtml(from = articles, nameOfProject, nameOfWebsite)
-ImportHtml <- function(from = "articles", sample = NULL, nameOfProject = NULL, nameOfWebsite = NULL, pathToHtmlFolder = "", sort = TRUE, recursive = FALSE, includePath = FALSE) {
-    if (gtools::invalid(nameOfProject) == TRUE) {
-        nameOfProject <- CastarterOptions("nameOfProject")
+#' articlesHtml <- ImportHtml(from = articles, project, website)
+ImportHtml <- function(from = "articles", sample = NULL, project = NULL, website = NULL, pathToHtmlFolder = "", sort = TRUE, recursive = FALSE, includePath = FALSE) {
+    if (gtools::invalid(project) == TRUE) {
+        project <- CastarterOptions("project")
     }
-    if (gtools::invalid(nameOfWebsite) == TRUE) {
-        nameOfWebsite <- CastarterOptions("nameOfWebsite")
+    if (gtools::invalid(website) == TRUE) {
+        website <- CastarterOptions("website")
     }
     if (from == "articles") {
-        htmlFilesList <- list.files(file.path(nameOfProject, nameOfWebsite, "Html"), pattern = "\\.html$", full.names = TRUE)
+        htmlFilesList <- list.files(file.path(project, website, "Html"), pattern = "\\.html$", full.names = TRUE)
     } else if (from == "index") {
-        htmlFilesList <- list.files(file.path(nameOfProject, nameOfWebsite, "IndexHtml"), pattern = "\\.html$", full.names = TRUE)
+        htmlFilesList <- list.files(file.path(project, website, "IndexHtml"), pattern = "\\.html$", full.names = TRUE)
     } else {
         if (recursive == TRUE) {
             htmlFilesList <- list.files(pathToHtmlFolder, pattern = "\\.html$", full.names = TRUE, recursive = TRUE)

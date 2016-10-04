@@ -9,7 +9,7 @@ ExtractDates(articlesHtml, dateFormat = "dmY", divClass = NULL,
   language = Sys.getlocale(category = "LC_TIME"), customString = "",
   minDate = NULL, maxDate = NULL, encoding = "UTF-8",
   keepAllString = FALSE, removeEverythingBefore = NULL,
-  exportParameters = TRUE, nameOfProject = NULL, nameOfWebsite = NULL)
+  exportParameters = TRUE, project = NULL, website = NULL)
 }
 \arguments{
 \item{articlesHtml}{A character vector of html files.}
@@ -34,9 +34,9 @@ ExtractDates(articlesHtml, dateFormat = "dmY", divClass = NULL,
 
 \item{keepAllString}{Logical, defaults to FALSE. If TRUE, it directly tries to parse the date with the given dateFormat, without trying to polish the string provided accordingly.}
 
-\item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. Defaults to NULL, required for storing export parameters (with exportParameters = TRUE). This can be left blank if previously set with SetCastarter(nameOfProject = "nameOfProject", nameOfWebsite = "nameOfWebsite").}
+\item{project}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. Defaults to NULL, required for storing export parameters (with exportParameters = TRUE). This can be left blank if previously set with SetCastarter(project = "project", website = "website").}
 
-\item{nameOfWebsite}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder. Defaults to NULL, required for storing export parameters (with exportParameters = TRUE). This can be left blank if previously set with SetCastarter(nameOfProject = "nameOfProject", nameOfWebsite = "nameOfWebsite").}
+\item{website}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder. Defaults to NULL, required for storing export parameters (with exportParameters = TRUE). This can be left blank if previously set with SetCastarter(project = "project", website = "website").}
 }
 \value{
 A vector of the POSIXct class.

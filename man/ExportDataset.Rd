@@ -5,16 +5,16 @@
 \title{Exports dataset}
 \usage{
 ExportDataset(articlesTxt, metadata, exportRdata = TRUE, exportCsv = FALSE,
-  exportXlsx = FALSE, nameOfProject = NULL, nameOfWebsite = NULL)
+  exportXlsx = FALSE, project = NULL, website = NULL)
 }
 \arguments{
 \item{exportCsv}{If equal to TRUE, exports the complete dataset in the .csv file format in the Dataset sub-folder.}
 
 \item{exportXlsx}{If equal to TRUE, exports the complete dataset in the .xlsx file format in the Dataset sub-folder.}
 
-\item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
+\item{project}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
 
-\item{nameOfWebsite}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
+\item{website}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
 }
 \value{
 A data.frame, a 'castarter' dataset.
@@ -23,6 +23,6 @@ A data.frame, a 'castarter' dataset.
 Exports dataset to a data.frame, with options to save it as an R object, and export it as a .csv or .xlsx file.
 }
 \examples{
-dataset <- ExportDataset(articlesTxt, metadata, nameOfProject, nameOfWebsite)
+dataset <- ExportDataset(articlesTxt, metadata, project, website)
 }
 

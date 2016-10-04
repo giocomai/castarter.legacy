@@ -7,7 +7,7 @@
 DownloadDatasets(projectsAndWebsites, server, user, pwd)
 }
 \arguments{
-\item{projectsAndWebsites}{A character vector listing websites to be loaded in the format "nameOfProject/nameOfWebsite".}
+\item{projectsAndWebsites}{A character vector listing websites to be loaded in the format "project/website".}
 }
 \value{
 A 'castarter' dataset.

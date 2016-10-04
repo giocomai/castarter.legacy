@@ -6,15 +6,14 @@
 \usage{
 ExportMetadata(dates, articlesId, titles, language, articlesLinks,
   exportXlsx = FALSE, accordingToDate = FALSE, ignoreNAdates = FALSE,
-  onlyExistingHtmlFiles = FALSE, nameOfProject = NULL,
-  nameOfWebsite = NULL)
+  onlyExistingHtmlFiles = FALSE, project = NULL, website = NULL)
 }
 \arguments{
 \item{exportXlsx}{If equal to TRUE, exports the complete dataset in the .xlsx file format in the Dataset sub-folder.}
 
-\item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
+\item{project}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
 
-\item{nameOfWebsite}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
+\item{website}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
 }
 \value{
 A vector of the data.frame class.
@@ -23,6 +22,6 @@ A vector of the data.frame class.
 Exports metadata to a vector, csv or xlsx file.
 }
 \examples{
-metadata <- ExportMetadata(nameOfProject, nameOfWebsite, dates, articlesId, titles, language, articlesLinks)
+metadata <- ExportMetadata(project, website, dates, articlesId, titles, language, articlesLinks)
 }
 

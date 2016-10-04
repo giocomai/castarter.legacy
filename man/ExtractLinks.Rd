@@ -9,7 +9,7 @@ ExtractLinks(domain, partOfLink, indexHtml, containerType = NULL,
   partOfLinkToExclude = NULL, minLength = NULL, maxLength = NULL,
   indexLinks = NULL, sortLinks = TRUE, export = FALSE,
   appendString = NULL, removeString = NULL, exportParameters = TRUE,
-  nameOfProject = NULL, nameOfWebsite = NULL)
+  project = NULL, website = NULL)
 }
 \arguments{
 \item{domain}{Web domain of the website. Will be added at the beginning of each link found.If links in the page already include the full web address this should be ignored. Defaults to "".}
@@ -34,7 +34,7 @@ ExtractLinks(domain, partOfLink, indexHtml, containerType = NULL,
 
 \item{removeString}{If provided, remove given string (or strings) from links.}
 
-\item{exportParameters}{Defaults to FALSE. If TRUE, function parameters are exported in the nameOfProject/nameOfWebsite folder. They can be used to update the corpus.}
+\item{exportParameters}{Defaults to FALSE. If TRUE, function parameters are exported in the project/website folder. They can be used to update the corpus.}
 }
 \value{
 A named character vector of links to articles. Name of the link may be the article title.

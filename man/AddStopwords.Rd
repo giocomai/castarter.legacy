@@ -4,13 +4,13 @@
 \alias{AddStopwords}
 \title{Adds stopwords to the default list}
 \usage{
-AddStopwords(newStopwords = NULL, nameOfProject = NULL,
-  includeDefault = TRUE, language = "en", importExport = FALSE)
+AddStopwords(newStopwords = NULL, project = NULL, includeDefault = TRUE,
+  language = "en", importExport = FALSE)
 }
 \arguments{
 \item{newStopwords}{A character vector of words.}
 
-\item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
+\item{project}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
 
 \item{includeDefault}{Logical, defaults to TRUE. Includes default list of stopwords included in the 'tm' package.}
 
@@ -28,6 +28,6 @@ Adds stopwords to the default list.
 }
 \examples{
 newStopwords <- c("will", "also", "can")
-stopwords <- AddStopwords(newStopwords, nameOfProject, includeDefault = TRUE, language = "en")
+stopwords <- AddStopwords(newStopwords, project, includeDefault = TRUE, language = "en")
 }
 

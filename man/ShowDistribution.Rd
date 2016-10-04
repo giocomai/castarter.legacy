@@ -6,12 +6,12 @@
 \usage{
 ShowDistribution(dataset, specificWebsites = NULL, rollingAverage = 30,
   align = "center", customTitle = NULL, method = "numberOfArticles",
-  export = FALSE, nameOfProject = NULL, nameOfWebsite = NULL)
+  export = FALSE, project = NULL, website = NULL)
 }
 \arguments{
 \item{dataset}{A dataset created with 'castarter'.}
 
-\item{specificWebsites}{Character vector indicating which websites (defined by relative nameOfWebsite) have to be included in graph. If left to default, includes all websites present in the dataset.}
+\item{specificWebsites}{Character vector indicating which websites (defined by relative website) have to be included in graph. If left to default, includes all websites present in the dataset.}
 
 \item{rollingAverage}{Integer, defaults to 30. Number of days used to calculate word frequency as shown in the time series. Time series shows word frequency for each date as an average of the N number of days (N=rollingAverage) following the correspondent date.}
 
@@ -19,11 +19,11 @@ ShowDistribution(dataset, specificWebsites = NULL, rollingAverage = 30,
 
 \item{method}{Accepted values: "numberOfArticles" (default, creates time series based on number of publications per day); "numberOfCharacters" (creates time series based on number of charachters per day, currently does not work in conjunction with specificWebsites option).}
 
-\item{export}{Logical, defaults to FALSE. If TRUE, saves the graph in both png and pdf format. If nameOfProject and nameOfWebsite are provided, in saves the timeseries in the correspondent "Outputs" subfolder.}
+\item{export}{Logical, defaults to FALSE. If TRUE, saves the graph in both png and pdf format. If project and website are provided, in saves the timeseries in the correspondent "Outputs" subfolder.}
 
-\item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
+\item{project}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
 
-\item{nameOfWebsite}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
+\item{website}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
 
 \item{startDate, }{endDate Character vector with date in the format year-month-date, e.g. "2015-07-14".}
 }

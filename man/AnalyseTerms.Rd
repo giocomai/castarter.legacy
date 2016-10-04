@@ -4,14 +4,14 @@
 \alias{AnalyseTerms}
 \title{Compares frequency of specific words across websites.}
 \usage{
-AnalyseTerms(corpus, nameOfProject, specificTerms, mode = "graph",
+AnalyseTerms(corpus, project, specificTerms, mode = "graph",
   includeOnly = NULL, order = TRUE, tipology = NULL,
   frequency = "relative", corpusDtm = NULL)
 }
 \arguments{
 \item{corpus}{A TM corpus.}
 
-\item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
+\item{project}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
 
 \item{specificTerms}{Character vector of terms to be compared.}
 
@@ -21,6 +21,6 @@ AnalyseTerms(corpus, nameOfProject, specificTerms, mode = "graph",
 To be incorporated into ShowFreq
 }
 \examples{
-AnalyseTerms(corpus, nameOfProject, specificTerms)
+AnalyseTerms(corpus, project, specificTerms)
 }
 

@@ -8,7 +8,7 @@ ShowTS(terms, corpusDtm = NULL, corpus = NULL, specificWebsites = NULL,
   startDate = NULL, endDate = NULL, rollingAverage = 30,
   align = "center", verticalLine = NULL, smoothLine = FALSE,
   customTitle = NULL, export = FALSE, allWebsitesAsOne = FALSE,
-  dygraphs = FALSE, nameOfProject = NULL, nameOfWebsite = NULL)
+  dygraphs = FALSE, project = NULL, website = NULL)
 }
 \arguments{
 \item{terms}{A character vector with one or more words to be analysed, or a 'quanteda' dictionary if corpus/corpusDtm are also of the 'quanteda' type.}
@@ -31,11 +31,11 @@ ShowTS(terms, corpusDtm = NULL, corpus = NULL, specificWebsites = NULL,
 
 \item{customTitle}{A character vector, defaults to NULL. If provided, it overrides default graph title.}
 
-\item{export}{Logical, defaults to FALSE. If TRUE, saves the time series in both png and pdf format. If nameOfProject and nameOfWebsite are provided, in saves the timeseries in the "Outputs" subfolder.}
+\item{export}{Logical, defaults to FALSE. If TRUE, saves the time series in both png and pdf format. If project and website are provided, in saves the timeseries in the "Outputs" subfolder.}
 
-\item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
+\item{project}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
 
-\item{nameOfWebsite}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
+\item{website}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
 }
 \description{
 It creates time series with the frequency of one or more terms, in one or more websites.

@@ -9,8 +9,8 @@ ExtractTxt(articlesHtml, metadata = NULL, export = FALSE,
   divId = NULL, customXpath = NULL, removeEverythingAfter = NULL,
   removeEverythingBefore = NULL, removePunctuationInFilename = TRUE,
   removeTitleFromTxt = FALSE, titles = NULL, keepEverything = FALSE,
-  exportParameters = TRUE, progressBar = TRUE, nameOfProject = NULL,
-  nameOfWebsite = NULL)
+  exportParameters = TRUE, progressBar = TRUE, project = NULL,
+  website = NULL)
 }
 \arguments{
 \item{articlesHtml}{A character vector of html files.}

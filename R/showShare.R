@@ -6,15 +6,15 @@
 #' @param terms The specific terms to be analysed. 
 #' @param breaks Deafaults to "years". Parameter is passed to base::cut, and specifies how the dataset should be divided temporally. Available options include "years", "quarters", "monhts", but can also be a vector of dates of the POSIXct class.
 #' @param startDate, endDate Character vector with date in the format year-month-date, e.g. "2015-07-14".
-#' @param nameOfProject Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
-#' @param nameOfWebsite Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
-#' @param export Logical, defaults to FALSE. If TRUE, saves the graph in both png and pdf format. If nameOfProject and nameOfWebsite are provided, in saves the timeseries in the correspondent "Outputs" subfolder. 
+#' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
+#' @param website Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
+#' @param export Logical, defaults to FALSE. If TRUE, saves the graph in both png and pdf format. If project and website are provided, in saves the timeseries in the correspondent "Outputs" subfolder. 
 #' @return A ggplot2 barchart showing shares of articles including reference to a specific terms.
 #' @export
 #' @examples
-#' ShowShare(dataset, breaks = "months", nameOfProject, nameOfWebsite)
+#' ShowShare(dataset, breaks = "months", project, website)
 
-ShowShare <- function(dataset, terms, breaks = "years", startDate = NULL, customTitle = NULL, export = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
+ShowShare <- function(dataset, terms, breaks = "years", startDate = NULL, customTitle = NULL, export = FALSE, project = NULL, website = NULL) {
     if (length(terms) > 1) {
         terms <- paste(tolower(terms), collapse = "\\b|")
     }
@@ -62,19 +62,19 @@ ShowShare <- function(dataset, terms, breaks = "years", startDate = NULL, custom
     }
     if (export == TRUE) {
         graph
-        if (is.null(nameOfProject) == FALSE & is.null(nameOfWebsite) == FALSE) {
-            if (file.exists(file.path(nameOfProject, nameOfWebsite, "Outputs")) == FALSE) {
-                dir.create(file.path(nameOfProject, nameOfWebsite, "Outputs"))
+        if (is.null(project) == FALSE & is.null(website) == FALSE) {
+            if (file.exists(file.path(project, website, "Outputs")) == FALSE) {
+                dir.create(file.path(project, website, "Outputs"))
             }
-            ggplot2::ggsave(file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste("timeseries", nameOfProject, nameOfWebsite, paste(terms, collapse = " - "), sep = " - "), ".png")))
-            print(paste("File saved in", file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste("timeseries", nameOfProject, nameOfWebsite, paste(terms, collapse = " - "), sep = " - "), ".png"))))
-            ggplot2::ggsave(file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste("timeseries", nameOfProject, nameOfWebsite, paste(terms, collapse = " - "), sep = " - "), ".pdf")))
-            print(paste("File saved in", file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste("timeseries", nameOfProject, nameOfWebsite, paste(terms, collapse = " - "), sep = " - "), ".pdf"))))
-        } else if (is.null(nameOfProject) == FALSE & is.null(nameOfWebsite) == TRUE) {
-            ggplot2::ggsave(file.path("Outputs", paste0(paste("timeseries", nameOfProject, paste(terms, collapse = " - "), sep = " - "), ".png")))
-            print(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", nameOfProject, paste(terms, collapse = " - "), sep = " - "), ".png"))))
-            ggplot2::ggsave(file.path("Outputs", paste0(paste("timeseries", nameOfProject, paste(terms, collapse = " - "), sep = " - "), ".pdf")))
-            print(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", nameOfProject, paste(terms, collapse = " - "), sep = " - "), ".pdf"))))
+            ggplot2::ggsave(file.path(project, website, "Outputs", paste0(paste("timeseries", project, website, paste(terms, collapse = " - "), sep = " - "), ".png")))
+            print(paste("File saved in", file.path(project, website, "Outputs", paste0(paste("timeseries", project, website, paste(terms, collapse = " - "), sep = " - "), ".png"))))
+            ggplot2::ggsave(file.path(project, website, "Outputs", paste0(paste("timeseries", project, website, paste(terms, collapse = " - "), sep = " - "), ".pdf")))
+            print(paste("File saved in", file.path(project, website, "Outputs", paste0(paste("timeseries", project, website, paste(terms, collapse = " - "), sep = " - "), ".pdf"))))
+        } else if (is.null(project) == FALSE & is.null(website) == TRUE) {
+            ggplot2::ggsave(file.path("Outputs", paste0(paste("timeseries", project, paste(terms, collapse = " - "), sep = " - "), ".png")))
+            print(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", project, paste(terms, collapse = " - "), sep = " - "), ".png"))))
+            ggplot2::ggsave(file.path("Outputs", paste0(paste("timeseries", project, paste(terms, collapse = " - "), sep = " - "), ".pdf")))
+            print(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", project, paste(terms, collapse = " - "), sep = " - "), ".pdf"))))
         } else {
             if (!file.exists(file.path("Outputs"))) {
                 dir.create(file.path("Outputs"))

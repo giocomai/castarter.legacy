@@ -4,13 +4,13 @@
 \alias{ExtractId}
 \title{Extracts articlesId from filename}
 \usage{
-ExtractId(nameOfProject = NULL, nameOfWebsite = NULL,
-  accordingToDate = FALSE, dates = NULL)
+ExtractId(project = NULL, website = NULL, accordingToDate = FALSE,
+  dates = NULL)
 }
 \arguments{
-\item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
+\item{project}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
 
-\item{nameOfWebsite}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.Defaults to NULL. If no nameOfWebsite is provided, exported files are saved in the nameOfProject/Outputs folder.}
+\item{website}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.Defaults to NULL. If no website is provided, exported files are saved in the project/Outputs folder.}
 }
 \value{
 A vector of the integer class.
@@ -19,6 +19,6 @@ A vector of the integer class.
 Extracts articlesId from filename
 }
 \examples{
-articlesId <- ExtractId(nameOfProject, nameOfWebsite)
+articlesId <- ExtractId(project, website)
 }
 

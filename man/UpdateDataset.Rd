@@ -5,14 +5,14 @@
 \title{Updates a dataset}
 \usage{
 UpdateDataset(dataset, articlesLinks = NULL, numberOfIndexPages = 10,
-  wget = FALSE, wait = 3, nameOfProject = NULL, nameOfWebsite = NULL)
+  wget = FALSE, wait = 3, project = NULL, website = NULL)
 }
 \arguments{
 \item{dataset}{A 'castarter' dataset.}
 
-\item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
+\item{project}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
 
-\item{nameOfWebsite}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
+\item{website}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
 }
 \value{
 A castarter dataset.

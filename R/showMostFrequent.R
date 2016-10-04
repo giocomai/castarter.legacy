@@ -12,7 +12,7 @@
 ##'
 #' @param corpus Required only if corpusDtm is not of the 'quanteda' type. A corpus as created by the 'tm' package including relevant metadata and typically created with castarter's CreateCorpus() function. 
 #' @param terms A character vector, defaults to NULL. If provided, only terms included in this vector will be included in the output.
-#' @param export Logical, defaults to FALSE. If TRUE, saves the time series in both png and pdf format. If nameOfProject and nameOfWebsite are provided, in saves the barchart in the "Outputs" subfolder. 
+#' @param export Logical, defaults to FALSE. If TRUE, saves the time series in both png and pdf format. If project and website are provided, in saves the barchart in the "Outputs" subfolder. 
 #' @param customTitle A character vector, defaults to NULL.It allows to customize the title of the exported barchart file. 
 #' @param tipology A data.frame of two columns, one named "term" and one named "type". If provided, and if type=="barchart", colors are used to differentiate terms belonging to different types. Example: tipology <- data.frame(term = c("apple", "orange", "bear", "lion"), type = c("fruit", "fruit", "animal", "animal"))
 #' @param relFreq Logical, defaults to FALSE. If TRUE, relative word frequency is given in the output. If FALSE, absolute number of occurrences is given.
@@ -24,12 +24,12 @@
 #' corpusDtm <- DocumentTermMatrix(corpus).
 #' ShowFreq(corpusDtm)
 
-ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, terms = NULL, corpus = NULL, order = TRUE, stemCompletion = FALSE, corpusOriginal = "", minFrequency = 0, export = FALSE, customTitle = NULL, tipology = NULL, byDate = FALSE, byWebsite = FALSE, stacked = FALSE, relFreq = TRUE, percent = TRUE, invert = FALSE, nameOfProject = NULL, nameOfWebsite = NULL) {
-    if (gtools::invalid(nameOfProject) == TRUE) {
-        nameOfProject <- CastarterOptions("nameOfProject")
+ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, terms = NULL, corpus = NULL, order = TRUE, stemCompletion = FALSE, corpusOriginal = "", minFrequency = 0, export = FALSE, customTitle = NULL, tipology = NULL, byDate = FALSE, byWebsite = FALSE, stacked = FALSE, relFreq = TRUE, percent = TRUE, invert = FALSE, project = NULL, website = NULL) {
+    if (gtools::invalid(project) == TRUE) {
+        project <- CastarterOptions("project")
     }
-    if (gtools::invalid(nameOfWebsite) == TRUE) {
-        nameOfWebsite <- CastarterOptions("nameOfWebsite")
+    if (gtools::invalid(website) == TRUE) {
+        website <- CastarterOptions("website")
     }
     if (number == "all") {
         number <- ncol(corpusDtm)
@@ -151,7 +151,7 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, terms = NULL, 
             byWebsiteL[, i] <- NLP::meta(corpus, "author") == namesOfWebsites[i]
         }
         mostFrequentByWebsite <- as.data.frame(matrix(nrow = length(byWebsiteL), ncol = length(terms) + 1))
-        colnames(mostFrequentByWebsite)[1] <- "nameOfWebsite"
+        colnames(mostFrequentByWebsite)[1] <- "website"
         for (i in 1:length(terms)) {
             colnames(mostFrequentByWebsite)[i + 1] <- terms[i]
         }
@@ -253,25 +253,25 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, terms = NULL, 
         }
         if (export == TRUE) {
             if (is.null(customTitle)) {
-                customTitle <- paste(nameOfProject, "word frequency", paste(names(terms), collapse = " - "), sep = " - ")
+                customTitle <- paste(project, "word frequency", paste(names(terms), collapse = " - "), sep = " - ")
             }
-            if (is.null(nameOfProject) == FALSE & is.null(nameOfWebsite) == FALSE) {
-                if (file.exists(file.path(nameOfProject, nameOfWebsite, "Outputs")) == FALSE) {
-                    dir.create(file.path(nameOfProject, nameOfWebsite, "Outputs"))
+            if (is.null(project) == FALSE & is.null(website) == FALSE) {
+                if (file.exists(file.path(project, website, "Outputs")) == FALSE) {
+                    dir.create(file.path(project, website, "Outputs"))
                 }
-                ggplot2::ggsave(file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste(customTitle, nameOfProject, nameOfWebsite, sep = " - "), ".png")))
-                print(paste("File saved in", file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste(customTitle, nameOfProject, nameOfWebsite, sep = " - "), ".png"))))
-                ggplot2::ggsave(file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste(customTitle, nameOfProject, nameOfWebsite, sep = " - "), ".pdf")))
-                print(paste("File saved in", file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste(customTitle, nameOfProject, nameOfWebsite, sep = " - "), ".pdf"))))
-                ggplot2::ggsave(file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste(customTitle, nameOfProject, nameOfWebsite, sep = " - "), ".svg")))
-                print(paste("File saved in", file.path(nameOfProject, nameOfWebsite, "Outputs", paste0(paste(customTitle, nameOfProject, nameOfWebsite, sep = " - "), ".svg"))))
-            } else if (is.null(nameOfProject) == FALSE & is.null(nameOfWebsite) == TRUE) {
-                ggplot2::ggsave(file.path("Outputs", paste0(paste(customTitle, nameOfProject, sep = " - "), ".png")))
-                print(paste("File saved in", file.path("Outputs", paste0(paste(customTitle, nameOfProject, sep = " - "), ".png"))))
-                ggplot2::ggsave(file.path("Outputs", paste0(paste(customTitle, nameOfProject, sep = " - "), ".pdf")))
-                print(paste("File saved in", file.path("Outputs", paste0(paste(customTitle, nameOfProject, sep = " - "), ".pdf"))))
-                ggplot2::ggsave(file.path("Outputs", paste0(paste(customTitle, nameOfProject, sep = " - "), ".svg")))
-                print(paste("File saved in", file.path("Outputs", paste0(paste(customTitle, nameOfProject, sep = " - "), ".svg"))))
+                ggplot2::ggsave(file.path(project, website, "Outputs", paste0(paste(customTitle, project, website, sep = " - "), ".png")))
+                print(paste("File saved in", file.path(project, website, "Outputs", paste0(paste(customTitle, project, website, sep = " - "), ".png"))))
+                ggplot2::ggsave(file.path(project, website, "Outputs", paste0(paste(customTitle, project, website, sep = " - "), ".pdf")))
+                print(paste("File saved in", file.path(project, website, "Outputs", paste0(paste(customTitle, project, website, sep = " - "), ".pdf"))))
+                ggplot2::ggsave(file.path(project, website, "Outputs", paste0(paste(customTitle, project, website, sep = " - "), ".svg")))
+                print(paste("File saved in", file.path(project, website, "Outputs", paste0(paste(customTitle, project, website, sep = " - "), ".svg"))))
+            } else if (is.null(project) == FALSE & is.null(website) == TRUE) {
+                ggplot2::ggsave(file.path("Outputs", paste0(paste(customTitle, project, sep = " - "), ".png")))
+                print(paste("File saved in", file.path("Outputs", paste0(paste(customTitle, project, sep = " - "), ".png"))))
+                ggplot2::ggsave(file.path("Outputs", paste0(paste(customTitle, project, sep = " - "), ".pdf")))
+                print(paste("File saved in", file.path("Outputs", paste0(paste(customTitle, project, sep = " - "), ".pdf"))))
+                ggplot2::ggsave(file.path("Outputs", paste0(paste(customTitle, project, sep = " - "), ".svg")))
+                print(paste("File saved in", file.path("Outputs", paste0(paste(customTitle, project, sep = " - "), ".svg"))))
             } else {
                 if (!file.exists(file.path("Outputs"))) {
                     dir.create(file.path("Outputs"))

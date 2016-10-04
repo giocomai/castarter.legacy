@@ -2,7 +2,7 @@
 #' 
 #' Takes a specific set of datasets from existings 'castarter' projects.
 #'  
-#' @param projectsAndWebsites A character vector listing websites to be loaded in the format "nameOfProject/nameOfWebsite". If none is given, it will check if nameOfProject and nameOfWebsite have been set with `SetCastarter()`
+#' @param projectsAndWebsites A character vector listing websites to be loaded in the format "project/website". If none is given, it will check if project and website have been set with `SetCastarter()`
 #' @param type Defines the format in which the dataset will be loaded. Available options are:
 ##' \itemize{
 ##'  \item{"dataset"}{: Outputs a 'castarter' dataset as data.frame. This is the default option.}
@@ -16,27 +16,27 @@
 #' allDatasets <- LoadDatasets(projectsAndWebsites)
 LoadDatasets <- function(projectsAndWebsites = NULL, type = "dataset", removeNAdates = TRUE) {
     if (gtools::invalid(projectsAndWebsites) == TRUE) {
-        nameOfProject <- CastarterOptions("nameOfProject")
-        nameOfWebsite <- CastarterOptions("nameOfWebsite")
-        projectsAndWebsites <- list(projectsAndWebsites = c(nameOfProject, nameOfWebsite))
+        project <- CastarterOptions("project")
+        website <- CastarterOptions("website")
+        projectsAndWebsites <- list(projectsAndWebsites = c(project, website))
     } else {
         projectsAndWebsites <- base::strsplit(projectsAndWebsites, "/")
     }
     lastSavedDatasets <- vector()
     for (i in 1:length(projectsAndWebsites)) {
-        nameOfProject <- projectsAndWebsites[[i]][1]
-        nameOfWebsite <- projectsAndWebsites[[i]][2]
+        project <- projectsAndWebsites[[i]][1]
+        website <- projectsAndWebsites[[i]][2]
         if (type == "corpusQ") {
-            datasetFilename <- sort(list.files(file.path(nameOfProject, nameOfWebsite, "Dataset"))[stringr::str_extract(list.files(file.path(nameOfProject, nameOfWebsite, "Dataset")), "corpusQ.RData") == "corpusQ.RData"], decreasing = TRUE)[1]
+            datasetFilename <- sort(list.files(file.path(project, website, "Dataset"))[stringr::str_extract(list.files(file.path(project, website, "Dataset")), "corpusQ.RData") == "corpusQ.RData"], decreasing = TRUE)[1]
         } else if (type == "dataset") {
-            datasetFilename <- sort(list.files(file.path(nameOfProject, nameOfWebsite, "Dataset"))[stringr::str_extract(list.files(file.path(nameOfProject, nameOfWebsite, "Dataset")), "dataset.RData") == "dataset.RData"], decreasing = TRUE)[1]
+            datasetFilename <- sort(list.files(file.path(project, website, "Dataset"))[stringr::str_extract(list.files(file.path(project, website, "Dataset")), "dataset.RData") == "dataset.RData"], decreasing = TRUE)[1]
         } else if (type == "corpusDtmQ") {
-            datasetFilename <- sort(list.files(file.path(nameOfProject, nameOfWebsite, "Dataset"))[stringr::str_extract(list.files(file.path(nameOfProject, nameOfWebsite, "Dataset")), "corpusDtmQ.RData") == "corpusDtmQ.RData"], decreasing = TRUE)[1]
+            datasetFilename <- sort(list.files(file.path(project, website, "Dataset"))[stringr::str_extract(list.files(file.path(project, website, "Dataset")), "corpusDtmQ.RData") == "corpusDtmQ.RData"], decreasing = TRUE)[1]
         } else {
             stop("Type can be 'dataset', 'corpusQ', 'corpusTM, or 'corpusDtmQ'")
         }
         if (is.na(datasetFilename) == FALSE) {
-            lastSavedDataset <- file.path(file.path(nameOfProject, nameOfWebsite, "Dataset"), datasetFilename)
+            lastSavedDataset <- file.path(file.path(project, website, "Dataset"), datasetFilename)
             lastSavedDatasets[i] <- lastSavedDataset
         }
         lastSavedDatasets <- lastSavedDatasets[!is.na(lastSavedDatasets)]
@@ -86,21 +86,21 @@ LoadDatasets <- function(projectsAndWebsites = NULL, type = "dataset", removeNAd
 #' 
 #' Takes all datasets from all websites in a project and outputs them in a data frame.
 #'  
-#' @param nameOfProject The name of the project whose datasets are to be imported.
+#' @param project The name of the project whose datasets are to be imported.
 #' @return A data frame including all datasets of a project.
 #' @export
 #' @examples
-#' allDatasets <- LoadAllDatasets(nameOfProject)
+#' allDatasets <- LoadAllDatasets(project)
 
-LoadAllDatasets <- function(nameOfProject, removeNAdates = TRUE) {
-    listOfWebsites <- gsub(paste0(nameOfProject, "/"), "", list.dirs(file.path(nameOfProject), recursive = FALSE), fixed = TRUE)
+LoadAllDatasets <- function(project, removeNAdates = TRUE) {
+    listOfWebsites <- gsub(paste0(project, "/"), "", list.dirs(file.path(project), recursive = FALSE), fixed = TRUE)
     lastSavedDatasets <- vector()
     for (i in 1:length(listOfWebsites)) {
-        nameOfWebsite <- listOfWebsites[i]
-        datasetFilename <- sort(list.files(file.path(nameOfProject, nameOfWebsite, "Dataset"))[stringr::str_extract(list.files(file.path(nameOfProject, 
-            nameOfWebsite, "Dataset")), "dataset.RData") == "dataset.RData"], decreasing = TRUE)[1]
+        website <- listOfWebsites[i]
+        datasetFilename <- sort(list.files(file.path(project, website, "Dataset"))[stringr::str_extract(list.files(file.path(project, 
+            website, "Dataset")), "dataset.RData") == "dataset.RData"], decreasing = TRUE)[1]
         if (is.na(datasetFilename) == FALSE) {
-            lastSavedDataset <- file.path(file.path(nameOfProject, nameOfWebsite, "Dataset"), datasetFilename)
+            lastSavedDataset <- file.path(file.path(project, website, "Dataset"), datasetFilename)
             lastSavedDatasets[i] <- lastSavedDataset
         }
         lastSavedDatasets <- lastSavedDatasets[!is.na(lastSavedDatasets)]
@@ -130,11 +130,11 @@ LoadAllDatasets <- function(nameOfProject, removeNAdates = TRUE) {
 CreateCorpus <- function(dataset, quanteda = TRUE) {
     if (quanteda==TRUE) {
         corpus <- quanteda::corpus(dataset$articlesTxt, docnames = paste(as.Date(dataset$dates), dataset$articlesId, dataset$titles, sep = " - "), 
-                                   docvars=data.frame(nameOfWebsite=dataset$nameOfWebsite, date=as.Date(dataset$dates), title=dataset$titles, links = dataset$articlesLinks, ID=dataset$articlesId))
+                                   docvars=data.frame(website=dataset$website, date=as.Date(dataset$dates), title=dataset$titles, links = dataset$articlesLinks, ID=dataset$articlesId))
     } else {
         corpus <- tm::VCorpus(tm::VectorSource(dataset$articlesTxt))
         for (i in 1:length(dataset$articlesTxt)) {
-            NLP::meta(corpus[[i]], tag = "author") <- dataset$nameOfWebsite[i]
+            NLP::meta(corpus[[i]], tag = "author") <- dataset$website[i]
             NLP::meta(corpus[[i]], tag = "datetimestamp") <- dataset$dates[i]
             NLP::meta(corpus[[i]], tag = "heading") <- dataset$titles[i]
             NLP::meta(corpus[[i]], tag = "id") <- dataset$articlesId[i]

@@ -4,17 +4,17 @@
 \alias{LoadLatest}
 \title{Finds the full path of the latest saved workspace for selected website.}
 \usage{
-LoadLatest(nameOfProject = NULL, nameOfWebsite = NULL)
+LoadLatest(project = NULL, website = NULL)
 }
 \arguments{
-\item{nameOfProject}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
+\item{project}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
 
-\item{nameOfWebsite}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
+\item{website}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
 }
 \description{
 Used in combination with load, it loads the most recent workspace saved for a given website based on the date included in the filename of the .Rdata file.
 }
 \examples{
-load(LoadLatest(nameOfProject, nameOfWebsite))
+load(LoadLatest(project, website))
 }
 

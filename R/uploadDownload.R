@@ -2,7 +2,7 @@
 #' 
 #' Uploads a set of datasets from existings 'castarter' projects to an online repository.
 #'  
-#' @param projectsAndWebsites A character vector listing websites to be loaded in the format "nameOfProject/nameOfWebsite".
+#' @param projectsAndWebsites A character vector listing websites to be loaded in the format "project/website".
 #' @return Nothing. Used for its side effects (uploading datasets to an ftp server).
 #' @export
 #' @examples
@@ -13,19 +13,19 @@ UploadDatasets <- function(projectsAndWebsites, server, user, pwd, dataset = TRU
     lastSavedDatasets <- vector()
     datasetFilenames <- vector()
     for (i in 1:length(projectsAndWebsites)) {
-        nameOfProject <- projectsAndWebsites[[i]][1]
-        nameOfWebsite <- projectsAndWebsites[[i]][2]
+        project <- projectsAndWebsites[[i]][1]
+        website <- projectsAndWebsites[[i]][2]
         if (dataset == TRUE) {
-            datasetFilename <- sort(list.files(file.path(nameOfProject, nameOfWebsite, "Dataset"))[stringr::str_extract(list.files(file.path(nameOfProject, nameOfWebsite, "Dataset")), "dataset.RData") == "dataset.RData"], decreasing = TRUE)[1]
+            datasetFilename <- sort(list.files(file.path(project, website, "Dataset"))[stringr::str_extract(list.files(file.path(project, website, "Dataset")), "dataset.RData") == "dataset.RData"], decreasing = TRUE)[1]
         }
         if (corpusQ == TRUE) {
-            corpusQFilename <- sort(list.files(file.path(nameOfProject, nameOfWebsite, "Dataset"))[stringr::str_extract(list.files(file.path(nameOfProject, nameOfWebsite, "Dataset")), "corpusQ.RData") == "corpusQ.RData"], decreasing = TRUE)[1]
+            corpusQFilename <- sort(list.files(file.path(project, website, "Dataset"))[stringr::str_extract(list.files(file.path(project, website, "Dataset")), "corpusQ.RData") == "corpusQ.RData"], decreasing = TRUE)[1]
         }
         if (corpusDtmQ == TRUE) {
-            corpusDtmQFilename <- sort(list.files(file.path(nameOfProject, nameOfWebsite, "Dataset"))[stringr::str_extract(list.files(file.path(nameOfProject, nameOfWebsite, "Dataset")), "corpusDtmQ.RData") == "corpusDtmQ.RData"], decreasing = TRUE)[1]
+            corpusDtmQFilename <- sort(list.files(file.path(project, website, "Dataset"))[stringr::str_extract(list.files(file.path(project, website, "Dataset")), "corpusDtmQ.RData") == "corpusDtmQ.RData"], decreasing = TRUE)[1]
         }
         if (is.na(datasetFilename) == FALSE) {
-            lastSavedDataset <- file.path(file.path(nameOfProject, nameOfWebsite, "Dataset"), datasetFilename)
+            lastSavedDataset <- file.path(file.path(project, website, "Dataset"), datasetFilename)
             lastSavedDatasets[i] <- lastSavedDataset
             datasetFilenames[i] <- datasetFilename
         }
@@ -47,7 +47,7 @@ UploadDatasets <- function(projectsAndWebsites, server, user, pwd, dataset = TRU
 #' 
 #' Downloads a set of datasets from existings 'castarter' projects to an online repository.
 #'  
-#' @param projectsAndWebsites A character vector listing websites to be loaded in the format "nameOfProject/nameOfWebsite".
+#' @param projectsAndWebsites A character vector listing websites to be loaded in the format "project/website".
 #' @return A 'castarter' dataset.
 #' @export
 #' @examples
