@@ -1,7 +1,7 @@
 An introduction to 'castarter' - content analysis starter toolkit for R
 ================
 Giorgio Comai
-2016-10-04
+2016-10-11
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 Introduction
@@ -23,6 +23,8 @@ Installation
 install.packages("devtools")
 devtools::install_github("giocomai/castarter")
 ```
+
+For detailed install instructions, including references to packages that need to be preliminary installed on Linux system, as well as advanced setups (including Docker images), see [install instructions](./install.md).
 
 Load `castarter` with:
 
