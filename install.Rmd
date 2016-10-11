@@ -1,5 +1,5 @@
 ---
-title: "Install 'castarter'"
+title: "Install castarter"
 output: github_document
 ---
 
