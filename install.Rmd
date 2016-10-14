@@ -16,7 +16,7 @@ sudo dnf install R R-RCurl curl-devel R-zoo R-XML openssl-devel libxml2-devel ca
 ```
 ### On Ubuntu
 ```{install on Ubuntu}
-sudo apt-get install r-base r-cran-rcurl r-cran-xml r-cran-rjava r-cran-xml libssl-dev libcairo-dev libcurl4-openssl-dev
+sudo apt-get install r-base r-cran-rcurl r-cran-xml r-cran-rjava r-cran-xml libssl-dev libcairo-dev libcurl4-openssl-dev r-cran-slam
 ```
 ### On Windows
 Download the latest version of R from [R's official website]( https://www.r-project.org/{https://www.r-project.org/)
