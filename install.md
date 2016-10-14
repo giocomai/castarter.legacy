@@ -15,7 +15,7 @@ sudo dnf install R R-RCurl curl-devel R-zoo R-XML openssl-devel libxml2-devel ca
 ### On Ubuntu
 
 ``` install
-sudo apt-get install r-base r-cran-rcurl r-cran-xml r-cran-rjava r-cran-xml libssl-dev libcairo-dev libcurl4-openssl-dev r-cran-slam
+sudo apt-get install r-base r-cran-rcurl r-cran-xml r-cran-rjava r-cran-xml libssl-dev libcairo-dev libcurl4-openssl-dev r-cran-slam libxml2-dev
 ```
 
 ### On Windows
