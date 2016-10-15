@@ -77,11 +77,6 @@ ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = NULL, co
     }
     allLinks <- allLinks[gtools::mixedorder(nchar(as.character(allLinks$titles))), ]
     allLinks$links <- as.character(allLinks$links)
-    if (gtools::invalid(removeString)==FALSE) {
-        for (i in seq_along(removeString)) {
-            allLinks$links <- gsub(pattern = removeString[i], replacement = "", x = allLinks$links, fixed = TRUE)
-        }
-    }
     allLinks$links <- paste0(domain, allLinks$links)
     allLinks$links <- gsub("//", "/", allLinks$links, fixed = TRUE)
     allLinks$links <- gsub("http:/", "http://", allLinks$links, fixed = TRUE)
@@ -94,6 +89,11 @@ ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = NULL, co
         allLinks <- allLinks[gtools::mixedorder(allLinks$links), ]
     }
     links <- as.character(allLinks$links)
+    if (gtools::invalid(removeString)==FALSE) {
+        for (i in seq_along(removeString)) {
+            links <- gsub(pattern = removeString[i], replacement = "", x = links, fixed = TRUE)
+        }
+    }
     links <- paste0(links, appendString)
     titles <- as.character(allLinks$titles)
     links <- setNames(links, titles)
