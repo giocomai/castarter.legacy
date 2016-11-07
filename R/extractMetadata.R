@@ -303,7 +303,7 @@ MergeDates <- function(dates1, dates2, dates3 = NULL, minDate = NULL, maxDate = 
 #' @export
 #' @examples
 #' titles <- ExtractTitles(articlesHtml)
-ExtractTitles <- function(articlesHtml = NULL, articlesLinks = "", method = "htmlTitle", removePunctuation = FALSE, onlyStandardCharacters = FALSE, removeString = NULL, removeEverythingBefore = NULL, removeEverythingAfter = NULL, customXpath = "", maxCharacters = NULL, progressBar = TRUE, exportParameters = TRUE, project = NULL, website = NULL) {
+ExtractTitles <- function(articlesHtml = NULL, articlesLinks = NULL, method = "htmlTitle", removePunctuation = FALSE, onlyStandardCharacters = FALSE, removeString = NULL, removeEverythingBefore = NULL, removeEverythingAfter = NULL, customXpath = "", maxCharacters = NULL, progressBar = TRUE, exportParameters = TRUE, project = NULL, website = NULL) {
     if (gtools::invalid(project) == TRUE) {
         project <- CastarterOptions("project")
     }
@@ -334,7 +334,11 @@ ExtractTitles <- function(articlesHtml = NULL, articlesLinks = "", method = "htm
         write.table(updateParameters, file = base::file.path(project, website, "Logs", paste(website, "updateParameters.csv", sep = " - ")))
     }
     titles <- vector()
-    numberOfArticles <- length(articlesHtml)
+    if (gtools::invalid(articlesHtml)==TRUE) {
+        numberOfArticles <- length(articlesLinks)
+    } else {
+        numberOfArticles <- length(articlesHtml)
+    }
     if (progressBar == TRUE) {
         pb <- txtProgressBar(min = 0, max = numberOfArticles, style = 3, title = "Extracting titles")
     }

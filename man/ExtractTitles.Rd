@@ -4,7 +4,7 @@
 \alias{ExtractTitles}
 \title{Extracts titles of individual pages}
 \usage{
-ExtractTitles(articlesHtml = NULL, articlesLinks = "",
+ExtractTitles(articlesHtml = NULL, articlesLinks = NULL,
   method = "htmlTitle", removePunctuation = FALSE,
   onlyStandardCharacters = FALSE, removeString = NULL,
   removeEverythingBefore = NULL, removeEverythingAfter = NULL,
