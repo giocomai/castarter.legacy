@@ -59,7 +59,9 @@ ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = NULL, co
             setTxtProgressBar(pb, i)
         }
     }
-    close(pb)
+    if (progressBar == TRUE) {
+        close(pb)
+    }
     allLinks <- as.data.frame(allLinks, stringsAsFactors = FALSE)
     allLinks <- unique(allLinks)
     allLinksFiltered <- allLinks[0,]
