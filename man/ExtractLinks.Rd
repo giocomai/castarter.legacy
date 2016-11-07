@@ -8,8 +8,8 @@ ExtractLinks(domain, partOfLink, indexHtml, containerType = NULL,
   containerClass = NULL, divClass = NULL, attributeType = NULL,
   partOfLinkToExclude = NULL, minLength = NULL, maxLength = NULL,
   indexLinks = NULL, sortLinks = TRUE, export = FALSE,
-  appendString = NULL, removeString = NULL, exportParameters = TRUE,
-  project = NULL, website = NULL)
+  appendString = NULL, removeString = NULL, progressBar = TRUE,
+  exportParameters = TRUE, project = NULL, website = NULL)
 }
 \arguments{
 \item{domain}{Web domain of the website. Will be added at the beginning of each link found.If links in the page already include the full web address this should be ignored. Defaults to "".}
@@ -33,6 +33,8 @@ ExtractLinks(domain, partOfLink, indexHtml, containerType = NULL,
 \item{appendString}{If provided, appends given string to the extracted articles. Typically used to create links for print or mobile versions of the extracted page.}
 
 \item{removeString}{If provided, remove given string (or strings) from links.}
+
+\item{progressBar}{Logical, defaults to TRUE. If FALSE, progress bar is not shown (useful for example when including scripts in rmarkdown)}
 
 \item{exportParameters}{Defaults to FALSE. If TRUE, function parameters are exported in the project/website folder. They can be used to update the corpus.}
 }

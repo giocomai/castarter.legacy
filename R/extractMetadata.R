@@ -299,6 +299,7 @@ MergeDates <- function(dates1, dates2, dates3 = NULL, minDate = NULL, maxDate = 
 ##' }
 #' @param removeEverythingAfter Removes everything after given string. 
 #' @param maxCharacters An integer. Defines the maximum number of characters to be kept in the output for each title. 
+#' @param progressBar Logical, defaults to TRUE. If FALSE, progress bar is not shown (useful for example when including scripts in rmarkdown)
 #' @return A character vector of article titles.
 #' @export
 #' @examples

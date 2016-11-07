@@ -13,13 +13,13 @@
 #' @param sortLinks Defaults to TRUE. If TRUE, links are sorted in aphabetical order. 
 #' @param appendString If provided, appends given string to the extracted articles. Typically used to create links for print or mobile versions of the extracted page.
 #' @param removeString If provided, remove given string (or strings) from links.
+#' @param progressBar Logical, defaults to TRUE. If FALSE, progress bar is not shown (useful for example when including scripts in rmarkdown)
 #' @param exportParameters Defaults to FALSE. If TRUE, function parameters are exported in the project/website folder. They can be used to update the corpus. 
 #' @return A named character vector of links to articles. Name of the link may be the article title. 
 #' @export
 #' @examples
 #' articlesLinks <- ExtractLinks(domain = "http://www.example.com/", partOfLink = "news/", indexHtml)
-ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = NULL, containerClass = NULL, divClass = NULL, attributeType = NULL, partOfLinkToExclude = NULL, minLength = NULL, maxLength = NULL, indexLinks = NULL,
-    sortLinks = TRUE, export = FALSE, appendString = NULL, removeString = NULL, exportParameters = TRUE, project = NULL, website = NULL) {
+ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = NULL, containerClass = NULL, divClass = NULL, attributeType = NULL, partOfLinkToExclude = NULL, minLength = NULL, maxLength = NULL, indexLinks = NULL, sortLinks = TRUE, export = FALSE, appendString = NULL, removeString = NULL, progressBar = TRUE, exportParameters = TRUE, project = NULL, website = NULL) {
     if (gtools::invalid(project) == TRUE) {
         project <- CastarterOptions("project")
     }
@@ -28,7 +28,9 @@ ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = NULL, co
     }
     numberOfIndexPages <- length(indexHtml)
     allLinks <- data.frame()
-    pb <- txtProgressBar(min = 0, max = numberOfIndexPages, style = 3, title = "Extracting links")
+    if (progressBar == TRUE) {
+        pb <- txtProgressBar(min = 0, max = numberOfIndexPages, style = 3, title = "Extracting links")
+    }
     for (i in 1:numberOfIndexPages) {
         if (indexHtml[i] != "") {
             indexPageHtmlParsed <- XML::htmlTreeParse(indexHtml[i], useInternalNodes = T, encoding = "UTF-8")
@@ -53,7 +55,9 @@ ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = NULL, co
             links <- cbind(links, titles)
             allLinks <- rbind(links, allLinks)
         }
-        setTxtProgressBar(pb, i)
+        if (progressBar == TRUE) {
+            setTxtProgressBar(pb, i)
+        }
     }
     close(pb)
     allLinks <- as.data.frame(allLinks, stringsAsFactors = FALSE)

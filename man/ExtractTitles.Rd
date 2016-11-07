@@ -31,6 +31,8 @@ ExtractTitles(articlesHtml = NULL, articlesLinks = NULL,
 \item{removeEverythingAfter}{Removes everything after given string.}
 
 \item{maxCharacters}{An integer. Defines the maximum number of characters to be kept in the output for each title.}
+
+\item{progressBar}{Logical, defaults to TRUE. If FALSE, progress bar is not shown (useful for example when including scripts in rmarkdown)}
 }
 \value{
 A character vector of article titles.
