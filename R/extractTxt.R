@@ -13,7 +13,7 @@
 #' @return A character vector of txt files, and individual articles saved as txt files in a dedicated folder if 'export' is set to TRUE.
 #' @export
 #' @examples
-#' articlesTxt <- ExtractTxt(articlesHtml, metadata)
+#' contents <- ExtractTxt(articlesHtml, metadata)
 ExtractTxt <- function(articlesHtml, metadata = NULL, export = FALSE, maxTitleCharacters = 80, removeString = NULL, divClass = NULL, divId = NULL, customXpath = NULL, removeEverythingAfter = NULL, removeEverythingBefore = NULL, removePunctuationInFilename = TRUE, removeTitleFromTxt = FALSE, titles = NULL, keepEverything = FALSE, exportParameters = TRUE, progressBar = TRUE, project = NULL, website = NULL) {
     if (gtools::invalid(project) == TRUE) {
         project <- CastarterOptions("project")
@@ -48,7 +48,7 @@ ExtractTxt <- function(articlesHtml, metadata = NULL, export = FALSE, maxTitleCh
         write.table(updateParameters, file = base::file.path(project, website, "Logs", paste(website, "updateParameters.csv", sep = " - ")))
     }
     numberOfArticles <- length(articlesHtml)
-    articlesTxt <- rep(NA, numberOfArticles)
+    contents <- rep(NA, numberOfArticles)
     if (export == TRUE) {
         titles <- metadata$titles
         if (removePunctuationInFilename == TRUE) {
@@ -67,7 +67,7 @@ ExtractTxt <- function(articlesHtml, metadata = NULL, export = FALSE, maxTitleCh
                     articlesHtml[i] <- NA
                     print(paste("Text div in article with ID", i, "could not be extracted."))
                 } else {
-                    articlesTxt[i] <- XML::xpathSApply(articleHtmlParsed, paste0("//div[@class='", divClass, "']"), XML::xmlValue)
+                    contents[i] <- XML::xpathSApply(articleHtmlParsed, paste0("//div[@class='", divClass, "']"), XML::xmlValue)
                 }
                 if (progressBar == TRUE) {
                     setTxtProgressBar(pb, i)
@@ -82,7 +82,7 @@ ExtractTxt <- function(articlesHtml, metadata = NULL, export = FALSE, maxTitleCh
                     articlesHtml[i] <- NA
                     print(paste("Text div in article with ID", i, "could not be extracted."))
                 } else {
-                    articlesTxt[i] <- XML::xpathSApply(articleHtmlParsed, paste0("//div[@id='", divId, "']"), XML::xmlValue)
+                    contents[i] <- XML::xpathSApply(articleHtmlParsed, paste0("//div[@id='", divId, "']"), XML::xmlValue)
                 }
                 if (progressBar == TRUE) {
                     setTxtProgressBar(pb, i)
@@ -98,7 +98,7 @@ ExtractTxt <- function(articlesHtml, metadata = NULL, export = FALSE, maxTitleCh
                     articlesHtml[i] <- NA
                     print(paste("Text in article with ID", i, "could not be extracted."))
                 } else {
-                    articlesTxt[i] <- extractedTemp
+                    contents[i] <- extractedTemp
                 }
                 if (progressBar == TRUE) {
                     setTxtProgressBar(pb, i)
@@ -112,7 +112,7 @@ ExtractTxt <- function(articlesHtml, metadata = NULL, export = FALSE, maxTitleCh
             } else {
                 articleTxt <- boilerpipeR::ArticleExtractor(articlesHtml[i])
             }
-            articlesTxt[i] <- articleTxt
+            contents[i] <- articleTxt
             if (progressBar == TRUE) {
                 setTxtProgressBar(pb, i)
             }
@@ -129,27 +129,27 @@ ExtractTxt <- function(articlesHtml, metadata = NULL, export = FALSE, maxTitleCh
                 titles <- metadata$titles   
             }
         }
-        for (i in seq_along(articlesTxt)) {
+        for (i in seq_along(contents)) {
             if (titles[i]!="") {
-                articlesTxt[i] <- base::sub(pattern = titles[i], replacement = "", x = articlesTxt[i], fixed = TRUE)
+                contents[i] <- base::sub(pattern = titles[i], replacement = "", x = contents[i], fixed = TRUE)
             }
         }
     }
     if (gtools::invalid(removeEverythingAfter) == FALSE) {
-        articlesTxt <- base::gsub(base::paste0(removeEverythingAfter, ".*"), "", articlesTxt, fixed = FALSE)
+        contents <- base::gsub(base::paste0(removeEverythingAfter, ".*"), "", contents, fixed = FALSE)
     }
     if (gtools::invalid(removeEverythingBefore) == FALSE) {
-        articlesTxt <- base::gsub(base::paste0(".*", removeEverythingBefore), "", articlesTxt, fixed = FALSE)
+        contents <- base::gsub(base::paste0(".*", removeEverythingBefore), "", contents, fixed = FALSE)
     }
     if (gtools::invalid(removeString) == FALSE) {
         for (i in 1:length(removeString)) {
-            articlesTxt <- gsub(removeString[i], "", articlesTxt, fixed = TRUE)
+            contents <- gsub(removeString[i], "", contents, fixed = TRUE)
         }
     }
     if (export == TRUE) {
-        for (i in 1:length(articlesTxt)) {
-            base::write(articlesTxt[i], file = txtFilenames[i])
+        for (i in 1:length(contents)) {
+            base::write(contents[i], file = txtFilenames[i])
         }
     }
-    return(articlesTxt)
+    return(contents)
 } 

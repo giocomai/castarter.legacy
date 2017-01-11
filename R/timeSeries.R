@@ -222,10 +222,10 @@ ShowDistribution <- function(dataset, specificWebsites = NULL, rollingAverage = 
             docSeries <- zoo::zoo(tab, order.by=dates)
         }
     } else if (method == "numberOfCharacters") {
-        numberOfArticles <- length(dataset$articlesTxt)
+        numberOfArticles <- length(dataset$contents)
         ncharArticles <- data.frame(date = rep(NA, numberOfArticles), nchar = rep(NA, numberOfArticles))
         for (i in 1:numberOfArticles) {
-            ncharArticles$nchar[i] <- nchar(dataset$articlesTxt[i])
+            ncharArticles$nchar[i] <- nchar(dataset$contents[i])
             ncharArticles$date[i] <- dataset$dates[i]
         }
         ncharPerDay <- plyr::ddply(ncharArticles,~date,plyr::summarise,ncharPerDay=sum(nchar))

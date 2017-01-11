@@ -250,7 +250,7 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", divClass = NULL, divI
 #'  
 #' @param dates1, dates2, dates3 Vectors of the POSIXct class to be merged. Where a value in dates1 is NA, MergeDates looks for a corresponding value in dates2 and dates3.
 #' @param minDate, maxDate Minimum and maximum possible dates in the format year-month-date, e.g. "2007-06-24". Introduces NA in the place of impossibly high or low dates.
-#' @param fillMissingDates Logical, defaults to FALSE. If TRUE fills missing NA dates with interpolated values. It is sensible to use this if dates are in a sequence, and if the corresponding articlesTxt includes actual contents (i.e. missing date is not effectively due to a missing article or a link included in the dataset by mistake)
+#' @param fillMissingDates Logical, defaults to FALSE. If TRUE fills missing NA dates with interpolated values. It is sensible to use this if dates are in a sequence, and if the corresponding 'contents' section includes actual contents (i.e. missing date is not effectively due to a missing article or a link included in the dataset by mistake)
 #' @param maxgap Integer, defaults to 5. Maximum number of consecutive NAs to fill. 
 #' @return A vector of the POSIXct class.
 #' @export
@@ -504,7 +504,7 @@ CreateDatasetFromHtml <- function(articlesLinks = NULL,
     htmlFilesList <- gtools::mixedsort(list.files(file.path(project, website, "Html"), pattern = "\\.html$", full.names = TRUE))
     numberOfArticles <- length(htmlFilesList)
     dates <- as.POSIXct(rep(NA, numberOfArticles))
-    articlesTxt <- rep(NA, numberOfArticles)
+    contents <- rep(NA, numberOfArticles)
     if (method_ExtractTitles == "indexLink") {
         titles <- ExtractTitles(articlesHtml = NULL, articlesLinks = articlesLinks, method = "indexLink", removeString = removeString_ExtractTitles, removeEverythingAfter = removeEverythingAfter_ExtractTitles, exportParameters = FALSE)
     } else {
@@ -527,7 +527,7 @@ CreateDatasetFromHtml <- function(articlesLinks = NULL,
         } else {
             dates[i] <- NA
         }
-        articlesTxt[i] <- ExtractTxt(articlesHtml = htmlFile, export = FALSE, removeEverythingAfter = removeEverythingAfter_ExtractTxt, removeEverythingBefore = removeEverythingBefore_ExtractTxt, divClass = divClass_ExtractTxt, divId = divId_ExtractTxt, removeString = removeString_ExtractTxt, customXpath = customXpath_ExtractTxt, progressBar = FALSE, exportParameters = FALSE)
+        contents[i] <- ExtractTxt(articlesHtml = htmlFile, export = FALSE, removeEverythingAfter = removeEverythingAfter_ExtractTxt, removeEverythingBefore = removeEverythingBefore_ExtractTxt, divClass = divClass_ExtractTxt, divId = divId_ExtractTxt, removeString = removeString_ExtractTxt, customXpath = customXpath_ExtractTxt, progressBar = FALSE, exportParameters = FALSE)
         if (method_ExtractTitles != "indexLink") {
             titleTemp <- ExtractTitles(articlesHtml = htmlFile, method = method_ExtractTitles, removeString = removeString_ExtractTitles, progressBar = FALSE)
             if (length(titleTemp) == 1) {
@@ -546,9 +546,9 @@ CreateDatasetFromHtml <- function(articlesLinks = NULL,
     }
     articlesId <- ExtractId(project, website)
     if (is.null(articlesLinks) == FALSE) {
-        dataset <- data.frame(project, website, dates, articlesId, titles, language, articlesLinks, articlesTxt, check.names = FALSE, stringsAsFactors = FALSE)
+        dataset <- data.frame(project, website, dates, articlesId, titles, language, articlesLinks, contents, check.names = FALSE, stringsAsFactors = FALSE)
     } else {
-        dataset <- data.frame(project, website, dates, articlesId, titles, language, articlesTxt, check.names = FALSE, stringsAsFactors = FALSE)        
+        dataset <- data.frame(project, website, dates, articlesId, titles, language, contents, check.names = FALSE, stringsAsFactors = FALSE)        
     }
     save(dataset, file = file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".RData")))
     print(paste("Dataset saved in", file.path(project, website, paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".RData"))))
@@ -608,15 +608,15 @@ ExportMetadata <- function(dates, articlesId, titles, language, articlesLinks, e
 #' @return A data.frame, a 'castarter' dataset.
 #' @export
 #' @examples
-#' dataset <- ExportDataset(articlesTxt, metadata, project, website)
-ExportDataset <- function(articlesTxt, metadata, exportRdata = TRUE, exportCsv = FALSE, exportXlsx = FALSE, project = NULL, website = NULL) {
+#' dataset <- ExportDataset(contents, metadata, project, website)
+ExportDataset <- function(contents, metadata, exportRdata = TRUE, exportCsv = FALSE, exportXlsx = FALSE, project = NULL, website = NULL) {
     if (gtools::invalid(project) == TRUE) {
         project <- CastarterOptions("project")
     }
     if (gtools::invalid(website) == TRUE) {
         project <- CastarterOptions("website")
     }
-    dataset <- cbind(metadata, articlesTxt, stringsAsFactors = FALSE)
+    dataset <- cbind(metadata, contents, stringsAsFactors = FALSE)
     if (exportRdata == TRUE) {
         save(dataset, file = file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".RData")))
         print(paste("Dataset saved in", file.path(project, website, paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".RData"))))

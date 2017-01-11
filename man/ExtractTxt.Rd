@@ -36,6 +36,6 @@ A character vector of txt files, and individual articles saved as txt files in a
 Extracts textual contents from a vector of html files.
 }
 \examples{
-articlesTxt <- ExtractTxt(articlesHtml, metadata)
+contents <- ExtractTxt(articlesHtml, metadata)
 }
 

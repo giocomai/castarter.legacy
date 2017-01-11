@@ -11,7 +11,7 @@
 SubsetDataset <- function(dataset, terms = NULL, startDate = NULL, endDate = NULL, sample = NULL) {
     if (is.null(terms) == FALSE) {
         terms <- base::paste(terms,collapse="|")
-        dataset <- dataset[base::grep(terms, dataset$articlesTxt, ignore.case = TRUE), ]
+        dataset <- dataset[base::grep(terms, dataset$contents, ignore.case = TRUE), ]
     }
     if (is.null(startDate) == FALSE) {
         dataset <- dataset[dataset$dates > as.POSIXct(startDate), ]

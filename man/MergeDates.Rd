@@ -12,7 +12,7 @@ MergeDates(dates1, dates2, dates3 = NULL, minDate = NULL, maxDate = NULL,
 
 \item{minDate, }{maxDate Minimum and maximum possible dates in the format year-month-date, e.g. "2007-06-24". Introduces NA in the place of impossibly high or low dates.}
 
-\item{fillMissingDates}{Logical, defaults to FALSE. If TRUE fills missing NA dates with interpolated values. It is sensible to use this if dates are in a sequence, and if the corresponding articlesTxt includes actual contents (i.e. missing date is not effectively due to a missing article or a link included in the dataset by mistake)}
+\item{fillMissingDates}{Logical, defaults to FALSE. If TRUE fills missing NA dates with interpolated values. It is sensible to use this if dates are in a sequence, and if the corresponding 'contents' section includes actual contents (i.e. missing date is not effectively due to a missing article or a link included in the dataset by mistake)}
 
 \item{maxgap}{Integer, defaults to 5. Maximum number of consecutive NAs to fill.}
 }

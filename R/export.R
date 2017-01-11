@@ -27,7 +27,7 @@ ExportArticlesWith <- function(dataset, term, includeNaDates = TRUE, onlyNaDates
         dataset <- dataset[is.na(dataset$dates)==FALSE,]
     }
     # Export only items that include...
-    tempDataset <- dataset[grep(term, dataset$articlesTxt, ignore.case = TRUE), ]
+    tempDataset <- dataset[grep(term, dataset$contents, ignore.case = TRUE), ]
     if (is.null(includeOnly) == FALSE) {
         tempDataset <- tempDataset[tempDataset$website == includeOnly, ]
     }
@@ -54,10 +54,10 @@ ExportArticlesWith <- function(dataset, term, includeNaDates = TRUE, onlyNaDates
     }
     if (txt == TRUE) {
         if (is.null(website) == TRUE) {
-            writeLines(paste(paste("Date:", tempDataset$date), paste("Title:", tempDataset$titles), paste("Link:", tempDataset$articlesLinks), paste("ID:", tempDataset$articlesId), tempDataset$articlesTxt, " ___  ______  ______  ______  ______  ______  ______  ______  ______  ___\n  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__\n (______)(______)(______)(______)(______)(______)(______)(______)(______)\n", sep = "\n"), file.path(project, "Outputs", paste(term, " in ", ".txt", sep = "")))
+            writeLines(paste(paste("Date:", tempDataset$date), paste("Title:", tempDataset$titles), paste("Link:", tempDataset$articlesLinks), paste("ID:", tempDataset$articlesId), tempDataset$contents, " ___  ______  ______  ______  ______  ______  ______  ______  ______  ___\n  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__\n (______)(______)(______)(______)(______)(______)(______)(______)(______)\n", sep = "\n"), file.path(project, "Outputs", paste(term, " in ", ".txt", sep = "")))
             print(paste("File .txt exported to:", file.path(project, "Outputs", paste(term, " in ", project, ".txt", sep = ""))))
         } else {
-            writeLines(paste(paste("Date:", tempDataset$date), paste("Title:", tempDataset$titles), paste("Link:", tempDataset$articlesLinks), paste("ID:", tempDataset$articlesId), tempDataset$articlesTxt, " ___  ______  ______  ______  ______  ______  ______  ______  ______  ___\n  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__\n (______)(______)(______)(______)(______)(______)(______)(______)(______)\n", sep = "\n"), file.path(project, website, "Outputs", paste(term, " in ", website, ".txt", sep = "")))
+            writeLines(paste(paste("Date:", tempDataset$date), paste("Title:", tempDataset$titles), paste("Link:", tempDataset$articlesLinks), paste("ID:", tempDataset$articlesId), tempDataset$contents, " ___  ______  ______  ______  ______  ______  ______  ______  ______  ___\n  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__\n (______)(______)(______)(______)(______)(______)(______)(______)(______)\n", sep = "\n"), file.path(project, website, "Outputs", paste(term, " in ", website, ".txt", sep = "")))
             print(paste("File .txt exported to:", file.path(project, website, "Outputs", paste(term, " in ", website, ".txt", sep = ""))))
         }
     }

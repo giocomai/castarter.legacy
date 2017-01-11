@@ -4,7 +4,7 @@
 #'  
 #' @param from Allows to choose which type of contents to import. Can be either "articles" or "index".
 #' @param sample Defaults to NULL. If a numeric value n is provided, then instead of importing all html files it imports n random files.
-#' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
+#' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.
 #' @param website Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
 #' @param sort Logical, defaults to TRUE. For folders downloaded through 'castarter' (e.g. with DownloadContents) this should be left to TRUE, otherwise mismatch between articlesLinks and imported documents is due to occur. 
 #' @param recursive Value is passed to list.files function when using the pathToHtmlFolder option.

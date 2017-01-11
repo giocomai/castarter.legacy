@@ -135,11 +135,11 @@ LoadAllDatasets <- function(project, removeNAdates = TRUE) {
 #' corpus <- CreateCorpus(dataset)
 CreateCorpus <- function(dataset, quanteda = TRUE) {
     if (quanteda==TRUE) {
-        corpus <- quanteda::corpus(dataset$articlesTxt, docnames = paste(as.Date(dataset$dates), dataset$articlesId, dataset$titles, sep = " - "), 
+        corpus <- quanteda::corpus(dataset$contents, docnames = paste(as.Date(dataset$dates), dataset$articlesId, dataset$titles, sep = " - "), 
                                    docvars=data.frame(website=dataset$website, date=as.Date(dataset$dates), title=dataset$titles, links = dataset$articlesLinks, ID=dataset$articlesId))
     } else {
-        corpus <- tm::VCorpus(tm::VectorSource(dataset$articlesTxt))
-        for (i in 1:length(dataset$articlesTxt)) {
+        corpus <- tm::VCorpus(tm::VectorSource(dataset$contents))
+        for (i in 1:length(dataset$contents)) {
             NLP::meta(corpus[[i]], tag = "author") <- dataset$website[i]
             NLP::meta(corpus[[i]], tag = "datetimestamp") <- dataset$dates[i]
             NLP::meta(corpus[[i]], tag = "heading") <- dataset$titles[i]

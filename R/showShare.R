@@ -23,7 +23,7 @@ ShowShare <- function(dataset, terms, breaks = "years", startDate = NULL, custom
     DTdataset <- DTdataset[base::is.na(DTdataset$dates)==FALSE]
     DTdatasetFreq <- DTdataset[, .N, by=.(DTdataset$dates)]
     DTdatasetFreq <- stats::setNames(DTdatasetFreq, c("dates", "N"))
-    DTterms <- DTdataset[base::regexpr(terms, DTdataset$articlesTxt, ignore.case = TRUE)>0, .N, by=.(dates)]
+    DTterms <- DTdataset[base::regexpr(terms, DTdataset$contents, ignore.case = TRUE)>0, .N, by=.(dates)]
     data.table::setkey(DTdatasetFreq, dates)
     DTbyBreaks <- merge(DTdatasetFreq, DTterms, all = TRUE)
     DTbyBreaks$N.y[is.na(DTbyBreaks$N.y)==TRUE] <- 0
