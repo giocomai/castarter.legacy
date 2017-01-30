@@ -1,19 +1,19 @@
 #' Creates time series of the frequency of specific terms.
 #'
-#' It creates time series with the frequency of one or more terms, in one or more websites. 
+#' It creates time series with the frequency of one or more terms, in one or more websites.
 #' @param corpus A corpus of the 'tm' or 'quanteda' type, presumably created with castarter's ConvertToCorpus() function.
 #' @param terms A character vector with one or more words to be analysed, or a 'quanteda' dictionary if corpus/corpusDtm are also of the 'quanteda' type.
 #' @param specificWebsites Character vector of the names of one or more websites included in the corpus. Only selected websites will be included in the analysis.
 #' @param startDate, endDate Character vector with date in the format year-month-date, e.g. "2015-07-14". Given dates are included, e.g. if you wish to include all of 2015, set startDate="2015-01-01", endDate"2015-12-31")
-#' @param verticalLine Defaults to NULL. Draws a vertical dotted line at the date provided. If given, value must correspond to one or more dates in the YMD format, e.g. "2016-08-17". 
-#' @param smoothLine Logical, defaults to FALSE. If TRUE draws a smooth line over the time series. 
-#' @param customTitle A character vector, defaults to NULL. If provided, it overrides default graph title. 
-#' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
+#' @param verticalLine Defaults to NULL. Draws a vertical dotted line at the date provided. If given, value must correspond to one or more dates in the YMD format, e.g. "2016-08-17".
+#' @param smoothLine Logical, defaults to FALSE. If TRUE draws a smooth line over the time series.
+#' @param customTitle A character vector, defaults to NULL. If provided, it overrides default graph title.
+#' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.
 #' @param website Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
 #' @param rollingAverage Integer, defaults to 30. Number of days used to calculate word frequency as shown in the time series. Time series shows word frequency for each date as an average of the N number of days (N=rollingAverage) following the correspondent date.
 #' @param align Defaults to "center", can be either "left", "right" or "center" and refers to the way the rolling average is calculated.
-#' @param export Logical, defaults to FALSE. If TRUE, saves the time series in both png and pdf format. If project and website are provided, in saves the timeseries in the "Outputs" subfolder. 
-#' @param corpusDtm A document-term matrix or a document-feature matrix of the 'quanteda' type. If provided, other parameters (specificWebsites, startDate, endDate) are ignored, but computation is faster. 
+#' @param export Logical, defaults to FALSE. If TRUE, saves the time series in both png and pdf format. If project and website are provided, in saves the timeseries in the "Outputs" subfolder.
+#' @param corpusDtm A document-term matrix or a document-feature matrix of the 'quanteda' type. If provided, other parameters (specificWebsites, startDate, endDate) are ignored, but computation is faster.
 #' @export
 #' @examples
 #' ShowTS(corpus, terms = c("word1", "word2"))
@@ -57,7 +57,7 @@ ShowTS <- function(terms, corpusDtm = NULL, corpus = NULL, specificWebsites = NU
                 corpus <- corpus[NLP::meta(corpus, "datetimestamp") < as.POSIXct(endDate)]
             }
             corpusDtm <- tm::DocumentTermMatrix(corpus)
-        } 
+        }
     } else {
         if (quanteda::is.dfm(corpusDtm)==TRUE) {
             corpusDtm <- quanteda::weight(corpusDtm, "relFreq")
@@ -127,14 +127,14 @@ ShowTS <- function(terms, corpusDtm = NULL, corpus = NULL, specificWebsites = NU
         ggplot2::scale_colour_brewer(type = "qual", palette = 6) +
         ggplot2::geom_line(size = 1)
     if (quanteda::is.dfm(corpusDtm) == TRUE) {
-        timeSeries <- timeSeries + ggplot2::scale_x_date("") 
+        timeSeries <- timeSeries + ggplot2::scale_x_date("")
     } else {
         timeSeries <- timeSeries + ggplot2::scale_x_datetime("")
     }
     if (length(terms)>1) {
-        timeSeries <- timeSeries + ggplot2::labs(color = "Terms") 
+        timeSeries <- timeSeries + ggplot2::labs(color = "Terms")
     } else {
-        timeSeries <- timeSeries + ggplot2::labs(color = "Websites") 
+        timeSeries <- timeSeries + ggplot2::labs(color = "Websites")
     }
     if (is.null(verticalLine)==FALSE) {
         timeSeries <- timeSeries + ggplot2::geom_vline(xintercept = c(as.numeric(as.Date(verticalLine))), linetype = 2)
@@ -186,22 +186,22 @@ ShowTS <- function(terms, corpusDtm = NULL, corpus = NULL, specificWebsites = NU
     } else {
         timeSeries
     }
-} 
+}
 
 #' Creates a time series graph showing the distribution of documents by date
-#' 
+#'
 #' Creates a time series graph showing the distribution of documents by date.
-#'  
+#'
 #' @param dataset A dataset created with 'castarter'.
 #' @param specificWebsites Character vector indicating which websites (defined by relative website) have to be included in graph. If left to default, includes all websites present in the dataset.
 #' @param rollingAverage Integer, defaults to 30. Number of days used to calculate word frequency as shown in the time series. Time series shows word frequency for each date as an average of the N number of days (N=rollingAverage) following the correspondent date.
 #' @param align Defaults to "center", can be either "left", "right" or "center" and refers to the way the rolling average is calculated.
-#' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
+#' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.
 #' @param website Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
 #' @param startDate, endDate Character vector with date in the format year-month-date, e.g. "2015-07-14".
-#' @param export Logical, defaults to FALSE. If TRUE, saves the graph in both png and pdf format. If project and website are provided, in saves the timeseries in the correspondent "Outputs" subfolder. 
-#' @param method Accepted values: "numberOfArticles" (default, creates time series based on number of publications per day); "numberOfCharacters" (creates time series based on number of charachters per day, currently does not work in conjunction with specificWebsites option). 
-#' @return A ggplot2 time series showing number of articles published each day. 
+#' @param export Logical, defaults to FALSE. If TRUE, saves the graph in both png and pdf format. If project and website are provided, in saves the timeseries in the correspondent "Outputs" subfolder.
+#' @param method Accepted values: "numberOfArticles" (default, creates time series based on number of publications per day); "numberOfCharacters" (creates time series based on number of charachters per day, currently does not work in conjunction with specificWebsites option).
+#' @return A ggplot2 time series showing number of articles published each day.
 #' @export
 #' @examples
 #' ShowDistribution(dataset)
@@ -213,23 +213,23 @@ ShowDistribution <- function(dataset, specificWebsites = NULL, rollingAverage = 
     if (gtools::invalid(website) == TRUE) {
         website <- CastarterOptions("website")
     }
-    tab <- base::table(dataset$dates, dataset$website)
-    dates <- base::as.POSIXct(base::rownames(tab))
+    tab <- base::table(dataset$date, dataset$website)
+    date <- base::as.POSIXct(base::rownames(tab))
     if (method == "numberOfArticles") {
         if (base::is.null(specificWebsites) == FALSE) {
-            docSeries <- zoo::zoo(tab[,specificWebsites], order.by=dates)
+            docSeries <- zoo::zoo(tab[,specificWebsites], order.by=date)
         } else {
-            docSeries <- zoo::zoo(tab, order.by=dates)
+            docSeries <- zoo::zoo(tab, order.by=date)
         }
     } else if (method == "numberOfCharacters") {
         numberOfArticles <- length(dataset$contents)
         ncharArticles <- data.frame(date = rep(NA, numberOfArticles), nchar = rep(NA, numberOfArticles))
         for (i in 1:numberOfArticles) {
             ncharArticles$nchar[i] <- nchar(dataset$contents[i])
-            ncharArticles$date[i] <- dataset$dates[i]
+            ncharArticles$date[i] <- dataset$date[i]
         }
         ncharPerDay <- plyr::ddply(ncharArticles,~date,plyr::summarise,ncharPerDay=sum(nchar))
-        docSeries <- zoo::zoo(ncharPerDay$ncharPerDay, order.by = dates)
+        docSeries <- zoo::zoo(ncharPerDay$ncharPerDay, order.by = date)
     }
     docSeries <- base::merge(docSeries, zoo::zoo(, seq(start(docSeries), end(docSeries), "DSTday")), fill=0)
     docSeries <- zoo::rollapply(docSeries, rollingAverage, align=align, mean, na.rm=TRUE)
