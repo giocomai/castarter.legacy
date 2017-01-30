@@ -70,7 +70,7 @@ LoadDatasets <- function(projectsAndWebsites = NULL, type = "dataset", removeNAd
             rm(dataset)
         }
         if (removeNAdates == TRUE) {
-            allDatasets <- allDatasets[is.na(allDatasets$dates) == FALSE, ]
+            allDatasets <- allDatasets[is.na(allDatasets$date) == FALSE, ]
         }
     } else if (type == "corpusDtmQ") {
         load(lastSavedDatasets[i])
@@ -128,7 +128,7 @@ LoadAllDatasets <- function(project, removeNAdates = TRUE) {
         rm(dataset)
     }
     if (removeNAdates == TRUE) {
-        allDatasets <- allDatasets[is.na(allDatasets$dates) == FALSE, ]
+        allDatasets <- allDatasets[is.na(allDatasets$date) == FALSE, ]
     }
     return(as_data_frame(allDatasets))
 }
