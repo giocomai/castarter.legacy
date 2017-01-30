@@ -12,8 +12,8 @@ SummariseDataset <- function(dataset) {
     websites <- levels(as.factor(dataset$website))
     datasetSummary <- data.frame(website = websites, minDates = as.Date(rep(NA, length(websites))), maxDates = as.Date(rep(NA, length(websites))), totalPublications = as.numeric(NA), avgDailyPublications = as.numeric(NA))
     for (i in seq_along(websites)) {
-        datasetSummary$minDates[i] <- min(dataset$dates[dataset$website==websites[i]])
-        datasetSummary$maxDates[i] <- max(dataset$dates[dataset$website==websites[i]])
+        datasetSummary$minDates[i] <- min(dataset$date[dataset$website==websites[i]])
+        datasetSummary$maxDates[i] <- max(dataset$date[dataset$website==websites[i]])
         datasetSummary$totalPublications[i] <- nrow(dataset[dataset$website==websites[i],])
         datasetSummary$avgDailyPublications[i] <- datasetSummary$totalPublications[i]/as.numeric(diff.Date(x = c(datasetSummary$minDates[i], datasetSummary$maxDates[i])))
     }
