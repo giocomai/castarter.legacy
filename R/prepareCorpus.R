@@ -147,8 +147,7 @@ LoadAllDatasets <- function(project, removeNAdates = TRUE) {
 #' corpus <- CreateCorpus(dataset)
 CreateCorpus <- function(dataset, quanteda = TRUE) {
     if (quanteda==TRUE) {
-        corpus <- quanteda::corpus(dataset$contents, docnames = paste(as.Date(dataset$date), dataset$id, dataset$title, sep = " - "),
-                                   docvars=data.frame(website=dataset$website, date=as.Date(dataset$date), title=dataset$title, link = dataset$link, ID=dataset$id))
+        corpus <- quanteda::corpus(dataset$contents, docnames = paste(as.Date(dataset$date), dataset$id, dataset$title, sep = " - "), docvars=data.frame(website=dataset$website, date=as.Date(dataset$date), title=dataset$title, link = dataset$link, ID=dataset$id))
     } else {
         corpus <- tm::VCorpus(tm::VectorSource(dataset$contents))
         for (i in 1:length(dataset$contents)) {
