@@ -2,7 +2,7 @@
 % Please edit documentation in R/extractMetadata.R
 \name{ExtractId}
 \alias{ExtractId}
-\title{Extracts articlesId from filename}
+\title{Extracts id from filename}
 \usage{
 ExtractId(project = NULL, website = NULL, accordingToDate = FALSE,
   dates = NULL)
@@ -16,9 +16,9 @@ ExtractId(project = NULL, website = NULL, accordingToDate = FALSE,
 A vector of the integer class.
 }
 \description{
-Extracts articlesId from filename
+Extracts id from filename
 }
 \examples{
-articlesId <- ExtractId(project, website)
+id <- ExtractId(project, website)
 }
 

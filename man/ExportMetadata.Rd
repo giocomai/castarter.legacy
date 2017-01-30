@@ -4,8 +4,8 @@
 \alias{ExportMetadata}
 \title{Exports metadata}
 \usage{
-ExportMetadata(dates, articlesId, titles, language, articlesLinks,
-  exportXlsx = FALSE, accordingToDate = FALSE, ignoreNAdates = FALSE,
+ExportMetadata(dates, id, titles, language, articlesLinks, exportXlsx = FALSE,
+  accordingToDate = FALSE, ignoreNAdates = FALSE,
   onlyExistingHtmlFiles = FALSE, project = NULL, website = NULL)
 }
 \arguments{
@@ -22,6 +22,6 @@ A vector of the data.frame class.
 Exports metadata to a vector, csv or xlsx file.
 }
 \examples{
-metadata <- ExportMetadata(project, website, dates, articlesId, titles, language, articlesLinks)
+metadata <- ExportMetadata(project, website, dates, id, titles, language, articlesLinks)
 }
 

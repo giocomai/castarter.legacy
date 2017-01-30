@@ -41,9 +41,9 @@ UpdateDataset <- function(dataset, articlesLinks = NULL, numberOfIndexPages = 10
         language_ExtractDates <- Sys.getlocale(category = "LC_TIME")
     }
     dates <- ExtractDates(articlesHtml = articlesHtmlNew, dateFormat = params$param[params$args=="dateFormat_ExtractDates"], customString = params$param[params$args=="customString_ExtractDates"], divClass = params$param[params$args=="divClass_ExtractDates"], spanClass = params$param[params$args=="spanClass_ExtractDates"], customXpath = params$param[params$args=="customXpath_ExtractDates"], language = language_ExtractDates, keepAllString = params$param[params$args=="keepAllString_ExtractDates"], minDate = params$param[params$args=="minDate"], maxDate = params$param[params$args=="maxDate"], removeEverythingBefore = params$param[params$args=="removeEverythingBefore_ExtractDates"], exportParameters = FALSE)
-    articlesId <- ExtractId(project, website)
+    id <- ExtractId(project, website)
     language <- dataset$language[1]
-    metadata <- ExportMetadata(project = project, website = website, dates = dates, articlesId = articlesId, titles = titles, language = language, articlesLinks = articlesLinksNew)
+    metadata <- ExportMetadata(project = project, website = website, dates = dates, id = id, titles = titles, language = language, articlesLinks = articlesLinksNew)
     contents <- ExtractTxt(articlesHtml = articlesHtmlNew, metadata = metadata, export = FALSE, maxTitleCharacters = params$param[params$args=="maxTitleCharacters"], removeString = unlist(stringr::str_split(string = params$param[params$args=="removeString_ExtractTxt"], pattern = "§§§")), divClass = params$param[params$args=="divClass_ExtractTxt"], divId = params$param[params$args=="divId_ExtractTxt"], removeEverythingAfter = params$param[params$args=="removeEverythingAfter_ExtractTxt"], removeEverythingBefore = params$param[params$args=="removeEverythingBefore_ExtractTxt"], removePunctuationInFilename = params$param[params$args=="removePunctuationInFilename"], keepEverything = params$param[params$args=="keepEverything_ExtractTxt"], removeTitleFromTxt = params$param[params$args=="removeTitleFromTxt"], exportParameters = FALSE)
     dataset <- rbind(dataset, cbind(metadata, contents, stringsAsFactors = FALSE))
     invisible(dataset)

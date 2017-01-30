@@ -115,7 +115,7 @@ SaveWebsite <- function(saveEnvironment = TRUE, dataset = NULL, corpus = NULL, c
         xlsx::write.xlsx(dataset, file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".xlsx")))
     }
     if (exportTxt == TRUE) {
-        writeLines(paste(paste("Date:", dataset$date), paste("Title:", dataset$titles), paste("Link:", dataset$articlesLinks), paste("ID:", dataset$articlesId), dataset$contents, " ___  ______  ______  ______  ______  ______  ______  ______  ______  ___\n  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__\n (______)(______)(______)(______)(______)(______)(______)(______)(______)\n", sep = "\n"), file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".txt")))
+        writeLines(paste(paste("Date:", dataset$date), paste("Title:", dataset$titles), paste("Link:", dataset$articlesLinks), paste("ID:", dataset$id), dataset$contents, " ___  ______  ______  ______  ______  ______  ______  ______  ______  ___\n  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__\n (______)(______)(______)(______)(______)(______)(______)(______)(______)\n", sep = "\n"), file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".txt")))
         message(paste("Full dataset in txt format saved in", file.path(project, website, paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".txt"))))
     }
 }

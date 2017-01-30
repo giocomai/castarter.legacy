@@ -1,14 +1,14 @@
 #' Extracts textual contents from a vector of html files
-#' 
-#' Extracts textual contents from a vector of html files. 
-#'  
+#'
+#' Extracts textual contents from a vector of html files.
+#'
 #' @param articlesHtml A character vector of html files.
 #' @param metadata Defaults to NULL. A data.frame presumably created with ExportMetadata() including information on all articles. Number of rows must correspond to the number of articles to be elaborated. This is required when export == TRUE, in order to provide meaningful filenames.
 #' @param keepEverything Logical. If TRUE, the functions calls the boilerpipeR::KeepEverythingExtractor from boilerpipeR, instead of boilerpipeR::ArticleExtractor.
-#' @param removeString A character vector of one or more strings. Provided strings are removed from each article. 
+#' @param removeString A character vector of one or more strings. Provided strings are removed from each article.
 #' @param export Logical, defaults to TRUE. If TRUE, textual contents are saved as individual txt files in a dedicated folder. Filename is based on the medatadata.
-#' @param maxTitleCharacters Maximum number of characters allowed in the title. Defaults to 80. 
-#' @param divClass If provided, all text included in the chosen div is outputted. 
+#' @param maxTitleCharacters Maximum number of characters allowed in the title. Defaults to 80.
+#' @param divClass If provided, all text included in the chosen div is outputted.
 #' @param removePunctuationInFilename Logical, defaults to TRUE. If TRUE (and export == TRUE), it removes punctuation signs from filemanes to prevent errors in saving files.
 #' @return A character vector of txt files, and individual articles saved as txt files in a dedicated folder if 'export' is set to TRUE.
 #' @export
@@ -22,7 +22,7 @@ ExtractTxt <- function(articlesHtml, metadata = NULL, export = FALSE, maxTitleCh
         website <- CastarterOptions("website")
     }
     if (exportParameters == TRUE && exists("project") == FALSE | exportParameters == TRUE && exists("website") == FALSE) {
-        stop("If exportParameters == TRUE, both project and website must be defined either as parameters or previously with .")    
+        stop("If exportParameters == TRUE, both project and website must be defined either as parameters or previously with .")
     }
     if (exportParameters == TRUE) {
         args <- c("export_ExtractTxt", "maxTitleCharacters", "removeString_ExtractTxt", "divClass_ExtractTxt", "divId_ExtractTxt", "customXpath_ExtractTxt", "removeEverythingAfter_ExtractTxt", "removeEverythingBefore_ExtractTxt", "removePunctuationInFilename", "keepEverything_ExtractTxt", "removeTitleFromTxt")
@@ -43,7 +43,7 @@ ExtractTxt <- function(articlesHtml, metadata = NULL, export = FALSE, maxTitleCh
                 }
             }
         } else {
-            updateParameters <- updateParametersTemp 
+            updateParameters <- updateParametersTemp
         }
         write.table(updateParameters, file = base::file.path(project, website, "Logs", paste(website, "updateParameters.csv", sep = " - ")))
     }
@@ -54,7 +54,7 @@ ExtractTxt <- function(articlesHtml, metadata = NULL, export = FALSE, maxTitleCh
         if (removePunctuationInFilename == TRUE) {
             titles <- gsub("[[:punct:]]", ' ', titles)
         }
-        txtFilenames <- paste0(file.path(project, website, "Txt", paste0(paste(metadata$dates, metadata$website, metadata$articlesId, substring(titles, 1, maxTitleCharacters), sep = " - "), ".txt")))
+        txtFilenames <- paste0(file.path(project, website, "Txt", paste0(paste(metadata$dates, metadata$website, metadata$id, substring(titles, 1, maxTitleCharacters), sep = " - "), ".txt")))
     }
     if (progressBar == TRUE) {
         pb <- txtProgressBar(min = 0, max = numberOfArticles, style = 3, title = "Extracting titles")
@@ -126,7 +126,7 @@ ExtractTxt <- function(articlesHtml, metadata = NULL, export = FALSE, maxTitleCh
             if (is.null(metadata) == TRUE) {
                 stop("When removeTitleFromTxt, either metadata or titles must be provided.")
             } else {
-                titles <- metadata$titles   
+                titles <- metadata$titles
             }
         }
         for (i in seq_along(contents)) {
@@ -152,4 +152,4 @@ ExtractTxt <- function(articlesHtml, metadata = NULL, export = FALSE, maxTitleCh
         }
     }
     return(contents)
-} 
+}

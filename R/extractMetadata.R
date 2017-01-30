@@ -420,16 +420,16 @@ ExtractTitles <- function(articlesHtml = NULL, articlesLinks = NULL, method = "h
     return(titles)
 }
 
-#' Extracts articlesId from filename
+#' Extracts id from filename
 #' 
-#' Extracts articlesId from filename
+#' Extracts id from filename
 #'  
 #' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
 #' @param website Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.Defaults to NULL. If no website is provided, exported files are saved in the project/Outputs folder.
 #' @return A vector of the integer class. 
 #' @export
 #' @examples
-#' articlesId <- ExtractId(project, website)
+#' id <- ExtractId(project, website)
 ExtractId <- function(project = NULL, website = NULL, accordingToDate = FALSE, dates = NULL) {
     if (gtools::invalid(project) == TRUE) {
         project <- CastarterOptions("project")
@@ -441,8 +441,8 @@ ExtractId <- function(project = NULL, website = NULL, accordingToDate = FALSE, d
     if (accordingToDate == TRUE) {
         htmlFilesList <- htmlFilesList[order(dates)]
     }
-    articlesId <- as.integer(regmatches(htmlFilesList, regexpr("[[:digit:]]+", htmlFilesList)))
-    articlesId
+    id <- as.integer(regmatches(htmlFilesList, regexpr("[[:digit:]]+", htmlFilesList)))
+    id
 }
 
 #' Extracts metadata and text from local html files
@@ -544,11 +544,11 @@ CreateDatasetFromHtml <- function(articlesLinks = NULL,
             print(paste("Processed", x, "of", numberOfArticles, "articles."))
         }
     }
-    articlesId <- ExtractId(project, website)
+    id <- ExtractId(project, website)
     if (is.null(articlesLinks) == FALSE) {
-        dataset <- data.frame(project, website, dates, articlesId, titles, language, articlesLinks, contents, check.names = FALSE, stringsAsFactors = FALSE)
+        dataset <- data.frame(project, website, dates, id, titles, language, articlesLinks, contents, check.names = FALSE, stringsAsFactors = FALSE)
     } else {
-        dataset <- data.frame(project, website, dates, articlesId, titles, language, contents, check.names = FALSE, stringsAsFactors = FALSE)        
+        dataset <- data.frame(project, website, dates, id, titles, language, contents, check.names = FALSE, stringsAsFactors = FALSE)        
     }
     save(dataset, file = file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".RData")))
     print(paste("Dataset saved in", file.path(project, website, paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".RData"))))
@@ -565,8 +565,8 @@ CreateDatasetFromHtml <- function(articlesLinks = NULL,
 #' @return A vector of the data.frame class. 
 #' @export
 #' @examples
-#' metadata <- ExportMetadata(project, website, dates, articlesId, titles, language, articlesLinks)
-ExportMetadata <- function(dates, articlesId, titles, language, articlesLinks, exportXlsx = FALSE, accordingToDate = FALSE, ignoreNAdates = FALSE, onlyExistingHtmlFiles = FALSE, project = NULL, website = NULL) {
+#' metadata <- ExportMetadata(project, website, dates, id, titles, language, articlesLinks)
+ExportMetadata <- function(dates, id, titles, language, articlesLinks, exportXlsx = FALSE, accordingToDate = FALSE, ignoreNAdates = FALSE, onlyExistingHtmlFiles = FALSE, project = NULL, website = NULL) {
     if (gtools::invalid(project) == TRUE) {
         project <- CastarterOptions("project")
     }
@@ -576,9 +576,9 @@ ExportMetadata <- function(dates, articlesId, titles, language, articlesLinks, e
     ignoreVector <- NULL
     if (onlyExistingHtmlFiles == TRUE) {
         htmlFilesList <- gtools::mixedsort(list.files(file.path(project, website, "Html"), full.names = TRUE))
-        articlesId <- as.integer(regmatches(htmlFilesList, regexpr("[[:digit:]]+", htmlFilesList)))
-        articlesIdInTheory <- 1:length(articlesLinks)
-        ignoreVector <- !is.element(articlesId, articlesIdInTheory)
+        id <- as.integer(regmatches(htmlFilesList, regexpr("[[:digit:]]+", htmlFilesList)))
+        idInTheory <- 1:length(articlesLinks)
+        ignoreVector <- !is.element(id, idInTheory)
     }
     if (ignoreNAdates == TRUE) {
         ignoreVector <- is.na(dates)
@@ -586,7 +586,7 @@ ExportMetadata <- function(dates, articlesId, titles, language, articlesLinks, e
     if (is.null(ignoreVector) == FALSE) {
         articlesLinks <- articlesLinks[ignoreVector]
     }
-    metadata <- data.frame(project, website, dates, articlesId, titles, language, articlesLinks, check.names = FALSE, stringsAsFactors = FALSE)
+    metadata <- data.frame(project, website, dates, id, titles, language, articlesLinks, check.names = FALSE, stringsAsFactors = FALSE)
     if (accordingToDate == TRUE) {
         metadata <- metadata[order(metadata$dates), ]
     }
