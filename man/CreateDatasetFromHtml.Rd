@@ -4,7 +4,7 @@
 \alias{CreateDatasetFromHtml}
 \title{Extracts metadata and text from local html files}
 \usage{
-CreateDatasetFromHtml(articlesLinks = NULL, dateFormat = NULL,
+CreateDatasetFromHtml(links = NULL, dateFormat = NULL,
   divClass_ExtractDates = NULL, spanClass_ExtractDates = NULL,
   customXpath_ExtractDates = NULL,
   language_ExtractDates = Sys.getlocale(category = "LC_TIME"),

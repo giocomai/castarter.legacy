@@ -14,7 +14,7 @@ ExtractDates(articlesHtml, dateFormat = "dmY", divClass = NULL,
 \arguments{
 \item{articlesHtml}{A character vector of html files.}
 
-\item{dateFormat}{A string expressing the date format. In line with standards (see ?strptime), 'd' stands for day, 'm' stands for month in figures, 'b' for months spelled out as words, 'y' as year without the century, 'Y' as year with four digits. Standard separation marks among parts of the date (e.g. '-', '/', '.') should not be included. The following date formats are available : 
+\item{dateFormat}{A string expressing the date format. In line with standards (see ?strptime), 'd' stands for day, 'm' stands for month in figures, 'b' for months spelled out as words, 'y' as year without the century, 'Y' as year with four digits. Standard separation marks among parts of the date (e.g. '-', '/', '.') should not be included. The following date formats are available :
 \itemize{
  \item{"dmY"}{: Default.}
  \item{"Ymd"}{: }

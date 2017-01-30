@@ -1,7 +1,7 @@
 #' Loads a specific set of datasets from existings 'castarter' projects.
-#' 
+#'
 #' Takes a specific set of datasets from existings 'castarter' projects.
-#'  
+#'
 #' @param projectsAndWebsites A character vector listing websites to be loaded in the format "project/website". If none is given, it will check if project and website have been set with `SetCastarter()`
 #' @param type Defines the format in which the dataset will be loaded. Available options are:
 ##' \itemize{
@@ -63,7 +63,9 @@ LoadDatasets <- function(projectsAndWebsites = NULL, type = "dataset", removeNAd
             colnames(x = dataset)[colnames(dataset)=="nameOfWebsite"]<-"website"
             colnames(x = dataset)[colnames(dataset)=="articlesTxt"]<-"contents"
             colnames(x = dataset)[colnames(dataset)=="articlesId"]<-"id"
-            
+            colnames(x = dataset)[colnames(dataset)=="links"]<-"link"
+            colnames(x = dataset)[colnames(dataset)=="titles"]<-"title"
+            colnames(x = dataset)[colnames(dataset)=="dates"]<-"date"
             allDatasets <- rbind(allDatasets, dataset)
             rm(dataset)
         }
@@ -89,9 +91,9 @@ LoadDatasets <- function(projectsAndWebsites = NULL, type = "dataset", removeNAd
 
 
 #' Loads all datasets of a 'castarter' project.
-#' 
+#'
 #' Takes all datasets from all websites in a project and outputs them in a data frame.
-#'  
+#'
 #' @param project The name of the project whose datasets are to be imported.
 #' @return A data frame including all datasets of a project.
 #' @export
@@ -103,7 +105,7 @@ LoadAllDatasets <- function(project, removeNAdates = TRUE) {
     lastSavedDatasets <- vector()
     for (i in 1:length(listOfWebsites)) {
         website <- listOfWebsites[i]
-        datasetFilename <- sort(list.files(file.path(project, website, "Dataset"))[stringr::str_extract(list.files(file.path(project, 
+        datasetFilename <- sort(list.files(file.path(project, website, "Dataset"))[stringr::str_extract(list.files(file.path(project,
             website, "Dataset")), "dataset.RData") == "dataset.RData"], decreasing = TRUE)[1]
         if (is.na(datasetFilename) == FALSE) {
             lastSavedDataset <- file.path(file.path(project, website, "Dataset"), datasetFilename)
@@ -114,9 +116,14 @@ LoadAllDatasets <- function(project, removeNAdates = TRUE) {
     allDatasets <- data.frame()
     for (i in 1:length(lastSavedDatasets)) {
         load(lastSavedDatasets[i])
-        # introduced for backward compatibility with datasets created with castarter ver<0.2
+        # introduced for backward compatibility with datasets created with castarter ver<0.2 #legacy
         colnames(x = dataset)[colnames(dataset)=="nameOfProject"]<-"project"
         colnames(x = dataset)[colnames(dataset)=="nameOfWebsite"]<-"website"
+        colnames(x = dataset)[colnames(dataset)=="articlesTxt"]<-"contents"
+        colnames(x = dataset)[colnames(dataset)=="articlesId"]<-"id"
+        colnames(x = dataset)[colnames(dataset)=="links"]<-"link"
+        colnames(x = dataset)[colnames(dataset)=="titles"]<-"title"
+        colnames(x = dataset)[colnames(dataset)=="dates"]<-"date"
         allDatasets <- rbind(allDatasets, dataset)
         rm(dataset)
     }
@@ -127,29 +134,29 @@ LoadAllDatasets <- function(project, removeNAdates = TRUE) {
 }
 
 #' Converts a 'castarter' dataset into a 'tm' corpus.
-#' 
+#'
 #' Takes a dataset created with 'castarter' and converts it into a 'tm' corpus. Metadata are automatically imported.
-#'  
-#' @param dataset A data.frame created by 'castarter' including metadata and full text articles to be converted into a corpus. 
-#' @param quanteda Logical, defaults to TRUE. If TRUE generates corpus of the 'quanteda' package, otherwise of the 'tm' package. 
-#' @return A corpus as created by the 'tm' or 'quanteda' package including metadata. 
+#'
+#' @param dataset A data.frame created by 'castarter' including metadata and full text articles to be converted into a corpus.
+#' @param quanteda Logical, defaults to TRUE. If TRUE generates corpus of the 'quanteda' package, otherwise of the 'tm' package.
+#' @return A corpus as created by the 'tm' or 'quanteda' package including metadata.
 #' @export
 #' @examples
 #' corpus <- CreateCorpus(dataset)
 CreateCorpus <- function(dataset, quanteda = TRUE) {
     if (quanteda==TRUE) {
-        corpus <- quanteda::corpus(dataset$contents, docnames = paste(as.Date(dataset$dates), dataset$articlesId, dataset$titles, sep = " - "), 
-                                   docvars=data.frame(website=dataset$website, date=as.Date(dataset$dates), title=dataset$titles, links = dataset$articlesLinks, ID=dataset$articlesId))
+        corpus <- quanteda::corpus(dataset$contents, docnames = paste(as.Date(dataset$date), dataset$id, dataset$title, sep = " - "),
+                                   docvars=data.frame(website=dataset$website, date=as.Date(dataset$date), title=dataset$title, links = dataset$link, ID=dataset$id))
     } else {
         corpus <- tm::VCorpus(tm::VectorSource(dataset$contents))
         for (i in 1:length(dataset$contents)) {
             NLP::meta(corpus[[i]], tag = "author") <- dataset$website[i]
-            NLP::meta(corpus[[i]], tag = "datetimestamp") <- dataset$dates[i]
-            NLP::meta(corpus[[i]], tag = "heading") <- dataset$titles[i]
-            NLP::meta(corpus[[i]], tag = "id") <- dataset$articlesId[i]
+            NLP::meta(corpus[[i]], tag = "datetimestamp") <- dataset$date[i]
+            NLP::meta(corpus[[i]], tag = "heading") <- dataset$title[i]
+            NLP::meta(corpus[[i]], tag = "id") <- dataset$id[i]
             NLP::meta(corpus[[i]], tag = "language") <- dataset$language[i]
-            NLP::meta(corpus[[i]], tag = "origin") <- dataset$articlesLinks[i]
+            NLP::meta(corpus[[i]], tag = "origin") <- dataset$link[i]
         }
     }
     corpus
-} 
+}

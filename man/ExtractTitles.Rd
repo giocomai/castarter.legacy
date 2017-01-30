@@ -4,21 +4,21 @@
 \alias{ExtractTitles}
 \title{Extracts titles of individual pages}
 \usage{
-ExtractTitles(articlesHtml = NULL, articlesLinks = NULL,
-  method = "htmlTitle", removePunctuation = FALSE,
-  onlyStandardCharacters = FALSE, removeString = NULL,
-  removeEverythingBefore = NULL, removeEverythingAfter = NULL,
-  customXpath = "", maxCharacters = NULL, progressBar = TRUE,
-  exportParameters = TRUE, project = NULL, website = NULL)
+ExtractTitles(articlesHtml = NULL, links = NULL, method = "htmlTitle",
+  removePunctuation = FALSE, onlyStandardCharacters = FALSE,
+  removeString = NULL, removeEverythingBefore = NULL,
+  removeEverythingAfter = NULL, customXpath = "", maxCharacters = NULL,
+  progressBar = TRUE, exportParameters = TRUE, project = NULL,
+  website = NULL)
 }
 \arguments{
 \item{articlesHtml}{A character vector of html files.}
 
-\item{articlesLinks}{A named character vector, typically created by the ExtractArticlesLinks function.}
+\item{links}{A named character vector, typically created by the ExtractLinks function.}
 
 \item{method}{Title extract method, to be given as a text string. Available options are:
 \itemize{
- \item{"indexLink"}{: Default. Extract the title from articlesLinks (required). Titles are taken from the textual element of the link taken from the index pages. }
+ \item{"indexLink"}{: Default. Extract the title from links (required). Titles are taken from the textual element of the link taken from the index pages. }
  \item{"htmlTitle"}{: Extract the title from the Html <title> field, usually shown on the top bar of web browsers.}
  \item{"htmlH1"}{: Extract the title from the first occurence of text that has heading 1, the <h1> html tag, as its style.}
  \item{"htmlH2"}{: Extract the title from the first occurence of text that has heading 2, the <h2> html tag, as its style.}
