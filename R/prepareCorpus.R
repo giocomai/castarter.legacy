@@ -58,9 +58,12 @@ LoadDatasets <- function(projectsAndWebsites = NULL, type = "dataset", removeNAd
         allDatasets <- data.frame()
         for (i in 1:length(lastSavedDatasets)) {
             load(lastSavedDatasets[i])
-            # introduced for backward compatibility with datasets created with castarter ver<0.2
+            # introduced for backward compatibility with datasets created with castarter ver<0.2 #legacy
             colnames(x = dataset)[colnames(dataset)=="nameOfProject"]<-"project"
             colnames(x = dataset)[colnames(dataset)=="nameOfWebsite"]<-"website"
+            colnames(x = dataset)[colnames(dataset)=="articlesTxt"]<-"contents"
+            colnames(x = dataset)[colnames(dataset)=="articlesId"]<-"id"
+            
             allDatasets <- rbind(allDatasets, dataset)
             rm(dataset)
         }
@@ -77,7 +80,7 @@ LoadDatasets <- function(projectsAndWebsites = NULL, type = "dataset", removeNAd
             return(corpusAll)
         }
     } else if (type == "dataset") {
-        return(allDatasets)
+        return(as_data_frame(allDatasets))
     } else if (type == "corpusDtmQ") {
         load(lastSavedDatasets)
         return(corpusDtm)
@@ -120,7 +123,7 @@ LoadAllDatasets <- function(project, removeNAdates = TRUE) {
     if (removeNAdates == TRUE) {
         allDatasets <- allDatasets[is.na(allDatasets$dates) == FALSE, ]
     }
-    allDatasets
+    return(as_data_frame(allDatasets))
 }
 
 #' Converts a 'castarter' dataset into a 'tm' corpus.
