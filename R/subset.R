@@ -1,9 +1,9 @@
 #' Subsets a 'castarter' dataset
-#' 
+#'
 #' @param dataset A dataset created with 'castarter'.
 #' @param terms A character vector. Only articles including one of these terms are included in the output.
 #' @param startDate, endDate A date in the format YYYY-MM-DD.
-#' @return A dataset in the 'castarter' format. 
+#' @return A dataset in the 'castarter' format.
 #' @export
 #' @examples
 #' SubsetDataset(dataset, terms)
@@ -14,10 +14,10 @@ SubsetDataset <- function(dataset, terms = NULL, startDate = NULL, endDate = NUL
         dataset <- dataset[base::grep(terms, dataset$contents, ignore.case = TRUE), ]
     }
     if (is.null(startDate) == FALSE) {
-        dataset <- dataset[dataset$dates > as.POSIXct(startDate), ]
+        dataset <- dataset[dataset$date > as.POSIXct(startDate), ]
     }
     if (is.null(endDate) == FALSE) {
-        dataset <- dataset[dataset$dates < as.POSIXct(endDate), ]
+        dataset <- dataset[dataset$date < as.POSIXct(endDate), ]
     }
     if (is.null(sample) == FALSE) {
         dataset <- dataset[base::sample.int(n = dim(dataset)[1], size = sample),]
@@ -26,7 +26,7 @@ SubsetDataset <- function(dataset, terms = NULL, startDate = NULL, endDate = NUL
 }
 
 #' Divide corpus by website
-#' 
+#'
 #' @param corpus A corpus as created by the 'tm' package including metadata.
 #' @return A data.frame
 #' @export
