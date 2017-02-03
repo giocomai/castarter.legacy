@@ -29,9 +29,9 @@ UpdateDataset <- function(dataset, links = NULL, numberOfIndexPages = 10, wget =
         indexHtml <- ImportHtml(from = "index")
         links <- ExtractLinks(domain = params$param[params$args=="domain"], partOfLink = params$param[params$args=="partOfLink"], indexHtml = indexHtml, containerType = params$param[params$args=="containerTypeExtractLinks"], containerClass = params$param[params$args=="containerClassExtractLinks"], divClass = params$param[params$args=="divClassExtractLinks"], partOfLinkToExclude = strsplit(params$param[params$args=="partOfLinkToExclude"], "§§§"))
     }
-    linksNew <- links[is.element(links, dataset$links)==FALSE]
-    previousLength <- length(dataset$links)
-    links <- c(dataset$links, linksNew)
+    linksNew <- links[is.element(links, dataset$link)==FALSE]
+    previousLength <- length(dataset$link)
+    links <- c(dataset$link, linksNew)
     DownloadContents(links = links, type = "articles", project = project, website = website, wget = wget, missingArticles = TRUE, wait = wait, start = sum(previousLength, 1))
     DownloadContents(links = links, type = "articles", project = project, website = website, wget = wget, missingArticles = FALSE, wait = wait, start = sum(previousLength, 1))
     articlesHtmlNew <- ImportHtml(from = "articles", project = project, website = website)
