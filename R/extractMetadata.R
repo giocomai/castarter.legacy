@@ -586,7 +586,7 @@ ExportMetadata <- function(dates, id, titles, language, links, exportXlsx = FALS
     if (is.null(ignoreVector) == FALSE) {
         links <- links[ignoreVector]
     }
-    metadata <- data.frame(project, website, dates, id, titles, language, links, check.names = FALSE, stringsAsFactors = FALSE)
+    metadata <- data.frame(project = project, website = website, date = dates, id = id, title = titles, language = language, link = links, check.names = FALSE, stringsAsFactors = FALSE)
     if (accordingToDate == TRUE) {
         metadata <- metadata[order(metadata$dates), ]
     }
