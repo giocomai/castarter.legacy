@@ -23,4 +23,3 @@ Creates and starts a Shiny App exposing basic 'castarter' functions based on the
 \examples{
 CreateShinyApp(dataset)
 }
-

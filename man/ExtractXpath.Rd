@@ -19,4 +19,3 @@ Extracts string included in an html element
 \examples{
 string <- ExtractDiv(articlesHtml, divClass = "nameOfDiv")
 }
-

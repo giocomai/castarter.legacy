@@ -18,4 +18,3 @@ Takes all datasets from all websites in a project and outputs them in a data fra
 \examples{
 allDatasets <- LoadAllDatasets(project)
 }
-

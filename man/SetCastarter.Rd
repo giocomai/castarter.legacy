@@ -20,4 +20,3 @@ It allows to preliminary store options frequently used by 'castarter', thus remo
 \examples{
 SetCastarter(project = "project", website = "website")
 }
-

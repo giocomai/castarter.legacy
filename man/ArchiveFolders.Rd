@@ -21,7 +21,7 @@ It archives  Html, Txt, and IndexHtml folders in .tar.gz files, and stores them 
 
 If the option removeArchivedFolders is enabled, the function actually deletes files from the hard disk. Files are removed only after they have been successfully stored in compressed .tar.gz file, but it is recommended to backup valuable data before enabling this option.
 }
+
 \examples{
 ArchiveFolders(project, website, removeArchivedFolders = FALSE))
 }
-

@@ -20,4 +20,3 @@ Count total words by date and website
 \examples{
 totalWords <- CountWords(corpusDtm)
 }
-

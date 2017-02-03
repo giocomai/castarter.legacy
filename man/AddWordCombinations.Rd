@@ -23,4 +23,3 @@ originalCombination <- "European Union"
 toBeUsed <- "europeanunion"
 wordCombinations <- AddWordCombinations(originalCombination, toBeUsed)
 }
-

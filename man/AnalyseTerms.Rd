@@ -23,4 +23,3 @@ To be incorporated into ShowFreq
 \examples{
 AnalyseTerms(corpus, project, specificTerms)
 }
-

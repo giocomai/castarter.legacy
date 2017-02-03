@@ -38,4 +38,3 @@ Extracts textual contents from a vector of html files.
 \examples{
 contents <- ExtractTxt(articlesHtml, metadata)
 }
-

@@ -28,4 +28,3 @@ Takes a specific set of datasets from existings 'castarter' projects.
 projectsAndWebsites <- c("ProjectX/Website1", "ProjectY/Website3", "ProjectZ/Website2")
 allDatasets <- LoadDatasets(projectsAndWebsites)
 }
-

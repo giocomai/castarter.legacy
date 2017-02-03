@@ -23,4 +23,3 @@ Updates a dataset given a previously created parameters export file.
 \examples{
 dataset <- UpdateDataset(dataset)
 }
-

@@ -36,4 +36,3 @@ Creates a time series graph showing the distribution of documents by date.
 \examples{
 ShowDistribution(dataset)
 }
-

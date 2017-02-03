@@ -25,4 +25,3 @@ Exports dataset to a data.frame, with options to save it as an R object, and exp
 \examples{
 dataset <- ExportDataset(contents, metadata, project, website)
 }
-

@@ -25,4 +25,3 @@ Merge alternative sets of dates for a given dataset.
 \examples{
 dates <- MergeDates(dates1, dates2)
 }
-

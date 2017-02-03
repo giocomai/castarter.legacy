@@ -43,4 +43,3 @@ It creates time series with the frequency of one or more terms, in one or more w
 \examples{
 ShowTS(corpus, terms = c("word1", "word2"))
 }
-

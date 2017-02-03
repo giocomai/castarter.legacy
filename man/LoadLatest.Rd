@@ -17,4 +17,3 @@ Used in combination with load, it loads the most recent workspace saved for a gi
 \examples{
 load(LoadLatest(project, website))
 }
-

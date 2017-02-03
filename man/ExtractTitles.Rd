@@ -43,4 +43,3 @@ Extracts titles of individual pages from a vector of html files or from a named 
 \examples{
 titles <- ExtractTitles(articlesHtml)
 }
-

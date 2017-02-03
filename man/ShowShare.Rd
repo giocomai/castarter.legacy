@@ -31,4 +31,3 @@ Shows share of articles including reference to a specific terms.Ignores article 
 \examples{
 ShowShare(dataset, breaks = "months", project, website)
 }
-

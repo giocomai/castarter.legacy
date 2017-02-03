@@ -12,4 +12,3 @@ Creates all the standard folders required by a 'castarter' project.
 \examples{
 CreateFolders(project, website)
 }
-

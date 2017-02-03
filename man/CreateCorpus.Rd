@@ -20,4 +20,3 @@ Takes a dataset created with 'castarter' and converts it into a 'tm' corpus. Met
 \examples{
 corpus <- CreateCorpus(dataset)
 }
-

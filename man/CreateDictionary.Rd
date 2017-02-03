@@ -18,4 +18,3 @@ Create dictionaries to be used by castarter functions such as ShowFreq or ShowTS
 \examples{
 CreateDictionary(terms = c("fruit=apple+orange", "animals=cat+dog+cow"))
 }
-

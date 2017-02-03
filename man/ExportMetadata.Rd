@@ -24,4 +24,3 @@ Exports metadata to a vector, csv or xlsx file.
 \examples{
 metadata <- ExportMetadata(project, website, dates, id, titles, language, links)
 }
-

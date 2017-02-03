@@ -21,4 +21,3 @@ Extracts id from filename
 \examples{
 id <- ExtractId(project, website)
 }
-

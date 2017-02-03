@@ -25,7 +25,7 @@ Restore Html, Txt, and IndexHtml folders previously archived with in .tar.gz fil
 
 If the option overwrite is enabled, the function will overwrite files in Html, IndexHtml and Txt folders.
 }
+
 \examples{
 RestoreArchives(project, website, removeArchivedFolders = FALSE))
 }
-

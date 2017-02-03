@@ -41,4 +41,3 @@ Generates links to index pages listing individual articles.
 \examples{
 indexLinks <- CreateLinks("http://www.example.com/news/")
 }
-

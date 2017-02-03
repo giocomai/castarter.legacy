@@ -30,4 +30,3 @@ Imports html files already downloaded into a character vector.
 \examples{
 articlesHtml <- ImportHtml(from = articles, project, website)
 }
-

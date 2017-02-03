@@ -34,4 +34,3 @@ Exports all articles that contain a given term.
 \examples{
 ExportArticlesWith(dataset, "example")
 }
-

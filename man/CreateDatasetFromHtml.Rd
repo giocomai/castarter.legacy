@@ -33,4 +33,3 @@ Extracts metadata and text from local html files.
 \examples{
 dataset <- CreateDatasetFromHtml()
 }
-

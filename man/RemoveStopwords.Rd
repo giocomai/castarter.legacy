@@ -18,4 +18,3 @@ Remove stopwords from corpus.
 \examples{
 corpus <- RemoveStopwords(corpus, stopwords)
 }
-

@@ -18,4 +18,3 @@ Summarise key data about a dataset in a data.frame
 \examples{
 SummariseDataset(dataset)
 }
-

@@ -47,4 +47,3 @@ Extracts dates from a vector of html files.
 \examples{
 dates <- ExtractDates(articlesHtml)
 }
-

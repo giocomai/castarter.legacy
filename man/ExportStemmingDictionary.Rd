@@ -25,4 +25,3 @@ Allows to export a stemming dictionary in csv format.
 \examples{
 stemmingDictionary <- ExportStemmingDictionary(corpus, project)
 }
-

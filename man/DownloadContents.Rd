@@ -37,4 +37,3 @@ Downloads html pages based on a vector of links.
 \examples{
 DownloadContents(links)
 }
-

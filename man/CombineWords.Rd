@@ -18,4 +18,3 @@ Combine words in a corpus according to word combinations provided by the user..
 \examples{
 corpus <- CombineWords(corpus, wordCombinations)
 }
-

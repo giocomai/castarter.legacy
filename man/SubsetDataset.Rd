@@ -23,4 +23,3 @@ Subsets a 'castarter' dataset
 \examples{
 SubsetDataset(dataset, terms)
 }
-

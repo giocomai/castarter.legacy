@@ -18,4 +18,3 @@ Divide corpus by website
 \examples{
 DivideByWebsite(corpus, project)
 }
-

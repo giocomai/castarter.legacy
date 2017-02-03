@@ -20,4 +20,3 @@ Uploads a set of datasets from existings 'castarter' projects to an online repos
 projectsAndWebsites <- c("ProjectX/Website1", "ProjectY/Website3", "ProjectZ/Website2")
 UploadDataset(projectsAndWebsites, server = "myserver.com", user = "me@myserver.com", pwd = "secretPassword!")
 }
-

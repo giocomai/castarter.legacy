@@ -47,4 +47,3 @@ Extracts direct links to individual articles from index pages according to a sel
 \examples{
 articlesLinks <- ExtractLinks(domain = "http://www.example.com/", partOfLink = "news/", indexHtml)
 }
-

@@ -47,4 +47,3 @@ Shows most frequent terms in a corpus starting from a document term matrix.
 corpusDtm <- DocumentTermMatrix(corpus).
 ShowFreq(corpusDtm)
 }
-

@@ -24,4 +24,3 @@ Creates a Document Term Matrix (DTM).
 dtm <- CreateDtm(corpus)
 }
 \keyword{tm}
-

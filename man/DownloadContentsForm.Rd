@@ -21,4 +21,3 @@ Downloads html pages that are loaded through a web form.
 \examples{
 DownloadContentsForm(links)
 }
-

@@ -30,4 +30,3 @@ Adds stopwords to the default list.
 newStopwords <- c("will", "also", "can")
 stopwords <- AddStopwords(newStopwords, project, includeDefault = TRUE, language = "en")
 }
-
