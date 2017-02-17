@@ -235,9 +235,9 @@ ShowDistribution <- function(dataset, specificWebsites = NULL, rollingAverage = 
     docSeries <- zoo::rollapply(docSeries, rollingAverage, align=align, mean, na.rm=TRUE)
     distributionOfCorpus <- zoo::autoplot.zoo(docSeries, facets = NULL)
     if (method == "numberOfArticles") {
-        distributionOfCorpus <- distributionOfCorpus + ggplot2::ggtitle(paste0("Number of publications per day in ", project)) + ggplot2::scale_x_datetime("") + ggplot2::scale_y_continuous("")
+        distributionOfCorpus <- distributionOfCorpus + ggplot2::ggtitle(paste0("Number of publications per day in ", project)) + ggplot2::scale_x_datetime("") + ggplot2::scale_y_continuous("") + ggplot2::expand_limits(y=0)
     } else if (method == "numberOfCharacters") {
-        distributionOfCorpus <- distributionOfCorpus + ggplot2::scale_y_continuous("") + ggplot2::ggtitle(paste0("Number of characters per day in ", project)) + ggplot2::scale_x_datetime("") + ggplot2::scale_y_continuous("")
+        distributionOfCorpus <- distributionOfCorpus + ggplot2::scale_y_continuous("") + ggplot2::ggtitle(paste0("Number of characters per day in ", project)) + ggplot2::scale_x_datetime("") + ggplot2::scale_y_continuous(name = "") +  ggplot2::expand_limits(y=0)
     }
     if (is.null(customTitle)==FALSE) {
         distributionOfCorpus <- distributionOfCorpus + ggplot2::ggtitle(customTitle)
