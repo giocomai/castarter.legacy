@@ -12,7 +12,7 @@ ShowShare(dataset, terms, breaks = "years", startDate = NULL,
 
 \item{terms}{The specific terms to be analysed.}
 
-\item{breaks}{Deafaults to "years". Parameter is passed to base::cut, and specifies how the dataset should be divided temporally. Available options include "years", "quarters", "months", but can also be a vector of dates of the POSIXct class.}
+\item{breaks}{Deafaults to "years". Parameter is passed to base::cut, and specifies how the dataset should be divided temporally. Available options include "day", "week", "month", "quarter" and "year", but can also be a vector of dates of the POSIXct class.}
 
 \item{startDate, }{endDate Character vector with date in the format year-month-date, e.g. "2015-07-14".}
 

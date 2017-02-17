@@ -48,7 +48,7 @@ ShowTS <- function(terms, corpusDtm = NULL, corpus = NULL, specificWebsites = NU
     if (is.null(corpusDtm) == TRUE) {
         if (quanteda::is.corpus(corpus)==TRUE) {
             corpusDtm <- quanteda::dfm(x = corpus, groups=c("date", "website"))
-            corpusDtm <- quanteda::weight(corpusDtm, "relFreq")
+            corpusDtm <- quanteda::dfm_weight(corpusDtm, "relFreq")
         } else {
             if (is.null(startDate)==FALSE) {
                 corpus <- corpus[NLP::meta(corpus, "datetimestamp") > as.POSIXct(startDate)]
@@ -60,7 +60,7 @@ ShowTS <- function(terms, corpusDtm = NULL, corpus = NULL, specificWebsites = NU
         }
     } else {
         if (quanteda::is.dfm(corpusDtm)==TRUE) {
-            corpusDtm <- quanteda::weight(corpusDtm, "relFreq")
+            corpusDtm <- quanteda::dfm_weight(corpusDtm, "relFreq")
         }
     }
     if (quanteda::is.dfm(corpusDtm)==TRUE) {
@@ -71,8 +71,8 @@ ShowTS <- function(terms, corpusDtm = NULL, corpus = NULL, specificWebsites = NU
             termsL <- setNames(object = termsL, nm = terms)
             termsDic <- quanteda::dictionary(x = termsL)
         }
-        corpusDtmDic <- quanteda::applyDictionary(corpusDtm, termsDic)
-        dailyFreq <- data.frame(docs = quanteda::docnames(corpusDtmDic), quanteda::as.data.frame(corpusDtmDic))
+        corpusDtmDic <- quanteda::dfm_lookup(x = corpusDtm, dictionary = termsDic)
+        dailyFreq <- data.frame(docs = quanteda::docnames(corpusDtmDic), base::as.data.frame(corpusDtmDic))
         dailyFreq <- tidyr::separate(data = dailyFreq, col = docs, into = c("Date","website"), sep = "\\.")
         if (is.null(startDate)==FALSE) {
             dailyFreq <-dailyFreq[as.Date(dailyFreq$Date)>=as.Date(startDate),]
@@ -125,7 +125,7 @@ ShowTS <- function(terms, corpusDtm = NULL, corpus = NULL, specificWebsites = NU
               legend.title = ggplot2::element_text(size = ggplot2::rel(1.1)),
               legend.text = ggplot2::element_text(size = ggplot2::rel(1))) +
         ggplot2::scale_colour_brewer(type = "qual", palette = 6) +
-        ggplot2::geom_line(size = 1)
+        ggplot2::geom_line(size = 1) + ggplot2::expand_limits(y=0)
     if (quanteda::is.dfm(corpusDtm) == TRUE) {
         timeSeries <- timeSeries + ggplot2::scale_x_date("")
     } else {
