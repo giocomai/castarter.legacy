@@ -37,10 +37,10 @@ CreateFolders <- function(project = NULL, website = NULL) {
     }
 }
 
-#' Finds the full path of the latest saved workspace for selected website. 
+#' Finds the full path of the latest saved workspace for selected website.
 #'
-#' Used in combination with load, it loads the most recent workspace saved for a given website based on the date included in the filename of the .Rdata file. 
-#' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
+#' Used in combination with load, it loads the most recent workspace saved for a given website based on the date included in the filename of the .Rdata file.
+#' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.
 #' @param website Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
 #' @export
 #' @examples
@@ -58,9 +58,9 @@ LoadLatest <- function(project = NULL, website = NULL) {
 #' Saves working environment and dataset.
 #'
 #' It saves the working environment in the website folder, the dataset as an .Rdata file in the dataset subfolder, and, if exportXlsx = TRUE (by default), exports it as an .xlsx file in the Dataset sub-folder.
-#' It assumes that previous operations have been completed, and both a 'metadata' and a 'contents' object exist. If they don't, it just prints this to the console. 
-#' @param saveEnvironment Logical, defaults to TRUE. If TRUE, saves environment as .Rdata in the correspodning website folder. 
-#' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
+#' It assumes that previous operations have been completed, and both a 'metadata' and a 'contents' object exist. If they don't, it just prints this to the console.
+#' @param saveEnvironment Logical, defaults to TRUE. If TRUE, saves environment as .Rdata in the correspodning website folder.
+#' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.
 #' @param website Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
 #' @param dataset A 'castarter' dataset. Required to export dataset in its dedicated folder if no metadata and contents are found in the environment, e.g. because dataset has been created through CreateDatasetFromHtml() function.
 #' @param exportCsv Logical, defaults to FALSE. If TRUE, exports the complete dataset in the .csv file format in the Dataset sub-folder.
@@ -115,7 +115,7 @@ SaveWebsite <- function(saveEnvironment = TRUE, dataset = NULL, corpus = NULL, c
         xlsx::write.xlsx(dataset, file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".xlsx")))
     }
     if (exportTxt == TRUE) {
-        writeLines(paste(paste("Date:", dataset$date), paste("Title:", dataset$titles), paste("Link:", dataset$articlesLinks), paste("ID:", dataset$id), dataset$contents, " ___  ______  ______  ______  ______  ______  ______  ______  ______  ___\n  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__\n (______)(______)(______)(______)(______)(______)(______)(______)(______)\n", sep = "\n"), file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".txt")))
+        writeLines(paste(paste("Date:", dataset$date), paste("Title:", dataset$title), paste("Link:", dataset$link), paste("ID:", dataset$id), dataset$contents, " ___  ______  ______  ______  ______  ______  ______  ______  ______  ___\n  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__\n (______)(______)(______)(______)(______)(______)(______)(______)(______)\n", sep = "\n"), file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".txt")))
         message(paste("Full dataset in txt format saved in", file.path(project, website, paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".txt"))))
     }
 }
