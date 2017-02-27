@@ -54,7 +54,7 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, terms = NULL, 
                     totalWords$totalWords[i] <- sum(corpusDtm[grepl(pattern = paste(totalWords$dates[i], totalWords$namesOfWebsites[i], sep = ".*"), corpusDtmDocnames)])
                 }
             }
-            corpusDtm <- quanteda::applyDictionary(corpusDtm, termsDic)
+            corpusDtm <- quanteda::dfm_lookup(corpusDtm, termsDic)
             wordFrequency <- data.frame()
             for (i in 1:nrow(totalWords)) {
                 temp <- quanteda::topfeatures(x = corpusDtm[grepl(pattern = paste(totalWords$dates[i], totalWords$namesOfWebsites[i], sep = ".*"), corpusDtmDocnames)],
@@ -78,7 +78,7 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, terms = NULL, 
                     totalWords$totalWords[i] <- sum(corpusDtm[grepl(pattern = namesOfWebsites[i], corpusDtmDocnames)])
                 }
             }
-            corpusDtm <- quanteda::applyDictionary(corpusDtm, termsDic)
+            corpusDtm <- quanteda::dfm_lookup(corpusDtm, termsDic)
             wordFrequency <- data.frame()
             for (i in seq_along(namesOfWebsites)) {
                 temp <- quanteda::topfeatures(x = corpusDtm[grepl(pattern = namesOfWebsites[i],
@@ -99,7 +99,7 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, terms = NULL, 
                     totalWords$totalWords[i] <- sum(corpusDtm[grepl(pattern = dates[i], corpusDtmDocnames)])
                 }
             }
-            corpusDtm <- quanteda::applyDictionary(corpusDtm, termsDic)
+            corpusDtm <- quanteda::dfm_lookup(corpusDtm, termsDic)
             wordFrequency <- data.frame()
             for (i in seq_along(dates)) {
                 temp <- quanteda::topfeatures(x = corpusDtm[grepl(pattern = dates[i],
@@ -115,7 +115,7 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, terms = NULL, 
             if (relFreq == TRUE) {
                 corpusDtm <- quanteda::dfm_weight(corpusDtm, "relFreq")
             }
-            corpusDtm <- quanteda::applyDictionary(corpusDtm, termsDic)
+            corpusDtm <- quanteda::dfm_lookup(corpusDtm, termsDic)
             freq <- quanteda::topfeatures(x = corpusDtm, n = number)
         }
     } else {
