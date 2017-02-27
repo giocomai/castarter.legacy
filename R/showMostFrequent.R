@@ -113,7 +113,7 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, terms = NULL, 
             }
         } else {
             if (relFreq == TRUE) {
-                corpusDtm <- quanteda::weight(corpusDtm, "relFreq")
+                corpusDtm <- quanteda::dfm_weight(corpusDtm, "relFreq")
             }
             corpusDtm <- quanteda::applyDictionary(corpusDtm, termsDic)
             freq <- quanteda::topfeatures(x = corpusDtm, n = number)

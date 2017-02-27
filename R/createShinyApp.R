@@ -45,7 +45,7 @@ SetCastarter(project = '", project, "', website = '", website,"')",
 # load dataset
 load(file = file.path('data', 'dataset.RData'))
 # find earliest and latest date
-dailyFreq <- data.frame(docs = quanteda::docnames(corpusDtm), quanteda::as.data.frame(corpusDtm))
+dailyFreq <- data.frame(docs = quanteda::docnames(corpusDtm), base::as.data.frame(corpusDtm))
 dailyFreq <- tidyr::separate(data = dailyFreq, col = docs, into = c('Date','website'), sep = '\\\\.')
 dailyFreq$Date <- as.Date(dailyFreq$Date)
 minDate <- min(dailyFreq$Date)
