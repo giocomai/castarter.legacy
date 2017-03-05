@@ -7,7 +7,7 @@
 ExtractLinks(domain, partOfLink, indexHtml, containerType = NULL,
   containerClass = NULL, divClass = NULL, attributeType = NULL,
   partOfLinkToExclude = NULL, minLength = NULL, maxLength = NULL,
-  indexLinks = NULL, sortLinks = TRUE, export = FALSE,
+  indexLinks = NULL, sortLinks = TRUE, linkTitle = TRUE, export = FALSE,
   appendString = NULL, removeString = NULL, progressBar = TRUE,
   exportParameters = TRUE, project = NULL, website = NULL)
 }
@@ -29,6 +29,8 @@ ExtractLinks(domain, partOfLink, indexHtml, containerType = NULL,
 \item{indexLinks}{A character vector, defaults to NULL. If provided, indexLinks are removed from the extracted articlesLinks.}
 
 \item{sortLinks}{Defaults to TRUE. If TRUE, links are sorted in aphabetical order.}
+
+\item{linkTitle}{Defaults to TRUE. If TRUE, text of links is included as names of the vector.}
 
 \item{appendString}{If provided, appends given string to the extracted articles. Typically used to create links for print or mobile versions of the extracted page.}
 
