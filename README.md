@@ -1,20 +1,22 @@
 An introduction to 'castarter' - content analysis starter toolkit for R
 ================
 Giorgio Comai
-2017-01-11
+2017-03-07
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+Preliminary note
+----------------
+
+`castarter` is currently under active development. Functions are being rewritten to facilitate interaction with the `tidytext` package, and improve speed. Accordingly, functions or parameters may still change name. While most functions should work as expected, this package should be considered in *beta*. A stable version is expected by the end of 2017.
+
+Check below for further details on [forthcoming features and other development issues](#forthcoming-features-and-other-development-issues).
+
+N.B. Please consider that this document illustrates only the most basic parameters of `castarter` functions. More advanced options can be seen by running `?nameOfFunction`.
+
 Introduction
 ------------
 
 Books dedicated to content analysis typically assume that the researcher has already created, has access or may buy access to a structured dataset. They may include sections on sampling (Krippendorff 2004; Riffe, Lacy, and Fico 2005), but they do not debate explicitly how new datasets can be built. Commercial software packages generally share the same expectation. In the R ecosystem, there are a number of packages that can be used to access existing datasets (e.g. [tm.plugin.lexisnexis](https://cran.r-project.org/web/packages/tm.plugin.lexisnexis/), [manifestoR](https://cran.r-project.org/web/packages/manifestoR/)) or import into R textual content from social media through their APIs (e.g. [twitteR](https://cran.r-project.org/web/packages/twitteR/)). However, there is no package dedicated to getting into R the textual contents of regular websites and extracting key metadata (date and title) in order to populate a corpus that can be analysed in R or with other software packages. 'castarter - content analysis starter toolkit for R' aims to accomplish just that, offering to moderately incompetent users the opportunity to extract textual contents from websites and prepare them for content analysis. It allows to export the datasets in a number of standard formats for further processing and facilitates basic word frequency analysis in R.
-
-Preliminary note
-----------------
-
-N.B. Please consider that this document illustrates only the most basic parameters of `castarter` functions. More advanced options can be seen by running `?nameOfFunction`.
-
-Check below for further details on [forthcoming features and other development issues](#forthcoming-features-and-other-development-issues).
 
 Installation
 ------------
