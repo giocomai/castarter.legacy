@@ -503,6 +503,7 @@ CreateDatasetFromHtml <- function(links = NULL,
     castarter::CreateFolders(project = project, website = website)
     htmlFilesList <- gtools::mixedsort(list.files(file.path(project, website, "Html"), pattern = "\\.html$", full.names = TRUE))
     numberOfArticles <- length(htmlFilesList)
+    id <- id <- as.integer(regmatches(htmlFilesList, regexpr("[[:digit:]]+", htmlFilesList)))
     dates <- as.POSIXct(rep(NA, numberOfArticles))
     contents <- rep(NA, numberOfArticles)
     if (method_ExtractTitles == "indexLink") {
@@ -544,7 +545,6 @@ CreateDatasetFromHtml <- function(links = NULL,
             print(paste("Processed", x, "of", numberOfArticles, "articles."))
         }
     }
-    id <- ExtractId(project, website)
     if (is.null(links) == FALSE) {
         dataset <- data.frame(project, website, dates, id, titles, language, links, contents, check.names = FALSE, stringsAsFactors = FALSE)
     } else {
