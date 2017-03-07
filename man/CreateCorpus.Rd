@@ -2,7 +2,7 @@
 % Please edit documentation in R/prepareCorpus.R
 \name{CreateCorpus}
 \alias{CreateCorpus}
-\title{Converts a 'castarter' dataset into a 'tm' corpus.}
+\title{Converts a 'castarter' dataset into a 'quanteda' or 'tm' corpus.}
 \usage{
 CreateCorpus(dataset, quanteda = TRUE)
 }

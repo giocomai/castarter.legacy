@@ -135,7 +135,7 @@ LoadAllDatasets <- function(project, removeNAdates = TRUE) {
     return(as_data_frame(allDatasets))
 }
 
-#' Converts a 'castarter' dataset into a 'tm' corpus.
+#' Converts a 'castarter' dataset into a 'quanteda' or 'tm' corpus.
 #'
 #' Takes a dataset created with 'castarter' and converts it into a 'tm' corpus. Metadata are automatically imported.
 #'
@@ -160,4 +160,18 @@ CreateCorpus <- function(dataset, quanteda = TRUE) {
         }
     }
     corpus
+}
+
+#' Converts a 'castarter' dataset into a tidy corpus in line with the 'tidytext' package
+#'
+#' Takes a dataset created with 'castarter' and converts it into a tidy corpus of the 'tidytext' type.
+#'
+#'
+#' @param dataset A data.frame created by 'castarter' including metadata and full text articles to be converted into a corpus.
+#' @return A data.frame (tibble) compatible with the 'tidytext' package
+#' @export
+#' @examples
+#' corpus <- CreateCorpus(dataset)
+CreateTidyCorpus <- function(dataset) {
+    dataset %>% tidytext::unnest_tokens(word, contents)
 }
