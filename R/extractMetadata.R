@@ -546,9 +546,9 @@ CreateDatasetFromHtml <- function(links = NULL,
         }
     }
     if (is.null(links) == FALSE) {
-        dataset <- data.frame(project, website, dates, id, titles, language, links, contents, check.names = FALSE, stringsAsFactors = FALSE)
+        dataset <- data.frame(project, website, date, id, title, language, link, contents, check.names = FALSE, stringsAsFactors = FALSE)
     } else {
-        dataset <- data.frame(project, website, dates, id, titles, language, contents, check.names = FALSE, stringsAsFactors = FALSE)
+        dataset <- data.frame(project, website, date, id, title, language, link = NA, contents, check.names = FALSE, stringsAsFactors = FALSE)
     }
     save(dataset, file = file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".RData")))
     print(paste("Dataset saved in", file.path(project, website, paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".RData"))))
