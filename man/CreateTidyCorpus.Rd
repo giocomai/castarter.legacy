@@ -4,7 +4,7 @@
 \alias{CreateTidyCorpus}
 \title{Converts a 'castarter' dataset into a tidy corpus in line with the 'tidytext' package}
 \usage{
-CreateTidyCorpus(dataset)
+CreateTidyCorpus(dataset, thin = TRUE)
 }
 \arguments{
 \item{dataset}{A data.frame created by 'castarter' including metadata and full text articles to be converted into a corpus.}

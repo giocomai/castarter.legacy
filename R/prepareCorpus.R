@@ -172,6 +172,10 @@ CreateCorpus <- function(dataset, quanteda = TRUE) {
 #' @export
 #' @examples
 #' corpus <- CreateCorpus(dataset)
-CreateTidyCorpus <- function(dataset) {
-    dataset %>% tidytext::unnest_tokens(word, contents)
+CreateTidyCorpus <- function(dataset, thin = TRUE) {
+    if (thin == TRUE) {
+        dataset %>% tidytext::unnest_tokens(word, contents) %>% select(id, date, word)
+    } else {
+        dataset %>% tidytext::unnest_tokens(word, contents)
+    }
 }
