@@ -437,12 +437,11 @@ ExtractId <- function(project = NULL, website = NULL, accordingToDate = FALSE, d
     if (gtools::invalid(website) == TRUE) {
         website <- CastarterOptions("website")
     }
-    htmlFilesList <- gtools::mixedsort(list.files(file.path(project, website, "Html")))
+    htmlFilesList <- list.files(file.path(project, website, "Html"))
     if (accordingToDate == TRUE) {
         htmlFilesList <- htmlFilesList[order(dates)]
     }
-    id <- as.integer(regmatches(htmlFilesList, regexpr("[[:digit:]]+", htmlFilesList)))
-    id
+    sort.int(x = as.integer(stringr::str_extract(string = htmlFilesList, pattern = "[[:digit:]]+")))
 }
 
 #' Extracts metadata and text from local html files
@@ -503,7 +502,7 @@ CreateDatasetFromHtml <- function(links = NULL,
     castarter::CreateFolders(project = project, website = website)
     htmlFilesList <- gtools::mixedsort(list.files(file.path(project, website, "Html"), pattern = "\\.html$", full.names = TRUE))
     numberOfArticles <- length(htmlFilesList)
-    id <- id <- as.integer(regmatches(htmlFilesList, regexpr("[[:digit:]]+", htmlFilesList)))
+    id <- as.integer(stringr::str_extract(string = stringr::str_extract(string = htmlFilesList, pattern = "/[[:digit:]]+\\.html$"), pattern = "[[:digit:]]+"))
     dates <- as.POSIXct(rep(NA, numberOfArticles))
     contents <- rep(NA, numberOfArticles)
     if (method_ExtractTitles == "indexLink") {
