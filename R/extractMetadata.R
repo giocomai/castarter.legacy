@@ -503,12 +503,12 @@ CreateDatasetFromHtml <- function(links = NULL,
     htmlFilesList <- gtools::mixedsort(list.files(file.path(project, website, "Html"), pattern = "\\.html$", full.names = TRUE))
     numberOfArticles <- length(htmlFilesList)
     id <- as.integer(stringr::str_extract(string = stringr::str_extract(string = htmlFilesList, pattern = "/[[:digit:]]+\\.html$"), pattern = "[[:digit:]]+"))
-    dates <- as.POSIXct(rep(NA, numberOfArticles))
+    date <- as.POSIXct(rep(NA, numberOfArticles))
     contents <- rep(NA, numberOfArticles)
     if (method_ExtractTitles == "indexLink") {
-        titles <- ExtractTitles(articlesHtml = NULL, links = links, method = "indexLink", removeString = removeString_ExtractTitles, removeEverythingAfter = removeEverythingAfter_ExtractTitles, exportParameters = FALSE)
+        title <- ExtractTitles(articlesHtml = NULL, links = links, method = "indexLink", removeString = removeString_ExtractTitles, removeEverythingAfter = removeEverythingAfter_ExtractTitles, exportParameters = FALSE)
     } else {
-        titles <- rep(NA, numberOfArticles)
+        title <- rep(NA, numberOfArticles)
     }
     x <- 1
     xlist <- seq(0,numberOfArticles,by=100)
@@ -523,17 +523,17 @@ CreateDatasetFromHtml <- function(links = NULL,
         }
         dateTemp <- ExtractDates(articlesHtml = htmlFile, dateFormat = dateFormat, divClass = divClass_ExtractDates, spanClass = spanClass_ExtractDates, customXpath = customXpath_ExtractDates, language = language_ExtractDates, removeEverythingBefore = removeEverythingBefore_ExtractDates, exportParameters = FALSE)
         if (length(dateTemp) == 1) {
-            dates[i] <- dateTemp
+            date[i] <- dateTemp
         } else {
-            dates[i] <- NA
+            date[i] <- NA
         }
         contents[i] <- ExtractTxt(articlesHtml = htmlFile, export = FALSE, removeEverythingAfter = removeEverythingAfter_ExtractTxt, removeEverythingBefore = removeEverythingBefore_ExtractTxt, divClass = divClass_ExtractTxt, divId = divId_ExtractTxt, removeString = removeString_ExtractTxt, customXpath = customXpath_ExtractTxt, progressBar = FALSE, exportParameters = FALSE)
         if (method_ExtractTitles != "indexLink") {
             titleTemp <- ExtractTitles(articlesHtml = htmlFile, method = method_ExtractTitles, removeString = removeString_ExtractTitles, progressBar = FALSE)
             if (length(titleTemp) == 1) {
-                titles[i] <- titleTemp
+                title[i] <- titleTemp
             } else {
-                titles[i] <- NA
+                title[i] <- NA
             }
         }
         x <- x + 1
@@ -587,7 +587,7 @@ ExportMetadata <- function(dates, id, titles, language, links, exportXlsx = FALS
     }
     metadata <- data.frame(project = project, website = website, date = dates, id = id, title = titles, language = language, link = links, check.names = FALSE, stringsAsFactors = FALSE)
     if (accordingToDate == TRUE) {
-        metadata <- metadata[order(metadata$dates), ]
+        metadata <- metadata[order(metadata$date), ]
     }
     write.csv(metadata, file = file.path(project, website, "Dataset", paste(Sys.Date(), website, "metadata.csv", sep = " - ")), row.names = FALSE)
     if (exportXlsx == TRUE) {
