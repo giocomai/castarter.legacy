@@ -174,7 +174,7 @@ CreateCorpus <- function(dataset, quanteda = TRUE) {
 #' corpus <- CreateCorpus(dataset)
 CreateTidyCorpus <- function(dataset, thin = TRUE) {
     if (thin == TRUE) {
-        dataset %>% tidytext::unnest_tokens(word, contents) %>% select(id, date, word)
+        dataset %>% dplyr::select_(id, date, contents) %>% tidytext::unnest_tokens(word, contents)
     } else {
         dataset %>% tidytext::unnest_tokens(word, contents)
     }
