@@ -545,7 +545,7 @@ CreateDatasetFromHtml <- function(links = NULL,
         }
     }
     if (is.null(links) == FALSE) {
-        dataset <- data.frame(project, website, date, id, title, language, link, contents, check.names = FALSE, stringsAsFactors = FALSE)
+        dataset <- data.frame(project, website, date, id, title, language, link = links, contents, check.names = FALSE, stringsAsFactors = FALSE)
     } else {
         dataset <- data.frame(project, website, date, id, title, language, link = NA, contents, check.names = FALSE, stringsAsFactors = FALSE)
     }
