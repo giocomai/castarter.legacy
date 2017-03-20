@@ -1,13 +1,13 @@
 An introduction to 'castarter' - content analysis starter toolkit for R
 ================
 Giorgio Comai
-2017-03-07
+2017-03-20
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 Preliminary note
 ----------------
 
-`castarter` is currently under active development. Functions are being rewritten to facilitate interaction with the `tidytext` package, and improve speed. Accordingly, functions or parameters may still change name. While most functions should work as expected, this package should be considered in *beta*. A stable version is expected by the end of 2017.
+`castarter` is currently under active development. Functions are being rewritten to facilitate interaction with the `tidytext` package, and improve speed. While most functions should work as expected, this package should be considered in *beta*.
 
 Check below for further details on [forthcoming features and other development issues](#forthcoming-features-and-other-development-issues).
 
