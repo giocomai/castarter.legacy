@@ -4,15 +4,18 @@
 \alias{ShowShare}
 \title{Shows share of articles including reference to a specific terms}
 \usage{
-ShowShare(dataset, terms, breaks = "years", startDate = NULL,
-  customTitle = NULL, export = FALSE, project = NULL, website = NULL)
+ShowShare(dataset, terms, breaks = "year", output = "graph",
+  startDate = NULL, customTitle = NULL, export = FALSE, project = NULL,
+  website = NULL)
 }
 \arguments{
 \item{dataset}{A dataset created with 'castarter'.}
 
-\item{terms}{The specific terms to be analysed.}
+\item{terms}{The pattern to be found in the articles.}
 
-\item{breaks}{Deafaults to "years". Parameter is passed to base::cut, and specifies how the dataset should be divided temporally. Available options include "day", "week", "month", "quarter" and "year", but can also be a vector of dates of the POSIXct class.}
+\item{breaks}{Defaults to "year". Parameter is passed to base::cut, and specifies how the dataset should be divided temporally. Available options include "day", "week", "month", "quarter" and "year", but can also be a vector of dates of the POSIXct class.}
+
+\item{output}{Defaults to "graph". "data.frame" is currently the only alternative option available.}
 
 \item{startDate, }{endDate Character vector with date in the format year-month-date, e.g. "2015-07-14".}
 

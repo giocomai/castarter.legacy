@@ -3,8 +3,9 @@
 #' Shows share of articles including reference to a specific terms.Ignores article that don't have a date in the metadata (date=NA).
 #'
 #' @param dataset A dataset created with 'castarter'.
-#' @param terms The specific terms to be analysed.
-#' @param breaks Deafaults to "years". Parameter is passed to base::cut, and specifies how the dataset should be divided temporally. Available options include "day", "week", "month", "quarter" and "year", but can also be a vector of dates of the POSIXct class.
+#' @param terms The pattern to be found in the articles.
+#' @param breaks Defaults to "year". Parameter is passed to base::cut, and specifies how the dataset should be divided temporally. Available options include "day", "week", "month", "quarter" and "year", but can also be a vector of dates of the POSIXct class.
+#' @param output Defaults to "graph". "data.frame" is currently the only alternative option available.
 #' @param startDate, endDate Character vector with date in the format year-month-date, e.g. "2015-07-14".
 #' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.
 #' @param website Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
@@ -14,77 +15,50 @@
 #' @examples
 #' ShowShare(dataset, breaks = "months", project, website)
 
-ShowShare <- function(dataset, terms, breaks = "years", startDate = NULL, customTitle = NULL, export = FALSE, project = NULL, website = NULL) {
-    if (length(terms) > 1) {
-        terms <- paste(tolower(terms), collapse = "\\b|")
-    }
-    DTdataset <- data.table::as.data.table(dataset)
-    DTdataset$date <- base::cut(DTdataset$date, breaks = breaks)
-    DTdataset <- DTdataset[base::is.na(DTdataset$date)==FALSE]
-    DTdatasetFreq <- DTdataset[, .N, by=.(DTdataset$date)]
-    DTdatasetFreq <- stats::setNames(DTdatasetFreq, c("date", "N"))
-    DTterms <- DTdataset[base::regexpr(terms, DTdataset$contents, ignore.case = TRUE)>0, .N, by=.(date)]
-    data.table::setkey(DTdatasetFreq, date)
-    DTbyBreaks <- merge(DTdatasetFreq, DTterms, all = TRUE)
-    DTbyBreaks$N.y[is.na(DTbyBreaks$N.y)==TRUE] <- 0
-    DTbyBreaks$N.x <- DTbyBreaks$N.x-DTbyBreaks$N.y
-    if (base::is.null(startDate) == FALSE) {
-        DTbyBreaks <- DTbyBreaks[base::as.POSIXct(date)>base::as.POSIXct(startDate)]
-    }
-    DTbyBreaks <- reshape2::melt(DTbyBreaks, id.vars = "date")
-    bm <- base::as.data.frame(DTbyBreaks, stringsAsFactors = FALSE)
-    if (base::is.null(startDate) == FALSE) {
-        bm <- bm[as.POSIXct(bm$date)>as.POSIXct(startDate),]
-    }
-    bm$variable <- as.character(bm$variable)
-    bm$variable[bm$variable=="N.x"] <- base::paste("Does not mention", base::sQuote(terms))
-    bm$variable[bm$variable=="N.y"] <- base::paste("Mentions", base::sQuote(terms))
-    bm$variable <- base::as.factor(bm$variable)
-    bm$variable <- base::factor(bm$variable, levels=levels(bm$variable)[order(bm$variable, decreasing = TRUE)])
-    bm <- bm[order(bm$variable, decreasing = TRUE), ]
-    graph <- ggplot2::ggplot(bm,ggplot2::aes(x = date, y = value, fill = variable)) +
-        ggplot2::scale_fill_discrete("") +
-        ggplot2::geom_bar(position = "fill",stat = "identity") +
-        ggplot2::scale_y_continuous(labels = scales::percent_format()) +
-        ggplot2::ggtitle(paste("Share of articles including reference to", base::sQuote(terms))) +
-        ggplot2::xlab("") +
-        ggplot2::ylab("") +
-        ggplot2::theme(axis.text.x = ggplot2::element_text(size = ggplot2::rel(1), angle = 90, hjust = 1, vjust = 0.5),
-                       plot.title = ggplot2::element_text(size = ggplot2::rel(1.2)), legend.text = ggplot2::element_text(size = ggplot2::rel(1)))
-    if (breaks == "years") {
-        graph <- graph + ggplot2::scale_x_discrete(labels = lubridate::year(DTterms$date)[order(lubridate::year(DTterms$date))])
-    }
-    if (breaks == "months") {
-        graph <- graph + ggplot2::scale_x_discrete(labels = zoo::as.yearmon(DTterms$date[order(DTterms$date)]))
-    }
-    if (is.null(customTitle)==FALSE) {
-        graph <- graph + ggplot2::ggtitle(label = customTitle)
-    }
-    if (export == TRUE) {
-        graph
-        if (is.null(project) == FALSE & is.null(website) == FALSE) {
-            if (file.exists(file.path(project, website, "Outputs")) == FALSE) {
-                dir.create(file.path(project, website, "Outputs"))
+ShowShare <- function(dataset, terms, breaks = "year", output = "graph", startDate = NULL, customTitle = NULL, export = FALSE, project = NULL, website = NULL) {
+    showShareDF <- dataset %>% filter(is.na(date)==FALSE) %>% mutate(Date = as.Date(date)) %>% select(id, Date, contents) %>% arrange(Date) %>% group_by(id) %>% mutate(Mentions = stringr::str_detect(string = contents, pattern = stringr::fixed(terms, ignore_case = TRUE))) %>% select(-contents) %>%  group_by(Date) %>% mutate(nArt = n(), nArtMentions = sum(Mentions)) %>% select(-Mentions, -id) %>% ungroup() %>% distinct() %>% mutate(Date = cut(Date, breaks = breaks)) %>% group_by(Date) %>% mutate(nPerTimeUnit = sum(nArt), nMentionsPerTimeUnit = sum(nArtMentions, na.rm = TRUE)) %>% select(Date, nPerTimeUnit, nMentionsPerTimeUnit) %>% mutate(Share = nMentionsPerTimeUnit/nPerTimeUnit) %>% ungroup() %>% distinct() %>% arrange(Date)
+    if (output == "graph") {
+        graph <-
+            showShareDF %>% mutate(negative = 1-Share) %>% tidyr::gather(c(Share, negative), key = Mentions, value = Share) %>% mutate(Mentions = gsub(pattern = "Share", replacement = paste("Mentions", sQuote(terms)), x = Mentions)) %>% mutate(Mentions = gsub(pattern = "negative", replacement = paste("Does not mention", sQuote(terms)), x = Mentions)) %>%
+            ggplot2::ggplot(mapping = ggplot2::aes(x=Date, y = Share, fill = Mentions)) + ggplot2::geom_col() + ggplot2::theme_minimal() + ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1)) + ggplot2::scale_y_continuous(name = "", labels = scales::percent) + ggplot2::labs(title = paste("Share of articles including reference to", sQuote(x = terms)), fill="") +
+            if(breaks == "year") {
+                ggplot2::scale_x_discrete(name = "", labels = lubridate::year(x = showShareDF$Date))
+            } else if (breaks == "month") {
+                ggplot2::scale_x_discrete(name = "", labels = paste(month.abb[lubridate::month(showShareDF$Date)], lubridate::year(x = showShareDF$Date)))
+            } else {
+                ggplot2::scale_x_discrete(name = "")
             }
-            ggplot2::ggsave(file.path(project, website, "Outputs", paste0(paste("timeseries", project, website, paste(terms, collapse = " - "), sep = " - "), ".png")))
-            print(paste("File saved in", file.path(project, website, "Outputs", paste0(paste("timeseries", project, website, paste(terms, collapse = " - "), sep = " - "), ".png"))))
-            ggplot2::ggsave(file.path(project, website, "Outputs", paste0(paste("timeseries", project, website, paste(terms, collapse = " - "), sep = " - "), ".pdf")))
-            print(paste("File saved in", file.path(project, website, "Outputs", paste0(paste("timeseries", project, website, paste(terms, collapse = " - "), sep = " - "), ".pdf"))))
-        } else if (is.null(project) == FALSE & is.null(website) == TRUE) {
-            ggplot2::ggsave(file.path("Outputs", paste0(paste("timeseries", project, paste(terms, collapse = " - "), sep = " - "), ".png")))
-            print(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", project, paste(terms, collapse = " - "), sep = " - "), ".png"))))
-            ggplot2::ggsave(file.path("Outputs", paste0(paste("timeseries", project, paste(terms, collapse = " - "), sep = " - "), ".pdf")))
-            print(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", project, paste(terms, collapse = " - "), sep = " - "), ".pdf"))))
-        } else {
-            if (!file.exists(file.path("Outputs"))) {
-                dir.create(file.path("Outputs"))
-            }
-            ggplot2::ggsave(file.path("Outputs", paste0(paste("timeseries", paste(terms, collapse = " - "), sep = " - "), ".png")))
-            print(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", paste(terms, collapse = " - "), sep = " - "), ".png"))))
-            ggplot2::ggsave(file.path("Outputs", paste0(paste("timeseries", paste(terms, collapse = " - "), sep = " - "), ".pdf")))
-            print(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", paste(terms, collapse = " - "), sep = " - "), ".pdf"))))
+        if (is.null(customTitle)==FALSE) {
+            graph <- graph + ggplot2::ggtitle(label = customTitle)
         }
+        if (export == TRUE) {
+            graph
+            if (is.null(project) == FALSE & is.null(website) == FALSE) {
+                if (file.exists(file.path(project, website, "Outputs")) == FALSE) {
+                    dir.create(file.path(project, website, "Outputs"))
+                }
+                ggplot2::ggsave(file.path(project, website, "Outputs", paste0(paste("timeseries", project, website, paste(terms, collapse = " - "), sep = " - "), ".png")))
+                print(paste("File saved in", file.path(project, website, "Outputs", paste0(paste("timeseries", project, website, paste(terms, collapse = " - "), sep = " - "), ".png"))))
+                ggplot2::ggsave(file.path(project, website, "Outputs", paste0(paste("timeseries", project, website, paste(terms, collapse = " - "), sep = " - "), ".pdf")))
+                print(paste("File saved in", file.path(project, website, "Outputs", paste0(paste("timeseries", project, website, paste(terms, collapse = " - "), sep = " - "), ".pdf"))))
+            } else if (is.null(project) == FALSE & is.null(website) == TRUE) {
+                ggplot2::ggsave(file.path("Outputs", paste0(paste("timeseries", project, paste(terms, collapse = " - "), sep = " - "), ".png")))
+                print(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", project, paste(terms, collapse = " - "), sep = " - "), ".png"))))
+                ggplot2::ggsave(file.path("Outputs", paste0(paste("timeseries", project, paste(terms, collapse = " - "), sep = " - "), ".pdf")))
+                print(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", project, paste(terms, collapse = " - "), sep = " - "), ".pdf"))))
+            } else {
+                if (!file.exists(file.path("Outputs"))) {
+                    dir.create(file.path("Outputs"))
+                }
+                ggplot2::ggsave(file.path("Outputs", paste0(paste("timeseries", paste(terms, collapse = " - "), sep = " - "), ".png")))
+                print(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", paste(terms, collapse = " - "), sep = " - "), ".png"))))
+                ggplot2::ggsave(file.path("Outputs", paste0(paste("timeseries", paste(terms, collapse = " - "), sep = " - "), ".pdf")))
+                print(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", paste(terms, collapse = " - "), sep = " - "), ".pdf"))))
+            }
+        }
+        graph
+    } else {
+        showShareDF
     }
-    graph
 }
 
