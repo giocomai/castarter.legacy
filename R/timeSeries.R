@@ -146,7 +146,7 @@ ShowTS <- function(terms, corpusDtm = NULL, corpus = NULL, specificWebsites = NU
         timeSeries <- timeSeries + ggplot2::ggtitle(customTitle)
     }
     if (smoothLine == TRUE) {
-        timeSeries <- timeSeries + ggplot2::stat_smooth(size=1.2)
+        timeSeries <- timeSeries + ggplot2::stat_smooth(size=1.2, se=FALSE)
     }
     if (export == TRUE) {
         timeSeries
