@@ -67,6 +67,7 @@ LoadDatasets <- function(projectsAndWebsites = NULL, type = "dataset", removeNAd
             colnames(x = dataset)[colnames(dataset)=="links"]<-"link"
             colnames(x = dataset)[colnames(dataset)=="titles"]<-"title"
             colnames(x = dataset)[colnames(dataset)=="dates"]<-"date"
+            dataset$contents <- base::iconv(x = dataset$contents, to = "UTF-8")
             allDatasets <- rbind(allDatasets, dataset)
             rm(dataset)
         }
