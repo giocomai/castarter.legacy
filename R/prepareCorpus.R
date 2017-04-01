@@ -142,14 +142,14 @@ LoadAllDatasets <- function(project, removeNAdates = TRUE) {
 #'
 #' @param dataset A data.frame created by 'castarter' including metadata and full text articles to be converted into a corpus.
 #' @param quanteda Logical, defaults to TRUE. If TRUE generates corpus of the 'quanteda' package, otherwise of the 'tm' package.
-#' @param clean Logical, defaults to FALSE. If TRUE, it removes special characters from the corpus that may cause errors when creating dtm.
+#' @param clean Logical, defaults to TRUE. If TRUE, it leaves only printable characters, thus removing special characters from the corpus that may cause errors when creating dtm.
 #' @return A corpus as created by the 'tm' or 'quanteda' package including metadata.
 #' @export
 #' @examples
 #' corpus <- CreateCorpus(dataset)
-CreateCorpus <- function(dataset, quanteda = TRUE, clean = FALSE) {
+CreateCorpus <- function(dataset, quanteda = TRUE, clean = TRUE) {
     if (clean == TRUE) {
-        dataset$contents <- gsub(pattern = "[^[:alnum:]///' ]", replacement = " ", x = dataset$contents)
+        dataset$contents <- gsub(pattern = "[^[:print:]///' ]", replacement = " ", x = dataset$contents)
     }
     if (quanteda==TRUE) {
         corpus <- quanteda::corpus(dataset$contents, docnames = paste(as.Date(dataset$date), dataset$id, dataset$title, sep = " - "), docvars=data.frame(website=dataset$website, date=as.Date(dataset$date), title=dataset$title, link = dataset$link, ID=dataset$id))
