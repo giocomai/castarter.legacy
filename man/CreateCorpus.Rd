@@ -4,12 +4,14 @@
 \alias{CreateCorpus}
 \title{Converts a 'castarter' dataset into a 'quanteda' or 'tm' corpus.}
 \usage{
-CreateCorpus(dataset, quanteda = TRUE)
+CreateCorpus(dataset, quanteda = TRUE, clean = FALSE)
 }
 \arguments{
 \item{dataset}{A data.frame created by 'castarter' including metadata and full text articles to be converted into a corpus.}
 
 \item{quanteda}{Logical, defaults to TRUE. If TRUE generates corpus of the 'quanteda' package, otherwise of the 'tm' package.}
+
+\item{clean}{Logical, defaults to FALSE. If TRUE, it removes special characters from the corpus that may cause errors when creating dtm.}
 }
 \value{
 A corpus as created by the 'tm' or 'quanteda' package including metadata.
