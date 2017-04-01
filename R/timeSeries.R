@@ -125,7 +125,9 @@ ShowTS <- function(terms, corpusDtm = NULL, corpus = NULL, specificWebsites = NU
               legend.title = ggplot2::element_text(size = ggplot2::rel(1.1)),
               legend.text = ggplot2::element_text(size = ggplot2::rel(1))) +
         ggplot2::scale_colour_brewer(type = "qual", palette = 6) +
-        ggplot2::geom_line(size = 1) + ggplot2::expand_limits(y=0)
+        ggplot2::geom_line(size = 1) +
+        ggplot2::expand_limits(y=0) +
+        ggplot2::theme_minimal()
     if (quanteda::is.dfm(corpusDtm) == TRUE) {
         timeSeries <- timeSeries + ggplot2::scale_x_date("")
     } else {
