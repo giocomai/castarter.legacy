@@ -184,27 +184,32 @@ ShowFreq <- function(corpusDtm, mode = "data.frame", number = 10, terms = NULL, 
             }
         }
     }
+    if (is.null(tipology) == FALSE) {
+        wordFrequency$tipology <- NA
+        tipology$type <- as.character(tipology$type)
+        if (byWebsite == TRUE) {
+            for (i in 1:nrow(wordFrequency)) {
+                if (is.element(wordFrequency$type[i], tipology$term)) {
+                    wordFrequency$tipology[i] <- tipology$type[tipology$term == wordFrequency$type[i]]
+                } else {
+                    wordFrequency$tipology[i] <- NA
+                }
+            }
+        } else {
+            for (i in 1:nrow(wordFrequency)) {
+                if (is.element(wordFrequency$term[i], tipology$term)) {
+                    wordFrequency$tipology[i] <- tipology$type[tipology$term == wordFrequency$term[i]]
+                } else {
+                    wordFrequency$tipology[i] <- NA
+                }
+            }
+        }
+    }
     if (mode == "barchart" | mode == "graph") {
         if (is.null(tipology) == FALSE) {
-            wordFrequency$tipology <- NA
-            tipology$type <- as.character(tipology$type)
             if (byWebsite == TRUE) {
-                for (i in 1:nrow(wordFrequency)) {
-                    if (is.element(wordFrequency$type[i], tipology$term)) {
-                        wordFrequency$tipology[i] <- tipology$type[tipology$term == wordFrequency$type[i]]
-                    } else {
-                        wordFrequency$tipology[i] <- NA
-                    }
-                }
                 barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = reorder(type, freq), y = freq, fill = tipology)) + ggplot2::geom_bar(stat = "identity") + ggplot2::coord_flip() + ggplot2::xlab("") + ggplot2::labs(fill="Type")
             } else {
-                for (i in 1:nrow(wordFrequency)) {
-                    if (is.element(wordFrequency$term[i], tipology$term)) {
-                        wordFrequency$tipology[i] <- tipology$type[tipology$term == wordFrequency$term[i]]
-                    } else {
-                        wordFrequency$tipology[i] <- NA
-                    }
-                }
                 barchart <- ggplot2::ggplot(data = wordFrequency, ggplot2::aes(x = reorder(term, freq), y = freq, fill = tipology)) + ggplot2::geom_bar(stat = "identity") + ggplot2::coord_flip() + ggplot2::xlab("") + ggplot2::labs(fill="Type")
             }
         } else if (byWebsite == TRUE | byDate == TRUE) {
