@@ -1,10 +1,10 @@
 #' Prepares combinations of words to be changed
-#' 
+#'
 #' Prepares combinations of words to be changed.
-#'  
+#'
 #' @param originalCombination, toBeUsed A character vector.of length 1.
 #' @param importExport Defaults to FALSE. If TRUE, saves stopwords in a txt file in the project folder, and imports changes made in the txt file.
-#' @return .A data.frame of word combinations. 
+#' @return .A data.frame of word combinations.
 #' @export
 #' @examples
 #' originalCombination <- "European Union"
@@ -38,9 +38,9 @@ AddWordCombinations <- function(wordCombinations = NULL, originalCombination = N
 }
 
 #' Combine words in a corpus
-#' 
+#'
 #' Combine words in a corpus according to word combinations provided by the user..
-#'  
+#'
 #' @param corpus A corpus created with the 'tm' package.
 #' @return A corpus with words combined.
 #' @export
@@ -57,16 +57,16 @@ CombineWords <- function(corpus, wordCombinations) {
     corpus
 }
 
-#' Adds stopwords to the default list 
-#' 
+#' Adds stopwords to the default list
+#'
 #' Adds stopwords to the default list.
-#'  
+#'
 #' @param newStopwords A character vector of words.
-#' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
+#' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.
 #' @param importExport Defaults to FALSE. If TRUE, saves stopwords in a txt file in the project folder, and imports changes made in the txt file.
-#' @param includeDefault Logical, defaults to TRUE. Includes default list of stopwords included in the 'tm' package. 
-#' @param language Passed to the stopwords function of the TM package to provide a default list of stopwords. 
-#' @param importExport If TRUE exports the stopword list to a txt file in the project folder. The txt can be edited and re-imported re-running the function. 
+#' @param includeDefault Logical, defaults to TRUE. Includes default list of stopwords included in the 'tm' package.
+#' @param language Passed to the stopwords function of the TM package to provide a default list of stopwords.
+#' @param importExport If TRUE exports the stopword list to a txt file in the project folder. The txt can be edited and re-imported re-running the function.
 #' @return A character vector.
 #' @export
 #' @examples
@@ -99,7 +99,7 @@ AddStopwords <- function(newStopwords = NULL, project = NULL, includeDefault = T
                 stopwords <- c(stopwords, tm::stopwords(language))
             } else {
                 stopwords <- tm::stopwords(language)
-            } 
+            }
         }
     }
     stopwords <- unique(as.character(stopwords[stopwords != ""]))
@@ -110,9 +110,9 @@ AddStopwords <- function(newStopwords = NULL, project = NULL, includeDefault = T
 }
 
 #' Remove stopwords from corpus
-#' 
+#'
 #' Remove stopwords from corpus.
-#'  
+#'
 #' @param corpus A corpus created with the 'tm' package.
 #' @return A corpus without stopwords.
 #' @export
@@ -123,16 +123,16 @@ RemoveStopwords <- function(corpus, stopwords) {
     corpus
 }
 
-#' Calls various 'tm' functions to clean up the corpus. 
-#' 
+#' Calls various 'tm' functions to clean up the corpus.
+#'
 #' It applies to a corpus common operations to prepare it for further analysis using functions of the 'tm' package.
-#'  
+#'
 #' @param corpus A corpus as created by the 'tm' package including metadata.
 #' @return A corpus as created by the 'tm' package including metadata, after all enabled transformations are applied.
 #' @export
 #' @examples
 #' corpus <- CleanCorpus(corpus)
-CleanCorpus <- function(corpus, stripWhitespace = TRUE, toLowerCase = TRUE, removeNumbers = TRUE, removePunctuation = TRUE, removeControlCharacters = TRUE, 
+CleanCorpus <- function(corpus, stripWhitespace = TRUE, toLowerCase = TRUE, removeNumbers = TRUE, removePunctuation = TRUE, removeControlCharacters = TRUE,
     removeCharacter = "") {
     if (toLowerCase == TRUE) {
         corpus <- tm::tm_map(corpus, tm::content_transformer(tolower))
@@ -158,13 +158,13 @@ CleanCorpus <- function(corpus, stripWhitespace = TRUE, toLowerCase = TRUE, remo
 }
 
 #' Exports the stemming dictionary
-#' 
+#'
 #' Allows to export a stemming dictionary in csv format.
-#'  
+#'
 #' @param corpusDtm A document-term matrix.
-#' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
+#' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.
 #' @param website Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
-#' @param stopwords A character vector of stopwords. 
+#' @param stopwords A character vector of stopwords.
 #' @return .A data.frame with words before and after stemming.
 #' @export
 #' @examples
@@ -173,7 +173,7 @@ ExportStemmingDictionary <- function(corpusDtm, project = NULL, stopwords = "", 
     if (gtools::invalid(project) == TRUE) {
         project <- CastarterOptions("project")
     }
-    stemmingDictionary <- data.frame(row.names = colnames(corpusDtm), occurrences = slam::col_sums(corpusDtm), stemmedTerm = SnowballC::wordStem(colnames(corpusDtm), language), 
+    stemmingDictionary <- data.frame(row.names = colnames(corpusDtm), occurrences = slam::col_sums(corpusDtm), stemmedTerm = SnowballC::wordStem(colnames(corpusDtm), language),
                                      stopword = ifelse(colnames(corpusDtm) %in% stopwords, "stopword", ""), stringsAsFactors = FALSE)
     stemmingDictionary[Terms(corpusDtm) %in% stopwords, "stemmedTerm"] <- ""
     #if (!file.exists(file.path(project, paste(project, "stemmingDictionary.csv")))) {
@@ -185,7 +185,7 @@ ExportStemmingDictionary <- function(corpusDtm, project = NULL, stopwords = "", 
 #         stemmingDictionaryMerged <- merge(stemmingDictionary0, stemmingDictionary1, by = "row.names", all.x = TRUE)
 #         stemmingDictionaryMissing <- is.na(stemmingDictionaryMerged$stemmedTerm.y)
 #         for (i in 1:length(stemmingDictionaryMissing)) {
-#             if (stemmingDictionaryMissing[i] == FALSE) 
+#             if (stemmingDictionaryMissing[i] == FALSE)
 #                 stemmingDictionary$stemmedTerm[i] <- as.character(stemmingDictionaryMerged$stemmedTerm.y[i]) else stemmingDictionary$stemmedTerm[i] <- as.character(stemmingDictionaryMerged$stemmedTerm.x[i])
 #         }
 #         if (stemmingEditMode == "dfedit") {
@@ -201,13 +201,13 @@ StemCorpusDtm <- function(corpusDtm, stemmingDictionary) {
     dtm <- rollup(dtm, 2, stemmingDictionary[["stemmedTerm"]])
     dtm <- dtm[, Terms(dtm) != ""]
     dtm
-} 
+}
 
 #' Creates a Document Term Matrix (DTM).
-#'  
+#'
 #' @param corpus A corpus as created by the 'tm' or 'quanteda' package including relevant metadata and typically created with castarter's CreateCorpus() function.
-#' @param removeSparseTerms A value between 0 and 1, to be passed to the removeSparseTerms function of the 'tm' function. Available only if applied to a corpus of the `tm` type. 
-#' @param stem Logical, defaults to FALSE. If TRUE, applies stemming in the language defined by the `language` parameter. Available only if applied to a corpus of the `quanteda` type. 
+#' @param removeSparseTerms A value between 0 and 1, to be passed to the removeSparseTerms function of the 'tm' function. Available only if applied to a corpus of the `tm` type.
+#' @param stem Logical, defaults to FALSE. If TRUE, applies stemming in the language defined by the `language` parameter. Available only if applied to a corpus of the `quanteda` type.
 #' @return A Document Term Matrix (DTM).
 #' @keywords tm
 #' @export
@@ -215,7 +215,7 @@ StemCorpusDtm <- function(corpusDtm, stemmingDictionary) {
 #' dtm <- CreateDtm(corpus)
 CreateDtm <- function(corpus, removeSparseTerms = NULL, stem = FALSE, language = "english"){
     if (quanteda::is.corpus(corpus)==TRUE) {
-        corpusDtm <- quanteda::dfm(x = corpus, groups=c("date", "website"), stem = stem, language = language)
+        corpusDtm <- quanteda::dfm(x = corpus, groups=c("date", "website"), stem = stem, language = language, verbose = FALSE)
     } else {
         corpusDtm <- tm::DocumentTermMatrix(corpus)
         if (is.null(removeSparseTerms) == FALSE) {
