@@ -5,8 +5,8 @@
 \title{Saves working environment and dataset.}
 \usage{
 SaveWebsite(saveEnvironment = TRUE, dataset = NULL, corpus = NULL,
-  corpusDtm = NULL, project = NULL, website = NULL, exportCsv = FALSE,
-  exportTxt = FALSE, exportXlsx = FALSE)
+  tidyCorpus = NULL, corpusDtm = NULL, project = NULL, website = NULL,
+  exportCsv = FALSE, exportTxt = FALSE, exportXlsx = FALSE)
 }
 \arguments{
 \item{saveEnvironment}{Logical, defaults to TRUE. If TRUE, saves environment as .Rdata in the correspodning website folder.}

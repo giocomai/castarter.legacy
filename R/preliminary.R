@@ -69,7 +69,7 @@ LoadLatest <- function(project = NULL, website = NULL) {
 #' @export
 #' @examples
 #' SaveWebsite(project, website)
-SaveWebsite <- function(saveEnvironment = TRUE, dataset = NULL, corpus = NULL, corpusDtm = NULL, project = NULL, website = NULL, exportCsv = FALSE, exportTxt = FALSE, exportXlsx = FALSE) {
+SaveWebsite <- function(saveEnvironment = TRUE, dataset = NULL, corpus = NULL, tidyCorpus = NULL, corpusDtm = NULL, project = NULL, website = NULL, exportCsv = FALSE, exportTxt = FALSE, exportXlsx = FALSE) {
     if (gtools::invalid(project) == TRUE) {
         project <- CastarterOptions("project")
     }
@@ -98,6 +98,10 @@ SaveWebsite <- function(saveEnvironment = TRUE, dataset = NULL, corpus = NULL, c
             save(corpus, file = file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "corpusTM", sep = " - "), ".RData")))
             message(paste("Corpus of the 'tm' type saved in", file.path(project, website, paste0(paste(Sys.Date(), project, website, "corpusTM", sep = " - "), ".RData"))))
         }
+    }
+    if (is.null(tidyCorpus)==FALSE) {
+            saveRDS(object = tidyCorpus, file = file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "tidyCorpus", sep = " - "), ".rds")))
+            message(paste("Tidy corpus saved in", file.path(project, website, paste0(paste(Sys.Date(), project, website, "tidyCorpus", sep = " - "), ".rds"))))
     }
     if (is.null(corpusDtm)==FALSE) {
         if (quanteda::is.dfm(corpusDtm)) {
