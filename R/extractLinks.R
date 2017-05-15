@@ -19,15 +19,15 @@
 #' @return A named character vector of links to articles. Name of the link may be the article title.
 #' @export
 #' @examples
-#' articlesLinks <- ExtractLinks(domain = "http://www.example.com/", partOfLink = "news/", indexHtml)
-ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = NULL, containerClass = NULL, divClass = NULL, attributeType = NULL, partOfLinkToExclude = NULL, minLength = NULL, maxLength = NULL, indexLinks = NULL, sortLinks = TRUE, linkTitle = TRUE, export = FALSE, appendString = NULL, removeString = NULL, progressBar = TRUE, exportParameters = TRUE, project = NULL, website = NULL) {
+#' articlesLinks <- ExtractLinks(domain = "http://www.example.com/", partOfLink = "news/", html)
+ExtractLinks <- function(domain, partOfLink, html, containerType = NULL, containerClass = NULL, divClass = NULL, attributeType = NULL, partOfLinkToExclude = NULL, minLength = NULL, maxLength = NULL, indexLinks = NULL, sortLinks = TRUE, linkTitle = TRUE, export = FALSE, appendString = NULL, removeString = NULL, progressBar = TRUE, exportParameters = TRUE, project = NULL, website = NULL) {
     if (gtools::invalid(project) == TRUE) {
         project <- CastarterOptions("project")
     }
     if (gtools::invalid(website) == TRUE) {
         website <- CastarterOptions("website")
     }
-    numberOfIndexPages <- length(indexHtml)
+    numberOfIndexPages <- length(html)
     if (linkTitle==TRUE) {
         allLinks <- data.frame()
     } else {
@@ -37,8 +37,8 @@ ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = NULL, co
         pb <- txtProgressBar(min = 0, max = numberOfIndexPages, style = 3, title = "Extracting links")
     }
     for (i in 1:numberOfIndexPages) {
-        if (indexHtml[i] != "") {
-            indexPageHtmlParsed <- XML::htmlTreeParse(indexHtml[i], useInternalNodes = T, encoding = "UTF-8")
+        if (html[i] != "") {
+            indexPageHtmlParsed <- XML::htmlTreeParse(html[i], useInternalNodes = T, encoding = "UTF-8")
             if (gtools::invalid(divClass) == FALSE) {
                 links <- XML::xpathSApply(indexPageHtmlParsed, paste0("//div[@class='", divClass, "']", "//a/@href"))
                 if (linkTitle==TRUE) {
@@ -176,8 +176,8 @@ ExtractLinks <- function(domain, partOfLink, indexHtml, containerType = NULL, co
         writeLines(links, file.path(project, website, "Logs", paste(Sys.Date(), website, "articlesLinks.txt", sep = " - ")))
     }
     if (exportParameters == TRUE) {
-        args <- c("domain", "partOfLink", "indexHtml", "containerTypeExtractLinks", "containerClassExtractLinks", "divClassExtractLinks", "attributeTypeExtractLinks", "partOfLinkToExclude", "minLength", "maxLength", "indexLinks","sortLinks", "export", "appendStringExtractLinks", "removeStringExtractLinks", "exportParameters", "project", "website")
-        param <- list(domain, partOfLink, "indexHtml", containerType, containerClass, divClass, attributeType, paste(partOfLinkToExclude, collapse = "§§§"), minLength, maxLength, "indexLinks", sortLinks, export, appendString, paste(removeString, collapse = "§§§"), exportParameters, project, website)
+        args <- c("domain", "partOfLink", "html", "containerTypeExtractLinks", "containerClassExtractLinks", "divClassExtractLinks", "attributeTypeExtractLinks", "partOfLinkToExclude", "minLength", "maxLength", "indexLinks","sortLinks", "export", "appendStringExtractLinks", "removeStringExtractLinks", "exportParameters", "project", "website")
+        param <- list(domain, partOfLink, "html", containerType, containerClass, divClass, attributeType, paste(partOfLinkToExclude, collapse = "§§§"), minLength, maxLength, "indexLinks", sortLinks, export, appendString, paste(removeString, collapse = "§§§"), exportParameters, project, website)
         for (i in 1:length(param)) {
             if (is.null(param[[i]])==TRUE) {
                 param[[i]] <- "NULL"
