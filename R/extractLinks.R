@@ -20,7 +20,7 @@
 #' @export
 #' @examples
 #' articlesLinks <- ExtractLinks(domain = "http://www.example.com/", partOfLink = "news/", html)
-ExtractLinks <- function(domain, partOfLink, html, containerType = NULL, containerClass = NULL, divClass = NULL, attributeType = NULL, partOfLinkToExclude = NULL, minLength = NULL, maxLength = NULL, indexLinks = NULL, sortLinks = TRUE, linkTitle = TRUE, export = FALSE, appendString = NULL, removeString = NULL, progressBar = TRUE, exportParameters = TRUE, project = NULL, website = NULL) {
+ExtractLinks <- function(domain, partOfLink, html, containerType = NULL, containerClass = NULL, containerId = NULL, divClass = NULL, attributeType = NULL, partOfLinkToExclude = NULL, minLength = NULL, maxLength = NULL, indexLinks = NULL, sortLinks = TRUE, linkTitle = TRUE, export = FALSE, appendString = NULL, removeString = NULL, progressBar = TRUE, exportParameters = TRUE, project = NULL, website = NULL) {
     if (gtools::invalid(project) == TRUE) {
         project <- CastarterOptions("project")
     }
@@ -46,7 +46,11 @@ ExtractLinks <- function(domain, partOfLink, html, containerType = NULL, contain
                 }
             } else if (gtools::invalid(containerType) == FALSE) {
                 if (gtools::invalid(containerClass) == TRUE) {
-                  stop("containerClass must be defined if containerType is defined.")
+                    if (is.null(containerId) == TRUE) {
+                        stop("containerClass or containerId must be defined if containerType is defined.")
+                    } else {
+                        links <- XML::xpathSApply(indexPageHtmlParsed, paste0("//", containerType, "[@id='", containerClass, "']", "//a/@href"))
+                    }
                 }
                 links <- XML::xpathSApply(indexPageHtmlParsed, paste0("//", containerType, "[@class='", containerClass, "']", "//a/@href"))
                 if (linkTitle==TRUE) {
@@ -176,8 +180,8 @@ ExtractLinks <- function(domain, partOfLink, html, containerType = NULL, contain
         writeLines(links, file.path(project, website, "Logs", paste(Sys.Date(), website, "articlesLinks.txt", sep = " - ")))
     }
     if (exportParameters == TRUE) {
-        args <- c("domain", "partOfLink", "html", "containerTypeExtractLinks", "containerClassExtractLinks", "divClassExtractLinks", "attributeTypeExtractLinks", "partOfLinkToExclude", "minLength", "maxLength", "indexLinks","sortLinks", "export", "appendStringExtractLinks", "removeStringExtractLinks", "exportParameters", "project", "website")
-        param <- list(domain, partOfLink, "html", containerType, containerClass, divClass, attributeType, paste(partOfLinkToExclude, collapse = "§§§"), minLength, maxLength, "indexLinks", sortLinks, export, appendString, paste(removeString, collapse = "§§§"), exportParameters, project, website)
+        args <- c("domain", "partOfLink", "html", "containerTypeExtractLinks", "containerClassExtractLinks", "containerId_ExtractLinks", "divClassExtractLinks", "attributeTypeExtractLinks", "partOfLinkToExclude", "minLength", "maxLength", "indexLinks","sortLinks", "export", "appendStringExtractLinks", "removeStringExtractLinks", "exportParameters", "project", "website")
+        param <- list(domain, partOfLink, "html", containerType, containerClass, containerId, divClass, attributeType, paste(partOfLinkToExclude, collapse = "§§§"), minLength, maxLength, "indexLinks", sortLinks, export, appendString, paste(removeString, collapse = "§§§"), exportParameters, project, website)
         for (i in 1:length(param)) {
             if (is.null(param[[i]])==TRUE) {
                 param[[i]] <- "NULL"

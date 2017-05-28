@@ -5,11 +5,12 @@
 \title{Extracts direct links to individual articles from index pages.}
 \usage{
 ExtractLinks(domain, partOfLink, html, containerType = NULL,
-  containerClass = NULL, divClass = NULL, attributeType = NULL,
-  partOfLinkToExclude = NULL, minLength = NULL, maxLength = NULL,
-  indexLinks = NULL, sortLinks = TRUE, linkTitle = TRUE, export = FALSE,
-  appendString = NULL, removeString = NULL, progressBar = TRUE,
-  exportParameters = TRUE, project = NULL, website = NULL)
+  containerClass = NULL, containerId = NULL, divClass = NULL,
+  attributeType = NULL, partOfLinkToExclude = NULL, minLength = NULL,
+  maxLength = NULL, indexLinks = NULL, sortLinks = TRUE,
+  linkTitle = TRUE, export = FALSE, appendString = NULL,
+  removeString = NULL, progressBar = TRUE, exportParameters = TRUE,
+  project = NULL, website = NULL)
 }
 \arguments{
 \item{domain}{Web domain of the website. Will be added at the beginning of each link found.If links in the page already include the full web address this should be ignored. Defaults to "".}
