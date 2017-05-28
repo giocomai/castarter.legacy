@@ -130,8 +130,10 @@ ExtractTxt <- function(articlesHtml, metadata = NULL, export = FALSE, maxTitleCh
             }
         }
         for (i in seq_along(contents)) {
-            if (titles[i]!="") {
-                contents[i] <- base::sub(pattern = titles[i], replacement = "", x = contents[i], fixed = TRUE)
+            if (is.null(titles[i])==FALSE) {
+                if (titles[i]!="") {
+                    contents[i] <- base::sub(pattern = titles[i], replacement = "", x = contents[i], fixed = TRUE)
+                }
             }
         }
     }
