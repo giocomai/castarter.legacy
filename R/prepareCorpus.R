@@ -147,7 +147,7 @@ LoadAllDatasets <- function(project, removeNAdates = TRUE) {
 #' @export
 #' @examples
 #' corpus <- CreateCorpus(dataset)
-CreateCorpus <- function(dataset, quanteda = TRUE, clean = TRUE) {
+CreateCorpus <- function(dataset, quanteda = FALSE, clean = TRUE) {
     if (clean == TRUE) {
         dataset$contents <- gsub(pattern = "[^[:print:]///' ]", replacement = " ", x = dataset$contents)
     }

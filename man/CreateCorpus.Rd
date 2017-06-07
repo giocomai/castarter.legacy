@@ -4,7 +4,7 @@
 \alias{CreateCorpus}
 \title{Converts a 'castarter' dataset into a 'quanteda' or 'tm' corpus.}
 \usage{
-CreateCorpus(dataset, quanteda = TRUE, clean = TRUE)
+CreateCorpus(dataset, quanteda = FALSE, clean = TRUE)
 }
 \arguments{
 \item{dataset}{A data.frame created by 'castarter' including metadata and full text articles to be converted into a corpus.}
