@@ -25,7 +25,7 @@ CreateShinyApp <- function(dataset, terms = "europ*", customTitle = NULL, projec
     if (quanteda::is.corpus(dataset)==TRUE) {
         corpus <- dataset
     } else {
-        corpus <- castarter::CreateCorpus(dataset = dataset, quanteda = TRUE)
+        corpus <- castarter::CreateCorpus(dataset = dataset, quanteda = FALSE)
     }
     corpusDtm <- castarter::CreateDtm(corpus = corpus)
     rm(dataset)
