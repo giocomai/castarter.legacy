@@ -36,6 +36,18 @@ The new `castarter` aims to:
 
 By late 2017, at least some of these features are expected to be implemented, and merged back into the `master` branch. 
 
+## Examples of output
+Some examples of analysis of media contents conducted with `castarter` are available on the author's blog:
+
+* [Word frequency of ‘Ukraine’, ‘Crimea’, and ‘Syria’ on Russia’s First Channel](http://www.giorgiocomai.eu/2015/11/03/word-frequency-of-ukraine-crimea-and-syria-on-russias-first-channel/)
+* [Presidents and prime ministers in Romanian media](http://www.giorgiocomai.eu/2016/06/29/presidents-and-prime-ministers-in-romanian-media/)
+
+Interactive example:
+
+* [Armenia's president website](https://giocomai.shinyapps.io/ArmeniaPresident/)
+* [Official websites of South Caucasus presidents](https://giocomai.shinyapps.io/SouthCaucasusPresidents/)
+* [Kremlin's official website - only time series](https://giocomai.shinyapps.io/kremlinregex/)
+
 ## Introduction
 Books dedicated to content analysis typically assume that the researcher has already created, has access or may buy access to a structured dataset. They may include sections on sampling [@krippendorff_content_2004; @riffe_analyzing_2005], but they do not debate explicitly how new datasets can be built. Commercial software packages generally share the same expectation. In the R ecosystem, there are a number of packages that can be used to access existing datasets (e.g. [tm.plugin.lexisnexis](https://cran.r-project.org/web/packages/tm.plugin.lexisnexis/), [manifestoR](https://cran.r-project.org/web/packages/manifestoR/)) or import into R textual content from social media through their APIs (e.g. [twitteR](https://cran.r-project.org/web/packages/twitteR/)). However, there is no package dedicated to getting into R the textual contents of regular websites and extracting key metadata (date and title) in order to populate a corpus that can be analysed in R or with other software packages. 'castarter - content analysis starter toolkit for R' aims to accomplish just that, offering to moderately incompetent users the opportunity to extract textual contents from websites and prepare them for content analysis. It allows to export the datasets in a number of standard formats for further processing and facilitates basic word frequency analysis in R.
 
@@ -400,16 +412,6 @@ Forthcoming features:
 * reducing dependencies, standardize code based on the `tidyverse`;
 * polishing and speeding up code.
 
-## Examples of output
-Some examples of analysis of media contents conducted with `castarter` are available on the author's blog:
-
-* [Word frequency of ‘Ukraine’, ‘Crimea’, and ‘Syria’ on Russia’s First Channel](http://www.giorgiocomai.eu/2015/11/03/word-frequency-of-ukraine-crimea-and-syria-on-russias-first-channel/)
-* [Presidents and prime ministers in Romanian media](http://www.giorgiocomai.eu/2016/06/29/presidents-and-prime-ministers-in-romanian-media/)
-
-Interactive example:
-
-* [Armenia's president website](https://giocomai.shinyapps.io/ArmeniaPresident/)
-* [Official websites of South Caucasus presidents](https://giocomai.shinyapps.io/SouthCaucasusPresidents/)
 
 ## About the author
 Giorgio Comai is doctoral researcher at the School of Law and Government, Dublin City University, and a member of the Marie Curie ITN network “Post-Soviet tensions”. You can find out more about his work on his [personal website](http://giorgiocomai.eu/). He is on Twitter: https://twitter.com/giocomai.

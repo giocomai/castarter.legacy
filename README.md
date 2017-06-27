@@ -25,6 +25,19 @@ The new `castarter` aims to:
 
 By late 2017, at least some of these features are expected to be implemented, and merged back into the `master` branch.
 
+Examples of output
+------------------
+
+Some examples of analysis of media contents conducted with `castarter` are available on the author's blog:
+
+-   [Word frequency of ‘Ukraine’, ‘Crimea’, and ‘Syria’ on Russia’s First Channel](http://www.giorgiocomai.eu/2015/11/03/word-frequency-of-ukraine-crimea-and-syria-on-russias-first-channel/)
+-   [Presidents and prime ministers in Romanian media](http://www.giorgiocomai.eu/2016/06/29/presidents-and-prime-ministers-in-romanian-media/)
+
+Interactive example:
+
+-   [Armenia's president website](https://giocomai.shinyapps.io/ArmeniaPresident/)
+-   [Official websites of South Caucasus presidents](https://giocomai.shinyapps.io/SouthCaucasusPresidents/)
+
 Introduction
 ------------
 
@@ -493,19 +506,6 @@ Forthcoming features:
 -   enhancing support for larger datasets, including by improving direct import from html files without importing them into R first through `CreateDatasetFromHtml`;
 -   reducing dependencies, standardize code based on the `tidyverse`;
 -   polishing and speeding up code.
-
-Examples of output
-------------------
-
-Some examples of analysis of media contents conducted with `castarter` are available on the author's blog:
-
--   [Word frequency of ‘Ukraine’, ‘Crimea’, and ‘Syria’ on Russia’s First Channel](http://www.giorgiocomai.eu/2015/11/03/word-frequency-of-ukraine-crimea-and-syria-on-russias-first-channel/)
--   [Presidents and prime ministers in Romanian media](http://www.giorgiocomai.eu/2016/06/29/presidents-and-prime-ministers-in-romanian-media/)
-
-Interactive example:
-
--   [Armenia's president website](https://giocomai.shinyapps.io/ArmeniaPresident/)
--   [Official websites of South Caucasus presidents](https://giocomai.shinyapps.io/SouthCaucasusPresidents/)
 
 About the author
 ----------------
