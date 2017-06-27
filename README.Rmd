@@ -27,6 +27,8 @@ Active development is now proceeding on a [separate development branch](https://
 The new `castarter` aims to:
 
 - make it possible to run (almost) all of its functions from a web interface (through a Shiny app), allowing to create textual datasets, export them, and conduct basic word frequency analysis virtually without knowing anything about R
+- store parameters used for dataset creation in XML format, making it easy to share the procedure, and allow other users to replicate it
+- automatically generate human-readable log files that detail the procedure
 - have as few dependencies as possible on other packages
 - reducing RAM requirements in order to allow for smooth analysis of relatively big datasets (e.g. 1 million items)
 - facilitate integration with SQL databases
