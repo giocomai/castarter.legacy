@@ -17,17 +17,30 @@ knitr::opts_chunk$set(
 knitr::opts_knit$set(root.dir = normalizePath('./data'))
 ```
 
-## Preliminary note
-`castarter` is currently under active development. Functions are being rewritten to facilitate interaction with the `tidytext` package, and improve speed. While most functions should work as expected, this package should be considered in *beta*.
+## Preliminary note (2017-06-27)
+`castarter` is currently under development. Due to updates to some of the packages that `castarter` dependend on (`quanteda` and `tm`), some functions may not work as expected. 
 
-Check below for further details on [forthcoming features and other development issues](#forthcoming-features-and-other-development-issues).
+All functions needed to create a textual dataset are however fully functional. The easiest way to create a new dataset is to [start from this template](https://gist.github.com/giocomai/2d8e998cd8f85e8bdd857c8d4d99a1c9).
 
-N.B. Please consider that this document illustrates only the most basic parameters of `castarter` functions. More advanced options can be seen by running `?nameOfFunction`.
+Active development is now proceeding on a [separate development branch](https://github.com/giocomai/castarter/tree/development), where the codebase is being completely overhauled. 
+
+The new `castarter` aims to:
+
+- make it possible to run (almost) all of its functions from a web interface (through a Shiny app), allowing to create textual datasets, export them, and conduct basic word frequency analysis virtually without knowing anything about R
+- have as few dependencies as possible on other packages
+- reducing RAM requirements in order to allow for smooth analysis of relatively big datasets (e.g. 1 million items)
+- facilitate integration with SQL databases
+- facilitate creation of a `docker` image including relevant app for easy deployments, both locally and online
+
+By late 2017, at least some of these features are expected to be implemented, and merged back into the `master` branch. 
 
 ## Introduction
 Books dedicated to content analysis typically assume that the researcher has already created, has access or may buy access to a structured dataset. They may include sections on sampling [@krippendorff_content_2004; @riffe_analyzing_2005], but they do not debate explicitly how new datasets can be built. Commercial software packages generally share the same expectation. In the R ecosystem, there are a number of packages that can be used to access existing datasets (e.g. [tm.plugin.lexisnexis](https://cran.r-project.org/web/packages/tm.plugin.lexisnexis/), [manifestoR](https://cran.r-project.org/web/packages/manifestoR/)) or import into R textual content from social media through their APIs (e.g. [twitteR](https://cran.r-project.org/web/packages/twitteR/)). However, there is no package dedicated to getting into R the textual contents of regular websites and extracting key metadata (date and title) in order to populate a corpus that can be analysed in R or with other software packages. 'castarter - content analysis starter toolkit for R' aims to accomplish just that, offering to moderately incompetent users the opportunity to extract textual contents from websites and prepare them for content analysis. It allows to export the datasets in a number of standard formats for further processing and facilitates basic word frequency analysis in R.
 
 ## Installation
+
+N.B. Please consider that this document illustrates only the most basic parameters of `castarter` functions. More advanced options can be seen by running `?nameOfFunction`.
+
 `castarter` is hosted on GitHub. The easiest way to install it on your system, is to run the following commands in R:
 
 ``` {r Install castarter, eval = FALSE}
