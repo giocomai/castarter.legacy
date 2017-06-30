@@ -83,7 +83,7 @@ CreateLinks <- function(linkFirstChunk,
         links <- base::paste0(linkFirstChunk, listOfNumbers)
     }
     # if linkSecondChunk present, append
-    if (is.null(linkSecondChunk) == TRUE) {
+    if (is.null(linkSecondChunk) == FALSE) {
         links <- base::paste0(links, linkSecondChunk)
     }
     if (reversedOrder == TRUE) {
