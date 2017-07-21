@@ -82,7 +82,7 @@ CreateLinks <- function(linkFirstChunk,
         links <- paste0(linkFirstChunk, dates)
     } else { # if not based on date, then create links based on numbers
         listOfNumbers <- base::seq(startPage, endPage, increaseBy)
-        links <- base::paste0(linkFirstChunk, listOfNumbers)
+        links <- base::paste0(linkFirstChunk, format(listOfNumbers, scientific = FALSE))
     }
     # if linkSecondChunk present, append
     if (is.null(linkSecondChunk) == FALSE) {
