@@ -50,12 +50,12 @@ ShowAbsoluteTS <- function(terms,
     }
     temp <-
         bind_cols(as_data_frame(sapply(terms, function(x) stringr::str_count(string = dataset$contents, pattern = stringr::regex(x, ignore_case = TRUE)))),
-                  tibble::data_frame(date = dataset$date)) %>%
-        dplyr::arrange(date) %>%
-        dplyr::full_join(tibble(date = seq.Date(from = min(dataset$date, na.rm = TRUE), to = max(dataset$date, na.rm = TRUE), by = "day")), by = "date") %>%
-        tidyr::replace_na(list(0)) %>%
+                  tibble::data_frame(ItemDate = dataset$date)) %>%
+        dplyr::arrange(ItemDate) %>%
+        dplyr::full_join(tibble(ItemDate = seq.Date(from = min(dataset$date, na.rm = TRUE), to = max(dataset$date, na.rm = TRUE), by = "day")), by = "ItemDate") %>%
+        dplyr::mutate_at(1:length(terms),funs(coalesce(., 0L)))  %>%
         tidyr::gather(word, n, 1:length(terms)) %>%
-        dplyr::count(date, word, wt = n) %>%
+        dplyr::count(ItemDate, word, wt = n) %>%
         tidyr::spread(word, nn)
     for (i in 2:length(temp)) {
         temp[i] <- zoo::rollmean(x = temp[i], k = rollingAverage, align = align, fill = NA)
@@ -64,21 +64,21 @@ ShowAbsoluteTS <- function(terms,
     if (type == "graph") {
         if (length(terms)>1) {
             graph <- temp %>% tidyr::gather(word, nRoll, 2:sum(length(terms),1)) %>%
-                ggplot2::ggplot(mapping = ggplot2::aes(x = date, y = nRoll, color = word))
+                ggplot2::ggplot(mapping = ggplot2::aes(x = ItemDate, y = nRoll, color = word))
         } else {
             graph <- temp %>% tidyr::gather(word, nRoll, 2) %>%
-                ggplot2::ggplot(mapping = ggplot2::aes(x = date, y = nRoll))
+                ggplot2::ggplot(mapping = ggplot2::aes(x = ItemDate, y = nRoll))
         }
         graph <- graph +
             ggplot2::geom_line(size = 1) +
-            ggplot2::scale_y_continuous(name = "") +
+            ggplot2::scale_y_continuous(name = "", labels = scales::comma) +
             ggplot2::scale_x_date(name = "") +
             ggplot2::expand_limits(y = 0) +
             ggplot2::theme_minimal() +
             ggplot2::theme(legend.title=ggplot2::element_blank()) +
             ggplot2::scale_color_brewer(type = "qual", palette = 6) +
             if (is.null(website) == TRUE) {
-                ggplot2::labs(title = paste("Number of occurrences of", paste(sQuote(terms), collapse = ", ")),
+                ggplot2::labs(title = paste("Number of occurrences of ", paste(sQuote(terms), collapse = ", ")),
                               caption = paste0("Calculated on a ", rollingAverage, "-days rolling average"))
             } else {
                 ggplot2::labs(title = paste("Number of occurrences of", paste(sQuote(terms), collapse = ", "), "on", website),
