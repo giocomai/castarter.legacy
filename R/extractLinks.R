@@ -21,9 +21,10 @@
 #' @examples
 #' articlesLinks <- ExtractLinks(domain = "http://www.example.com/", partOfLink = "news/", html)
 ExtractLinks <- function(htmlLocation = NULL,
-                         partOfLink = "",
-                         domain = "",
-                         extractText = TRUE, containerType = NULL, containerClass = NULL, containerId = NULL, divClass = NULL, attributeType = NULL, partOfLinkToExclude = NULL, minLength = NULL, maxLength = NULL, indexLinks = NULL, sortLinks = TRUE, linkTitle = TRUE, export = FALSE, appendString = NULL, removeString = NULL, progressBar = TRUE, project = NULL, website = NULL,
+                         domain = NULL,
+                         partOfLink = NULL,
+                         partOfLinkToExclude = NULL,
+                         extractText = TRUE, containerType = NULL, containerClass = NULL, containerId = NULL, divClass = NULL, attributeType = NULL, minLength = NULL, maxLength = NULL, indexLinks = NULL, sortLinks = TRUE, linkTitle = TRUE, export = FALSE, appendString = NULL, removeString = NULL, progressBar = TRUE, project = NULL, website = NULL,
                          importParameters = NULL,
                          exportParameters = TRUE) {
     # If `project` and `website` not given, tries to get them from environment
@@ -61,12 +62,20 @@ ExtractLinks <- function(htmlLocation = NULL,
     # list files and keep in order
     indexHtml <- list.files(path = file.path(project, website, "IndexHtml"), full.names = TRUE)[stringr::str_extract(string = indexHtml, pattern = "[[:digit:]]+[[:punct:]]html") %>% stringr::str_sub(start = 1L, end = -6L) %>% as.integer() %>% order()]
     temp <- purrr::flatten(purrr::map(.x = indexHtml, .f = function(x) read_html(x) %>% html_nodes("a")))
-    allLinks <- purrr::map_chr(.x = temp, .f = function(x) x %>% html_attr('href'))
-    linkFilter <- allLinks %>% stringr::str_which(pattern = partOfLink)
-    selectedLinks <- allLinks[linkFilter]
-    if (extractText==TRUE) {
-        names(selectedLinks) <- purrr::map_chr(.x = temp[linkFilter], .f = function(x) x %>% html_text('href'))
+    links <- purrr::map_chr(.x = temp, .f = function(x) x %>% html_attr('href'))
+    # introduce logical filter vector
+    linkFilter <- seq_along(links)
+    if (is.null(partOfLink)==FALSE) {
+        linkFilter <- links %>% stringr::str_which(pattern = partOfLink)
     }
-    selectedLinks
+    if (is.null(partOfLinkToExclude)==FALSE) {
+        linkFilter <- dplyr::setdiff(linkFilter, links %>% stringr::str_which(pattern = partOfLinkToExclude))
+    }
+    links <- links[linkFilter]
+    links <- paste0(domain, links)
+    if (extractText==TRUE) {
+        names(links) <- purrr::map_chr(.x = temp[linkFilter], .f = function(x) x %>% html_text('href'))
+    }
+    links
 }
 

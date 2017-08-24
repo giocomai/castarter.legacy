@@ -4,25 +4,25 @@
 \alias{ExtractLinks}
 \title{Extracts direct links to individual articles from index pages.}
 \usage{
-ExtractLinks(htmlLocation = NULL, partOfLink = "", domain = "",
-  extractText = TRUE, containerType = NULL, containerClass = NULL,
-  containerId = NULL, divClass = NULL, attributeType = NULL,
-  partOfLinkToExclude = NULL, minLength = NULL, maxLength = NULL,
+ExtractLinks(htmlLocation = NULL, domain = NULL, partOfLink = NULL,
+  partOfLinkToExclude = NULL, extractText = TRUE, containerType = NULL,
+  containerClass = NULL, containerId = NULL, divClass = NULL,
+  attributeType = NULL, minLength = NULL, maxLength = NULL,
   indexLinks = NULL, sortLinks = TRUE, linkTitle = TRUE, export = FALSE,
   appendString = NULL, removeString = NULL, progressBar = TRUE,
   project = NULL, website = NULL, importParameters = NULL,
   exportParameters = TRUE)
 }
 \arguments{
+\item{domain}{Web domain of the website. Will be added at the beginning of each link found.If links in the page already include the full web address this should be ignored. Defaults to "".}
+
 \item{partOfLink}{Part of URL found only in links of individual articles to be downloaded. If more than one provided, it includes all links that contains either of the strings provided.}
 
-\item{domain}{Web domain of the website. Will be added at the beginning of each link found.If links in the page already include the full web address this should be ignored. Defaults to "".}
+\item{partOfLinkToExclude}{If an URL includes this string, it is excluded from the output. One or more strings may be provided.}
 
 \item{containerType}{Type of html container from where links are to be extracted, such as "ul", "div", and others. containerClass must also be provided.}
 
 \item{attributeType}{Type of attribute to extract from links, when different from href.}
-
-\item{partOfLinkToExclude}{If an URL includes this string, it is excluded from the output. One or more strings may be provided.}
 
 \item{minLength}{If a link is shorter than the number of characters given in minLength, it is excluded from the output.}
 
