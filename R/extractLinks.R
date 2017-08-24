@@ -20,187 +20,53 @@
 #' @export
 #' @examples
 #' articlesLinks <- ExtractLinks(domain = "http://www.example.com/", partOfLink = "news/", html)
-ExtractLinks <- function(domain, partOfLink, html, containerType = NULL, containerClass = NULL, containerId = NULL, divClass = NULL, attributeType = NULL, partOfLinkToExclude = NULL, minLength = NULL, maxLength = NULL, indexLinks = NULL, sortLinks = TRUE, linkTitle = TRUE, export = FALSE, appendString = NULL, removeString = NULL, progressBar = TRUE, exportParameters = TRUE, project = NULL, website = NULL) {
-    if (gtools::invalid(project) == TRUE) {
+ExtractLinks <- function(htmlLocation = NULL,
+                         partOfLink = "",
+                         domain = "",
+                         extractText = TRUE, containerType = NULL, containerClass = NULL, containerId = NULL, divClass = NULL, attributeType = NULL, partOfLinkToExclude = NULL, minLength = NULL, maxLength = NULL, indexLinks = NULL, sortLinks = TRUE, linkTitle = TRUE, export = FALSE, appendString = NULL, removeString = NULL, progressBar = TRUE, project = NULL, website = NULL,
+                         importParameters = NULL,
+                         exportParameters = TRUE) {
+    # If `project` and `website` not given, tries to get them from environment
+    if (is.null(project) == TRUE) {
         project <- CastarterOptions("project")
     }
-    if (gtools::invalid(website) == TRUE) {
+    if (is.null(website) == TRUE) {
         website <- CastarterOptions("website")
     }
-    numberOfIndexPages <- length(html)
-    if (linkTitle==TRUE) {
-        allLinks <- data.frame()
-    } else {
-        allLinks <- vector(mode = "character")
-    }
-    if (progressBar == TRUE) {
-        pb <- txtProgressBar(min = 0, max = numberOfIndexPages, style = 3, title = "Extracting links")
-    }
-    for (i in 1:numberOfIndexPages) {
-        if (html[i] != "") {
-            indexPageHtmlParsed <- XML::htmlTreeParse(html[i], useInternalNodes = T, encoding = "UTF-8")
-            if (gtools::invalid(divClass) == FALSE) {
-                links <- XML::xpathSApply(indexPageHtmlParsed, paste0("//div[@class='", divClass, "']", "//a/@href"))
-                if (linkTitle==TRUE) {
-                    titles <- XML::xpathSApply(indexPageHtmlParsed, paste0("//div[@class='", divClass, "']", "//a"), XML::xmlValue)
-                }
-            } else if (gtools::invalid(containerType) == FALSE) {
-                if (gtools::invalid(containerClass) == TRUE) {
-                    if (is.null(containerId) == TRUE) {
-                        stop("containerClass or containerId must be defined if containerType is defined.")
-                    } else {
-                        links <- XML::xpathSApply(indexPageHtmlParsed, paste0("//", containerType, "[@id='", containerClass, "']", "//a/@href"))
-                    }
-                }
-                links <- XML::xpathSApply(indexPageHtmlParsed, paste0("//", containerType, "[@class='", containerClass, "']", "//a/@href"))
-                if (linkTitle==TRUE) {
-                    titles <- XML::xpathSApply(indexPageHtmlParsed, paste0("//", containerType, "[@class='", containerClass, "']", "//a"), XML::xmlValue)
-                }
-            } else if (gtools::invalid(attributeType) == FALSE) {
-                XMLnodes <- XML::getNodeSet(indexPageHtmlParsed, "//a")
-                links <- as.character(sapply(XMLnodes, XML::xmlGetAttr, attributeType))
-                if (linkTitle==TRUE) {
-                    titles <- sapply(XMLnodes, XML::xmlValue)
+    paramsFile <- base::file.path(project, website, "Logs", paste(project, website, "parameters.rds", sep = "-"))
+    if (is.null(importParameters)==FALSE) {
+        if (importParameters == TRUE) { # Import parameters
+            if (file.exists(paramsFile) == TRUE) {
+                params <- readRDS(paramsFile)
+                for (i in seq_along(params$ExtractLinks)) {
+                    assign(names(params$ExtractLinks)[i], params$ExtractLinks[[i]])
                 }
             } else {
-                XMLnodes <- XML::getNodeSet(indexPageHtmlParsed, "//a")
-                links <- as.character(sapply(XMLnodes, XML::xmlGetAttr, "href"))
-                if (linkTitle==TRUE) {
-                    titles <- sapply(XMLnodes, XML::xmlValue)
-                }
-            }
-            if (linkTitle==TRUE) {
-                links <- cbind(links, titles)
-                allLinks <- rbind(allLinks, links)
-            } else {
-                allLinks <- c(allLinks, links)
+                # throw error if parameters file not found
+                stop(paste("Parameters file not found in", paramsFile))
             }
         }
-        if (progressBar == TRUE) {
-            setTxtProgressBar(pb, i)
-        }
-    }
-    if (progressBar == TRUE) {
-        close(pb)
-    }
-    if (linkTitle==TRUE) {
-        allLinks <- as.data.frame(allLinks, stringsAsFactors = FALSE)
-        allLinks <- unique(allLinks)
-        allLinksFiltered <- allLinks[0,]
     } else {
-        allLinks <- unique(unlist(allLinks))
-        allLinksFiltered <- vector(mode = "character")
+        importParameters <- FALSE
     }
-    for (i in 1:length(partOfLink)) {
-        if (linkTitle==TRUE) {
-        allLinksTemp <- allLinks[grepl(partOfLink[i], allLinks$links, fixed = TRUE), ]
-        allLinksFiltered <- rbind(allLinksFiltered, allLinksTemp)
+    if (exportParameters == TRUE & importParameters == FALSE) { # Export parameters
+        if (file.exists(paramsFile) == TRUE) {
+            params <- readRDS(paramsFile)
         } else {
-            allLinksTemp <- allLinks[grepl(pattern = partOfLink[i], allLinks, fixed = TRUE)]
-            allLinksFiltered <- c(allLinksFiltered, allLinksTemp)
+            params <- list()
         }
+        params$ExtractLinks <-  as.list(environment())
+        saveRDS(object = params, file = paramsFile)
     }
-    allLinks <- unique(allLinksFiltered)
-    if (gtools::invalid(partOfLinkToExclude) == FALSE) {
-        if (linkTitle==TRUE) {
-            for (i in 1:length(partOfLinkToExclude)) {
-                allLinks <- allLinks[!grepl(partOfLinkToExclude[i], allLinks$links, fixed = TRUE), ]
-            }
-        }  else {
-            for (i in 1:length(partOfLinkToExclude)) {
-                allLinks <- allLinks[!grepl(partOfLinkToExclude[i], allLinks, fixed = TRUE)]
-            }
-        }
+    # list files and keep in order
+    indexHtml <- list.files(path = file.path(project, website, "IndexHtml"), full.names = TRUE)[stringr::str_extract(string = indexHtml, pattern = "[[:digit:]]+[[:punct:]]html") %>% stringr::str_sub(start = 1L, end = -6L) %>% as.integer() %>% order()]
+    temp <- purrr::flatten(purrr::map(.x = indexHtml, .f = function(x) read_html(x) %>% html_nodes("a")))
+    allLinks <- purrr::map_chr(.x = temp, .f = function(x) x %>% html_attr('href'))
+    linkFilter <- allLinks %>% stringr::str_which(pattern = partOfLink)
+    selectedLinks <- allLinks[linkFilter]
+    if (extractText==TRUE) {
+        names(selectedLinks) <- purrr::map_chr(.x = temp[linkFilter], .f = function(x) x %>% html_text('href'))
     }
-    if (gtools::invalid(minLength)==FALSE) {
-        if (linkTitle==TRUE) {
-            allLinks <- allLinks[nchar(as.character(allLinks$links)) > minLength-nchar(domain),  ]
-        } else {
-            allLinks <- allLinks[nchar(as.character(allLinks)) > minLength-nchar(domain)]
-        }
-    }
-    if (gtools::invalid(maxLength)==FALSE) {
-        if (linkTitle==TRUE) {
-            allLinks <- allLinks[nchar(as.character(allLinks$links)) < maxLength-nchar(domain),  ]
-        } else {
-            allLinks <- allLinks[nchar(as.character(allLinks)) < maxLength-nchar(domain)]
-        }
-    }
-    if (linkTitle==TRUE) {
-        allLinks$links <- as.character(allLinks$links)
-    }
-    if (gtools::invalid(removeString)==FALSE) {
-        if (linkTitle==TRUE) {
-            for (i in seq_along(removeString)) {
-                allLinks$links <- gsub(pattern = removeString[i], replacement = "", x = allLinks$links, fixed = TRUE)
-            }
-        } else {
-            for (i in seq_along(removeString)) {
-                allLinks <- gsub(pattern = removeString[i], replacement = "", x = allLinks, fixed = TRUE)
-            }
-        }
-    }
-    if (linkTitle==TRUE) {
-        allLinks$links <- paste0(domain, allLinks$links)
-        allLinks$links <- gsub("//", "/", allLinks$links, fixed = TRUE)
-        allLinks$links <- gsub("http:/", "http://", allLinks$links, fixed = TRUE)
-        allLinks$links <- gsub("https:/", "https://", allLinks$links, fixed = TRUE)
-    } else {
-        allLinks <- paste0(domain, allLinks)
-        allLinks <- gsub("//", "/", allLinks, fixed = TRUE)
-        allLinks <- gsub("http:/", "http://", allLinks, fixed = TRUE)
-        allLinks <- gsub("https:/", "https://", allLinks, fixed = TRUE)
-    }
-    if (is.null(indexLinks) == FALSE) {
-        if (linkTitle==TRUE) {
-            allLinks <- allLinks[!is.element(allLinks$links, indexLinks), ]
-        } else {
-            allLinks <- allLinks[!is.element(allLinks, indexLinks)]
-        }
-    }
-    if (linkTitle==TRUE) {
-        allLinks <- allLinks[!duplicated(allLinks[, "links"], fromLast = TRUE), ]
-    }
-    if (sortLinks == TRUE) {
-        if (linkTitle==TRUE) {
-            allLinks <- allLinks[gtools::mixedorder(allLinks$links), ]
-        } else {
-            allLinks <- allLinks[gtools::mixedorder(allLinks)]
-        }
-    }
-    if (linkTitle==TRUE) {
-        links <- as.character(allLinks$links)
-        links <- paste0(links, appendString)
-        titles <- as.character(allLinks$titles)
-        links <- setNames(links, titles)
-    } else {
-        links <- paste0(allLinks, appendString)
-    }
-    if (export == TRUE) {
-        writeLines(links, file.path(project, website, "Logs", paste(Sys.Date(), website, "articlesLinks.txt", sep = " - ")))
-    }
-    if (exportParameters == TRUE) {
-        args <- c("domain", "partOfLink", "html", "containerTypeExtractLinks", "containerClassExtractLinks", "containerId_ExtractLinks", "divClassExtractLinks", "attributeTypeExtractLinks", "partOfLinkToExclude", "minLength", "maxLength", "indexLinks","sortLinks", "export", "appendStringExtractLinks", "removeStringExtractLinks", "exportParameters", "project", "website")
-        param <- list(domain, partOfLink, "html", containerType, containerClass, containerId, divClass, attributeType, paste(partOfLinkToExclude, collapse = "§§§"), minLength, maxLength, "indexLinks", sortLinks, export, appendString, paste(removeString, collapse = "§§§"), exportParameters, project, website)
-        for (i in 1:length(param)) {
-            if (is.null(param[[i]])==TRUE) {
-                param[[i]] <- "NULL"
-            }
-        }
-        param <- unlist(param)
-        updateParametersTemp <- as.data.frame(cbind(args, param), stringsAsFactors = FALSE)
-        if (file.exists(base::file.path(project, website, "Logs", paste(website, "updateParameters.csv", sep = " - "))) == TRUE) {
-            updateParameters <- utils::read.table(base::file.path(project, website, "Logs", paste(website, "updateParameters.csv", sep = " - ")), stringsAsFactors = FALSE)
-            for (i in 1:length(updateParametersTemp$args)) {
-                updateParameters$param[updateParameters$args == updateParametersTemp$args[i]] <- updateParametersTemp$param[i]
-                if (is.element(updateParametersTemp$args[i], updateParameters$args) == FALSE) {
-                    updateParameters <- rbind(updateParameters, updateParametersTemp[i,] )
-                }
-            }
-        } else {
-            updateParameters <- updateParametersTemp
-        }
-        write.table(updateParameters, file = base::file.path(project, website, "Logs", paste(website, "updateParameters.csv", sep = " - ")))
-    }
-    links
+    selectedLinks
 }
+

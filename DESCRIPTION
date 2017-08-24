@@ -17,7 +17,9 @@ Imports:
     ggplot2,
     xml2, 
     settings,
-    tidyr
+    tidyr,
+    purrr,
+    rvest
 Suggests:
     knitr,
     testthat,
