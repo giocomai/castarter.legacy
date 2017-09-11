@@ -61,8 +61,8 @@ ExtractLinks <- function(htmlLocation = NULL,
     }
     # list files and keep in order
     indexHtml <- list.files(path = file.path(project, website, "IndexHtml"), full.names = TRUE)[stringr::str_extract(string = indexHtml, pattern = "[[:digit:]]+[[:punct:]]html") %>% stringr::str_sub(start = 1L, end = -6L) %>% as.integer() %>% order()]
-    temp <- purrr::flatten(purrr::map(.x = indexHtml, .f = function(x) read_html(x) %>% html_nodes("a")))
-    links <- purrr::map_chr(.x = temp, .f = function(x) x %>% html_attr('href'))
+    temp <- purrr::flatten(purrr::map(.x = indexHtml, .f = function(x) xml2::read_html(x) %>% rvest::html_nodes("a")))
+    links <- purrr::map_chr(.x = temp, .f = function(x) x %>% rvest::html_attr('href'))
     # introduce logical filter vector
     linkFilter <- seq_along(links)
     if (is.null(partOfLink)==FALSE) {
