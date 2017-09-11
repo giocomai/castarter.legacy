@@ -74,7 +74,7 @@ ExtractLinks <- function(htmlLocation = NULL,
     links <- links[linkFilter]
     links <- paste0(domain, links)
     if (extractText==TRUE) {
-        names(links) <- purrr::map_chr(.x = temp[linkFilter], .f = function(x) x %>% html_text('href'))
+        names(links) <- purrr::map_chr(.x = temp[linkFilter], .f = function(x) x %>% rvest::html_text('href'))
     }
     links
 }
