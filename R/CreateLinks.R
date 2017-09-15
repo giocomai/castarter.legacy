@@ -72,9 +72,9 @@ CreateLinks <- function(linkFirstChunk,
         } else if (dateFormat == "ym" | dateFormat == "Ym") {
             dates <- base::seq(as.Date(startDate), as.Date(endDate), by = "month")
             dates <- base::format(as.Date(dates), paste("%Y", "%m", sep = dateSeparator))
-        } else if (dateFormat == "Y") {
+        } else if (dateFormat == "Y"|dateFormat == "y"|dateFormat == "year") {
             dates <- base::seq(as.Date(startDate), as.Date(endDate), by = "year")
-            dates <- base::format(as.Date(dates), paste("%Y", "%m", sep = dateSeparator))
+            dates <- base::format(as.Date(dates), paste("%Y", sep = dateSeparator))
         }  else if (dateFormat == "dmY") {
             dates <- base::seq(as.Date(startDate), as.Date(endDate), by = "day")
             dates <- base::format(as.Date(dates), paste("%d", "%m", "%Y", sep = dateSeparator))
