@@ -28,10 +28,10 @@ shinyUI(fluidPage(
                                   textInput(inputId = "CreateLinks_linkSecondChunk", label = "Part of the link to append after varying part", value = NULL, width = NULL, placeholder = "e.g. .html"),
                                   radioButtons(inputId = "CreateLinks_RadioUI", label = "Links based on numbers or dates?", choices = c("Numbers", "Dates"), inline = TRUE),
                                   ## Reactive CreateLinks UI
-                                  uiOutput("CreateLinks_UI")),
+                                  uiOutput("CreateLinks_UI"),
+                                  actionButton(inputId = "CreateLinks", label = "Confirm settings", icon = icon("check"), style="color: #fff; background-color: #337ab7; border-color: #2e6da4")),
 
                            column(6,
-
                                   fluidRow(
                                       h3("Preview of generated links"),
                                       uiOutput("PreviewIndexLinks_UI")

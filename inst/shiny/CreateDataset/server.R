@@ -6,7 +6,9 @@ shinyServer(function(input, output) {
     ##### SetCastarter options ######
     output$SetCastarter <- renderUI({
         input$SetCastarter
-
+        if (file.exists(file.path(project, website, "Logs", paste0(project, "-", website, "-parameters.rds")))) {
+            importedParameters <- readRDS(file = file.path(project, website, "Logs", paste0(project, "-", website, "-parameters.rds")))
+        }
         shiny::isolate({
             if (is.null(input$project)==FALSE&is.null(input$website)==FALSE) {
                 if (input$project!="" & input$website!="") {
@@ -24,7 +26,8 @@ shinyServer(function(input, output) {
         })
     })
 
-    ### Select website ui
+
+    #### Select project/website ui ####
 
     output$selectWebsite_UI <- renderUI({
         if (nchar(input$availableProject)>0) {
@@ -40,24 +43,64 @@ shinyServer(function(input, output) {
         textInput(inputId = "website", label = "Name of website", value = input$availableWebsite, width = NULL, placeholder = "e.g. News")
     })
 
-    # CreateLinks UI
+    ##### CreateLinks UI ####
     output$CreateLinks_UI <- renderUI({
         if(input$CreateLinks_RadioUI == "Numbers"){
-            fluidRow(class = "ReactiveUI",
-                     textInput(inputId = "CreateLinks_startPage", label = "First page", value = 1, placeholder = NULL),
-                     textInput(inputId = "CreateLinks_endPage", label = "Last page", value = 10, placeholder = NULL),
-                     textInput(inputId = "CreateLinks_increaseBy", label = "Increase by", value = 1, placeholder = NULL)
-            )
+            if (exists("importedParameters")==TRUE) {
+                if (is.null(importedParameters$CreateLinks)==FALSE) {
+                    fluidRow(class = "ReactiveUI",
+                             textInput(inputId = "CreateLinks_startPage", label = "First page", value = importedParameters$CreateLinks$startPage, placeholder = NULL),
+                             textInput(inputId = "CreateLinks_endPage", label = "Last page", value = importedParameters$CreateLinks$endPage, placeholder = NULL),
+                             textInput(inputId = "CreateLinks_increaseBy", label = "Increase by", value = importedParameters$CreateLinks$increaseBy, placeholder = NULL)
+                    )
+                } else {
+                    fluidRow(class = "ReactiveUI",
+                             textInput(inputId = "CreateLinks_startPage", label = "First page", value = 1, placeholder = NULL),
+                             textInput(inputId = "CreateLinks_endPage", label = "Last page", value = 10, placeholder = NULL),
+                             textInput(inputId = "CreateLinks_increaseBy", label = "Increase by", value = 1, placeholder = NULL)
+                    )
+                }
+            } else {
+                fluidRow(class = "ReactiveUI",
+                         textInput(inputId = "CreateLinks_startPage", label = "First page", value = 1, placeholder = NULL),
+                         textInput(inputId = "CreateLinks_endPage", label = "Last page", value = 10, placeholder = NULL),
+                         textInput(inputId = "CreateLinks_increaseBy", label = "Increase by", value = 1, placeholder = NULL)
+                )
+            }
         } else if (input$CreateLinks_RadioUI == "Dates") {
-            fluidRow(
-                radioButtons(inputId = "CreateLinks_dateFormat", label = "Date format, if index link includes a date", choices =
-                                 c("year-month-day" = "ymd",
-                                   "year-month" = "ym",
-                                   "year" = "y"), inline = TRUE),
-                dateRangeInput(inputId = "CreateLinks_DateRange",
-                               label = "Select date range"),
-                textInput(inputId = "CrateLinks_dateSeparator", label = "Date separator", value = "-", width = "40px")
-            )
+            if (exists("importedParameters")==TRUE) {
+                if (is.null(importedParameters$CreateLinks)==FALSE) {
+                    fluidRow(
+                        radioButtons(inputId = "CreateLinks_dateFormat", label = "Date format, if index link includes a date", choices =
+                                         c("year-month-day" = "ymd",
+                                           "year-month" = "ym",
+                                           "year" = "y"), inline = TRUE, selected = importedParameters$CreateLinks$dateFormat),
+                        dateRangeInput(inputId = "CreateLinks_DateRange",
+                                       label = "Select date range", start = importedParameters$CreateLinks$startDate, end = importedParameters$CreateLinks$endDate),
+                        textInput(inputId = "CrateLinks_dateSeparator", label = "Date separator", value = importedParameters$CreateLinks$dateSeparator, width = "40px")
+                    )
+                } else {
+                    fluidRow(
+                        radioButtons(inputId = "CreateLinks_dateFormat", label = "Date format, if index link includes a date", choices =
+                                         c("year-month-day" = "ymd",
+                                           "year-month" = "ym",
+                                           "year" = "y"), inline = TRUE),
+                        dateRangeInput(inputId = "CreateLinks_DateRange",
+                                       label = "Select date range"),
+                        textInput(inputId = "CrateLinks_dateSeparator", label = "Date separator", value = "-", width = "40px")
+                    )
+                }
+            } else {
+                fluidRow(
+                    radioButtons(inputId = "CreateLinks_dateFormat", label = "Date format, if index link includes a date", choices =
+                                     c("year-month-day" = "ymd",
+                                       "year-month" = "ym",
+                                       "year" = "y"), inline = TRUE),
+                    dateRangeInput(inputId = "CreateLinks_DateRange",
+                                   label = "Select date range"),
+                    textInput(inputId = "CrateLinks_dateSeparator", label = "Date separator", value = "-", width = "40px")
+                )
+            }
         }
     })
 
@@ -82,7 +125,25 @@ shinyServer(function(input, output) {
         )
     })
 
+    # Confirm settings index links
 
+    output$CreateLinks <- renderUI({
+        input$CreateLinks
+
+        shiny::isolate({
+            indexLinks <- castarter::CreateLinks(linkFirstChunk = input$CreateLinks_linkFirstChunk,
+                                                 linkSecondChunk = input$CreateLinks_linkSecondChunk,
+                                                 startPage = as.numeric(input$CreateLinks_startPage),
+                                                 endPage = as.numeric(input$CreateLinks_endPage),
+                                                 increaseBy = as.numeric(input$CreateLinks_increaseBy),
+                                                 dateFormat = input$CreateLinks_dateFormat,
+                                                 startDate = format(input$CreateLinks_DateRange[1]),
+                                                 endDate =  format(input$CreateLinks_DateRange[2]),
+                                                 dateSeparator = input$CrateLinks_dateSeparator,
+                                                 export = TRUE,
+                                                 exportParameters = TRUE)
+        })
+    })
 })
 
 
