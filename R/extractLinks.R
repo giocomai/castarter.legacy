@@ -24,7 +24,10 @@ ExtractLinks <- function(htmlLocation = NULL,
                          domain = NULL,
                          partOfLink = NULL,
                          partOfLinkToExclude = NULL,
-                         extractText = TRUE, containerType = NULL, containerClass = NULL, containerId = NULL, divClass = NULL, attributeType = NULL, minLength = NULL, maxLength = NULL, indexLinks = NULL, sortLinks = TRUE, linkTitle = TRUE, export = FALSE, appendString = NULL, removeString = NULL, progressBar = TRUE, project = NULL, website = NULL,
+                         extractText = FALSE, containerType = NULL, containerClass = NULL, containerId = NULL, divClass = NULL, attributeType = NULL, minLength = NULL, maxLength = NULL, indexLinks = NULL, sortLinks = TRUE, linkTitle = TRUE, export = FALSE, appendString = NULL, removeString = NULL,
+                         progressBar = TRUE,
+                         project = NULL,
+                         website = NULL,
                          importParameters = NULL,
                          exportParameters = TRUE) {
     # If `project` and `website` not given, tries to get them from environment
@@ -60,9 +63,22 @@ ExtractLinks <- function(htmlLocation = NULL,
         saveRDS(object = params, file = paramsFile)
     }
     # list files and keep in order
-    indexHtml <- list.files(path = file.path(project, website, "IndexHtml"), full.names = TRUE)[stringr::str_extract(string = indexHtml, pattern = "[[:digit:]]+[[:punct:]]html") %>% stringr::str_sub(start = 1L, end = -6L) %>% as.integer() %>% order()]
-    temp <- purrr::flatten(purrr::map(.x = indexHtml, .f = function(x) xml2::read_html(x) %>% rvest::html_nodes("a")))
-    links <- purrr::map_chr(.x = temp, .f = function(x) x %>% rvest::html_attr('href'))
+    indexHtml <- list.files(path = file.path(project, website, "IndexHtml"), full.names = TRUE)
+    indexHtml <- indexHtml[stringr::str_extract(string = indexHtml, pattern = "[[:digit:]]+[[:punct:]]html") %>% stringr::str_sub(start = 1L, end = -6L) %>% as.integer() %>% order()]
+    if (progressBar==TRUE) {
+        message("Step 1 of 2: Reading files")
+        pb <- progress_estimated(n = length(indexHtml))
+        temp <- purrr::flatten(purrr::map(.x = indexHtml, .f = ReadLinkNodes, .pb=pb))
+    } else {
+        temp <- purrr::flatten(purrr::map(.x = indexHtml, .f = function(x) xml2::read_html(x) %>% rvest::html_nodes("a")), .pb=pb)
+    }
+    if (progressBar==TRUE) {
+        message("\nStep 2 of 2: Extracting links")
+        pb <- progress_estimated(n = length(temp))
+        links <- purrr::map_chr(.x = temp, .f = ExtractLinksHref, .pb=pb)
+    } else {
+        links <- purrr::map_chr(.x = temp, .f = function(x) x %>% rvest::html_attr('href'))
+    }
     # introduce logical filter vector
     linkFilter <- seq_along(links)
     if (is.null(partOfLink)==FALSE) {
@@ -79,3 +95,12 @@ ExtractLinks <- function(htmlLocation = NULL,
     links
 }
 
+ReadLinkNodes <- function(x, .pb=NULL) {
+    if ((!is.null(.pb)) && inherits(.pb, "Progress") && (.pb$i < .pb$n)) .pb$tick()$print()
+    xml2::read_html(x) %>% rvest::html_nodes("a")
+}
+
+ExtractLinksHref <- function(x, .pb=NULL) {
+    if ((!is.null(.pb)) && inherits(.pb, "Progress") && (.pb$i < .pb$n)) .pb$tick()$print()
+    x %>% rvest::html_attr('href')
+}
