@@ -8,18 +8,36 @@ shinyServer(function(input, output) {
         input$SetCastarter
 
         shiny::isolate({
-            if (input$project!="" & input$website!="") {
-                SetCastarter(project = input$project, website = input$website)
-        tryCatch(expr = CreateFolders(), warning = function(w) {
-            if (grepl(pattern = "Permission denied", x = w) == TRUE) {
-                print("Folders could not be created: permission denied.")
+            if (is.null(input$project)==FALSE&is.null(input$website)==FALSE) {
+                if (input$project!="" & input$website!="") {
+                    SetCastarter(project = input$project, website = input$website)
+                    tryCatch(expr = CreateFolders(), warning = function(w) {
+                        if (grepl(pattern = "Permission denied", x = w) == TRUE) {
+                            print("Folders could not be created: permission denied.")
+                        }
+                    })
+                    if (file.exists(file.path(input$project, input$website))) {
+                        HTML(paste0("Name of project (", sQuote(input$project), ") and website (", sQuote(input$project), ") set for this session.", "<br />", "Folder structure under ", sQuote(paste0(input$project, "/", input$website)), " has been created or already exists."))
+                    }
+                }
             }
         })
-        if (file.exists(file.path(input$project, input$website))) {
-            HTML(paste0("Name of project (", sQuote(input$project), ") and website (", sQuote(input$project), ") set for this session.", "<br />", "Folder structure under ", sQuote(paste0(input$project, "/", input$website)), " has been created or already exists."))
+    })
+
+    ### Select website ui
+
+    output$selectWebsite_UI <- renderUI({
+        if (nchar(input$availableProject)>0) {
+            selectInput(inputId = "availableWebsite", label = "Available websites", choices = as.list(c("", list.dirs(path = file.path(input$availableProject), full.names = FALSE, recursive = FALSE)), selected = ""))
         }
-            }
-        })
+    })
+
+    output$selectProjectManually_UI <- renderUI({
+        textInput(inputId = "project", label = "Name of project", value = input$availableProject, width = NULL, placeholder = "e.g. News")
+    })
+
+    output$selectWebsiteManually_UI <- renderUI({
+        textInput(inputId = "website", label = "Name of website", value = input$availableWebsite, width = NULL, placeholder = "e.g. News")
     })
 
     # CreateLinks UI

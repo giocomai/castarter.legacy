@@ -8,9 +8,11 @@ shinyUI(fluidPage(
         #### Beginning of SetCastarter page ####
         tabPanel("Set up project",
                  fluidPage(theme="style.css",
-                           textInput(inputId = "project", label = "Name of project", value = "", width = NULL, placeholder = "e.g. News"),
-                           textInput(inputId = "website", label = "Name of website", value = "", width = NULL, placeholder = "e.g. Name of given news website"),
-                           actionButton(inputId = "SetCastarter", label = "Set project and create relevant folder structure", icon = icon("check"), style="color: #fff; background-color: #337ab7; border-color: #2e6da4"),
+                           selectInput(inputId = "availableProject", label = "Available projects", choices = as.list(c("", list.dirs(full.names = FALSE, recursive = FALSE)), selected = "")),
+                           uiOutput(outputId = "selectWebsite_UI"),
+                           uiOutput(outputId = "selectProjectManually_UI"),
+                           uiOutput(outputId = "selectWebsiteManually_UI"),
+                           actionButton(inputId = "SetCastarter", label = "Set up project", icon = icon("check"), style="color: #fff; background-color: #337ab7; border-color: #2e6da4"),
                            uiOutput(outputId = "SetCastarter")
                  )
         ),
