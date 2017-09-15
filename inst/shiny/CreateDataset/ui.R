@@ -22,7 +22,7 @@ shinyUI(fluidPage(
 
                            column(6,
                                   h3("Introduce parameters"),
-                                  textInput(inputId = "CreateLinks_linkFirstChunk", label = "First part of the link", value = "", width = NULL, placeholder = "e.g. http://www.example.com/news/"),
+                                  textInput(inputId = "CreateLinks_linkFirstChunk", label = "First part of the link", value = "https://www.example.com/news/", width = NULL, placeholder = "e.g. https://www.example.com/news/"),
                                   textInput(inputId = "CreateLinks_linkSecondChunk", label = "Part of the link to append after varying part", value = NULL, width = NULL, placeholder = "e.g. .html"),
                                   radioButtons(inputId = "CreateLinks_RadioUI", label = "Links based on numbers or dates?", choices = c("Numbers", "Dates"), inline = TRUE),
                                   ## Reactive CreateLinks UI
@@ -31,7 +31,8 @@ shinyUI(fluidPage(
                            column(6,
 
                                   fluidRow(
-                                      h3("Preview of generated links")
+                                      h3("Preview of generated links"),
+                                      uiOutput("PreviewIndexLinks_UI")
                                   )
                            )
                  )
