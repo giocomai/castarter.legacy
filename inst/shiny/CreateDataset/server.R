@@ -17,7 +17,7 @@ shinyServer(function(input, output) {
                         }
                     })
                     if (file.exists(file.path(input$project, input$website))) {
-                        HTML(paste0("Name of project (", sQuote(input$project), ") and website (", sQuote(input$project), ") set for this session.", "<br />", "Folder structure under ", sQuote(paste0(input$project, "/", input$website)), " has been created or already exists."))
+                        HTML(paste0("Name of project (", sQuote(input$project), ") and website (", sQuote(input$project), ") set for this session."))
                     }
                 }
             }
@@ -54,7 +54,9 @@ shinyServer(function(input, output) {
                                  c("year-month-day" = "ymd",
                                    "year-month" = "ym",
                                    "year" = "y"), inline = TRUE),
-                dateRangeInput(inputId = "CreateLinks_DateRange", label = "Select date range")
+                dateRangeInput(inputId = "CreateLinks_DateRange",
+                               label = "Select date range"),
+                textInput(inputId = "CrateLinks_dateSeparator", label = "Date separator", value = "-", width = "40px")
             )
         }
     })
@@ -67,9 +69,12 @@ shinyServer(function(input, output) {
                                              startPage = as.numeric(input$CreateLinks_startPage),
                                              endPage = as.numeric(input$CreateLinks_endPage),
                                              increaseBy = as.numeric(input$CreateLinks_increaseBy),
-                                             dateFormat = input$CreateLinks_dateFormat)
-        #        startDate = format(input$CreateLinks_DateRange[1]),
-        #endDate =  format(input$CreateLinks_DateRange[2])
+                                             dateFormat = input$CreateLinks_dateFormat,
+                                             startDate = format(input$CreateLinks_DateRange[1]),
+                                             endDate =  format(input$CreateLinks_DateRange[2]),
+                                             dateSeparator = input$CrateLinks_dateSeparator,
+                                             export = FALSE,
+                                             exportParameters = FALSE)
         HTML(paste("<b>First Links:</b>",
             paste("<a href='", head(x = indexLinks), "'>", head(x = indexLinks), "</a>",  collapse = "<br />")),
             "<b><br />Last Links:</b>",
