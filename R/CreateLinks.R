@@ -51,6 +51,9 @@ CreateLinks <- function(linkFirstChunk,
                 # throw error if parameters file not found
                 stop(paste("Parameters file not found in", paramsFile))
             }
+            if (exportParameters==TRUE) {
+                stop("Parameters can either be imported or exported ('exportParameters' and 'importParameters' cannot both be TRUE.")
+            }
         }
     } else {
         importParameters <- FALSE
@@ -58,6 +61,7 @@ CreateLinks <- function(linkFirstChunk,
     if (exportParameters == TRUE & importParameters == FALSE) { # Export parameters
         if (file.exists(paramsFile) == TRUE) {
             params <- readRDS(paramsFile)
+            params$CreateLinks <- NULL
         } else {
             params <- list()
         }
