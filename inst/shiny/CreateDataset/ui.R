@@ -24,7 +24,6 @@ shinyUI(fluidPage(
 
                            column(6,
                                   h3("Introduce parameters"),
-                                  actionButton(inputId = "ImportCreateLinksParameters", label = "Load stored parameters", icon = icon("file-code-o"), style="color: #fff; background-color: #337ab7; border-color: #2e6da4"),
                                   textInput(inputId = "CreateLinks_linkFirstChunk", label = "First part of the link", value = "https://www.example.com/news/", width = NULL, placeholder = "e.g. https://www.example.com/news/"),
                                   textInput(inputId = "CreateLinks_linkSecondChunk", label = "Part of the link to append after varying part", value = NULL, width = NULL, placeholder = "e.g. .html"),
                                   radioButtons(inputId = "CreateLinks_RadioUI", label = "Links based on numbers or dates?", choices = c("Numbers", "Dates"), inline = TRUE),
