@@ -66,6 +66,8 @@ CreateLinks <- function(linkFirstChunk,
             params <- list()
         }
         params$CreateLinks <-  as.list(environment())
+        params$CreateLinks$paramsFile <- NULL
+        params$CreateLinks$params <- NULL
         saveRDS(object = params, file = paramsFile)
     }
     # Create links based on date format, if provided
