@@ -19,7 +19,8 @@ Imports:
     settings,
     tidyr,
     purrr,
-    rvest
+    rvest,
+    zoo
 Suggests:
     knitr,
     testthat,
