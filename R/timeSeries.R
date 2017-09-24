@@ -128,7 +128,7 @@ ShowAbsoluteTS <- function(terms,
         }
         graph
     } else {
-        temp
+        temp %>% rename(Date = ItemDate)
     }
 }
 
@@ -278,7 +278,7 @@ ShowRelativeTS <- function(terms,
         }
         graph
     } else {
-        temp
+        temp %>% rename(Date = ItemDate)
     }
 }
 
