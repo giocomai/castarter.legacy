@@ -6,7 +6,7 @@
 #' @param partOfLink Part of URL found only in links of individual articles to be downloaded. If more than one provided, it includes all links that contains either of the strings provided.
 #' @param partOfLinkToExclude If an URL includes this string, it is excluded from the output. One or more strings may be provided.
 #' @param indexLinks A character vector, defaults to NULL. If provided, indexLinks are removed from the extracted articlesLinks.
-#' @param containerType Type of html container from where links are to be extracted, such as "ul", "div", and others. containerClass must also be provided.
+#' @param containerType Type of html container from where links are to be extracted, such as "div", "ul", and others. containerClass or containerId must also be provided.
 #' @param attributeType Type of attribute to extract from links, when different from href.
 #' @param minLength If a link is shorter than the number of characters given in minLength, it is excluded from the output.
 #' @param maxLength If a link is longer than the number of characters given in maxLength, it is excluded from the output.
@@ -24,7 +24,11 @@ ExtractLinks <- function(htmlLocation = NULL,
                          domain = NULL,
                          partOfLink = NULL,
                          partOfLinkToExclude = NULL,
-                         extractText = FALSE, containerType = NULL, containerClass = NULL, containerId = NULL, divClass = NULL, attributeType = NULL, minLength = NULL, maxLength = NULL, indexLinks = NULL, sortLinks = TRUE, linkTitle = TRUE, export = FALSE, appendString = NULL, removeString = NULL,
+                         extractText = FALSE,
+                         containerType = NULL,
+                         containerClass = NULL,
+                         containerId = NULL,
+                         attributeType = NULL, minLength = NULL, maxLength = NULL, indexLinks = NULL, sortLinks = TRUE, linkTitle = TRUE, export = FALSE, appendString = NULL, removeString = NULL,
                          progressBar = TRUE,
                          project = NULL,
                          website = NULL,
@@ -62,23 +66,44 @@ ExtractLinks <- function(htmlLocation = NULL,
         params$ExtractLinks <-  as.list(environment())
         saveRDS(object = params, file = paramsFile)
     }
-    # list files and keep in order
+    # list files
     indexHtml <- list.files(path = file.path(project, website, "IndexHtml"), full.names = TRUE)
+    # put them in order [equivalent to gtools::mixedorder()]
     indexHtml <- indexHtml[stringr::str_extract(string = indexHtml, pattern = "[[:digit:]]+[[:punct:]]html") %>% stringr::str_sub(start = 1L, end = -6L) %>% as.integer() %>% order()]
-    if (progressBar==TRUE) {
-        message("Step 1 of 2: Reading files")
-        pb <- progress_estimated(n = length(indexHtml))
-        temp <- purrr::flatten(purrr::map(.x = indexHtml, .f = ReadLinkNodes, .pb=pb))
+    tempLinks <- vector("list", length(indexHtml))
+    if (is.null(containerType)) {
+        # if no div or such, get all links
+        for (i in seq_along(indexHtml)) {
+            tempLinks[[i]] <- xml2::read_html(indexHtml[i]) %>%
+                rvest::html_nodes("a") %>%
+                xml2::xml_attr("href")
+        }
     } else {
-        temp <- purrr::flatten(purrr::map(.x = indexHtml, .f = function(x) xml2::read_html(x) %>% rvest::html_nodes("a")), .pb=pb)
+        for (i in seq_along(indexHtml)) {
+            tempLinks[[i]] <- xml2::read_html(indexHtml[i]) %>%
+                rvest::html_nodes(xpath = paste0("//", containerType, "[@class='", containerClass, "']//a")) %>%
+                xml2::xml_attr("href")
+        }
     }
-    if (progressBar==TRUE) {
-        message("\nStep 2 of 2: Extracting links")
-        pb <- progress_estimated(n = length(temp))
-        links <- purrr::map_chr(.x = temp, .f = ExtractLinksHref, .pb=pb)
-    } else {
-        links <- purrr::map_chr(.x = temp, .f = function(x) x %>% rvest::html_attr('href'))
-    }
+    links <- unlist(tempLinks, recursive = TRUE)
+
+
+
+    # if (progressBar==TRUE) {
+    #     message("Step 1 of 2: Reading files")
+    #     pb <- progress_estimated(n = length(indexHtml))
+    #     temp <- purrr::flatten(purrr::map(.x = indexHtml, .f = ReadLinkNodes, .pb=pb))
+    # } else {
+    #     temp <- purrr::flatten(purrr::map(.x = indexHtml, .f = function(x) xml2::read_html(x) %>% rvest::html_nodes("a")), .pb=pb)
+    # }
+    # if (progressBar==TRUE) {
+    #     message("\nStep 2 of 2: Extracting links")
+    #     pb <- progress_estimated(n = length(temp))
+    #     links <- purrr::map_chr(.x = temp, .f = ExtractLinksHref, .pb=pb)
+    # } else {
+    #     links <- purrr::map_chr(.x = temp, .f = function(x) x %>% rvest::html_attr('href'))
+    # }
+
     # introduce logical filter vector
     linkFilter <- seq_along(links)
     if (is.null(partOfLink)==FALSE) {

@@ -6,9 +6,9 @@
 \usage{
 ExtractLinks(htmlLocation = NULL, domain = NULL, partOfLink = NULL,
   partOfLinkToExclude = NULL, extractText = FALSE, containerType = NULL,
-  containerClass = NULL, containerId = NULL, divClass = NULL,
-  attributeType = NULL, minLength = NULL, maxLength = NULL,
-  indexLinks = NULL, sortLinks = TRUE, linkTitle = TRUE, export = FALSE,
+  containerClass = NULL, containerId = NULL, attributeType = NULL,
+  minLength = NULL, maxLength = NULL, indexLinks = NULL,
+  sortLinks = TRUE, linkTitle = TRUE, export = FALSE,
   appendString = NULL, removeString = NULL, progressBar = TRUE,
   project = NULL, website = NULL, importParameters = NULL,
   exportParameters = TRUE)
@@ -20,7 +20,7 @@ ExtractLinks(htmlLocation = NULL, domain = NULL, partOfLink = NULL,
 
 \item{partOfLinkToExclude}{If an URL includes this string, it is excluded from the output. One or more strings may be provided.}
 
-\item{containerType}{Type of html container from where links are to be extracted, such as "ul", "div", and others. containerClass must also be provided.}
+\item{containerType}{Type of html container from where links are to be extracted, such as "div", "ul", and others. containerClass or containerId must also be provided.}
 
 \item{attributeType}{Type of attribute to extract from links, when different from href.}
 
