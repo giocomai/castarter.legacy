@@ -34,6 +34,7 @@ ExtractLinks <- function(htmlLocation = NULL,
                          website = NULL,
                          importParameters = NULL,
                          exportParameters = TRUE) {
+    # legacy params
     # If `project` and `website` not given, tries to get them from environment
     if (is.null(project) == TRUE) {
         project <- CastarterOptions("project")
@@ -86,37 +87,21 @@ ExtractLinks <- function(htmlLocation = NULL,
         }
     }
     links <- unlist(tempLinks, recursive = TRUE)
-
-
-
-    # if (progressBar==TRUE) {
-    #     message("Step 1 of 2: Reading files")
-    #     pb <- progress_estimated(n = length(indexHtml))
-    #     temp <- purrr::flatten(purrr::map(.x = indexHtml, .f = ReadLinkNodes, .pb=pb))
-    # } else {
-    #     temp <- purrr::flatten(purrr::map(.x = indexHtml, .f = function(x) xml2::read_html(x) %>% rvest::html_nodes("a")), .pb=pb)
-    # }
-    # if (progressBar==TRUE) {
-    #     message("\nStep 2 of 2: Extracting links")
-    #     pb <- progress_estimated(n = length(temp))
-    #     links <- purrr::map_chr(.x = temp, .f = ExtractLinksHref, .pb=pb)
-    # } else {
-    #     links <- purrr::map_chr(.x = temp, .f = function(x) x %>% rvest::html_attr('href'))
-    # }
-
     # introduce logical filter vector
     linkFilter <- seq_along(links)
     if (is.null(partOfLink)==FALSE) {
         linkFilter <- links %>% stringr::str_which(pattern = partOfLink)
     }
     if (is.null(partOfLinkToExclude)==FALSE) {
-        linkFilter <- dplyr::setdiff(linkFilter, links %>% stringr::str_which(pattern = partOfLinkToExclude))
+        for (i in seq_along(partOfLinkToExclude)) {
+            linkFilter <- dplyr::setdiff(linkFilter, links %>% stringr::str_which(pattern = stringr::fixed(partOfLinkToExclude[i])))
+        }
     }
     links <- links[linkFilter]
     links <- paste0(domain, links)
-    if (extractText==TRUE) {
-        names(links) <- purrr::map_chr(.x = temp[linkFilter], .f = function(x) x %>% rvest::html_text('href'))
-    }
+    # if (extractText==TRUE) {
+    #     names(links) <- purrr::map_chr(.x = temp[linkFilter], .f = function(x) x %>% rvest::html_text('href'))
+    # }
     links
 }
 
