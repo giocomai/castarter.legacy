@@ -28,7 +28,9 @@ ExtractLinks <- function(htmlLocation = NULL,
                          containerType = NULL,
                          containerClass = NULL,
                          containerId = NULL,
-                         attributeType = NULL, minLength = NULL, maxLength = NULL, indexLinks = NULL, sortLinks = TRUE, linkTitle = TRUE, export = FALSE, appendString = NULL, removeString = NULL,
+                         attributeType = NULL,
+                         minLength = NULL,
+                         maxLength = NULL, indexLinks = NULL, sortLinks = TRUE, linkTitle = TRUE, export = FALSE, appendString = NULL, removeString = NULL,
                          progressBar = TRUE,
                          project = NULL,
                          website = NULL,
@@ -103,6 +105,12 @@ ExtractLinks <- function(htmlLocation = NULL,
     links <- gsub("http:/", "http://", links, fixed = TRUE)
     links <- gsub("https:/", "https://", links, fixed = TRUE)
     links <- unique(links)
+    if (is.null(minLength)==FALSE) {
+        links <- links[nchar(links)>minLength]
+    }
+    if (is.null(maxLength)==FALSE) {
+        links <- links[nchar(links)<maxLength]
+    }
     # if (extractText==TRUE) {
     #     names(links) <- purrr::map_chr(.x = temp[linkFilter], .f = function(x) x %>% rvest::html_text('href'))
     # }
