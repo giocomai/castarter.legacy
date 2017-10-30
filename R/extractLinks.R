@@ -99,9 +99,16 @@ ExtractLinks <- function(htmlLocation = NULL,
     }
     links <- links[linkFilter]
     links <- paste0(domain, links)
+    links <- gsub("//", "/", links, fixed = TRUE)
+    links <- gsub("http:/", "http://", links, fixed = TRUE)
+    links <- gsub("https:/", "https://", links, fixed = TRUE)
+    links <- unique(links)
     # if (extractText==TRUE) {
     #     names(links) <- purrr::map_chr(.x = temp[linkFilter], .f = function(x) x %>% rvest::html_text('href'))
     # }
+    if (export == TRUE) {
+        writeLines(links, file.path(project, website, "Logs", paste(Sys.Date(), website, "articlesLinks.txt", sep = "-")))
+    }
     links
 }
 
