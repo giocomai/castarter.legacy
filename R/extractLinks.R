@@ -116,6 +116,7 @@ ExtractLinks <- function(htmlLocation = NULL,
     # }
     if (export == TRUE) {
         writeLines(links, file.path(project, website, "Logs", paste(Sys.Date(), website, "articlesLinks.txt", sep = "-")))
+        message(paste("All links stored in", file.path(project, website, "Logs", paste(Sys.Date(), website, "articlesLinks.txt", sep = "-"))))
     }
     links
 }
