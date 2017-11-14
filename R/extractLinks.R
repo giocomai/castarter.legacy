@@ -74,25 +74,40 @@ ExtractLinks <- function(htmlLocation = NULL,
     # put them in order [equivalent to gtools::mixedorder()]
     indexHtml <- indexHtml[stringr::str_extract(string = indexHtml, pattern = "[[:digit:]]+[[:punct:]]html") %>% stringr::str_sub(start = 1L, end = -6L) %>% as.integer() %>% order()]
     tempLinks <- vector("list", length(indexHtml))
+    if (progressBar == TRUE) {
+        pb <- txtProgressBar(min = 0, max = length(indexHtml), style = 3, title = "Extracting links")
+    }
     if (is.null(containerType)) {
         # if no div or such, get all links
         for (i in seq_along(indexHtml)) {
             tempLinks[[i]] <- xml2::read_html(indexHtml[i]) %>%
                 rvest::html_nodes("a") %>%
                 xml2::xml_attr("href")
+            if (progressBar == TRUE) {
+                setTxtProgressBar(pb, i)
+            }
         }
     } else if (is.null(containerId)) {
         for (i in seq_along(indexHtml)) {
             tempLinks[[i]] <- xml2::read_html(indexHtml[i]) %>%
                 rvest::html_nodes(xpath = paste0("//", containerType, "[@class='", containerClass, "']//a")) %>%
                 xml2::xml_attr("href")
+            if (progressBar == TRUE) {
+                setTxtProgressBar(pb, i)
+            }
         }
     } else if (is.null(containerClass)) {
         for (i in seq_along(indexHtml)) {
             tempLinks[[i]] <- xml2::read_html(indexHtml[i]) %>%
                 rvest::html_nodes(xpath = paste0("//", containerType, "[@id='", containerId, "']//a")) %>%
                 xml2::xml_attr("href")
+            if (progressBar == TRUE) {
+                setTxtProgressBar(pb, i)
+            }
         }
+    }
+    if (progressBar == TRUE) {
+        close(pb)
     }
 
     links <- unlist(tempLinks, recursive = TRUE)
