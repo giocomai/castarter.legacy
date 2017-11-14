@@ -585,7 +585,7 @@ ExportMetadata <- function(dates, id, titles, language, links, exportXlsx = FALS
     if (is.null(ignoreVector) == FALSE) {
         links <- links[ignoreVector]
     }
-    metadata <- data.frame(project = project, website = website, date = dates, id = id, title = titles, language = language, link = links, check.names = FALSE, stringsAsFactors = FALSE)
+    metadata <- data.frame(doc_id = paste(website, id, sep = "-"), project = project, website = website, date = dates, id = id, title = titles, language = language, link = links, check.names = FALSE, stringsAsFactors = FALSE)
     if (accordingToDate == TRUE) {
         metadata <- metadata[order(metadata$date), ]
     }
@@ -600,6 +600,8 @@ ExportMetadata <- function(dates, id, titles, language, links, exportXlsx = FALS
 #'
 #' Exports dataset to a data.frame, with options to save it as an R object, and export it as a .csv or .xlsx file.
 #'
+#' @param text A character vector.
+#' @param metadata A data.frame typically created with ExportMetadata(). Number of rows must be the same as the number of text items in `text`.
 #' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.
 #' @param website Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
 #' @param exportCsv If equal to TRUE, exports the complete dataset in the .csv file format in the Dataset sub-folder.
@@ -608,14 +610,18 @@ ExportMetadata <- function(dates, id, titles, language, links, exportXlsx = FALS
 #' @export
 #' @examples
 #' dataset <- ExportDataset(contents, metadata, project, website)
-ExportDataset <- function(contents, metadata, exportRdata = TRUE, exportCsv = FALSE, exportXlsx = FALSE, project = NULL, website = NULL) {
+ExportDataset <- function(text, metadata, exportRds = TRUE, exportRdata = FALSE, exportCsv = FALSE, exportXlsx = FALSE, project = NULL, website = NULL) {
     if (gtools::invalid(project) == TRUE) {
         project <- CastarterOptions("project")
     }
     if (gtools::invalid(website) == TRUE) {
         project <- CastarterOptions("website")
     }
-    dataset <- cbind(metadata, contents, stringsAsFactors = FALSE)
+    dataset <- tibble::data_frame(doc_id = metadata$doc_id, text, metadata %>% select(-doc_id))
+    if (exportRds == TRUE) {
+        saveRDS(object = dataset, file = file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = "-"), ".rds")))
+        message(paste("Dataset saved in", file.path(project, website, paste0(paste(Sys.Date(), project, website, "dataset", sep = "-"), ".rds"))))
+    }
     if (exportRdata == TRUE) {
         save(dataset, file = file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".RData")))
         print(paste("Dataset saved in", file.path(project, website, paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".RData"))))

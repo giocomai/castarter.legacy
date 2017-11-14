@@ -26,9 +26,9 @@ LoadDatasets <- function(projectsAndWebsites = NULL, type = "dataset", removeNAd
     for (i in 1:length(projectsAndWebsites)) {
         project <- projectsAndWebsites[[i]][1]
         website <- projectsAndWebsites[[i]][2]
-        if (type == "corpusQ") {
-            datasetFilename <- sort(list.files(file.path(project, website, "Dataset"))[stringr::str_extract(list.files(file.path(project, website, "Dataset")), "corpusQ.RData") == "corpusQ.RData"], decreasing = TRUE)[1]
-        } else if (type == "dataset") {
+        if (type == "dataset") {
+            datasetFilename <- sort(list.files(file.path(project, website, "Dataset"))[stringr::str_extract(list.files(file.path(project, website, "Dataset")), "dataset.rds") == "dataset.rds"], decreasing = TRUE)[1]
+        } else if (type == "datasetRdata") {
             datasetFilename <- sort(list.files(file.path(project, website, "Dataset"))[stringr::str_extract(list.files(file.path(project, website, "Dataset")), "dataset.RData") == "dataset.RData"], decreasing = TRUE)[1]
         } else if (type == "corpusDtmQ") {
             datasetFilename <- sort(list.files(file.path(project, website, "Dataset"))[stringr::str_extract(list.files(file.path(project, website, "Dataset")), "corpusDtmQ.RData") == "corpusDtmQ.RData"], decreasing = TRUE)[1]
@@ -41,20 +41,7 @@ LoadDatasets <- function(projectsAndWebsites = NULL, type = "dataset", removeNAd
         }
         lastSavedDatasets <- lastSavedDatasets[!is.na(lastSavedDatasets)]
     }
-    if (type == "corpusQ") {
-        for (i in 1:length(lastSavedDatasets)) {
-            load(lastSavedDatasets[i])
-            if (exists("corpusTemp") == TRUE) {
-                corpusAll <- corpusTemp+corpus
-                rm(corpusTemp)
-            } else if (exists("corpusAll")) {
-                corpusAll <- corpusAll+corpus
-            } else {
-                corpusTemp <- corpus
-            }
-            rm(corpus)
-        }
-    } else if (type == "dataset") {
+    if (type == "dataset") {
         allDatasets <- data.frame()
         for (i in 1:length(lastSavedDatasets)) {
             load(lastSavedDatasets[i])

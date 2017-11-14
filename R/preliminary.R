@@ -69,7 +69,7 @@ LoadLatest <- function(project = NULL, website = NULL) {
 #' @export
 #' @examples
 #' SaveWebsite(project, website)
-SaveWebsite <- function(saveEnvironment = TRUE, dataset = NULL, corpus = NULL, tidyCorpus = NULL, corpusDtm = NULL, project = NULL, website = NULL, exportCsv = FALSE, exportTxt = FALSE, exportXlsx = FALSE) {
+SaveWebsite <- function(saveEnvironment = TRUE, dataset = NULL, tidyCorpus = NULL, project = NULL, website = NULL, exportCsv = FALSE, exportTxt = FALSE, exportXlsx = FALSE) {
     if (gtools::invalid(project) == TRUE) {
         project <- CastarterOptions("project")
     }
@@ -82,36 +82,18 @@ SaveWebsite <- function(saveEnvironment = TRUE, dataset = NULL, corpus = NULL, t
     }
     if (is.null(dataset) == FALSE) {
         if (is.data.frame(dataset)==TRUE) {
-            save(dataset, file = file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".RData")))
-            print(paste("Dataset saved in", file.path(project, website, paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".RData"))))
+            saveRDS(object = dataset, file = file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = "-"), ".rds")))
+            message(paste("Dataset saved in", file.path(project, website, paste0(paste(Sys.Date(), project, website, "dataset", sep = "-"), ".rds"))))
         } else if (dataset == TRUE) {
-            dataset <- cbind(metadata, contents, stringsAsFactors = FALSE)
-            save(dataset, file = file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".RData")))
-            print(paste("Dataset saved in", file.path(project, website, paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".RData"))))
-        }
-    }
-    if (is.null(corpus)==FALSE) {
-        if (quanteda::is.corpus(corpus)==TRUE) {
-            save(corpus, file = file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "corpusQ", sep = " - "), ".RData")))
-            message(paste("Corpus of the 'quanteda' type saved in", file.path(project, website, paste0(paste(Sys.Date(), project, website, "corpusQ", sep = " - "), ".RData"))))
-        } else {
-            save(corpus, file = file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "corpusTM", sep = " - "), ".RData")))
-            message(paste("Corpus of the 'tm' type saved in", file.path(project, website, paste0(paste(Sys.Date(), project, website, "corpusTM", sep = " - "), ".RData"))))
-        }
+            dataset <- tibble::data_frame(doc_id = metadata$doc_id, text, metadata %>% select(-doc_id))
+            saveRDS(object = dataset, file = file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = "-"), ".rds")))
+            message(paste("Dataset saved in", file.path(project, website, paste0(paste(Sys.Date(), project, website, "dataset", sep = "-"), ".rds"))))
+            }
     }
     if (is.null(tidyCorpus)==FALSE) {
             saveRDS(object = tidyCorpus, file = file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "tidyCorpus", sep = " - "), ".rds")))
             message(paste("Tidy corpus saved in", file.path(project, website, paste0(paste(Sys.Date(), project, website, "tidyCorpus", sep = " - "), ".rds"))))
     }
-    if (is.null(corpusDtm)==FALSE) {
-        if (quanteda::is.dfm(corpusDtm)) {
-            save(corpusDtm, file = file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "corpusDtmQ", sep = " - "), ".RData")))
-            message(paste("corpusDtm of the 'quanteda' type saved in", file.path(project, website, paste0(paste(Sys.Date(), project, website, "corpusDtmQ", sep = " - "), ".RData"))))
-        } else {
-            save(corpusDtm, file = file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "corpusDtmTM", sep = " - "), ".RData")))
-            message(paste("corpusDtm of the 'tm' type saved in", file.path(project, website, paste0(paste(Sys.Date(), project, website, "corpusDtmTM", sep = " - "), ".RData"))))
-        }
- }
     if (exportCsv == TRUE) {
         write.csv(dataset, file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".csv")))
     }
