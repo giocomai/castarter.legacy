@@ -81,13 +81,20 @@ ExtractLinks <- function(htmlLocation = NULL,
                 rvest::html_nodes("a") %>%
                 xml2::xml_attr("href")
         }
-    } else {
+    } else if (is.null(containerId)) {
         for (i in seq_along(indexHtml)) {
             tempLinks[[i]] <- xml2::read_html(indexHtml[i]) %>%
                 rvest::html_nodes(xpath = paste0("//", containerType, "[@class='", containerClass, "']//a")) %>%
                 xml2::xml_attr("href")
         }
+    } else if (is.null(containerClass)) {
+        for (i in seq_along(indexHtml)) {
+            tempLinks[[i]] <- xml2::read_html(indexHtml[i]) %>%
+                rvest::html_nodes(xpath = paste0("//", containerType, "[@id='", containerId, "']//a")) %>%
+                xml2::xml_attr("href")
+        }
     }
+
     links <- unlist(tempLinks, recursive = TRUE)
     # introduce logical filter vector
     linkFilter <- seq_along(links)
