@@ -77,8 +77,8 @@ SaveWebsite <- function(saveEnvironment = TRUE, dataset = NULL, tidyCorpus = NUL
         website <- CastarterOptions("website")
     }
     if (saveEnvironment == TRUE) {
-        save.image(file = file.path(project, website, paste0(paste(Sys.Date(), project, website, sep = " - "), ".RData")))
-        print(paste("Environment saved in", file.path(project, website, paste0(paste(Sys.Date(), project, website, sep = " - "), ".RData"))))
+        save.image(file = file.path(project, website, paste0(paste(Sys.Date(), project, website, sep = "-"), ".RData")))
+        message(paste("Environment saved in", file.path(project, website, paste0(paste(Sys.Date(), project, website, sep = "-"), ".RData"))))
     }
     if (is.null(dataset) == FALSE) {
         if (is.data.frame(dataset)==TRUE) {
