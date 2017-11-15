@@ -2,6 +2,7 @@
 #'
 #' Extracts direct links to individual articles from index pages according to a selcted pattern.
 #'
+#' @param htmlLocation Path to folder where html files, tipically downloaded with DownloadContents(links, type = "index") are stored. If not given, it defaults to the IndexHtml folder inside project/website folders.
 #' @param domain Web domain of the website. Will be added at the beginning of each link found.If links in the page already include the full web address this should be ignored. Defaults to "".
 #' @param partOfLink Part of URL found only in links of individual articles to be downloaded. If more than one provided, it includes all links that contains either of the strings provided.
 #' @param partOfLinkToExclude If an URL includes this string, it is excluded from the output. One or more strings may be provided.
@@ -69,8 +70,12 @@ ExtractLinks <- function(htmlLocation = NULL,
         params$ExtractLinks <-  as.list(environment())
         saveRDS(object = params, file = paramsFile)
     }
+    # define htmlLocation, if not given
+    if (is.null(htmlLocation)) {
+        htmlLocation <- file.path(project, website, "IndexHtml")
+    }
     # list files
-    indexHtml <- list.files(path = file.path(project, website, "IndexHtml"), full.names = TRUE)
+    indexHtml <- list.files(path = htmlLocation, full.names = TRUE)
     # put them in order [equivalent to gtools::mixedorder()]
     indexHtml <- indexHtml[stringr::str_extract(string = indexHtml, pattern = "[[:digit:]]+[[:punct:]]html") %>% stringr::str_sub(start = 1L, end = -6L) %>% as.integer() %>% order()]
     tempLinks <- vector("list", length(indexHtml))

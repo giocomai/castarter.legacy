@@ -14,6 +14,8 @@ ExtractLinks(htmlLocation = NULL, domain = NULL, partOfLink = NULL,
   exportParameters = TRUE)
 }
 \arguments{
+\item{htmlLocation}{Path to folder where html files, tipically downloaded with DownloadContents(links, type = "index") are stored. If not given, it defaults to the IndexHtml folder inside project/website folders.}
+
 \item{domain}{Web domain of the website. Will be added at the beginning of each link found.If links in the page already include the full web address this should be ignored. Defaults to "".}
 
 \item{partOfLink}{Part of URL found only in links of individual articles to be downloaded. If more than one provided, it includes all links that contains either of the strings provided.}
