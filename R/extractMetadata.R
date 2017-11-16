@@ -32,30 +32,32 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", divClass = NULL, divI
         website <- CastarterOptions("website")
     }
     if (exportParameters == TRUE && exists("project") == FALSE | exportParameters == TRUE && exists("website") == FALSE) {
-        stop("If exportParameters == TRUE, both project and website must be defined either as parameters or previously with .")
+        stop("If exportParameters == TRUE, both project and website must be defined either as parameters or previously with SetCastarter(project = '...', website = '...').")
     }
-    if (exportParameters == TRUE) {
-        args <- c("dateFormat_ExtractDates", "divClass_ExtractDates", "divId_ExtractDates", "spanClass_ExtractDates", "customXpath_ExtractDates", "language_ExtractDates", "customString_ExtractDates", "minDate", "maxDate", "keepAllString_ExtractDates", "removeEverythingBefore_ExtractDates")
-        param <- list(dateFormat, divClass, divId, spanClass, customXpath, language, customString, minDate, maxDate, keepAllString, removeEverythingBefore)
-        for (i in 1:length(param)) {
-            if (is.null(param[[i]])==TRUE) {
-                param[[i]] <- "NULL"
-            }
-        }
-        param <- unlist(param)
-        updateParametersTemp <- data.frame(args, param, stringsAsFactors = FALSE)
-        if (file.exists(base::file.path(project, website, "Logs", paste(website, "updateParameters.csv", sep = " - "))) == TRUE) {
-            updateParameters <- utils::read.table(base::file.path(project, website, "Logs", paste(website, "updateParameters.csv", sep = " - ")), stringsAsFactors = FALSE)
-            for (i in 1:length(updateParametersTemp$args)) {
-                updateParameters$param[updateParameters$args == updateParametersTemp$args[i]] <- updateParametersTemp$param[i]
-                if (is.element(updateParametersTemp$args[i], updateParameters$args) == FALSE) {
-                    updateParameters <- rbind(updateParameters, updateParametersTemp[i,] )
+    paramsFile <- base::file.path(project, website, "Logs", paste(project, website, "parameters.rds", sep = "-"))
+    if (is.null(importParameters)==FALSE) {
+        if (importParameters == TRUE) { # Import parameters
+            if (file.exists(paramsFile) == TRUE) {
+                params <- readRDS(paramsFile)
+                for (i in seq_along(params$ExtractLinks)) {
+                    assign(names(params$ExtractLinks)[i], params$ExtractLinks[[i]])
                 }
+            } else {
+                # throw error if parameters file not found
+                stop(paste("Parameters file not found in", paramsFile))
             }
-        } else {
-            updateParameters <- updateParametersTemp
         }
-        write.table(updateParameters, file = base::file.path(project, website, "Logs", paste(website, "updateParameters.csv", sep = " - ")))
+    } else {
+        importParameters <- FALSE
+    }
+    if (exportParameters == TRUE & importParameters == FALSE) { # Export parameters
+        if (file.exists(paramsFile) == TRUE) {
+            params <- readRDS(paramsFile)
+        } else {
+            params <- list()
+        }
+        params$ExtractDates <-  as.list(environment())
+        saveRDS(object = params, file = paramsFile)
     }
     numberOfArticles <- length(articlesHtml)
     if (gtools::invalid(encoding) == FALSE) {
