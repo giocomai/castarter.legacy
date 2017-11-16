@@ -45,6 +45,9 @@ ExtractLinks <- function(htmlLocation = NULL,
     if (is.null(website) == TRUE) {
         website <- CastarterOptions("website")
     }
+    if (exportParameters == TRUE && exists("project") == FALSE | exportParameters == TRUE && exists("website") == FALSE) {
+        stop("If exportParameters == TRUE, both project and website must be defined either as parameters or previously with SetCastarter(project = '...', website = '...').")
+    }
     paramsFile <- base::file.path(project, website, "Logs", paste(project, website, "parameters.rds", sep = "-"))
     if (is.null(importParameters)==FALSE) {
         if (importParameters == TRUE) { # Import parameters
