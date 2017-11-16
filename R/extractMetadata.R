@@ -587,7 +587,7 @@ ExportMetadata <- function(dates, id, titles, language, links, exportXlsx = FALS
     if (is.null(ignoreVector) == FALSE) {
         links <- links[ignoreVector]
     }
-    metadata <- data.frame(doc_id = paste(website, id, sep = "-"), project = project, website = website, date = dates, id = id, title = titles, language = language, link = links, check.names = FALSE, stringsAsFactors = FALSE)
+    metadata <- tibble::data_frame(doc_id = paste(website, id, sep = "-"), website = website, id = id, date = dates, title = titles, language = language, link = links, check.names = FALSE, stringsAsFactors = FALSE)
     if (accordingToDate == TRUE) {
         metadata <- metadata[order(metadata$date), ]
     }
@@ -619,7 +619,7 @@ ExportDataset <- function(text, metadata, exportRds = TRUE, exportRdata = FALSE,
     if (gtools::invalid(website) == TRUE) {
         project <- CastarterOptions("website")
     }
-    dataset <- tibble::data_frame(doc_id = metadata$doc_id, text, metadata %>% select(-doc_id))
+    dataset <- dplyr::bind_cols(tibble::data_frame(doc_id = metadata$doc_id, text = text), metadata %>% select(-doc_id))
     if (exportRds == TRUE) {
         saveRDS(object = dataset, file = file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = "-"), ".rds")))
         message(paste("Dataset saved in", file.path(project, website, paste0(paste(Sys.Date(), project, website, "dataset", sep = "-"), ".rds"))))
