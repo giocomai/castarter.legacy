@@ -31,7 +31,11 @@ ExtractLinks <- function(htmlLocation = NULL,
                          containerId = NULL,
                          attributeType = NULL,
                          minLength = NULL,
-                         maxLength = NULL, indexLinks = NULL, sortLinks = TRUE, linkTitle = TRUE, export = FALSE, appendString = NULL, removeString = NULL,
+                         maxLength = NULL,
+                         indexLinks = NULL,
+                         sortLinks = TRUE,
+                         linkTitle = TRUE,
+                         export = FALSE, appendString = NULL, removeString = NULL,
                          progressBar = TRUE,
                          project = NULL,
                          website = NULL,
@@ -88,27 +92,39 @@ ExtractLinks <- function(htmlLocation = NULL,
     if (is.null(containerType)) {
         # if no div or such, get all links
         for (i in seq_along(indexHtml)) {
-            tempLinks[[i]] <- xml2::read_html(indexHtml[i]) %>%
-                rvest::html_nodes("a") %>%
+            temp <-  xml2::read_html(indexHtml[i]) %>%
+                rvest::html_nodes("a")
+            tempLinks[[i]] <- temp %>%
                 xml2::xml_attr("href")
+            if (linkTitle == TRUE) {
+                names(tempLinks[[i]]) <- temp %>% rvest::html_text()
+            }
             if (progressBar == TRUE) {
                 setTxtProgressBar(pb, i)
             }
         }
     } else if (is.null(containerId)) {
         for (i in seq_along(indexHtml)) {
-            tempLinks[[i]] <- xml2::read_html(indexHtml[i]) %>%
-                rvest::html_nodes(xpath = paste0("//", containerType, "[@class='", containerClass, "']//a")) %>%
+            temp <- xml2::read_html(indexHtml[i]) %>%
+                rvest::html_nodes(xpath = paste0("//", containerType, "[@class='", containerClass, "']//a"))
+            tempLinks[[i]] <-  temp %>%
                 xml2::xml_attr("href")
+            if (linkTitle == TRUE) {
+                names(tempLinks[[i]]) <- temp %>% rvest::html_text()
+            }
             if (progressBar == TRUE) {
                 setTxtProgressBar(pb, i)
             }
         }
     } else if (is.null(containerClass)) {
         for (i in seq_along(indexHtml)) {
-            tempLinks[[i]] <- xml2::read_html(indexHtml[i]) %>%
-                rvest::html_nodes(xpath = paste0("//", containerType, "[@id='", containerId, "']//a")) %>%
+            temp <- xml2::read_html(indexHtml[i]) %>%
+                rvest::html_nodes(xpath = paste0("//", containerType, "[@id='", containerId, "']//a"))
+            tempLinks[[i]] <-  temp %>%
                 xml2::xml_attr("href")
+            if (linkTitle == TRUE) {
+                names(tempLinks[[i]]) <- temp %>% rvest::html_text()
+                }
             if (progressBar == TRUE) {
                 setTxtProgressBar(pb, i)
             }
@@ -117,8 +133,7 @@ ExtractLinks <- function(htmlLocation = NULL,
     if (progressBar == TRUE) {
         close(pb)
     }
-
-    links <- unlist(tempLinks, recursive = TRUE)
+    links <- unlist(tempLinks, recursive = FALSE)
     # introduce logical filter vector
     linkFilter <- seq_along(links)
     if (is.null(partOfLink)==FALSE) {
@@ -130,20 +145,23 @@ ExtractLinks <- function(htmlLocation = NULL,
         }
     }
     links <- links[linkFilter]
-    links <- paste0(domain, links)
+    if (is.null(domain)==FALSE&is.null(names(links))==FALSE) {
+        linkTitles <- names(links)
+        links <- paste0(domain, links)
+        names(links) <- linkTitles
+    } else if (is.null(domain)==FALSE&is.null(names(links))==TRUE) {
+        links <- paste0(domain, links)
+    }
     links <- gsub("//", "/", links, fixed = TRUE)
     links <- gsub("http:/", "http://", links, fixed = TRUE)
     links <- gsub("https:/", "https://", links, fixed = TRUE)
-    links <- unique(links)
+    links <- links[!duplicated(links)]
     if (is.null(minLength)==FALSE) {
         links <- links[nchar(links)>minLength]
     }
     if (is.null(maxLength)==FALSE) {
         links <- links[nchar(links)<maxLength]
     }
-    # if (extractText==TRUE) {
-    #     names(links) <- purrr::map_chr(.x = temp[linkFilter], .f = function(x) x %>% rvest::html_text('href'))
-    # }
     if (export == TRUE) {
         writeLines(links, file.path(project, website, "Logs", paste(Sys.Date(), website, "articlesLinks.txt", sep = "-")))
         message(paste("All links stored in", file.path(project, website, "Logs", paste(Sys.Date(), website, "articlesLinks.txt", sep = "-"))))
