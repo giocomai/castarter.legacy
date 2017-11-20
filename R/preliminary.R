@@ -5,10 +5,10 @@
 #' @examples
 #' CreateFolders(project, website)
 CreateFolders <- function(project = NULL, website = NULL) {
-    if (gtools::invalid(project) == TRUE) {
+    if (is.null(project) == TRUE) {
         project <- CastarterOptions("project")
     }
-    if (gtools::invalid(website) == TRUE) {
+    if (is.null(website) == TRUE) {
         website <- CastarterOptions("website")
     }
     if (!file.exists(file.path(project))) {
@@ -46,10 +46,10 @@ CreateFolders <- function(project = NULL, website = NULL) {
 #' @examples
 #' load(LoadLatest(project, website))
 LoadLatest <- function(project = NULL, website = NULL) {
-    if (gtools::invalid(project) == TRUE) {
+    if (is.null(project) == TRUE) {
         project <- CastarterOptions("project")
     }
-    if (gtools::invalid(website) == TRUE) {
+    if (is.null(website) == TRUE) {
         website <- CastarterOptions("website")
     }
     lastSavedFile <- file.path(file.path(project, website), sort(list.files(file.path(project, website))[stringr::str_extract(list.files(file.path(project, website)), "RData") == "RData"], decreasing = TRUE)[1])
@@ -70,10 +70,10 @@ LoadLatest <- function(project = NULL, website = NULL) {
 #' @examples
 #' SaveWebsite(project, website)
 SaveWebsite <- function(saveEnvironment = TRUE, dataset = NULL, tidyCorpus = NULL, project = NULL, website = NULL, exportCsv = FALSE, exportTxt = FALSE, exportXlsx = FALSE) {
-    if (gtools::invalid(project) == TRUE) {
+    if (is.null(project) == TRUE) {
         project <- CastarterOptions("project")
     }
-    if (gtools::invalid(website) == TRUE) {
+    if (is.null(website) == TRUE) {
         website <- CastarterOptions("website")
     }
     if (saveEnvironment == TRUE) {
