@@ -1,26 +1,26 @@
-#' Downloads html pages based on a vector of links 
-#' 
+#' Downloads html pages based on a vector of links
+#'
 #' Downloads html pages based on a vector of links.
-#'  
+#'
 #' @param links A character vector of links, commonly generated either with the function CreateLinks or ExtractLinks.
-#' @param type Accepted values are either "articles" (default), or "index"; it defines the folder where files are stored. 
-#' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
+#' @param type Accepted values are either "articles" (default), or "index"; it defines the folder where files are stored.
+#' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.
 #' @param website Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
 #' @param method Defaults to "auto". Method is passed to the function utils::download.file(); available options are "internal", "wininet" (Windows only) "libcurl", "wget" and "curl". For more information see ?utils::download.file()
 #' @param missingArticles Logical, defaults to TRUE. If TRUE, verifies if a downloaded html file exists for each element in articlesLinks; when there is no such file, it downloads it.
 #' @param linksToDownload A logical vector. Only links corresponding to TRUE will be downloaded: links[linksToDownload]
-#' @param wgetSystem Logical, defaults to FALSE. Calls wget as a system command through the system() function. Wget must be previously installed on the system. 
+#' @param wgetSystem Logical, defaults to FALSE. Calls wget as a system command through the system() function. Wget must be previously installed on the system.
 #' @param start Integer. Only links with position higher than start in the links vector will be downloaded: links[start:length(links)]
-#' @return By default, returns nothing, used for its side effects (downloads html files in relevant folder). Download files can then be imported in a vector with the function ImportHtml. 
+#' @return By default, returns nothing, used for its side effects (downloads html files in relevant folder). Download files can then be imported in a vector with the function ImportHtml.
 #' @export
 #' @examples
 #' DownloadContents(links)
 
 DownloadContents <- function(links, type = "articles", articlesHtml = NULL, size = 500, linksToDownload = NULL, wgetSystem = FALSE, method = "auto", missingArticles = TRUE, start = 1, wait = 1, createScript = FALSE, project = NULL, website = NULL) {
-    if (gtools::invalid(project) == TRUE) {
+    if (is.null(project) == TRUE) {
         project <- CastarterOptions("project")
     }
-    if (gtools::invalid(website) == TRUE) {
+    if (is.null(website) == TRUE) {
         website <- CastarterOptions("website")
     }
     articlesHtmlProvided <- is.null(articlesHtml) == FALSE
@@ -29,7 +29,9 @@ DownloadContents <- function(links, type = "articles", articlesHtml = NULL, size
     } else if (type=="index") {
         htmlFilePath <- file.path(project, website, "IndexHtml")
     }
-    htmlFilesList <- gtools::mixedsort(list.files(htmlFilePath, full.names = TRUE))
+    htmlFilesList <- list.files(htmlFilePath, full.names = TRUE)
+    # put them in order [equivalent to gtools::mixedorder()]
+    htmlFilesList <- htmlFilesList[stringr::str_extract(string = htmlFilesList, pattern = "[[:digit:]]+[[:punct:]]html") %>% stringr::str_sub(start = 1L, end = -6L) %>% as.integer() %>% order()]
     htmlFileSize <- file.info(htmlFilesList)["size"]
     articlesId <- 1:length(links)
     if (missingArticles == TRUE) {
@@ -102,14 +104,14 @@ DownloadContents <- function(links, type = "articles", articlesHtml = NULL, size
     if (articlesHtmlProvided == TRUE) {
         articlesHtml
     }
-} 
+}
 
 
-#' Downloads html pages that are loaded through a web form. 
-#' 
-#' Downloads html pages that are loaded through a web form. 
-#'  
-#' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
+#' Downloads html pages that are loaded through a web form.
+#'
+#' Downloads html pages that are loaded through a web form.
+#'
+#' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.
 #' @param website Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
 #' @return A vector of Html files. As a side effect, html files are stored in the IndexHtml folder.
 #' @export
@@ -117,10 +119,10 @@ DownloadContents <- function(links, type = "articles", articlesHtml = NULL, size
 #' DownloadContentsForm(links)
 
 DownloadContentsForm <- function(linkFirstChunk, startDate, endDate, dateSeparator = "-", dateBy = "months", start = 1, project = NULL, website = NULL) {
-    if (gtools::invalid(project) == TRUE) {
+    if (is.null(project) == TRUE) {
         project <- CastarterOptions("project")
     }
-    if (gtools::invalid(website) == TRUE) {
+    if (is.null(website) == TRUE) {
         website <- CastarterOptions("website")
     }
     listOfDates <- seq(as.Date(startDate, "%Y-%m-%d"), as.Date(endDate, "%Y-%m-%d"), by = dateBy)
@@ -137,4 +139,4 @@ DownloadContentsForm <- function(linkFirstChunk, startDate, endDate, dateSeparat
     dateDownloadedIndex <- date()
     file.create(file.path(project, website, "Logs", paste(Sys.Date(), "Index downloaded.txt", sep = " - ")))
     indexPagesHtml
-} 
+}
