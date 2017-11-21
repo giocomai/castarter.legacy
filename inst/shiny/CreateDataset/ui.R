@@ -52,9 +52,26 @@ shinyUI(fluidPage(
                                   )
                            )
                  )),
-        tabPanel("Component 3"),
-        tabPanel("Component 4"),
-        tabPanel("Component 5"),
+        #### Extract links ####
+        tabPanel("Extract links",
+                 fluidPage(theme="style.css",
+                           column(12,
+                                  fluidRow(
+                                      h3("Extract links")
+
+                                  )
+                           )
+                 )),
+        tabPanel("Download articles",
+                 fluidPage(theme="style.css",
+                           column(12,
+                                  fluidRow(
+                                      h3("Download articles"),
+                                      actionButton(inputId = "DownloadArticles", label = "Download articles now", icon = icon("download"), style="color: #fff; background-color: #337ab7; border-color: #2e6da4")
+
+                                  )
+                           )
+                 )),
         widths = c(3, 8)
     )
 ))

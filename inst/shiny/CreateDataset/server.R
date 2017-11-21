@@ -90,9 +90,9 @@ shinyServer(function(input, output, session) {
                                              dateSeparator = input$CrateLinks_dateSeparator,
                                              export = FALSE,
                                              exportParameters = FALSE)
-        HTML(paste("<b>First Links:</b>",
+        HTML(paste("<b>First Links:</b><br />",
             paste("<a href='", head(x = indexLinks), "'>", head(x = indexLinks), "</a>",  collapse = "<br />")),
-            "<b><br />Last Links:</b>",
+            "<b><br />Last Links:</b><br />",
             paste("<a href='", tail(x = indexLinks), "'>", tail(x = indexLinks), "</a>",  collapse = "<br />")
         )
     })
@@ -130,15 +130,35 @@ shinyServer(function(input, output, session) {
 
     ### Download index pages ####
 
-    output$DownloadIndexPages <- renderUI({
-        input$DownloadIndexPages
+    observeEvent(eventExpr = input$DownloadIndexPages, {
 
-        shiny::isolate({
-            castarter::DownloadContents(links = indexLinks,
-                                        type = "index")
+            links <- indexLinks
+
+            # params that should be possible to set
+            wait <- 1
+
+            htmlFilePath <- file.path(input$project, input$website, "IndexHtml")
+            htmlFilesList <- list.files(htmlFilePath, full.names = TRUE)
+            # put them in order [equivalent to gtools::mixedorder()]
+            htmlFilesList <- htmlFilesList[stringr::str_extract(string = htmlFilesList, pattern = "[[:digit:]]+[[:punct:]]html") %>% stringr::str_sub(start = 1L, end = -6L) %>% as.integer() %>% order()]
+            htmlFileSize <- file.info(htmlFilesList)["size"]
+            articlesId <- 1:length(links)
+            # if (missingArticles == TRUE) {
+                articlesHtmlFilenamesInTheory <- file.path(htmlFilePath, paste0(articlesId, ".html"))
+                linksToDownload <- !is.element(articlesHtmlFilenamesInTheory, htmlFilesList)
+            #}
+                temp <- 1
+                n <- length(links[linksToDownload])
+                withProgress(message = 'Downloading index pages', value = 0, {
+                    for (i in links[linksToDownload]) {
+                        articleId <- articlesId[linksToDownload][temp]
+                        try(utils::download.file(url = i, destfile = file.path(htmlFilePath, paste0(articleId, ".html")), method = "auto"))
+                        incProgress(1/n, detail = paste("Downloading index page", temp, "of", n, paste0("- id: ", articleId)))
+                        Sys.sleep(wait)
+                        temp <- temp + 1
+                    }
+                })
         })
-    })
-
 
 })
 
