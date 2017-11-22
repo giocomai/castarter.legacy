@@ -307,10 +307,10 @@ MergeDates <- function(dates1, dates2, dates3 = NULL, minDate = NULL, maxDate = 
 #' @examples
 #' titles <- ExtractTitles(articlesHtml)
 ExtractTitles <- function(articlesHtml = NULL, links = NULL, method = "htmlTitle", removePunctuation = FALSE, onlyStandardCharacters = FALSE, removeString = NULL, removeEverythingBefore = NULL, removeEverythingAfter = NULL, customXpath = "", maxCharacters = NULL, progressBar = TRUE, exportParameters = TRUE, project = NULL, website = NULL) {
-    if (gtools::invalid(project) == TRUE) {
+    if (is.null(project) == TRUE) {
         project <- CastarterOptions("project")
     }
-    if (gtools::invalid(website) == TRUE) {
+    if (is.null(website) == TRUE) {
         website <- CastarterOptions("website")
     }
     if (exportParameters == TRUE) {
@@ -337,7 +337,7 @@ ExtractTitles <- function(articlesHtml = NULL, links = NULL, method = "htmlTitle
         write.table(updateParameters, file = base::file.path(project, website, "Logs", paste(website, "updateParameters.csv", sep = " - ")))
     }
     titles <- vector()
-    if (gtools::invalid(articlesHtml)==TRUE) {
+    if (is.null(articlesHtml)==TRUE) {
         numberOfArticles <- length(links)
     } else {
         numberOfArticles <- length(articlesHtml)
@@ -390,30 +390,30 @@ ExtractTitles <- function(articlesHtml = NULL, links = NULL, method = "htmlTitle
     } else if (method == "beginning") {
         titles <- ExtractTxt(articlesHtml, export = FALSE, keepEverything = TRUE)
     }
-    if (gtools::invalid(removeString) == FALSE) {
+    if (is.null(removeString) == FALSE) {
         titles <- gsub(removeString, replacement = "", x = titles, fixed = TRUE)
     }
-    if (gtools::invalid(removeEverythingAfter) == FALSE) {
+    if (is.null(removeEverythingAfter) == FALSE) {
         titles <- gsub(paste0(removeEverythingAfter, ".*"), replacement = "", x = titles)
     }
-    if (gtools::invalid(removeEverythingBefore) == FALSE) {
+    if (is.null(removeEverythingBefore) == FALSE) {
         titles <- gsub(paste0(removeEverythingBefore, "*."), replacement = "", x = titles)
     }
-    if (gtools::invalid(onlyStandardCharacters) == FALSE) {
+    if (is.null(onlyStandardCharacters) == FALSE) {
         if (onlyStandardCharacters == TRUE) {
             titles <- gsub("[^A-Za-z0-9 ]", "-", titles)
             titles <- gsub("  ", " ", titles)
             titles <- gsub("--", "-", titles)
         }
     }
-    if (gtools::invalid(removePunctuation == FALSE)) {
+    if (is.null(removePunctuation == FALSE)) {
         if (removePunctuation == TRUE) {
             titles <- gsub("[[:punct:]]", "-", titles)
             titles <- gsub("  ", " ", titles)
             titles <- gsub("--", "-", titles)
         }
     }
-    if (gtools::invalid(maxCharacters) == FALSE) {
+    if (is.null(maxCharacters) == FALSE) {
         titles <- substring(titles, 1, maxCharacters)
     }
     if (progressBar == TRUE) {
