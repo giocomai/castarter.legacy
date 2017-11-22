@@ -100,7 +100,7 @@ DownloadContents <- function(links, type = "articles", articlesHtml = NULL, size
                     try(utils::download.file(url = i, destfile = file.path(project, website, "IndexHtml", paste0(articleId, ".html")), method = method))
                 }
             }
-            message(paste("Downloaded article", temp, "of", length(links[linksToDownload]), ". ArticleID: ", articleId), quote = FALSE)
+            message(paste("Downloaded article", temp, "of", length(links[linksToDownload]), ". ArticleID: ", articleId))
             temp <- temp + 1
             Sys.sleep(wait)
         }
@@ -142,7 +142,7 @@ DownloadContentsForm <- function(linkFirstChunk, startDate, endDate, dateSeparat
     indexPagesHtml <- vector()
     for (i in start:numberOfIndexPages) {
         indexPagesHtml[i] <- RCurl::postForm(linkFirstChunk, datefrom = listOfDates[i], dateto = listOfDates[i + 1])
-        message(paste("Downloading index page", i, "of", numberOfIndexPages), quote = FALSE)
+        message(paste("Downloading index page", i, "of", numberOfIndexPages))
         write(indexPagesHtml[i], file = indexHtmlFilenames[i])
     }
     dateDownloadedIndex <- date()
