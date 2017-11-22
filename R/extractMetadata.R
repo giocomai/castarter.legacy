@@ -25,10 +25,10 @@
 #' @examples
 #' dates <- ExtractDates(articlesHtml)
 ExtractDates <- function(articlesHtml, dateFormat = "dmY", divClass = NULL, divId = NULL, spanClass = NULL, customXpath = NULL, language = Sys.getlocale(category = "LC_TIME"), customString = "", minDate = NULL, maxDate = NULL, encoding = "UTF-8", keepAllString = FALSE, removeEverythingBefore = NULL, exportParameters = TRUE, project = NULL, website = NULL) {
-    if (gtools::invalid(project) == TRUE) {
+    if (is.null(project) == TRUE) {
         project <- CastarterOptions("project")
     }
-    if (gtools::invalid(website) == TRUE) {
+    if (is.null(website) == TRUE) {
         website <- CastarterOptions("website")
     }
     if (exportParameters == TRUE && exists("project") == FALSE | exportParameters == TRUE && exists("website") == FALSE) {
@@ -60,12 +60,12 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", divClass = NULL, divI
         saveRDS(object = params, file = paramsFile)
     }
     numberOfArticles <- length(articlesHtml)
-    if (gtools::invalid(encoding) == FALSE) {
+    if (is.null(encoding) == FALSE) {
         articlesHtml <- iconv(articlesHtml, from = encoding, to = "UTF-8")
     } else {
         articlesHtml <- iconv(articlesHtml, to = "UTF-8")
     }
-    if (gtools::invalid(divId) == FALSE) {
+    if (is.null(divId) == FALSE) {
         datesTxt <- rep(NA, numberOfArticles)
         for (i in 1:numberOfArticles) {
             if (articlesHtml[i] != "") {
@@ -79,7 +79,7 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", divClass = NULL, divI
             }
         }
     }
-    if (gtools::invalid(divClass) == FALSE) {
+    if (is.null(divClass) == FALSE) {
         datesTxt <- rep(NA, numberOfArticles)
         for (i in 1:numberOfArticles) {
             if (articlesHtml[i] != "") {
@@ -93,7 +93,7 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", divClass = NULL, divI
             }
         }
     }
-    if (gtools::invalid(spanClass)==FALSE) {
+    if (is.null(spanClass)==FALSE) {
         datesTxt <- rep(NA, numberOfArticles)
         for (i in 1:numberOfArticles) {
             articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T)
@@ -106,7 +106,7 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", divClass = NULL, divI
             }
         }
     }
-    if (gtools::invalid(customXpath) == FALSE) {
+    if (is.null(customXpath) == FALSE) {
         datesTxt <- rep(NA, numberOfArticles)
         for (i in 1:numberOfArticles) {
             if (articlesHtml[i] != "") {
@@ -433,10 +433,10 @@ ExtractTitles <- function(articlesHtml = NULL, links = NULL, method = "htmlTitle
 #' @examples
 #' id <- ExtractId(project, website)
 ExtractId <- function(project = NULL, website = NULL, accordingToDate = FALSE, dates = NULL) {
-    if (gtools::invalid(project) == TRUE) {
+    if (is.null(project) == TRUE) {
         project <- CastarterOptions("project")
     }
-    if (gtools::invalid(website) == TRUE) {
+    if (is.null(website) == TRUE) {
         website <- CastarterOptions("website")
     }
     htmlFilesList <- list.files(file.path(project, website, "Html"))
@@ -463,10 +463,10 @@ CreateDatasetFromHtml <- function(links = NULL,
                                   language = "English", encoding = NULL,
                                   logProgress = FALSE,
                                   exportParameters = TRUE, project = NULL, website = NULL) {
-    if (gtools::invalid(project) == TRUE) {
+    if (is.null(project) == TRUE) {
         project <- CastarterOptions("project")
     }
-    if (gtools::invalid(website) == TRUE) {
+    if (is.null(website) == TRUE) {
         website <- CastarterOptions("website")
     }
     if (exportParameters == TRUE && exists("project") == FALSE | exportParameters == TRUE && exists("website") == FALSE) {
