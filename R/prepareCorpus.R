@@ -15,7 +15,7 @@
 #' projectsAndWebsites <- c("ProjectX/Website1", "ProjectY/Website3", "ProjectZ/Website2")
 #' allDatasets <- LoadDatasets(projectsAndWebsites)
 LoadDatasets <- function(projectsAndWebsites = NULL, type = "dataset", removeNAdates = TRUE) {
-    if (gtools::invalid(projectsAndWebsites) == TRUE) {
+    if (is.null(projectsAndWebsites) == TRUE) {
         project <- CastarterOptions("project")
         website <- CastarterOptions("website")
         projectsAndWebsites <- list(projectsAndWebsites = c(project, website))
@@ -42,20 +42,21 @@ LoadDatasets <- function(projectsAndWebsites = NULL, type = "dataset", removeNAd
         lastSavedDatasets <- lastSavedDatasets[!is.na(lastSavedDatasets)]
     }
     if (type == "dataset") {
-        allDatasets <- data.frame()
+        allDatasets <- tibble::data_frame()
         for (i in 1:length(lastSavedDatasets)) {
-            load(lastSavedDatasets[i])
+            dataset <- readRDS(lastSavedDatasets[i])
             # introduced for backward compatibility with datasets created with castarter ver<0.2 #legacy
             colnames(x = dataset)[colnames(dataset)=="nameOfProject"]<-"project"
             colnames(x = dataset)[colnames(dataset)=="nameOfWebsite"]<-"website"
-            colnames(x = dataset)[colnames(dataset)=="articlesTxt"]<-"contents"
+            colnames(x = dataset)[colnames(dataset)=="articlesTxt"]<-"text"
+            colnames(x = dataset)[colnames(dataset)=="contents"]<-"text"
             colnames(x = dataset)[colnames(dataset)=="articlesId"]<-"id"
             colnames(x = dataset)[colnames(dataset)=="articlesLinks"]<-"link"
             colnames(x = dataset)[colnames(dataset)=="links"]<-"link"
             colnames(x = dataset)[colnames(dataset)=="titles"]<-"title"
             colnames(x = dataset)[colnames(dataset)=="dates"]<-"date"
             dataset$contents <- base::iconv(x = dataset$contents, to = "UTF-8")
-            allDatasets <- rbind(allDatasets, dataset)
+            allDatasets <- dplyr::bind_rows(allDatasets, dataset)
             rm(dataset)
         }
         if (removeNAdates == TRUE) {

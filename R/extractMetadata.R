@@ -622,10 +622,10 @@ ExportMetadata <- function(dates, id, titles, language, links, exportXlsx = FALS
 #' @examples
 #' dataset <- ExportDataset(contents, metadata, project, website)
 ExportDataset <- function(text, metadata, exportRds = TRUE, exportRdata = FALSE, exportCsv = FALSE, exportXlsx = FALSE, project = NULL, website = NULL) {
-    if (gtools::invalid(project) == TRUE) {
+    if (is.null(project) == TRUE) {
         project <- CastarterOptions("project")
     }
-    if (gtools::invalid(website) == TRUE) {
+    if (is.null(website) == TRUE) {
         project <- CastarterOptions("website")
     }
     dataset <- dplyr::bind_cols(tibble::data_frame(doc_id = metadata$doc_id, text = text), metadata %>% select(-doc_id))
