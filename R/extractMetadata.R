@@ -39,8 +39,8 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", divClass = NULL, divI
         if (importParameters == TRUE) { # Import parameters
             if (file.exists(paramsFile) == TRUE) {
                 params <- readRDS(paramsFile)
-                for (i in seq_along(params$ExtractLinks)) {
-                    assign(names(params$ExtractLinks)[i], params$ExtractLinks[[i]])
+                for (i in seq_along(params$ExtractDates)) {
+                    assign(names(params$ExtractDates)[i], params$ExtractDates[[i]])
                 }
             } else {
                 # throw error if parameters file not found
@@ -313,28 +313,33 @@ ExtractTitles <- function(articlesHtml = NULL, links = NULL, method = "htmlTitle
     if (is.null(website) == TRUE) {
         website <- CastarterOptions("website")
     }
-    if (exportParameters == TRUE) {
-        args <- c("method_ExtractTitles", "removePunctuation_ExtractTitles", "onlyStandardCharacters_ExtractTitles", "removeString_ExtractTitles", "removeEverythingBefore_ExtractTitles", "removeEverythingAfter_ExtractTitles", "customXpath_ExtractTitles", "maxCharacters_ExtractTitles")
-        param <- list(method, removePunctuation, onlyStandardCharacters, paste0(removeString, collapse = "§§§"), removeEverythingBefore, removeEverythingAfter, customXpath, maxCharacters)
-        for (i in 1:length(param)) {
-            if (is.null(param[[i]])==TRUE) {
-                param[[i]] <- "NULL"
-            }
-        }
-        param <- unlist(param)
-        updateParametersTemp <- data.frame(args, param, stringsAsFactors = FALSE)
-        if (file.exists(base::file.path(project, website, "Logs", paste(website, "updateParameters.csv", sep = " - "))) == TRUE) {
-            updateParameters <- utils::read.table(base::file.path(project, website, "Logs", paste(website, "updateParameters.csv", sep = " - ")), stringsAsFactors = FALSE)
-            for (i in 1:length(updateParametersTemp$args)) {
-                updateParameters$param[updateParameters$args == updateParametersTemp$args[i]] <- updateParametersTemp$param[i]
-                if (is.element(updateParametersTemp$args[i], updateParameters$args) == FALSE) {
-                    updateParameters <- rbind(updateParameters, updateParametersTemp[i,] )
+    if (exportParameters == TRUE && exists("project") == FALSE | exportParameters == TRUE && exists("website") == FALSE) {
+        stop("If exportParameters == TRUE, both project and website must be defined either as parameters or previously with SetCastarter(project = '...', website = '...').")
+    }
+    paramsFile <- base::file.path(project, website, "Logs", paste(project, website, "parameters.rds", sep = "-"))
+    if (is.null(importParameters)==FALSE) {
+        if (importParameters == TRUE) { # Import parameters
+            if (file.exists(paramsFile) == TRUE) {
+                params <- readRDS(paramsFile)
+                for (i in seq_along(params$ExtractTitles)) {
+                    assign(names(params$ExtractTitles)[i], params$ExtractTitles[[i]])
                 }
+            } else {
+                # throw error if parameters file not found
+                stop(paste("Parameters file not found in", paramsFile))
             }
-        } else {
-            updateParameters <- updateParametersTemp
         }
-        write.table(updateParameters, file = base::file.path(project, website, "Logs", paste(website, "updateParameters.csv", sep = " - ")))
+    } else {
+        importParameters <- FALSE
+    }
+    if (exportParameters == TRUE & importParameters == FALSE) { # Export parameters
+        if (file.exists(paramsFile) == TRUE) {
+            params <- readRDS(paramsFile)
+        } else {
+            params <- list()
+        }
+        params$ExtractTitles <-  as.list(environment())
+        saveRDS(object = params, file = paramsFile)
     }
     titles <- vector()
     if (is.null(articlesHtml)==TRUE) {
