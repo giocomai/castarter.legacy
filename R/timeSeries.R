@@ -49,7 +49,7 @@ ShowAbsoluteTS <- function(terms,
         dataset <- dataset %>% dplyr::filter(date >= as.Date(startDate))
     }
     temp <-
-        bind_cols(dplyr::as_data_frame(sapply(terms, function(x) stringr::str_count(string = dataset$contents, pattern = stringr::regex(x, ignore_case = TRUE)))),
+        bind_cols(dplyr::as_data_frame(sapply(terms, function(x) stringr::str_count(string = dataset$text, pattern = stringr::regex(x, ignore_case = TRUE)))),
                   tibble::data_frame(ItemDate = dataset$date)) %>%
         dplyr::arrange(ItemDate) %>%
         dplyr::full_join(tibble(ItemDate = seq.Date(from = min(dataset$date, na.rm = TRUE), to = max(dataset$date, na.rm = TRUE), by = "day")), by = "ItemDate") %>%
@@ -183,8 +183,8 @@ ShowRelativeTS <- function(terms,
         dataset <- dataset %>% dplyr::filter(date >= as.Date(startDate))
     }
     temp <-
-        bind_cols(dplyr::as_data_frame(sapply(terms, function(x) stringr::str_count(string = dataset$contents, pattern = stringr::regex(x, ignore_case = TRUE)))),
-                                tibble::data_frame(nWords = stringr::str_count(string = dataset$contents, pattern = "\\w+")),
+        bind_cols(dplyr::as_data_frame(sapply(terms, function(x) stringr::str_count(string = dataset$text, pattern = stringr::regex(x, ignore_case = TRUE)))),
+                                tibble::data_frame(nWords = stringr::str_count(string = dataset$text, pattern = "\\w+")),
                   tibble::data_frame(ItemDate = dataset$date)) %>%
         dplyr::arrange(ItemDate) %>%
         # Count all words per item
@@ -316,10 +316,10 @@ ShowDistribution <- function(dataset, specificWebsites = NULL, rollingAverage = 
             docSeries <- zoo::zoo(tab, order.by=date)
         }
     } else if (method == "numberOfCharacters") {
-        numberOfArticles <- length(dataset$contents)
+        numberOfArticles <- length(dataset$text)
         ncharArticles <- data.frame(date = rep(NA, numberOfArticles), nchar = rep(NA, numberOfArticles))
         for (i in 1:numberOfArticles) {
-            ncharArticles$nchar[i] <- nchar(dataset$contents[i])
+            ncharArticles$nchar[i] <- nchar(dataset$text[i])
             ncharArticles$date[i] <- dataset$date[i]
         }
         ncharPerDay <- plyr::ddply(ncharArticles,~date,plyr::summarise,ncharPerDay=sum(nchar))
