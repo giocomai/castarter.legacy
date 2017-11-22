@@ -31,7 +31,7 @@ ImportHtml <- function(from = "articles", sample = NULL, project = NULL, website
         }
     }
     if (sort == TRUE) {
-        htmlFilesList <- indexHtml[stringr::str_extract(string = htmlFilesList, pattern = "[[:digit:]]+[[:punct:]]html") %>% stringr::str_sub(start = 1L, end = -6L) %>% as.integer() %>% order()]
+        htmlFilesList <- htmlFilesList[stringr::str_extract(string = htmlFilesList, pattern = "[[:digit:]]+[[:punct:]]html") %>% stringr::str_sub(start = 1L, end = -6L) %>% as.integer() %>% order()]
     }
     if (is.numeric(sample) == TRUE) {
         htmlFilesList <- sample(x = htmlFilesList, size = sample)
