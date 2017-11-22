@@ -11,12 +11,13 @@
 #' @param linksToDownload A logical vector. Only links corresponding to TRUE will be downloaded: links[linksToDownload]
 #' @param wgetSystem Logical, defaults to FALSE. Calls wget as a system command through the system() function. Wget must be previously installed on the system.
 #' @param start Integer. Only links with position higher than start in the links vector will be downloaded: links[start:length(links)]
+#' @param ignoreSSLcertificates Logical, defaults to FALSE. If TRUE it uses wget to download the page, and does not check if the SSL certificate is valid. Useful, for example, for https pages with expired or mis-configured SSL certificate.
 #' @return By default, returns nothing, used for its side effects (downloads html files in relevant folder). Download files can then be imported in a vector with the function ImportHtml.
 #' @export
 #' @examples
 #' DownloadContents(links)
 
-DownloadContents <- function(links, type = "articles", articlesHtml = NULL, size = 500, linksToDownload = NULL, wgetSystem = FALSE, method = "auto", missingArticles = TRUE, start = 1, wait = 1, createScript = FALSE, project = NULL, website = NULL) {
+DownloadContents <- function(links, type = "articles", articlesHtml = NULL, size = 500, linksToDownload = NULL, wgetSystem = FALSE, method = "auto", missingArticles = TRUE, start = 1, wait = 1, ignoreSSLcertificates = FALSE, createScript = FALSE, project = NULL, website = NULL) {
     if (is.null(project) == TRUE) {
         project <- CastarterOptions("project")
     }
@@ -70,11 +71,11 @@ DownloadContents <- function(links, type = "articles", articlesHtml = NULL, size
                 articleId <- articlesId[linksToDownload][temp]
                 if (type=="articles") {
                     system(paste("wget", sQuote(i), "-O", file.path(project, website, "Html", paste0(articleId, ".html"))))
-                    print(paste("Downloaded article", temp, "of", length(links[linksToDownload]), ". ArticleID: ", articleId), quote = FALSE)
+                    message(paste("Downloaded article", temp, "of", length(links[linksToDownload]), ". ArticleID: ", articleId), quote = FALSE)
                     htmlFile <- readLines(file.path(project, website, "Html", paste0(articleId, ".html")))
                 } else if (type=="index") {
                     system(paste("wget", sQuote(i), "-O", file.path(project, website, "IndexHtml", paste0(articleId, ".html"))))
-                    print(paste("Downloaded article", temp, "of", length(links[linksToDownload]), ". ArticleID: ", articleId), quote = FALSE)
+                    message(paste("Downloaded article", temp, "of", length(links[linksToDownload]), ". ArticleID: ", articleId), quote = FALSE)
                     htmlFile <- readLines(file.path(project, website, "IndexHtml", paste0(articleId, ".html")))
                 }
                 htmlFile <- paste(htmlFile, collapse = "\n")
@@ -87,11 +88,19 @@ DownloadContents <- function(links, type = "articles", articlesHtml = NULL, size
         for (i in links[linksToDownload]) {
             articleId <- articlesId[linksToDownload][temp]
             if (type=="articles") {
-                try(utils::download.file(url = i, destfile = file.path(project, website, "Html", paste0(articleId, ".html")), method = method))
+                if (ignoreSSLcertificates==TRUE) {
+                    try(utils::download.file(url = i, destfile = file.path(project, website, "Html", paste0(articleId, ".html")), method = "wget", extra = "--no-check-certificate"))
+                } else {
+                    try(utils::download.file(url = i, destfile = file.path(project, website, "Html", paste0(articleId, ".html")), method = method))
+                }
             } else if (type=="index") {
-                try(utils::download.file(url = i, destfile = file.path(project, website, "IndexHtml", paste0(articleId, ".html")), method = method))
+                if (ignoreSSLcertificates==TRUE) {
+                    try(utils::download.file(url = i, destfile = file.path(project, website, "IndexHtml", paste0(articleId, ".html")), method = "wget", extra = "--no-check-certificate"))
+                } else {
+                    try(utils::download.file(url = i, destfile = file.path(project, website, "IndexHtml", paste0(articleId, ".html")), method = method))
+                }
             }
-            print(paste("Downloaded article", temp, "of", length(links[linksToDownload]), ". ArticleID: ", articleId), quote = FALSE)
+            message(paste("Downloaded article", temp, "of", length(links[linksToDownload]), ". ArticleID: ", articleId), quote = FALSE)
             temp <- temp + 1
             Sys.sleep(wait)
         }
@@ -133,7 +142,7 @@ DownloadContentsForm <- function(linkFirstChunk, startDate, endDate, dateSeparat
     indexPagesHtml <- vector()
     for (i in start:numberOfIndexPages) {
         indexPagesHtml[i] <- RCurl::postForm(linkFirstChunk, datefrom = listOfDates[i], dateto = listOfDates[i + 1])
-        print(paste("Downloading index page", i, "of", numberOfIndexPages), quote = FALSE)
+        message(paste("Downloading index page", i, "of", numberOfIndexPages), quote = FALSE)
         write(indexPagesHtml[i], file = indexHtmlFilenames[i])
     }
     dateDownloadedIndex <- date()

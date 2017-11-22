@@ -7,7 +7,8 @@
 DownloadContents(links, type = "articles", articlesHtml = NULL,
   size = 500, linksToDownload = NULL, wgetSystem = FALSE,
   method = "auto", missingArticles = TRUE, start = 1, wait = 1,
-  createScript = FALSE, project = NULL, website = NULL)
+  ignoreSSLcertificates = FALSE, createScript = FALSE, project = NULL,
+  website = NULL)
 }
 \arguments{
 \item{links}{A character vector of links, commonly generated either with the function CreateLinks or ExtractLinks.}
@@ -23,6 +24,8 @@ DownloadContents(links, type = "articles", articlesHtml = NULL,
 \item{missingArticles}{Logical, defaults to TRUE. If TRUE, verifies if a downloaded html file exists for each element in articlesLinks; when there is no such file, it downloads it.}
 
 \item{start}{Integer. Only links with position higher than start in the links vector will be downloaded: links[start:length(links)]}
+
+\item{ignoreSSLcertificates}{Logical, defaults to FALSE. If TRUE it uses wget to download the page, and does not check if the SSL certificate is valid. Useful, for example, for https pages with expired or mis-configured SSL certificate.}
 
 \item{project}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
 
