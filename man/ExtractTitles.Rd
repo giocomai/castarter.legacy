@@ -8,8 +8,8 @@ ExtractTitles(articlesHtml = NULL, links = NULL, method = "htmlTitle",
   removePunctuation = FALSE, onlyStandardCharacters = FALSE,
   removeString = NULL, removeEverythingBefore = NULL,
   removeEverythingAfter = NULL, customXpath = "", maxCharacters = NULL,
-  progressBar = TRUE, exportParameters = TRUE, project = NULL,
-  website = NULL)
+  progressBar = TRUE, exportParameters = TRUE, importParameters = NULL,
+  project = NULL, website = NULL)
 }
 \arguments{
 \item{articlesHtml}{A character vector of html files.}
@@ -33,6 +33,10 @@ ExtractTitles(articlesHtml = NULL, links = NULL, method = "htmlTitle",
 \item{maxCharacters}{An integer. Defines the maximum number of characters to be kept in the output for each title.}
 
 \item{progressBar}{Logical, defaults to TRUE. If FALSE, progress bar is not shown (useful for example when including scripts in rmarkdown)}
+
+\item{exportParameters}{Defaults to TRUE. If TRUE, function parameters are exported in the project/website folder. They can be used to update the corpus. Requires parameters project/website.}
+
+\item{importParameters}{Defaults to NULL. If TRUE, ignores all parameters given in the function call, and imports them from parameters file stored in "project/website/Logs/parameters.rds".}
 }
 \value{
 A character vector of article titles.

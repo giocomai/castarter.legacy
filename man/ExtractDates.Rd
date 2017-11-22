@@ -9,7 +9,8 @@ ExtractDates(articlesHtml, dateFormat = "dmY", divClass = NULL,
   language = Sys.getlocale(category = "LC_TIME"), customString = "",
   minDate = NULL, maxDate = NULL, encoding = "UTF-8",
   keepAllString = FALSE, removeEverythingBefore = NULL,
-  exportParameters = TRUE, project = NULL, website = NULL)
+  exportParameters = TRUE, importParameters = NULL, project = NULL,
+  website = NULL)
 }
 \arguments{
 \item{articlesHtml}{A character vector of html files.}
@@ -33,6 +34,10 @@ ExtractDates(articlesHtml, dateFormat = "dmY", divClass = NULL,
 \item{encoding}{Defaults to NULL. If source is not in UTF, encoding can be specified here for conversion. A list of valid values can be found using iconvlist().}
 
 \item{keepAllString}{Logical, defaults to FALSE. If TRUE, it directly tries to parse the date with the given dateFormat, without trying to polish the string provided accordingly.}
+
+\item{exportParameters}{Defaults to TRUE. If TRUE, function parameters are exported in the project/website folder. They can be used to update the corpus. Requires parameters project/website.}
+
+\item{importParameters}{Defaults to NULL. If TRUE, ignores all parameters given in the function call, and imports them from parameters file stored in "project/website/Logs/parameters.rds".}
 
 \item{project}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. Defaults to NULL, required for storing export parameters (with exportParameters = TRUE). This can be left blank if previously set with SetCastarter(project = "project", website = "website").}
 

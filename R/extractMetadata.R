@@ -18,13 +18,15 @@
 #' @param language Provide a language in order to extract name of months. Defaults to the locale currently active in R (usually, the system language). Generic forms such as "english" or "russian", are usually accepted. See ?locales for more details. On linux, you can run system("locale -a", intern = TRUE) to see all available locales.
 #' @param encoding Defaults to NULL. If source is not in UTF, encoding can be specified here for conversion. A list of valid values can be found using iconvlist().
 #' @param keepAllString Logical, defaults to FALSE. If TRUE, it directly tries to parse the date with the given dateFormat, without trying to polish the string provided accordingly.
+#' @param importParameters Defaults to NULL. If TRUE, ignores all parameters given in the function call, and imports them from parameters file stored in "project/website/Logs/parameters.rds".
+#' @param exportParameters Defaults to TRUE. If TRUE, function parameters are exported in the project/website folder. They can be used to update the corpus. Requires parameters project/website.
 #' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. Defaults to NULL, required for storing export parameters (with exportParameters = TRUE). This can be left blank if previously set with SetCastarter(project = "project", website = "website").
 #' @param website Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder. Defaults to NULL, required for storing export parameters (with exportParameters = TRUE). This can be left blank if previously set with SetCastarter(project = "project", website = "website").
 #' @return A vector of the POSIXct class.
 #' @export
 #' @examples
 #' dates <- ExtractDates(articlesHtml)
-ExtractDates <- function(articlesHtml, dateFormat = "dmY", divClass = NULL, divId = NULL, spanClass = NULL, customXpath = NULL, language = Sys.getlocale(category = "LC_TIME"), customString = "", minDate = NULL, maxDate = NULL, encoding = "UTF-8", keepAllString = FALSE, removeEverythingBefore = NULL, exportParameters = TRUE, project = NULL, website = NULL) {
+ExtractDates <- function(articlesHtml, dateFormat = "dmY", divClass = NULL, divId = NULL, spanClass = NULL, customXpath = NULL, language = Sys.getlocale(category = "LC_TIME"), customString = "", minDate = NULL, maxDate = NULL, encoding = "UTF-8", keepAllString = FALSE, removeEverythingBefore = NULL, exportParameters = TRUE, importParameters = NULL, project = NULL, website = NULL) {
     if (is.null(project) == TRUE) {
         project <- CastarterOptions("project")
     }
@@ -302,11 +304,13 @@ MergeDates <- function(dates1, dates2, dates3 = NULL, minDate = NULL, maxDate = 
 #' @param removeEverythingAfter Removes everything after given string.
 #' @param maxCharacters An integer. Defines the maximum number of characters to be kept in the output for each title.
 #' @param progressBar Logical, defaults to TRUE. If FALSE, progress bar is not shown (useful for example when including scripts in rmarkdown)
+#' @param importParameters Defaults to NULL. If TRUE, ignores all parameters given in the function call, and imports them from parameters file stored in "project/website/Logs/parameters.rds".
+#' @param exportParameters Defaults to TRUE. If TRUE, function parameters are exported in the project/website folder. They can be used to update the corpus. Requires parameters project/website.
 #' @return A character vector of article titles.
 #' @export
 #' @examples
 #' titles <- ExtractTitles(articlesHtml)
-ExtractTitles <- function(articlesHtml = NULL, links = NULL, method = "htmlTitle", removePunctuation = FALSE, onlyStandardCharacters = FALSE, removeString = NULL, removeEverythingBefore = NULL, removeEverythingAfter = NULL, customXpath = "", maxCharacters = NULL, progressBar = TRUE, exportParameters = TRUE, project = NULL, website = NULL) {
+ExtractTitles <- function(articlesHtml = NULL, links = NULL, method = "htmlTitle", removePunctuation = FALSE, onlyStandardCharacters = FALSE, removeString = NULL, removeEverythingBefore = NULL, removeEverythingAfter = NULL, customXpath = "", maxCharacters = NULL, progressBar = TRUE, exportParameters = TRUE, importParameters = NULL, project = NULL, website = NULL) {
     if (is.null(project) == TRUE) {
         project <- CastarterOptions("project")
     }
