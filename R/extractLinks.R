@@ -92,41 +92,50 @@ ExtractLinks <- function(htmlLocation = NULL,
     if (is.null(containerType)) {
         # if no div or such, get all links
         for (i in seq_along(indexHtml)) {
-            temp <-  xml2::read_html(indexHtml[i]) %>%
-                rvest::html_nodes("a")
-            tempLinks[[i]] <- temp %>%
-                xml2::xml_attr("href")
-            if (linkTitle == TRUE) {
-                names(tempLinks[[i]]) <- temp %>% rvest::html_text()
-            }
-            if (progressBar == TRUE) {
-                setTxtProgressBar(pb, i)
+            temp <-  xml2::read_html(indexHtml[i])
+            if (is.element("xml_node", set = class(temp))==TRUE) {
+                temp <- temp %>%
+                    rvest::html_nodes("a")
+                tempLinks[[i]] <- temp %>%
+                    xml2::xml_attr("href")
+                if (linkTitle == TRUE) {
+                    names(tempLinks[[i]]) <- temp %>% rvest::html_text()
+                }
+                if (progressBar == TRUE) {
+                    setTxtProgressBar(pb, i)
+                }
             }
         }
     } else if (is.null(containerId)) {
         for (i in seq_along(indexHtml)) {
-            temp <- xml2::read_html(indexHtml[i]) %>%
-                rvest::html_nodes(xpath = paste0("//", containerType, "[@class='", containerClass, "']//a"))
-            tempLinks[[i]] <-  temp %>%
-                xml2::xml_attr("href")
-            if (linkTitle == TRUE) {
-                names(tempLinks[[i]]) <- temp %>% rvest::html_text()
-            }
-            if (progressBar == TRUE) {
-                setTxtProgressBar(pb, i)
+            temp <- xml2::read_html(indexHtml[i])
+            if (is.element("xml_node", set = class(temp))==TRUE) {
+                temp <- temp %>%
+                    rvest::html_nodes(xpath = paste0("//", containerType, "[@class='", containerClass, "']//a"))
+                tempLinks[[i]] <-  temp %>%
+                    xml2::xml_attr("href")
+                if (linkTitle == TRUE) {
+                    names(tempLinks[[i]]) <- temp %>% rvest::html_text()
+                }
+                if (progressBar == TRUE) {
+                    setTxtProgressBar(pb, i)
+                }
             }
         }
     } else if (is.null(containerClass)) {
         for (i in seq_along(indexHtml)) {
-            temp <- xml2::read_html(indexHtml[i]) %>%
-                rvest::html_nodes(xpath = paste0("//", containerType, "[@id='", containerId, "']//a"))
-            tempLinks[[i]] <-  temp %>%
-                xml2::xml_attr("href")
-            if (linkTitle == TRUE) {
-                names(tempLinks[[i]]) <- temp %>% rvest::html_text()
+            temp <- xml2::read_html(indexHtml[i])
+            if (is.element("xml_node", set = class(temp))==TRUE) {
+                temp <- temp %>%
+                    rvest::html_nodes(xpath = paste0("//", containerType, "[@id='", containerId, "']//a"))
+                tempLinks[[i]] <-  temp %>%
+                    xml2::xml_attr("href")
+                if (linkTitle == TRUE) {
+                    names(tempLinks[[i]]) <- temp %>% rvest::html_text()
                 }
-            if (progressBar == TRUE) {
-                setTxtProgressBar(pb, i)
+                if (progressBar == TRUE) {
+                    setTxtProgressBar(pb, i)
+                }
             }
         }
     }
