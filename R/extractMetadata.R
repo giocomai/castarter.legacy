@@ -289,17 +289,16 @@ MergeDates <- function(dates1, dates2, dates3 = NULL, minDate = NULL, maxDate = 
 #'
 #' Extracts titles of individual pages from a vector of html files or from a named vector of links.
 #'
+#' @param htmlLocation Path to folder where html files, tipically downloaded with DownloadContents(links) are stored. If not given, it defaults to the Html folder inside project/website folders.
 #' @param articlesHtml A character vector of html files.
 #' @param links A named character vector, typically created by the ExtractLinks function.
 #' @param removeString A character vector of one or more strings to be removed from the extracted title.
 #' @param method Title extract method, to be given as a text string. Available options are:
 ##' \itemize{
-##'  \item{"indexLink"}{: Default. Extract the title from links (required). Titles are taken from the textual element of the link taken from the index pages. }
-##'  \item{"htmlTitle"}{: Extract the title from the Html <title> field, usually shown on the top bar of web browsers.}
-##'  \item{"htmlH1"}{: Extract the title from the first occurence of text that has heading 1, the <h1> html tag, as its style.}
-##'  \item{"htmlH2"}{: Extract the title from the first occurence of text that has heading 2, the <h2> html tag, as its style.}
-##'  \item{"customXpath"}{: Allows to input a custom Xpath to extract the title.}
-##'  \item{"beginning"}{: Outputs as title the first textual elements found in the html file. Title length can be defined with the 'maxCharacters' option.}
+##'  \item{"links"}{: Default. Extract the title from links (required). Titles are taken from the textual element of the link taken from the index pages. }
+##'  \item{"title"}{: Extract the title from the Html <title> field, usually shown on the top bar of web browsers.}
+##'  \item{"h1"}{: Extract the title from the first occurence of text that has heading 1, the <h1> html tag, as its style.}
+##'  \item{"h2"}{: Extract the title from the first occurence of text that has heading 2, the <h2> html tag, as its style.}
 ##' }
 #' @param removeEverythingAfter Removes everything after given string.
 #' @param maxCharacters An integer. Defines the maximum number of characters to be kept in the output for each title.
@@ -310,7 +309,23 @@ MergeDates <- function(dates1, dates2, dates3 = NULL, minDate = NULL, maxDate = 
 #' @export
 #' @examples
 #' titles <- ExtractTitles(articlesHtml)
-ExtractTitles <- function(articlesHtml = NULL, links = NULL, method = "htmlTitle", removePunctuation = FALSE, onlyStandardCharacters = FALSE, removeString = NULL, removeEverythingBefore = NULL, removeEverythingAfter = NULL, customXpath = "", maxCharacters = NULL, progressBar = TRUE, exportParameters = TRUE, importParameters = NULL, project = NULL, website = NULL) {
+ExtractTitles <- function(container = "title",
+                          containerClass = NULL,
+                          containerId = NULL,
+                          htmlLocation = NULL,
+                          links = NULL,
+                          removePunctuation = FALSE,
+                          onlyStandardCharacters = FALSE,
+                          removeString = NULL,
+                          removeEverythingBefore = NULL,
+                          removeEverythingAfter = NULL,
+                          customXpath = "",
+                          maxCharacters = NULL,
+                          progressBar = TRUE,
+                          exportParameters = TRUE,
+                          importParameters = NULL,
+                          project = NULL,
+                          website = NULL) {
     if (is.null(project) == TRUE) {
         project <- CastarterOptions("project")
     }
@@ -345,59 +360,53 @@ ExtractTitles <- function(articlesHtml = NULL, links = NULL, method = "htmlTitle
         params$ExtractTitles <-  as.list(environment())
         saveRDS(object = params, file = paramsFile)
     }
-    titles <- vector()
-    if (is.null(articlesHtml)==TRUE) {
-        numberOfArticles <- length(links)
-    } else {
-        numberOfArticles <- length(articlesHtml)
-    }
-    if (progressBar == TRUE) {
-        pb <- txtProgressBar(min = 0, max = numberOfArticles, style = 3, title = "Extracting titles")
-    }
-    if (method == "htmlTitle") {
-        for (i in 1:numberOfArticles) {
-            if (articlesHtml[i]!="") {
-                articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T, encoding = "UTF-8")
-                titles[i] <- XML::xpathSApply(articleHtmlParsed, "//title", XML::xmlValue)
-            }
-            if (progressBar == TRUE) {
-                setTxtProgressBar(pb, i)
-            }
-        }
-    } else if (method == "htmlH2") {
-        for (i in 1:numberOfArticles) {
-            if (articlesHtml[i]!="") {
-                articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T, encoding = "UTF-8")
-                titles[i] <- XML::xpathSApply(articleHtmlParsed, "//h2", XML::xmlValue)
-            }
-            if (progressBar == TRUE) {
-                setTxtProgressBar(pb, i)
-            }
-        }
-    } else if (method == "htmlH1") {
-        for (i in 1:numberOfArticles) {
-            if (articlesHtml[i]!="") {
-                articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T, encoding = "UTF-8")
-                titles[i] <- XML::xpathSApply(articleHtmlParsed, "//h1", XML::xmlValue)
-            }
-            if (progressBar == TRUE) {
-                setTxtProgressBar(pb, i)
-            }
-        }
-    } else if (method == "customXpath") {
-        for (i in 1:numberOfArticles) {
-            if (articlesHtml[i]!="") {
-                articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T, encoding = "UTF-8")
-                titles[i] <- XML::xpathSApply(articleHtmlParsed, customXpath, XML::xmlValue)
-            }
-            if (progressBar == TRUE) {
-                setTxtProgressBar(pb, i)
-            }
-        }
-    } else if (method == "indexLink") {
+    if (container == "indexLink") {
         titles <- names(links)
-    } else if (method == "beginning") {
-        titles <- ExtractTxt(articlesHtml, export = FALSE, keepEverything = TRUE)
+    } else {
+        # define htmlLocation, if not given
+        if (is.null(htmlLocation)) {
+            htmlLocation <- file.path(project, website, "Html")
+        }
+        # list files
+        HtmlFiles <- list.files(path = htmlLocation, full.names = TRUE)
+        # put them in order [equivalent to gtools::mixedorder()]
+        HtmlFiles <- HtmlFiles[stringr::str_extract(string = HtmlFiles, pattern = "[[:digit:]]+[[:punct:]]html") %>% stringr::str_sub(start = 1L, end = -6L) %>% as.integer() %>% order()]
+        titles <- vector(mode = "character", length = length(HtmlFiles))
+        if (progressBar == TRUE) {
+            pb <- txtProgressBar(min = 0, max = length(HtmlFiles), style = 3, title = "Extracting titles")
+        }
+        # if no div or such, get all links
+        for (i in seq_along(HtmlFiles)) {
+            temp <-  xml2::read_html(HtmlFiles[i])
+            if (is.element("xml_node", set = class(temp))==TRUE) {
+                if (is.null(containerClass)==TRUE&is.null(containerId)==TRUE) {
+                     temp <- temp %>%
+                        rvest::html_nodes(container) %>% rvest::html_text()
+                } else if (is.null(containerClass)==FALSE) {
+                    temp <- temp %>%
+                        rvest::html_nodes(xpath = paste0("//", container, "[@class='", containerClass, "']")) %>%
+                        rvest::html_text()
+                } else if (is.null(containerClass)==FALSE) {
+                    temp <- temp %>%
+                        rvest::html_nodes(xpath = paste0("//", container, "[@id='", containerId, "']")) %>%
+                        rvest::html_text()
+                }
+                if (length(temp)>1) {
+                    titles[i] <- temp[1]
+                    warning(paste0("ID", stringr::str_extract(string = HtmlFiles[i], pattern = "[[:digit:]]+[[:punct:]]html") %>% stringr::str_sub(start = 1L, end = -6L), ": Found more than one string per page, keeping only first occurrence."))
+                } else if (length(temp)==0) {
+                    titles[i] <- NA
+                } else {
+                    titles[i] <- temp
+                }
+                if (progressBar == TRUE) {
+                    setTxtProgressBar(pb, i)
+                }
+            }
+        }
+        if (progressBar == TRUE) {
+            close(pb)
+        }
     }
     if (is.null(removeString) == FALSE) {
         titles <- gsub(removeString, replacement = "", x = titles, fixed = TRUE)
@@ -424,9 +433,6 @@ ExtractTitles <- function(articlesHtml = NULL, links = NULL, method = "htmlTitle
     }
     if (is.null(maxCharacters) == FALSE) {
         titles <- substring(titles, 1, maxCharacters)
-    }
-    if (progressBar == TRUE) {
-        close(pb)
     }
     return(titles)
 }
