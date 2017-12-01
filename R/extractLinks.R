@@ -7,7 +7,7 @@
 #' @param partOfLink Part of URL found only in links of individual articles to be downloaded. If more than one provided, it includes all links that contains either of the strings provided.
 #' @param partOfLinkToExclude If an URL includes this string, it is excluded from the output. One or more strings may be provided.
 #' @param indexLinks A character vector, defaults to NULL. If provided, indexLinks are removed from the extracted articlesLinks.
-#' @param containerType Type of html container from where links are to be extracted, such as "div", "ul", and others. containerClass or containerId must also be provided.
+#' @param container Type of html container from where links are to be extracted, such as "div", "ul", and others. containerClass or containerId must also be provided.
 #' @param attributeType Type of attribute to extract from links, when different from href.
 #' @param minLength If a link is shorter than the number of characters given in minLength, it is excluded from the output.
 #' @param maxLength If a link is longer than the number of characters given in maxLength, it is excluded from the output.
@@ -26,7 +26,7 @@ ExtractLinks <- function(htmlLocation = NULL,
                          partOfLink = NULL,
                          partOfLinkToExclude = NULL,
                          extractText = FALSE,
-                         containerType = NULL,
+                         container = NULL,
                          containerClass = NULL,
                          containerId = NULL,
                          attributeType = NULL,
@@ -89,7 +89,7 @@ ExtractLinks <- function(htmlLocation = NULL,
     if (progressBar == TRUE) {
         pb <- txtProgressBar(min = 0, max = length(indexHtml), style = 3, title = "Extracting links")
     }
-    if (is.null(containerType)) {
+    if (is.null(container)) {
         # if no div or such, get all links
         for (i in seq_along(indexHtml)) {
             temp <-  xml2::read_html(indexHtml[i])
@@ -111,7 +111,7 @@ ExtractLinks <- function(htmlLocation = NULL,
             temp <- xml2::read_html(indexHtml[i])
             if (is.element("xml_node", set = class(temp))==TRUE) {
                 temp <- temp %>%
-                    rvest::html_nodes(xpath = paste0("//", containerType, "[@class='", containerClass, "']//a"))
+                    rvest::html_nodes(xpath = paste0("//", container, "[@class='", containerClass, "']//a"))
                 tempLinks[[i]] <-  temp %>%
                     xml2::xml_attr("href")
                 if (linkTitle == TRUE) {
@@ -127,7 +127,7 @@ ExtractLinks <- function(htmlLocation = NULL,
             temp <- xml2::read_html(indexHtml[i])
             if (is.element("xml_node", set = class(temp))==TRUE) {
                 temp <- temp %>%
-                    rvest::html_nodes(xpath = paste0("//", containerType, "[@id='", containerId, "']//a"))
+                    rvest::html_nodes(xpath = paste0("//", container, "[@id='", containerId, "']//a"))
                 tempLinks[[i]] <-  temp %>%
                     xml2::xml_attr("href")
                 if (linkTitle == TRUE) {

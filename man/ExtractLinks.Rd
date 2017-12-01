@@ -5,7 +5,7 @@
 \title{Extracts direct links to individual articles from index pages.}
 \usage{
 ExtractLinks(htmlLocation = NULL, domain = NULL, partOfLink = NULL,
-  partOfLinkToExclude = NULL, extractText = FALSE, containerType = NULL,
+  partOfLinkToExclude = NULL, extractText = FALSE, container = NULL,
   containerClass = NULL, containerId = NULL, attributeType = NULL,
   minLength = NULL, maxLength = NULL, indexLinks = NULL,
   sortLinks = TRUE, linkTitle = TRUE, export = FALSE,
@@ -22,7 +22,7 @@ ExtractLinks(htmlLocation = NULL, domain = NULL, partOfLink = NULL,
 
 \item{partOfLinkToExclude}{If an URL includes this string, it is excluded from the output. One or more strings may be provided.}
 
-\item{containerType}{Type of html container from where links are to be extracted, such as "div", "ul", and others. containerClass or containerId must also be provided.}
+\item{container}{Type of html container from where links are to be extracted, such as "div", "ul", and others. containerClass or containerId must also be provided.}
 
 \item{attributeType}{Type of attribute to extract from links, when different from href.}
 
