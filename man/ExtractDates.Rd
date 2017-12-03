@@ -9,8 +9,8 @@ ExtractDates(container = "title", containerClass = NULL,
   customXpath = NULL, language = Sys.getlocale(category = "LC_TIME"),
   customString = "", minDate = NULL, maxDate = NULL, encoding = "UTF-8",
   keepAllString = FALSE, removeEverythingBefore = NULL,
-  exportParameters = TRUE, importParameters = NULL, project = NULL,
-  website = NULL)
+  progressBar = TRUE, exportParameters = TRUE, importParameters = NULL,
+  project = NULL, website = NULL)
 }
 \arguments{
 \item{dateFormat}{A string expressing the date format. In line with standards (see ?strptime), 'd' stands for day, 'm' stands for month in figures, 'b' for months spelled out as words, 'y' as year without the century, 'Y' as year with four digits. Standard separation marks among parts of the date (e.g. '-', '/', '.') should not be included. The following date formats are available :
@@ -32,6 +32,8 @@ ExtractDates(container = "title", containerClass = NULL,
 \item{encoding}{Defaults to NULL. If source is not in UTF, encoding can be specified here for conversion. A list of valid values can be found using iconvlist().}
 
 \item{keepAllString}{Logical, defaults to FALSE. If TRUE, it directly tries to parse the date with the given dateFormat, without trying to polish the string provided accordingly.}
+
+\item{progressBar}{Logical, defaults to TRUE. If FALSE, progress bar is not shown.}
 
 \item{exportParameters}{Defaults to TRUE. If TRUE, function parameters are exported in the project/website folder. They can be used to update the corpus. Requires parameters project/website.}
 
