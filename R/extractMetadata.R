@@ -87,15 +87,16 @@ ExtractDates <- function(container = "title",
     HtmlFiles <- list.files(path = htmlLocation, full.names = TRUE)
     # put them in order [equivalent to gtools::mixedorder()]
     HtmlFiles <- HtmlFiles[stringr::str_extract(string = HtmlFiles, pattern = "[[:digit:]]+[[:punct:]]html") %>% stringr::str_sub(start = 1L, end = -6L) %>% as.integer() %>% order()]
-    titles <- vector(mode = "character", length = length(HtmlFiles))
+    datesTxt <- vector(mode = "character", length = length(HtmlFiles))
     if (progressBar == TRUE) {
         pb <- txtProgressBar(min = 0, max = length(HtmlFiles), style = 3, title = "Extracting dates")
     }
-    # if no div or such, get all links
     for (i in seq_along(HtmlFiles)) {
         temp <-  xml2::read_html(HtmlFiles[i])
         if (is.element("xml_node", set = class(temp))==TRUE) {
-            if (is.null(containerClass)==TRUE&is.null(containerId)==TRUE) {
+            if (is.null(containerClass)==TRUE&is.null(containerId)==TRUE&is.null(removeEverythingBefore) == FALSE) {
+                temp <- as.character(temp)
+            } else if (is.null(containerClass)==TRUE&is.null(containerId)==TRUE) {
                 temp <- temp %>%
                     rvest::html_nodes(container) %>% rvest::html_text()
             } else if (is.null(containerClass)==FALSE) {
@@ -123,12 +124,7 @@ ExtractDates <- function(container = "title",
     if (progressBar == TRUE) {
         close(pb)
     }
-    if (is.null(removeEverythingBefore) == FALSE) {
-        datesTxt <- base::gsub(base::paste0(".*", removeEverythingBefore), "", datesTxt, fixed = FALSE)
-    }
-    if (keepAllString == TRUE) {
-
-    } else {
+    if (keepAllString == FALSE) {
         if (dateFormat == "dby" | dateFormat == "dBy" | dateFormat == "dBY" | dateFormat == "dbY") {
             for (i in 1:length(datesTxt)) {
                 dateTxt <- regmatches(datesTxt[i],
