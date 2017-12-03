@@ -29,12 +29,10 @@ ExtractTitles(container = "title", containerClass = NULL,
 
 \item{importParameters}{Defaults to NULL. If TRUE, ignores all parameters given in the function call, and imports them from parameters file stored in "project/website/Logs/parameters.rds".}
 
-\item{articlesHtml}{A character vector of html files.}
-
 \item{method}{Title extract method, to be given as a text string. Available options are:
 \itemize{
- \item{"links"}{: Default. Extract the title from links (required). Titles are taken from the textual element of the link taken from the index pages. }
- \item{"title"}{: Extract the title from the Html <title> field, usually shown on the top bar of web browsers.}
+ \item{"links"}{: Extract the title from links (required). Titles are taken from the textual element of the link taken from the index pages. }
+ \item{"title"}{: Default. Extract the title from the Html <title> field, usually shown on the top bar of web browsers.}
  \item{"h1"}{: Extract the title from the first occurence of text that has heading 1, the <h1> html tag, as its style.}
  \item{"h2"}{: Extract the title from the first occurence of text that has heading 2, the <h2> html tag, as its style.}
 }}

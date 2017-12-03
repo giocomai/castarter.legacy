@@ -26,7 +26,23 @@
 #' @export
 #' @examples
 #' dates <- ExtractDates(articlesHtml)
-ExtractDates <- function(articlesHtml, dateFormat = "dmY", divClass = NULL, divId = NULL, spanClass = NULL, customXpath = NULL, language = Sys.getlocale(category = "LC_TIME"), customString = "", minDate = NULL, maxDate = NULL, encoding = "UTF-8", keepAllString = FALSE, removeEverythingBefore = NULL, exportParameters = TRUE, importParameters = NULL, project = NULL, website = NULL) {
+ExtractDates <- function(container = "title",
+                         containerClass = NULL,
+                         containerId = NULL,
+                         htmlLocation = NULL,
+                         dateFormat = "dmY",
+                         customXpath = NULL,
+                         language = Sys.getlocale(category = "LC_TIME"),
+                         customString = "",
+                         minDate = NULL,
+                         maxDate = NULL,
+                         encoding = "UTF-8",
+                         keepAllString = FALSE,
+                         removeEverythingBefore = NULL,
+                         exportParameters = TRUE,
+                         importParameters = NULL,
+                         project = NULL,
+                         website = NULL) {
     if (is.null(project) == TRUE) {
         project <- CastarterOptions("project")
     }
@@ -61,86 +77,61 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", divClass = NULL, divI
         params$ExtractDates <-  as.list(environment())
         saveRDS(object = params, file = paramsFile)
     }
-    numberOfArticles <- length(articlesHtml)
-    if (is.null(encoding) == FALSE) {
-        articlesHtml <- iconv(articlesHtml, from = encoding, to = "UTF-8")
-    } else {
-        articlesHtml <- iconv(articlesHtml, to = "UTF-8")
+    # define htmlLocation, if not given
+    if (is.null(htmlLocation)) {
+        htmlLocation <- file.path(project, website, "Html")
     }
-    if (is.null(divId) == FALSE) {
-        datesTxt <- rep(NA, numberOfArticles)
-        for (i in 1:numberOfArticles) {
-            if (articlesHtml[i] != "") {
-                articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T, encoding = "UTF-8")
-                if (length(XML::xpathSApply(articleHtmlParsed, paste0("//div[@id='", divId, "']"), XML::xmlValue)) == 0) {
-                    datesTxt[i] <- NA
-                    print(paste("Date in article with ID", i, "could not be extracted."))
-                } else {
-                    datesTxt[i] <- XML::xpathSApply(articleHtmlParsed, paste0("//div[@id='", divId, "']"), XML::xmlValue)
-                }
+    # list files
+    HtmlFiles <- list.files(path = htmlLocation, full.names = TRUE)
+    # put them in order [equivalent to gtools::mixedorder()]
+    HtmlFiles <- HtmlFiles[stringr::str_extract(string = HtmlFiles, pattern = "[[:digit:]]+[[:punct:]]html") %>% stringr::str_sub(start = 1L, end = -6L) %>% as.integer() %>% order()]
+    titles <- vector(mode = "character", length = length(HtmlFiles))
+    if (progressBar == TRUE) {
+        pb <- txtProgressBar(min = 0, max = length(HtmlFiles), style = 3, title = "Extracting dates")
+    }
+    # if no div or such, get all links
+    for (i in seq_along(HtmlFiles)) {
+        temp <-  xml2::read_html(HtmlFiles[i])
+        if (is.element("xml_node", set = class(temp))==TRUE) {
+            if (is.null(containerClass)==TRUE&is.null(containerId)==TRUE) {
+                temp <- temp %>%
+                    rvest::html_nodes(container) %>% rvest::html_text()
+            } else if (is.null(containerClass)==FALSE) {
+                temp <- temp %>%
+                    rvest::html_nodes(xpath = paste0("//", container, "[@class='", containerClass, "']")) %>%
+                    rvest::html_text()
+            } else if (is.null(containerClass)==FALSE) {
+                temp <- temp %>%
+                    rvest::html_nodes(xpath = paste0("//", container, "[@id='", containerId, "']")) %>%
+                    rvest::html_text()
             }
-        }
-    }
-    if (is.null(divClass) == FALSE) {
-        datesTxt <- rep(NA, numberOfArticles)
-        for (i in 1:numberOfArticles) {
-            if (articlesHtml[i] != "") {
-                articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T, encoding = "UTF-8")
-                if (length(XML::xpathSApply(articleHtmlParsed, paste0("//div[@class='", divClass, "']"), XML::xmlValue)) == 0) {
-                  datesTxt[i] <- NA
-                  print(paste("Date in article with ID", i, "could not be extracted."))
-                } else {
-                  datesTxt[i] <- XML::xpathSApply(articleHtmlParsed, paste0("//div[@class='", divClass, "']"), XML::xmlValue)
-                }
-            }
-        }
-    }
-    if (is.null(spanClass)==FALSE) {
-        datesTxt <- rep(NA, numberOfArticles)
-        for (i in 1:numberOfArticles) {
-            articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T)
-            tempStringXml <- XML::xpathSApply(articleHtmlParsed, paste0("//span[@class='", spanClass, "']"), XML::xmlValue)
-            if (length(tempStringXml) == 0) {
+            if (length(temp)>1) {
+                datesTxt[i] <- temp[1]
+                warning(paste0("ID", stringr::str_extract(string = HtmlFiles[i], pattern = "[[:digit:]]+[[:punct:]]html") %>% stringr::str_sub(start = 1L, end = -6L), ": Found more than one string per page, keeping only first occurrence."))
+            } else if (length(temp)==0) {
                 datesTxt[i] <- NA
-                print(paste("Date in article with ID", i, "could not be extracted."))
             } else {
-                datesTxt[i] <- tempStringXml
+                datesTxt[i] <- temp
+            }
+            if (progressBar == TRUE) {
+                setTxtProgressBar(pb, i)
             }
         }
     }
-    if (is.null(customXpath) == FALSE) {
-        datesTxt <- rep(NA, numberOfArticles)
-        for (i in 1:numberOfArticles) {
-            if (articlesHtml[i] != "") {
-                articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T)
-                tempStringXml <- XML::xpathSApply(articleHtmlParsed, customXpath, XML::xmlValue)
-                if (length(tempStringXml) == 0) {
-                    datesTxt[i] <- NA
-                    print(paste("Date in article with ID", i, "could not be extracted."))
-                } else {
-                    datesTxt[i] <- tempStringXml
-                }
-            }
-        }
+    if (progressBar == TRUE) {
+        close(pb)
     }
-    if (exists("datesTxt") == TRUE) {
-        if (length(datesTxt) == 1 & is.na(datesTxt[1]) == TRUE) {
-        } else {
-            articlesHtml <- datesTxt
-        }
-    }
-    numberOfArticles <- length(articlesHtml)
-    datesTxt <- rep(NA, numberOfArticles)
     if (is.null(removeEverythingBefore) == FALSE) {
-        articlesHtml <- base::gsub(base::paste0(".*", removeEverythingBefore), "", articlesHtml, fixed = FALSE)
+        datesTxt <- base::gsub(base::paste0(".*", removeEverythingBefore), "", datesTxt, fixed = FALSE)
     }
     if (keepAllString == TRUE) {
-        datesTxt <- articlesHtml
+
     } else {
         if (dateFormat == "dby" | dateFormat == "dBy" | dateFormat == "dBY" | dateFormat == "dbY") {
-            for (i in 1:numberOfArticles) {
-                dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]]?[[:digit:]][[:space:]]?[[:space:]][[:alpha:]]*[[:space:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]",
-                                                               articlesHtml[i]))
+            for (i in 1:length(datesTxt)) {
+                dateTxt <- regmatches(datesTxt[i],
+                                      regexpr("[[:digit:]]?[[:digit:]][[:space:]]?[[:space:]][[:alpha:]]*[[:space:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]",
+                                              datesTxt[i]))
                 if (length(dateTxt) == 0) {
                     datesTxt[i] <- NA
                 } else {
@@ -148,8 +139,8 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", divClass = NULL, divI
                 }
             }
         } else if (dateFormat == "YBd" | dateFormat == "ybd") {
-            for (i in 1:numberOfArticles) {
-                dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]]?[[:digit:]]?[[:digit:]][[:digit:]][[:space:]]?[[:punct:]]?[[:alpha:]]*[[:space:]]?[[:punct:]]?[[:digit:]][[:digit:]]?", articlesHtml[i]))
+            for (i in 1:length(datesTxt)) {
+                dateTxt <- regmatches(datesTxt[i], regexpr("[[:digit:]]?[[:digit:]]?[[:digit:]][[:digit:]][[:space:]]?[[:punct:]]?[[:alpha:]]*[[:space:]]?[[:punct:]]?[[:digit:]][[:digit:]]?", datesTxt[i]))
                 if (length(dateTxt) == 0) {
                     datesTxt[i] <- NA
                 } else {
@@ -157,8 +148,8 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", divClass = NULL, divI
                 }
             }
         } else if (dateFormat == "dB,Y") {
-            for (i in 1:numberOfArticles) {
-                dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]]?[[:digit:]][[:space:]][[:alpha:]]*,[[:space:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]?", articlesHtml[i]))
+            for (i in 1:length(datesTxt)) {
+                dateTxt <- regmatches(datesTxt[i], regexpr("[[:digit:]]?[[:digit:]][[:space:]][[:alpha:]]*,[[:space:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]?", datesTxt[i]))
                 if (length(dateTxt) == 0) {
                     datesTxt[i] <- NA
                 } else {
@@ -166,9 +157,9 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", divClass = NULL, divI
                 }
             }
         } else if (dateFormat == "db.'y") {
-            datesTxt <- rep(NA, numberOfArticles)
+            datesTxt <- rep(NA, length(datesTxt))
             for (i in 1:numberOfArticles) {
-                dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]]?[[:digit:]][[:space:]][[:alpha:]]*.'[[:digit:]][[:digit:]][[:digit:]]?", articlesHtml[i]))
+                dateTxt <- regmatches(datesTxt[i], regexpr("[[:digit:]]?[[:digit:]][[:space:]][[:alpha:]]*.'[[:digit:]][[:digit:]][[:digit:]]?", datesTxt[i]))
                 if (length(dateTxt) == 0) {
                     datesTxt[i] <- NA
                 } else {
@@ -176,9 +167,9 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", divClass = NULL, divI
                 }
             }
         } else if (dateFormat == "Bd,Y" | dateFormat == "bd,Y") {
-            for (i in 1:numberOfArticles) {
-                dateTxt <- regmatches(articlesHtml[i], regexpr("[[:alpha:]]*[[:space:]][[:digit:]]?[[:digit:]],[[:space:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]?",
-                                                               articlesHtml[i]))
+            for (i in 1:length(datesTxt)) {
+                dateTxt <- regmatches(datesTxt[i], regexpr("[[:alpha:]]*[[:space:]][[:digit:]]?[[:digit:]],[[:space:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]?",
+                                                               datesTxt[i]))
                 if (length(dateTxt) == 0) {
                     datesTxt[i] <- NA
                 } else {
@@ -186,9 +177,9 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", divClass = NULL, divI
                 }
             }
         } else if (dateFormat == "xdBY") {
-            for (i in 1:numberOfArticles) {
-                dateTxt <- regmatches(articlesHtml[i], regexpr(paste0(customString, "[[:digit:]]?[[:digit:]][[:space:]][[:alpha:]]*[[:space:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]?"),
-                                                               articlesHtml[i]))
+            for (i in 1:length(datesTxt)) {
+                dateTxt <- regmatches(datesTxt[i], regexpr(paste0(customString, "[[:digit:]]?[[:digit:]][[:space:]][[:alpha:]]*[[:space:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]?"),
+                                                               datesTxt[i]))
                 if (length(dateTxt) == 0) {
                     datesTxt[i] <- NA
                 } else {
@@ -197,8 +188,8 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", divClass = NULL, divI
             }
             dateFormat <- "dBY"
         } else if (dateFormat == "ymd" | dateFormat == "Ymd") {
-            for (i in 1:numberOfArticles) {
-                dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]][[:digit:]][[:digit:]][[:digit:]][[:punct:]]?[[:digit:]]?[[:digit:]][[:punct:]]?[[:digit:]]?[[:digit:]]", articlesHtml[i]))
+            for (i in 1:length(datesTxt)) {
+                dateTxt <- regmatches(datesTxt[i], regexpr("[[:digit:]][[:digit:]][[:digit:]][[:digit:]][[:punct:]]?[[:digit:]]?[[:digit:]][[:punct:]]?[[:digit:]]?[[:digit:]]", datesTxt[i]))
                 if (length(dateTxt) == 0) {
                     datesTxt[i] <- NA
                 } else {
@@ -206,9 +197,9 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", divClass = NULL, divI
                 }
             }
         } else if (dateFormat == "dmy" | dateFormat == "mdy") {
-            for (i in 1:numberOfArticles) {
-                dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]]?[[:digit:]][[:punct:]][[:digit:]]?[[:digit:]][[:punct:]][[:digit:]][[:digit:]]",
-                                                               articlesHtml[i]))
+            for (i in 1:length(datesTxt)) {
+                dateTxt <- regmatches(datesTxt[i], regexpr("[[:digit:]]?[[:digit:]][[:punct:]][[:digit:]]?[[:digit:]][[:punct:]][[:digit:]][[:digit:]]",
+                                                               datesTxt[i]))
                 if (length(dateTxt) == 0) {
                     datesTxt[i] <- NA
                 } else {
@@ -216,8 +207,8 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", divClass = NULL, divI
                 }
             }
         } else if (dateFormat == "dmY" | dateFormat == "mdY") {
-            for (i in 1:numberOfArticles) {
-                dateTxt <- regmatches(articlesHtml[i], regexpr("[[:digit:]]?[[:digit:]][[:punct:]][[:digit:]]?[[:digit:]][[:punct:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]", articlesHtml[i]))
+            for (i in 1:length(datesTxt)) {
+                dateTxt <- regmatches(datesTxt[i], regexpr("[[:digit:]]?[[:digit:]][[:punct:]][[:digit:]]?[[:digit:]][[:punct:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]", datesTxt[i]))
                 if (length(dateTxt) == 0) {
                     datesTxt[i] <- NA
                 } else {
@@ -235,15 +226,15 @@ ExtractDates <- function(articlesHtml, dateFormat = "dmY", divClass = NULL, divI
         for (i in 1:12) {
             datesTxt <- gsub(monthsRu[i], monthsEn[i], datesTxt)
         }
-        dates <- lubridate::parse_date_time(datesTxt, dateFormat, locale = "en_GB.UTF-8")
+        dates <- as.Date(lubridate::parse_date_time(datesTxt, dateFormat))
     } else {
-        dates <- lubridate::parse_date_time(datesTxt, dateFormat, locale = language)
+        dates <- as.Date(lubridate::parse_date_time(datesTxt, dateFormat, locale = language))
     }
     if (is.null(minDate) == FALSE) {
-        dates[dates < as.POSIXct(minDate)] <- NA
+        dates[dates < as.Date(minDate)] <- NA
     }
     if (is.null(maxDate) == FALSE) {
-        dates[dates > as.POSIXct(maxDate)] <- NA
+        dates[dates > as.Date(maxDate)] <- NA
     }
     return(dates)
 }
@@ -290,13 +281,12 @@ MergeDates <- function(dates1, dates2, dates3 = NULL, minDate = NULL, maxDate = 
 #' Extracts titles of individual pages from a vector of html files or from a named vector of links.
 #'
 #' @param htmlLocation Path to folder where html files, tipically downloaded with DownloadContents(links) are stored. If not given, it defaults to the Html folder inside project/website folders.
-#' @param articlesHtml A character vector of html files.
 #' @param links A named character vector, typically created by the ExtractLinks function.
 #' @param removeString A character vector of one or more strings to be removed from the extracted title.
 #' @param method Title extract method, to be given as a text string. Available options are:
 ##' \itemize{
-##'  \item{"links"}{: Default. Extract the title from links (required). Titles are taken from the textual element of the link taken from the index pages. }
-##'  \item{"title"}{: Extract the title from the Html <title> field, usually shown on the top bar of web browsers.}
+##'  \item{"links"}{: Extract the title from links (required). Titles are taken from the textual element of the link taken from the index pages. }
+##'  \item{"title"}{: Default. Extract the title from the Html <title> field, usually shown on the top bar of web browsers.}
 ##'  \item{"h1"}{: Extract the title from the first occurence of text that has heading 1, the <h1> html tag, as its style.}
 ##'  \item{"h2"}{: Extract the title from the first occurence of text that has heading 2, the <h2> html tag, as its style.}
 ##' }
@@ -360,7 +350,7 @@ ExtractTitles <- function(container = "title",
         params$ExtractTitles <-  as.list(environment())
         saveRDS(object = params, file = paramsFile)
     }
-    if (container == "indexLink") {
+    if (container == "indexLink"|container == "links") {
         titles <- names(links)
     } else {
         # define htmlLocation, if not given
