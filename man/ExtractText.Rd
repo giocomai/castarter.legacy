@@ -10,8 +10,8 @@ ExtractText(container = NULL, containerClass = NULL, containerId = NULL,
   divId = NULL, customXpath = NULL, removeEverythingAfter = NULL,
   removeEverythingBefore = NULL, removePunctuationInFilename = TRUE,
   removeTitleFromTxt = FALSE, titles = NULL, keepEverything = FALSE,
-  exportParameters = TRUE, progressBar = TRUE, project = NULL,
-  website = NULL)
+  importParameters = NULL, exportParameters = TRUE, progressBar = TRUE,
+  project = NULL, website = NULL)
 }
 \arguments{
 \item{htmlLocation}{Path to folder where html files, tipically downloaded with DownloadContents(links) are stored. If not given, it defaults to the Html folder inside project/website folders.}

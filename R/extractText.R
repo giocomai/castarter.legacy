@@ -17,7 +17,9 @@ ExtractText <- function(container = NULL,
                         containerClass = NULL,
                         containerId = NULL,
                         htmlLocation = NULL,
-                        metadata = NULL, export = FALSE, maxTitleCharacters = 80, removeString = NULL, divClass = NULL, divId = NULL, customXpath = NULL, removeEverythingAfter = NULL, removeEverythingBefore = NULL, removePunctuationInFilename = TRUE, removeTitleFromTxt = FALSE, titles = NULL, keepEverything = FALSE, exportParameters = TRUE, progressBar = TRUE, project = NULL, website = NULL) {
+                        metadata = NULL, export = FALSE, maxTitleCharacters = 80, removeString = NULL, divClass = NULL, divId = NULL, customXpath = NULL, removeEverythingAfter = NULL, removeEverythingBefore = NULL, removePunctuationInFilename = TRUE, removeTitleFromTxt = FALSE, titles = NULL, keepEverything = FALSE,
+                        importParameters = NULL,
+                        exportParameters = TRUE, progressBar = TRUE, project = NULL, website = NULL) {
     if (is.null(project) == TRUE) {
         project <- CastarterOptions("project")
     }
