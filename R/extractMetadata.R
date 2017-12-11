@@ -281,7 +281,7 @@ MergeDates <- function(dates1, dates2, dates3 = NULL, minDate = NULL, maxDate = 
 #' @param htmlLocation Path to folder where html files, tipically downloaded with DownloadContents(links) are stored. If not given, it defaults to the Html folder inside project/website folders.
 #' @param links A named character vector, typically created by the ExtractLinks function.
 #' @param removeString A character vector of one or more strings to be removed from the extracted title.
-#' @param method Title extract method, to be given as a text string. Available options are:
+#' @param container HTML element where the title is found. The title can usually be found in one of the following:
 ##' \itemize{
 ##'  \item{"links"}{: Extract the title from links (required). Titles are taken from the textual element of the link taken from the index pages. }
 ##'  \item{"title"}{: Default. Extract the title from the Html <title> field, usually shown on the top bar of web browsers.}

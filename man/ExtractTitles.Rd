@@ -13,6 +13,14 @@ ExtractTitles(container = "title", containerClass = NULL,
   project = NULL, website = NULL)
 }
 \arguments{
+\item{container}{HTML element where the title is found. The title can usually be found in one of the following:
+\itemize{
+ \item{"links"}{: Extract the title from links (required). Titles are taken from the textual element of the link taken from the index pages. }
+ \item{"title"}{: Default. Extract the title from the Html <title> field, usually shown on the top bar of web browsers.}
+ \item{"h1"}{: Extract the title from the first occurence of text that has heading 1, the <h1> html tag, as its style.}
+ \item{"h2"}{: Extract the title from the first occurence of text that has heading 2, the <h2> html tag, as its style.}
+}}
+
 \item{htmlLocation}{Path to folder where html files, tipically downloaded with DownloadContents(links) are stored. If not given, it defaults to the Html folder inside project/website folders.}
 
 \item{links}{A named character vector, typically created by the ExtractLinks function.}
@@ -28,14 +36,6 @@ ExtractTitles(container = "title", containerClass = NULL,
 \item{exportParameters}{Defaults to TRUE. If TRUE, function parameters are exported in the project/website folder. They can be used to update the corpus. Requires parameters project/website.}
 
 \item{importParameters}{Defaults to NULL. If TRUE, ignores all parameters given in the function call, and imports them from parameters file stored in "project/website/Logs/parameters.rds".}
-
-\item{method}{Title extract method, to be given as a text string. Available options are:
-\itemize{
- \item{"links"}{: Extract the title from links (required). Titles are taken from the textual element of the link taken from the index pages. }
- \item{"title"}{: Default. Extract the title from the Html <title> field, usually shown on the top bar of web browsers.}
- \item{"h1"}{: Extract the title from the first occurence of text that has heading 1, the <h1> html tag, as its style.}
- \item{"h2"}{: Extract the title from the first occurence of text that has heading 2, the <h2> html tag, as its style.}
-}}
 }
 \value{
 A character vector of article titles.
