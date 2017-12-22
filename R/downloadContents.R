@@ -60,9 +60,9 @@ DownloadContents <- function(links, type = "articles", articlesHtml = NULL, size
             }
             options(useFancyQuotes = FALSE)
             if (type=="articles") {
-                write(x = paste("wget", sQuote(links[linksToDownload]), "-O", file.path("Html", paste0(articlesId[linksToDownload], ".html")), ";", "sleep", wait), file = file.path(project, website, "downloadArticles.sh"), append = TRUE)
+                write(x = paste("wget", sQuote(links[linksToDownload]), "-O", file.path("Html", paste0(articlesId[linksToDownload], ".html")), "-t=1 -T=20", ";", "sleep", wait), file = file.path(project, website, "downloadArticles.sh"), append = TRUE)
             } else if (type=="index") {
-                write(x = paste("wget", sQuote(links[linksToDownload]), "-O", file.path("IndexHtml", paste0(articlesId[linksToDownload], ".html")), ";", "sleep", wait), file = file.path(project, website, "downloadArticles.sh"), append = TRUE)
+                write(x = paste("wget", sQuote(links[linksToDownload]), "-O", file.path("IndexHtml", paste0(articlesId[linksToDownload], ".html")), "-t=1 -T=20", ";", "sleep", wait), file = file.path(project, website, "downloadArticles.sh"), append = TRUE)
             }
             system(paste("chmod +x", file.path(project, website, "downloadArticles.sh")))
         } else {
