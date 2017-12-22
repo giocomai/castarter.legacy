@@ -4,9 +4,9 @@
 \alias{DownloadContents}
 \title{Downloads html pages based on a vector of links}
 \usage{
-DownloadContents(links, type = "articles", articlesHtml = NULL,
-  size = 500, linksToDownload = NULL, wgetSystem = FALSE,
-  method = "auto", missingArticles = TRUE, start = 1, wait = 1,
+DownloadContents(links, type = "articles", size = 500,
+  linksToDownload = NULL, wgetSystem = FALSE, method = "auto",
+  missingArticles = TRUE, start = 1, wait = 1,
   ignoreSSLcertificates = FALSE, createScript = FALSE, project = NULL,
   website = NULL)
 }

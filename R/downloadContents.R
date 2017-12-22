@@ -17,14 +17,25 @@
 #' @examples
 #' DownloadContents(links)
 
-DownloadContents <- function(links, type = "articles", articlesHtml = NULL, size = 500, linksToDownload = NULL, wgetSystem = FALSE, method = "auto", missingArticles = TRUE, start = 1, wait = 1, ignoreSSLcertificates = FALSE, createScript = FALSE, project = NULL, website = NULL) {
+DownloadContents <- function(links,
+                             type = "articles",
+                             size = 500,
+                             linksToDownload = NULL,
+                             wgetSystem = FALSE,
+                             method = "auto",
+                             missingArticles = TRUE,
+                             start = 1,
+                             wait = 1,
+                             ignoreSSLcertificates = FALSE,
+                             createScript = FALSE,
+                             project = NULL,
+                             website = NULL) {
     if (is.null(project) == TRUE) {
         project <- CastarterOptions("project")
     }
     if (is.null(website) == TRUE) {
         website <- CastarterOptions("website")
     }
-    articlesHtmlProvided <- is.null(articlesHtml) == FALSE
     if (type=="articles") {
         htmlFilePath <- file.path(project, website, "Html")
     } else if (type=="index") {
@@ -46,9 +57,6 @@ DownloadContents <- function(links, type = "articles", articlesHtml = NULL, size
         linksToDownload[smallFilesId] <- TRUE
     }
     linksToDownload[1:start-1] <- FALSE
-    if (is.null(articlesHtml) == TRUE) {
-        articlesHtml <- rep(NA, length(links[linksToDownload]))
-    }
     temp <- 1
     if (createScript == TRUE) {
         wgetSystem <- TRUE
@@ -60,9 +68,9 @@ DownloadContents <- function(links, type = "articles", articlesHtml = NULL, size
             }
             options(useFancyQuotes = FALSE)
             if (type=="articles") {
-                write(x = paste("wget", sQuote(links[linksToDownload]), "-O", file.path("Html", paste0(articlesId[linksToDownload], ".html")), "-t=1 -T=20", ";", "sleep", wait), file = file.path(project, website, "downloadArticles.sh"), append = TRUE)
+                write(x = paste("wget", sQuote(links[linksToDownload]), "-O", file.path("Html", paste0(articlesId[linksToDownload], ".html")), "-t 1 -T 20", ";", "sleep", wait), file = file.path(project, website, "downloadArticles.sh"), append = TRUE)
             } else if (type=="index") {
-                write(x = paste("wget", sQuote(links[linksToDownload]), "-O", file.path("IndexHtml", paste0(articlesId[linksToDownload], ".html")), "-t=1 -T=20", ";", "sleep", wait), file = file.path(project, website, "downloadArticles.sh"), append = TRUE)
+                write(x = paste("wget", sQuote(links[linksToDownload]), "-O", file.path("IndexHtml", paste0(articlesId[linksToDownload], ".html")), "-t 1 -T 20", ";", "sleep", wait), file = file.path(project, website, "downloadArticles.sh"), append = TRUE)
             }
             system(paste("chmod +x", file.path(project, website, "downloadArticles.sh")))
         } else {
@@ -79,7 +87,6 @@ DownloadContents <- function(links, type = "articles", articlesHtml = NULL, size
                     htmlFile <- readLines(file.path(project, website, "IndexHtml", paste0(articleId, ".html")))
                 }
                 htmlFile <- paste(htmlFile, collapse = "\n")
-                articlesHtml[linksToDownload][temp] <- htmlFile
                 temp <- temp + 1
                 Sys.sleep(wait)
             }
@@ -109,9 +116,6 @@ DownloadContents <- function(links, type = "articles", articlesHtml = NULL, size
         file.create(file.path(project, website, "Logs", paste(Sys.Date(), "Articles downloaded.txt", sep = " - ")))
     } else if (type=="index") {
         file.create(file.path(project, website, "Logs", paste(Sys.Date(), "Index files downloaded.txt", sep = " - ")))
-    }
-    if (articlesHtmlProvided == TRUE) {
-        articlesHtml
     }
 }
 
