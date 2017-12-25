@@ -4,6 +4,7 @@
 #'
 #' @param links A character vector of links, commonly generated either with the function CreateLinks or ExtractLinks.
 #' @param type Accepted values are either "articles" (default), or "index"; it defines the folder where files are stored.
+#' @param path Defaults to NULL. If given, overrides the "type" param and stores html files in given path as a subfolder of project/website. Folder must already exist, and should be empty.
 #' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.
 #' @param website Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
 #' @param method Defaults to "auto". Method is passed to the function utils::download.file(); available options are "internal", "wininet" (Windows only) "libcurl", "wget" and "curl". For more information see ?utils::download.file()
@@ -19,6 +20,7 @@
 
 DownloadContents <- function(links,
                              type = "articles",
+                             path = NULL,
                              size = 500,
                              linksToDownload = NULL,
                              wgetSystem = FALSE,
@@ -40,6 +42,9 @@ DownloadContents <- function(links,
         htmlFilePath <- file.path(project, website, "Html")
     } else if (type=="index") {
         htmlFilePath <- file.path(project, website, "IndexHtml")
+    }
+    if (is.null(path)==FALSE) {
+        htmlFilePath <- file.path(project, website, path)
     }
     htmlFilesList <- list.files(htmlFilePath, full.names = TRUE)
     # put them in order [equivalent to gtools::mixedorder()]
@@ -66,26 +71,18 @@ DownloadContents <- function(links,
             if (file.exists(file.path(project, website, "downloadArticles.sh")) == TRUE) {
                 file.remove(file.path(project, website, "downloadArticles.sh"))
             }
-            options(useFancyQuotes = FALSE)
-            if (type=="articles") {
-                write(x = paste("wget", sQuote(links[linksToDownload]), "-O", file.path("Html", paste0(articlesId[linksToDownload], ".html")), "-t 1 -T 20", ";", "sleep", wait), file = file.path(project, website, "downloadArticles.sh"), append = TRUE)
-            } else if (type=="index") {
-                write(x = paste("wget", sQuote(links[linksToDownload]), "-O", file.path("IndexHtml", paste0(articlesId[linksToDownload], ".html")), "-t 1 -T 20", ";", "sleep", wait), file = file.path(project, website, "downloadArticles.sh"), append = TRUE)
-            }
+            write(x = paste0("wget '", links[linksToDownload], "' -O '",
+                            file.path("..", "..", htmlFilePath, paste0(articlesId[linksToDownload], ".html")), "'",
+                            " -t 1 -T 20", "; ", "sleep ", wait),
+                  file = file.path(project, website, "downloadArticles.sh"), append = TRUE)
             system(paste("chmod +x", file.path(project, website, "downloadArticles.sh")))
         } else {
             options(useFancyQuotes = FALSE)
             for (i in links[linksToDownload]) {
                 articleId <- articlesId[linksToDownload][temp]
-                if (type=="articles") {
-                    system(paste("wget", sQuote(i), "-O", file.path(project, website, "Html", paste0(articleId, ".html"))))
-                    message(paste("Downloaded article", temp, "of", length(links[linksToDownload]), ". ArticleID: ", articleId), quote = FALSE)
-                    htmlFile <- readLines(file.path(project, website, "Html", paste0(articleId, ".html")))
-                } else if (type=="index") {
-                    system(paste("wget", sQuote(i), "-O", file.path(project, website, "IndexHtml", paste0(articleId, ".html"))))
-                    message(paste("Downloaded article", temp, "of", length(links[linksToDownload]), ". ArticleID: ", articleId), quote = FALSE)
-                    htmlFile <- readLines(file.path(project, website, "IndexHtml", paste0(articleId, ".html")))
-                }
+                system(paste("wget '", i, "' -O", file.path(htmlFilePath, paste0(articleId, ".html"))))
+                message(paste("Downloaded item", temp, "of", length(links[linksToDownload]), ". ID: ", articleId), quote = FALSE)
+                htmlFile <- readLines(file.path(project, website, "Html", paste0(articleId, ".html")))
                 htmlFile <- paste(htmlFile, collapse = "\n")
                 temp <- temp + 1
                 Sys.sleep(wait)
@@ -94,28 +91,15 @@ DownloadContents <- function(links,
     } else {
         for (i in links[linksToDownload]) {
             articleId <- articlesId[linksToDownload][temp]
-            if (type=="articles") {
-                if (ignoreSSLcertificates==TRUE) {
-                    try(utils::download.file(url = i, destfile = file.path(project, website, "Html", paste0(articleId, ".html")), method = "wget", extra = "--no-check-certificate"))
-                } else {
-                    try(utils::download.file(url = i, destfile = file.path(project, website, "Html", paste0(articleId, ".html")), method = method))
-                }
-            } else if (type=="index") {
-                if (ignoreSSLcertificates==TRUE) {
-                    try(utils::download.file(url = i, destfile = file.path(project, website, "IndexHtml", paste0(articleId, ".html")), method = "wget", extra = "--no-check-certificate"))
-                } else {
-                    try(utils::download.file(url = i, destfile = file.path(project, website, "IndexHtml", paste0(articleId, ".html")), method = method))
-                }
+            if (ignoreSSLcertificates==TRUE) {
+                try(utils::download.file(url = i, destfile = file.path(htmlFilePath, paste0(articleId, ".html")), method = "wget", extra = "--no-check-certificate"))
+            } else {
+                try(utils::download.file(url = i, destfile = file.path(htmlFilePath, paste0(articleId, ".html")), method = method))
             }
-            message(paste("Downloaded article", temp, "of", length(links[linksToDownload]), ". ArticleID: ", articleId))
+            message(paste("Downloaded item", temp, "of", length(links[linksToDownload]), ". ID: ", articleId))
             temp <- temp + 1
             Sys.sleep(wait)
         }
-    }
-    if (type=="articles") {
-        file.create(file.path(project, website, "Logs", paste(Sys.Date(), "Articles downloaded.txt", sep = " - ")))
-    } else if (type=="index") {
-        file.create(file.path(project, website, "Logs", paste(Sys.Date(), "Index files downloaded.txt", sep = " - ")))
     }
 }
 

@@ -4,7 +4,7 @@
 \alias{DownloadContents}
 \title{Downloads html pages based on a vector of links}
 \usage{
-DownloadContents(links, type = "articles", size = 500,
+DownloadContents(links, type = "articles", path = NULL, size = 500,
   linksToDownload = NULL, wgetSystem = FALSE, method = "auto",
   missingArticles = TRUE, start = 1, wait = 1,
   ignoreSSLcertificates = FALSE, createScript = FALSE, project = NULL,
@@ -14,6 +14,8 @@ DownloadContents(links, type = "articles", size = 500,
 \item{links}{A character vector of links, commonly generated either with the function CreateLinks or ExtractLinks.}
 
 \item{type}{Accepted values are either "articles" (default), or "index"; it defines the folder where files are stored.}
+
+\item{path}{Defaults to NULL. If given, overrides the "type" param and stores html files in given path as a subfolder of project/website. Folder must already exist, and should be empty.}
 
 \item{linksToDownload}{A logical vector. Only links corresponding to TRUE will be downloaded: links[linksToDownload]}
 
