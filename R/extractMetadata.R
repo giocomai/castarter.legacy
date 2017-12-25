@@ -16,6 +16,7 @@
 ##' }
 #' @param minDate, maxDate Minimum and maximum possible dates in the format year-month-date, e.g. "2007-06-24". Introduces NA in the place of impossibly high or low dates.
 #' @param language Provide a language in order to extract name of months. Defaults to the locale currently active in R (usually, the system language). Generic forms such as "english" or "russian", are usually accepted. See ?locales for more details. On linux, you can run system("locale -a", intern = TRUE) to see all available locales.
+#' @param attribute Defaults to NULL. Can be specified only if customXpath is given, in order to extract a given attribute e.g. if customXpath = "//meta[@property='article:published_time']", and attribute = "content".
 #' @param encoding Defaults to NULL. If source is not in UTF, encoding can be specified here for conversion. A list of valid values can be found using iconvlist().
 #' @param keepAllString Logical, defaults to FALSE. If TRUE, it directly tries to parse the date with the given dateFormat, without trying to polish the string provided accordingly.
 #' @param progressBar Logical, defaults to TRUE. If FALSE, progress bar is not shown.
@@ -33,6 +34,7 @@ ExtractDates <- function(container = "title",
                          htmlLocation = NULL,
                          dateFormat = "dmY",
                          customXpath = NULL,
+                         attribute = NULL,
                          language = Sys.getlocale(category = "LC_TIME"),
                          customString = "",
                          minDate = NULL,
@@ -94,7 +96,18 @@ ExtractDates <- function(container = "title",
     for (i in seq_along(HtmlFiles)) {
         temp <-  xml2::read_html(HtmlFiles[i])
         if (is.element("xml_node", set = class(temp))==TRUE) {
-            if (is.null(containerClass)==TRUE&is.null(containerId)==TRUE&is.null(removeEverythingBefore) == FALSE) {
+            if (is.null(customXpath)==FALSE) {
+                temp <- temp %>%
+                    rvest::html_nodes(xpath = customXpath)
+                if (is.null(attribute)) {
+                    temp <-  temp %>%
+                        rvest::html_text()
+                } else {
+                    temp <-  temp %>%
+                        rvest::html_attr(attribute)
+                    }
+
+            } else if (is.null(containerClass)==TRUE&is.null(containerId)==TRUE&is.null(removeEverythingBefore) == FALSE) {
                 temp <- as.character(temp)
             } else if (is.null(containerClass)==TRUE&is.null(containerId)==TRUE) {
                 temp <- temp %>%

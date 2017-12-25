@@ -6,11 +6,12 @@
 \usage{
 ExtractDates(container = "title", containerClass = NULL,
   containerId = NULL, htmlLocation = NULL, dateFormat = "dmY",
-  customXpath = NULL, language = Sys.getlocale(category = "LC_TIME"),
-  customString = "", minDate = NULL, maxDate = NULL, encoding = "UTF-8",
-  keepAllString = FALSE, removeEverythingBefore = NULL,
-  progressBar = TRUE, exportParameters = TRUE, importParameters = NULL,
-  project = NULL, website = NULL)
+  customXpath = NULL, attribute = NULL, language = Sys.getlocale(category
+  = "LC_TIME"), customString = "", minDate = NULL, maxDate = NULL,
+  encoding = "UTF-8", keepAllString = FALSE,
+  removeEverythingBefore = NULL, progressBar = TRUE,
+  exportParameters = TRUE, importParameters = NULL, project = NULL,
+  website = NULL)
 }
 \arguments{
 \item{dateFormat}{A string expressing the date format. In line with standards (see ?strptime), 'd' stands for day, 'm' stands for month in figures, 'b' for months spelled out as words, 'y' as year without the century, 'Y' as year with four digits. Standard separation marks among parts of the date (e.g. '-', '/', '.') should not be included. The following date formats are available :
@@ -24,6 +25,8 @@ ExtractDates(container = "title", containerClass = NULL,
  \item{"Bd,Y"}{: }
  \item{"xdBY"}{: customString must be provided.}
 }}
+
+\item{attribute}{Defaults to NULL. Can be specified only if customXpath is given, in order to extract a given attribute e.g. if customXpath = "//meta[@property='article:published_time']", and attribute = "content".}
 
 \item{language}{Provide a language in order to extract name of months. Defaults to the locale currently active in R (usually, the system language). Generic forms such as "english" or "russian", are usually accepted. See ?locales for more details. On linux, you can run system("locale -a", intern = TRUE) to see all available locales.}
 
