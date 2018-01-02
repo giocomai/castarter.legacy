@@ -4,14 +4,13 @@
 \alias{ExtractDates}
 \title{Extracts dates from a vector of html files}
 \usage{
-ExtractDates(container = "title", containerClass = NULL,
-  containerId = NULL, htmlLocation = NULL, dateFormat = "dmY",
-  customXpath = NULL, attribute = NULL, language = Sys.getlocale(category
-  = "LC_TIME"), customString = "", minDate = NULL, maxDate = NULL,
-  encoding = "UTF-8", keepAllString = FALSE,
-  removeEverythingBefore = NULL, progressBar = TRUE,
-  exportParameters = TRUE, importParameters = NULL, project = NULL,
-  website = NULL)
+ExtractDates(container = NULL, containerClass = NULL, containerId = NULL,
+  htmlLocation = NULL, dateFormat = "dmY", customXpath = NULL,
+  attribute = NULL, language = Sys.getlocale(category = "LC_TIME"),
+  customString = "", minDate = NULL, maxDate = NULL, encoding = "UTF-8",
+  keepAllString = FALSE, removeEverythingBefore = NULL,
+  progressBar = TRUE, exportParameters = TRUE, importParameters = NULL,
+  project = NULL, website = NULL)
 }
 \arguments{
 \item{dateFormat}{A string expressing the date format. In line with standards (see ?strptime), 'd' stands for day, 'm' stands for month in figures, 'b' for months spelled out as words, 'y' as year without the century, 'Y' as year with four digits. Standard separation marks among parts of the date (e.g. '-', '/', '.') should not be included. The following date formats are available :
@@ -45,11 +44,9 @@ ExtractDates(container = "title", containerClass = NULL,
 \item{project}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. Defaults to NULL, required for storing export parameters (with exportParameters = TRUE). This can be left blank if previously set with SetCastarter(project = "project", website = "website").}
 
 \item{website}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder. Defaults to NULL, required for storing export parameters (with exportParameters = TRUE). This can be left blank if previously set with SetCastarter(project = "project", website = "website").}
-
-\item{articlesHtml}{A character vector of html files.}
 }
 \value{
-A vector of the POSIXct class.
+A vector of the Date class.
 }
 \description{
 Extracts dates from a vector of html files.

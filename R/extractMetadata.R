@@ -2,7 +2,6 @@
 #'
 #' Extracts dates from a vector of html files.
 #'
-#' @param articlesHtml A character vector of html files.
 #' @param dateFormat A string expressing the date format. In line with standards (see ?strptime), 'd' stands for day, 'm' stands for month in figures, 'b' for months spelled out as words, 'y' as year without the century, 'Y' as year with four digits. Standard separation marks among parts of the date (e.g. '-', '/', '.') should not be included. The following date formats are available :
 ##' \itemize{
 ##'  \item{"dmY"}{: Default.}
@@ -24,11 +23,11 @@
 #' @param exportParameters Defaults to TRUE. If TRUE, function parameters are exported in the project/website folder. They can be used to update the corpus. Requires parameters project/website.
 #' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. Defaults to NULL, required for storing export parameters (with exportParameters = TRUE). This can be left blank if previously set with SetCastarter(project = "project", website = "website").
 #' @param website Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder. Defaults to NULL, required for storing export parameters (with exportParameters = TRUE). This can be left blank if previously set with SetCastarter(project = "project", website = "website").
-#' @return A vector of the POSIXct class.
+#' @return A vector of the Date class.
 #' @export
 #' @examples
 #' dates <- ExtractDates(articlesHtml)
-ExtractDates <- function(container = "title",
+ExtractDates <- function(container = NULL,
                          containerClass = NULL,
                          containerId = NULL,
                          htmlLocation = NULL,
