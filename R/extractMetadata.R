@@ -13,6 +13,7 @@
 ##'  \item{"db.'y"}{: }
 ##'  \item{"Bd,Y"}{: }
 ##'  \item{"xdBY"}{: customString must be provided.}
+##'  \itme{"arbitrary regex"}{: if dateFormat does not match any of the above, dateFormat will be understood as a custom regex formula, e.g. `[[:digit:]][[:digit:]][[:punct:]][[:space:]][[:digit:]][[:digit:]][[:punct:]][[:space:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]`"}
 ##' }
 #' @param minDate, maxDate Minimum and maximum possible dates in the format year-month-date, e.g. "2007-06-24". Introduces NA in the place of impossibly high or low dates.
 #' @param language Provide a language in order to extract name of months. Defaults to the locale currently active in R (usually, the system language). Generic forms such as "english" or "russian", are usually accepted. See ?locales for more details. On linux, you can run system("locale -a", intern = TRUE) to see all available locales.
@@ -230,6 +231,15 @@ ExtractDates <- function(dateFormat = "dmY",
         } else if (dateFormat == "dmY" | dateFormat == "mdY") {
             for (i in 1:length(datesTxt)) {
                 dateTxt <- regmatches(datesTxt[i], regexpr("[[:digit:]]?[[:digit:]][[:punct:]][[:digit:]]?[[:digit:]][[:punct:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]", datesTxt[i]))
+                if (length(dateTxt) == 0) {
+                    datesTxt[i] <- NA
+                } else {
+                    datesTxt[i] <- dateTxt
+                }
+            }
+        } else {
+            for (i in seq_along(datesTxt)) {
+                dateTxt <- regmatches(datesTxt[i], regexpr(dateFormat, datesTxt[i]))
                 if (length(dateTxt) == 0) {
                     datesTxt[i] <- NA
                 } else {
@@ -683,7 +693,7 @@ ExportDataset <- function(text, metadata, exportRds = TRUE, exportRdata = FALSE,
 #' @return A character vector with the contents of the given div or custom Xpath.
 #' @export
 #' @examples
-#' string <- ExtractDiv(articlesHtml, divClass = "nameOfDiv")
+#' string <- ExtractXpath(articlesHtml, divClass = "nameOfDiv")
 ExtractXpath <- function(articlesHtml, divClass = NULL, spanClass = NULL, customXpath = NULL) {
     txt <- rep(NA, length(articlesHtml))
     pb <- txtProgressBar(min = 0, max = length(articlesHtml), style = 3)

@@ -24,6 +24,7 @@ ExtractDates(dateFormat = "dmY", container = NULL, containerClass = NULL,
  \item{"db.'y"}{: }
  \item{"Bd,Y"}{: }
  \item{"xdBY"}{: customString must be provided.}
+ \itme{"arbitrary regex"}{: if dateFormat does not match any of the above, dateFormat will be understood as a custom regex formula, e.g. `[[:digit:]][[:digit:]][[:punct:]][[:space:]][[:digit:]][[:digit:]][[:punct:]][[:space:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]`"}
 }}
 
 \item{id}{Defaults to NULL. If provided, it should be a vector of integers. Only html files corresponding to given id in the relevant htmlLocation will be processed.}
