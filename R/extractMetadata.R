@@ -13,8 +13,8 @@
 ##'  \item{"db.'y"}{: }
 ##'  \item{"Bd,Y"}{: }
 ##'  \item{"xdBY"}{: customString must be provided.}
-##'  \itme{"arbitrary regex"}{: if dateFormat does not match any of the above, dateFormat will be understood as a custom regex formula, e.g. `[[:digit:]][[:digit:]][[:punct:]][[:space:]][[:digit:]][[:digit:]][[:punct:]][[:space:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]`"}
 ##' }
+#' @param customRegex Defaults to NULL. If provided, regex parsing pre-data extraction will follow this forumula, e.g. `[[:digit:]][[:digit:]][[:punct:]][[:space:]][[:digit:]][[:digit:]][[:punct:]][[:space:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]`.
 #' @param minDate, maxDate Minimum and maximum possible dates in the format year-month-date, e.g. "2007-06-24". Introduces NA in the place of impossibly high or low dates.
 #' @param language Provide a language in order to extract name of months. Defaults to the locale currently active in R (usually, the system language). Generic forms such as "english" or "russian", are usually accepted. See ?locales for more details. On linux, you can run system("locale -a", intern = TRUE) to see all available locales.
 #' @param attribute Defaults to NULL. Can be specified only if customXpath is given, in order to extract a given attribute e.g. if customXpath = "//meta[@property='article:published_time']", and attribute = "content".
@@ -36,6 +36,7 @@ ExtractDates <- function(dateFormat = "dmY",
                          htmlLocation = NULL,
                          id = NULL,
                          customXpath = NULL,
+                         customRegex = NULL,
                          attribute = NULL,
                          language = Sys.getlocale(category = "LC_TIME"),
                          customString = "",
@@ -149,7 +150,16 @@ ExtractDates <- function(dateFormat = "dmY",
         close(pb)
     }
     if (keepAllString == FALSE) {
-        if (dateFormat == "dby" | dateFormat == "dBy" | dateFormat == "dBY" | dateFormat == "dbY") {
+        if (is.null(customRegex)) {
+            for (i in seq_along(datesTxt)) {
+                dateTxt <- regmatches(datesTxt[i], regexpr(dateFormat, datesTxt[i]))
+                if (length(dateTxt) == 0) {
+                    datesTxt[i] <- NA
+                } else {
+                    datesTxt[i] <- dateTxt
+                }
+            }
+        } else if (dateFormat == "dby" | dateFormat == "dBy" | dateFormat == "dBY" | dateFormat == "dbY") {
             for (i in 1:length(datesTxt)) {
                 dateTxt <- regmatches(datesTxt[i],
                                       regexpr("[[:digit:]]?[[:digit:]][[:space:]]?[[:space:]][[:alpha:]]*[[:space:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]",
@@ -231,15 +241,6 @@ ExtractDates <- function(dateFormat = "dmY",
         } else if (dateFormat == "dmY" | dateFormat == "mdY") {
             for (i in 1:length(datesTxt)) {
                 dateTxt <- regmatches(datesTxt[i], regexpr("[[:digit:]]?[[:digit:]][[:punct:]][[:digit:]]?[[:digit:]][[:punct:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]", datesTxt[i]))
-                if (length(dateTxt) == 0) {
-                    datesTxt[i] <- NA
-                } else {
-                    datesTxt[i] <- dateTxt
-                }
-            }
-        } else {
-            for (i in seq_along(datesTxt)) {
-                dateTxt <- regmatches(datesTxt[i], regexpr(dateFormat, datesTxt[i]))
                 if (length(dateTxt) == 0) {
                     datesTxt[i] <- NA
                 } else {

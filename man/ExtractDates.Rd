@@ -6,12 +6,12 @@
 \usage{
 ExtractDates(dateFormat = "dmY", container = NULL, containerClass = NULL,
   containerId = NULL, htmlLocation = NULL, id = NULL,
-  customXpath = NULL, attribute = NULL, language = Sys.getlocale(category
-  = "LC_TIME"), customString = "", minDate = NULL, maxDate = NULL,
-  encoding = "UTF-8", keepAllString = FALSE,
-  removeEverythingBefore = NULL, progressBar = TRUE,
-  exportParameters = TRUE, importParameters = NULL, project = NULL,
-  website = NULL)
+  customXpath = NULL, customRegex = NULL, attribute = NULL,
+  language = Sys.getlocale(category = "LC_TIME"), customString = "",
+  minDate = NULL, maxDate = NULL, encoding = "UTF-8",
+  keepAllString = FALSE, removeEverythingBefore = NULL,
+  progressBar = TRUE, exportParameters = TRUE, importParameters = NULL,
+  project = NULL, website = NULL)
 }
 \arguments{
 \item{dateFormat}{A string expressing the date format. In line with standards (see ?strptime), 'd' stands for day, 'm' stands for month in figures, 'b' for months spelled out as words, 'y' as year without the century, 'Y' as year with four digits. Standard separation marks among parts of the date (e.g. '-', '/', '.') should not be included. The following date formats are available :
@@ -24,10 +24,11 @@ ExtractDates(dateFormat = "dmY", container = NULL, containerClass = NULL,
  \item{"db.'y"}{: }
  \item{"Bd,Y"}{: }
  \item{"xdBY"}{: customString must be provided.}
- \itme{"arbitrary regex"}{: if dateFormat does not match any of the above, dateFormat will be understood as a custom regex formula, e.g. `[[:digit:]][[:digit:]][[:punct:]][[:space:]][[:digit:]][[:digit:]][[:punct:]][[:space:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]`"}
 }}
 
 \item{id}{Defaults to NULL. If provided, it should be a vector of integers. Only html files corresponding to given id in the relevant htmlLocation will be processed.}
+
+\item{customRegex}{Defaults to NULL. If provided, regex parsing pre-data extraction will follow this forumula, e.g. `[[:digit:]][[:digit:]][[:punct:]][[:space:]][[:digit:]][[:digit:]][[:punct:]][[:space:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]`.}
 
 \item{attribute}{Defaults to NULL. Can be specified only if customXpath is given, in order to extract a given attribute e.g. if customXpath = "//meta[@property='article:published_time']", and attribute = "content".}
 
