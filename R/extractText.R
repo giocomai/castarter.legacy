@@ -2,6 +2,7 @@
 #'
 #' Extracts textual contents from a vector of html files.
 #'
+#' @param id Defaults to NULL. If provided, it should be a vector of integers. Only html files corresponding to given id in the relevant htmlLocation will be processed.
 #' @param htmlLocation Path to folder where html files, tipically downloaded with DownloadContents(links) are stored. If not given, it defaults to the Html folder inside project/website folders.
 #' @param metadata Defaults to NULL. A data.frame presumably created with ExportMetadata() including information on all articles. Number of rows must correspond to the number of articles to be elaborated. This is required when export == TRUE, in order to provide meaningful filenames.
 #' @param keepEverything Logical. If TRUE, the functions calls the boilerpipeR::KeepEverythingExtractor from boilerpipeR, instead of boilerpipeR::ArticleExtractor.
@@ -17,6 +18,7 @@ ExtractText <- function(container = NULL,
                         containerClass = NULL,
                         containerId = NULL,
                         htmlLocation = NULL,
+                        id = NULL,
                         metadata = NULL, export = FALSE, maxTitleCharacters = 80, removeString = NULL, divClass = NULL, divId = NULL, customXpath = NULL, removeEverythingAfter = NULL, removeEverythingBefore = NULL, removePunctuationInFilename = TRUE, removeTitleFromTxt = FALSE, titles = NULL, keepEverything = FALSE,
                         importParameters = NULL,
                         exportParameters = TRUE, progressBar = TRUE, project = NULL, website = NULL) {
@@ -57,10 +59,15 @@ ExtractText <- function(container = NULL,
     if (is.null(htmlLocation)) {
         htmlLocation <- file.path(project, website, "Html")
     }
-    # list files
-    HtmlFiles <- list.files(path = htmlLocation, full.names = TRUE)
-    # put them in order [equivalent to gtools::mixedorder()]
-    HtmlFiles <- HtmlFiles[stringr::str_extract(string = HtmlFiles, pattern = "[[:digit:]]+[[:punct:]]html") %>% stringr::str_sub(start = 1L, end = -6L) %>% as.integer() %>% order()]
+    # If IDs not given, list files
+    if (is.null(id)==FALSE) {
+        HtmlFiles <- file.path(htmlLocation, paste0(id, ".html"))
+    } else {
+        # list files
+        HtmlFiles <- list.files(path = htmlLocation, full.names = TRUE)
+        # put them in order [equivalent to gtools::mixedorder()]
+        HtmlFiles <- HtmlFiles[stringr::str_extract(string = HtmlFiles, pattern = "[[:digit:]]+[[:punct:]]html") %>% stringr::str_sub(start = 1L, end = -6L) %>% as.integer() %>% order()]
+    }
     text <- vector(mode = "character", length = length(HtmlFiles))
     if (progressBar == TRUE) {
         pb <- txtProgressBar(min = 0, max = length(HtmlFiles), style = 3, title = "Extracting text")

@@ -312,6 +312,7 @@ MergeDates <- function(dates1, dates2, dates3 = NULL, minDate = NULL, maxDate = 
 #'
 #' Extracts titles of individual pages from a vector of html files or from a named vector of links.
 #'
+#' @param id Defaults to NULL. If provided, it should be a vector of integers. Only html files corresponding to given id in the relevant htmlLocation will be processed.
 #' @param htmlLocation Path to folder where html files, tipically downloaded with DownloadContents(links) are stored. If not given, it defaults to the Html folder inside project/website folders.
 #' @param links A named character vector, typically created by the ExtractLinks function.
 #' @param removeString A character vector of one or more strings to be removed from the extracted title.
@@ -335,6 +336,7 @@ ExtractTitles <- function(container = "title",
                           containerClass = NULL,
                           containerId = NULL,
                           htmlLocation = NULL,
+                          id = NULL,
                           links = NULL,
                           removePunctuation = FALSE,
                           onlyStandardCharacters = FALSE,
@@ -389,10 +391,15 @@ ExtractTitles <- function(container = "title",
         if (is.null(htmlLocation)) {
             htmlLocation <- file.path(project, website, "Html")
         }
-        # list files
-        HtmlFiles <- list.files(path = htmlLocation, full.names = TRUE)
-        # put them in order [equivalent to gtools::mixedorder()]
-        HtmlFiles <- HtmlFiles[stringr::str_extract(string = HtmlFiles, pattern = "[[:digit:]]+[[:punct:]]html") %>% stringr::str_sub(start = 1L, end = -6L) %>% as.integer() %>% order()]
+        # If IDs not given, list files
+        if (is.null(id)==FALSE) {
+            HtmlFiles <- file.path(htmlLocation, paste0(id, ".html"))
+        } else {
+            # list files
+            HtmlFiles <- list.files(path = htmlLocation, full.names = TRUE)
+            # put them in order [equivalent to gtools::mixedorder()]
+            HtmlFiles <- HtmlFiles[stringr::str_extract(string = HtmlFiles, pattern = "[[:digit:]]+[[:punct:]]html") %>% stringr::str_sub(start = 1L, end = -6L) %>% as.integer() %>% order()]
+        }
         titles <- vector(mode = "character", length = length(HtmlFiles))
         if (progressBar == TRUE) {
             pb <- txtProgressBar(min = 0, max = length(HtmlFiles), style = 3, title = "Extracting titles")

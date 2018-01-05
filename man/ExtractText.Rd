@@ -5,7 +5,7 @@
 \title{Extracts textual contents from a vector of html files}
 \usage{
 ExtractText(container = NULL, containerClass = NULL, containerId = NULL,
-  htmlLocation = NULL, metadata = NULL, export = FALSE,
+  htmlLocation = NULL, id = NULL, metadata = NULL, export = FALSE,
   maxTitleCharacters = 80, removeString = NULL, divClass = NULL,
   divId = NULL, customXpath = NULL, removeEverythingAfter = NULL,
   removeEverythingBefore = NULL, removePunctuationInFilename = TRUE,
@@ -15,6 +15,8 @@ ExtractText(container = NULL, containerClass = NULL, containerId = NULL,
 }
 \arguments{
 \item{htmlLocation}{Path to folder where html files, tipically downloaded with DownloadContents(links) are stored. If not given, it defaults to the Html folder inside project/website folders.}
+
+\item{id}{Defaults to NULL. If provided, it should be a vector of integers. Only html files corresponding to given id in the relevant htmlLocation will be processed.}
 
 \item{metadata}{Defaults to NULL. A data.frame presumably created with ExportMetadata() including information on all articles. Number of rows must correspond to the number of articles to be elaborated. This is required when export == TRUE, in order to provide meaningful filenames.}
 

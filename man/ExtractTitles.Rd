@@ -5,7 +5,7 @@
 \title{Extracts titles of individual pages}
 \usage{
 ExtractTitles(container = "title", containerClass = NULL,
-  containerId = NULL, htmlLocation = NULL, links = NULL,
+  containerId = NULL, htmlLocation = NULL, id = NULL, links = NULL,
   removePunctuation = FALSE, onlyStandardCharacters = FALSE,
   removeString = NULL, removeEverythingBefore = NULL,
   removeEverythingAfter = NULL, customXpath = "", maxCharacters = NULL,
@@ -22,6 +22,8 @@ ExtractTitles(container = "title", containerClass = NULL,
 }}
 
 \item{htmlLocation}{Path to folder where html files, tipically downloaded with DownloadContents(links) are stored. If not given, it defaults to the Html folder inside project/website folders.}
+
+\item{id}{Defaults to NULL. If provided, it should be a vector of integers. Only html files corresponding to given id in the relevant htmlLocation will be processed.}
 
 \item{links}{A named character vector, typically created by the ExtractLinks function.}
 
