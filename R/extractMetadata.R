@@ -152,7 +152,7 @@ ExtractDates <- function(dateFormat = "dmY",
     if (keepAllString == FALSE) {
         if (is.null(customRegex) == FALSE) {
             for (i in seq_along(datesTxt)) {
-                dateTxt <- regmatches(datesTxt[i], regexpr(dateFormat, datesTxt[i]))
+                dateTxt <- regmatches(datesTxt[i], regexpr(customRegex, datesTxt[i]))
                 if (length(dateTxt) == 0) {
                     datesTxt[i] <- NA
                 } else {
