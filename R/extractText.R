@@ -67,7 +67,11 @@ ExtractText <- function(container = NULL,
     }
     # if no div or such, get all links
     for (i in seq_along(HtmlFiles)) {
-        temp <-  xml2::read_html(HtmlFiles[i])
+        temp <-  tryCatch(expr = xml2::read_html(HtmlFiles[i]),
+                          error = function(e) {
+                              warning(paste("Could not read", HtmlFiles[i]))
+                              NA
+                          })
         if (is.element("xml_node", set = class(temp))==TRUE) {
             if (is.null(containerClass)==TRUE&is.null(containerId)==TRUE) {
                 temp <- temp %>%
