@@ -86,10 +86,15 @@ ExtractDates <- function(dateFormat = "dmY",
     if (is.null(htmlLocation)) {
         htmlLocation <- file.path(project, website, "Html")
     }
-    # list files
-    HtmlFiles <- list.files(path = htmlLocation, full.names = TRUE)
-    # put them in order [equivalent to gtools::mixedorder()]
-    HtmlFiles <- HtmlFiles[stringr::str_extract(string = HtmlFiles, pattern = "[[:digit:]]+[[:punct:]]html") %>% stringr::str_sub(start = 1L, end = -6L) %>% as.integer() %>% order()]
+    # If IDs not given, list files
+    if (is.null(id)==FALSE) {
+        HtmlFiles <- file.path(htmlLocation, paste0(id, ".html"))
+    } else {
+        # list files
+        HtmlFiles <- list.files(path = htmlLocation, full.names = TRUE)
+        # put them in order [equivalent to gtools::mixedorder()]
+        HtmlFiles <- HtmlFiles[stringr::str_extract(string = HtmlFiles, pattern = "[[:digit:]]+[[:punct:]]html") %>% stringr::str_sub(start = 1L, end = -6L) %>% as.integer() %>% order()]
+    }
     datesTxt <- vector(mode = "character", length = length(HtmlFiles))
     if (progressBar == TRUE) {
         pb <- txtProgressBar(min = 0, max = length(HtmlFiles), style = 3, title = "Extracting dates")
