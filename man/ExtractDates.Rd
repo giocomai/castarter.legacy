@@ -4,13 +4,14 @@
 \alias{ExtractDates}
 \title{Extracts dates from a vector of html files}
 \usage{
-ExtractDates(container = NULL, containerClass = NULL, containerId = NULL,
-  htmlLocation = NULL, dateFormat = "dmY", customXpath = NULL,
-  attribute = NULL, language = Sys.getlocale(category = "LC_TIME"),
-  customString = "", minDate = NULL, maxDate = NULL, encoding = "UTF-8",
-  keepAllString = FALSE, removeEverythingBefore = NULL,
-  progressBar = TRUE, exportParameters = TRUE, importParameters = NULL,
-  project = NULL, website = NULL)
+ExtractDates(dateFormat = "dmY", container = NULL, containerClass = NULL,
+  containerId = NULL, htmlLocation = NULL, id = NULL,
+  customXpath = NULL, attribute = NULL, language = Sys.getlocale(category
+  = "LC_TIME"), customString = "", minDate = NULL, maxDate = NULL,
+  encoding = "UTF-8", keepAllString = FALSE,
+  removeEverythingBefore = NULL, progressBar = TRUE,
+  exportParameters = TRUE, importParameters = NULL, project = NULL,
+  website = NULL)
 }
 \arguments{
 \item{dateFormat}{A string expressing the date format. In line with standards (see ?strptime), 'd' stands for day, 'm' stands for month in figures, 'b' for months spelled out as words, 'y' as year without the century, 'Y' as year with four digits. Standard separation marks among parts of the date (e.g. '-', '/', '.') should not be included. The following date formats are available :
@@ -24,6 +25,8 @@ ExtractDates(container = NULL, containerClass = NULL, containerId = NULL,
  \item{"Bd,Y"}{: }
  \item{"xdBY"}{: customString must be provided.}
 }}
+
+\item{id}{Defaults to NULL. If provided, it should be a vector of integers. Only html files corresponding to given id in the relevant htmlLocation will be processed.}
 
 \item{attribute}{Defaults to NULL. Can be specified only if customXpath is given, in order to extract a given attribute e.g. if customXpath = "//meta[@property='article:published_time']", and attribute = "content".}
 

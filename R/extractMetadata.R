@@ -2,6 +2,7 @@
 #'
 #' Extracts dates from a vector of html files.
 #'
+#' @param id Defaults to NULL. If provided, it should be a vector of integers. Only html files corresponding to given id in the relevant htmlLocation will be processed.
 #' @param dateFormat A string expressing the date format. In line with standards (see ?strptime), 'd' stands for day, 'm' stands for month in figures, 'b' for months spelled out as words, 'y' as year without the century, 'Y' as year with four digits. Standard separation marks among parts of the date (e.g. '-', '/', '.') should not be included. The following date formats are available :
 ##' \itemize{
 ##'  \item{"dmY"}{: Default.}
@@ -27,11 +28,12 @@
 #' @export
 #' @examples
 #' dates <- ExtractDates(articlesHtml)
-ExtractDates <- function(container = NULL,
+ExtractDates <- function(dateFormat = "dmY",
+                         container = NULL,
                          containerClass = NULL,
                          containerId = NULL,
                          htmlLocation = NULL,
-                         dateFormat = "dmY",
+                         id = NULL,
                          customXpath = NULL,
                          attribute = NULL,
                          language = Sys.getlocale(category = "LC_TIME"),
@@ -449,24 +451,30 @@ ExtractTitles <- function(container = "title",
 #'
 #' Extracts id from filename
 #'
+#' @param sample Defaults to NULL. If given, it must be an integer corresponding to the desired sample size.
+#' @param htmlLocation Path to folder where html files, tipically downloaded with DownloadContents(links) are stored. If not given, it defaults to the `Html` folder inside project/website folders.
 #' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.
 #' @param website Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.Defaults to NULL. If no website is provided, exported files are saved in the project/Outputs folder.
 #' @return A vector of the integer class.
 #' @export
 #' @examples
 #' id <- ExtractId(project, website)
-ExtractId <- function(project = NULL, website = NULL, accordingToDate = FALSE, dates = NULL) {
+ExtractId <- function(sample = NULL, htmlLocation = NULL, project = NULL, website = NULL) {
     if (is.null(project) == TRUE) {
         project <- CastarterOptions("project")
     }
     if (is.null(website) == TRUE) {
         website <- CastarterOptions("website")
     }
-    htmlFilesList <- list.files(file.path(project, website, "Html"))
-    if (accordingToDate == TRUE) {
-        htmlFilesList <- htmlFilesList[order(dates)]
+    if (is.null(htmlLocation)) {
+        htmlLocation <- file.path(project, website, "Html")
     }
-    sort.int(x = as.integer(stringr::str_extract(string = htmlFilesList, pattern = "[[:digit:]]+")))
+    htmlFilesList <- list.files(file.path(project, website, "Html"))
+    if (is.null(sample)==FALSE) {
+        sort.int(x = sample(x = as.integer(stringr::str_extract(string = htmlFilesList, pattern = "[[:digit:]]+")), size = sample, replace = FALSE))
+    } else {
+        sort.int(x = as.integer(stringr::str_extract(string = htmlFilesList, pattern = "[[:digit:]]+")))
+    }
 }
 
 #' Extracts metadata and text from local html files
