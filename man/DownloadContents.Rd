@@ -6,7 +6,7 @@
 \usage{
 DownloadContents(links, type = "articles", path = NULL, size = 500,
   linksToDownload = NULL, wgetSystem = FALSE, method = "auto",
-  missingArticles = TRUE, start = 1, wait = 1,
+  missingPages = TRUE, start = 1, wait = 1,
   ignoreSSLcertificates = FALSE, createScript = FALSE, project = NULL,
   website = NULL)
 }
@@ -23,7 +23,7 @@ DownloadContents(links, type = "articles", path = NULL, size = 500,
 
 \item{method}{Defaults to "auto". Method is passed to the function utils::download.file(); available options are "internal", "wininet" (Windows only) "libcurl", "wget" and "curl". For more information see ?utils::download.file()}
 
-\item{missingArticles}{Logical, defaults to TRUE. If TRUE, verifies if a downloaded html file exists for each element in articlesLinks; when there is no such file, it downloads it.}
+\item{missingPages}{Logical, defaults to TRUE. If TRUE, verifies if a downloaded html file exists for each element in articlesLinks; when there is no such file, it downloads it.}
 
 \item{start}{Integer. Only links with position higher than start in the links vector will be downloaded: links[start:length(links)]}
 

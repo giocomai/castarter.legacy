@@ -8,7 +8,7 @@
 #' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.
 #' @param website Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
 #' @param method Defaults to "auto". Method is passed to the function utils::download.file(); available options are "internal", "wininet" (Windows only) "libcurl", "wget" and "curl". For more information see ?utils::download.file()
-#' @param missingArticles Logical, defaults to TRUE. If TRUE, verifies if a downloaded html file exists for each element in articlesLinks; when there is no such file, it downloads it.
+#' @param missingPages Logical, defaults to TRUE. If TRUE, verifies if a downloaded html file exists for each element in articlesLinks; when there is no such file, it downloads it.
 #' @param linksToDownload A logical vector. Only links corresponding to TRUE will be downloaded: links[linksToDownload]
 #' @param wgetSystem Logical, defaults to FALSE. Calls wget as a system command through the system() function. Wget must be previously installed on the system.
 #' @param start Integer. Only links with position higher than start in the links vector will be downloaded: links[start:length(links)]
@@ -25,7 +25,7 @@ DownloadContents <- function(links,
                              linksToDownload = NULL,
                              wgetSystem = FALSE,
                              method = "auto",
-                             missingArticles = TRUE,
+                             missingPages = TRUE,
                              start = 1,
                              wait = 1,
                              ignoreSSLcertificates = FALSE,
@@ -51,7 +51,7 @@ DownloadContents <- function(links,
     htmlFilesList <- htmlFilesList[stringr::str_extract(string = htmlFilesList, pattern = "[[:digit:]]+[[:punct:]]html") %>% stringr::str_sub(start = 1L, end = -6L) %>% as.integer() %>% order()]
     htmlFileSize <- file.info(htmlFilesList)["size"]
     articlesId <- 1:length(links)
-    if (missingArticles == TRUE) {
+    if (missingPages == TRUE) {
         articlesHtmlFilenamesInTheory <- file.path(htmlFilePath, paste0(articlesId, ".html"))
         linksToDownload <- !is.element(articlesHtmlFilenamesInTheory, htmlFilesList)
     }
