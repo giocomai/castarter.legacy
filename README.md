@@ -1,9 +1,14 @@
 An introduction to 'castarter' - content analysis starter toolkit for R
 ================
 Giorgio Comai
-2017-06-27
+2018-01-14
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+Preliminary note (2018-01-14)
+-----------------------------
+
+This document (and this version of the package) have been moved to a legacy branch. Largely due to updates to other packages, this version is not fully functional and likely won't be. It is kept for reference and for reading older files. The codebase has largely been rewritten. Some of the functionalities that used to be available in this version may be re-introduced.
+
 Preliminary note (2017-06-27)
 -----------------------------
 
@@ -37,6 +42,7 @@ Interactive example:
 
 -   [Armenia's president website](https://giocomai.shinyapps.io/ArmeniaPresident/)
 -   [Official websites of South Caucasus presidents](https://giocomai.shinyapps.io/SouthCaucasusPresidents/)
+-   [Kremlin's official website - only time series](https://giocomai.shinyapps.io/kremlinregex/)
 
 Introduction
 ------------
