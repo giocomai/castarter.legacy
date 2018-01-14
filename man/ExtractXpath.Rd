@@ -17,5 +17,5 @@ A character vector with the contents of the given div or custom Xpath.
 Extracts string included in an html element
 }
 \examples{
-string <- ExtractDiv(articlesHtml, divClass = "nameOfDiv")
+string <- ExtractXpath(articlesHtml, divClass = "nameOfDiv")
 }
