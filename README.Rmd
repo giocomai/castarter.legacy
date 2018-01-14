@@ -17,22 +17,60 @@ knitr::opts_chunk$set(
 knitr::opts_knit$set(root.dir = normalizePath('./data'))
 ```
 
-## Preliminary note (2017-06-27)
-This is the development branch of `castarter`, where the codebase is being completely overhauled. 
-
-For a (mostly) functioning version of `castarter`, see the [master branch](https://github.com/giocomai/castarter/).
+## Preliminary note (2018-01-14)
 
 The new `castarter` aims to:
 
 - make it possible to run (almost) all of its functions from a web interface (through a Shiny app), allowing to create textual datasets, export them, and conduct basic word frequency analysis virtually without knowing anything about R
-- store parameters used for dataset creation in XML format, making it easy to share the procedure, and allow other users to replicate it
+- store parameters used for dataset creation in a format that is machine readbale, making it easy to share the procedure, and allow other users to replicate it
 - automatically generate human-readable log files that detail the procedure
 - have as few dependencies as possible on other packages
-- reducing RAM requirements in order to allow for smooth analysis of relatively big datasets (e.g. 1 million items)
+- reducing RAM requirements in order to allow for smooth analysis of relatively big datasets (e.g. >1 million items)
 - facilitate integration with SQL databases
-- facilitate creation of a `docker` image including relevant app for easy deployments, both locally and online
 
-By late 2017, at least some of these features are expected to be implemented, and merged back into the `master` branch. 
+## Examples of output
+Some examples of analysis of media contents conducted with `castarter` are available on the author's blog:
+
+* [Word frequency of ‘Ukraine’, ‘Crimea’, and ‘Syria’ on Russia’s First Channel](http://www.giorgiocomai.eu/2015/11/03/word-frequency-of-ukraine-crimea-and-syria-on-russias-first-channel/)
+* [Presidents and prime ministers in Romanian media](http://www.giorgiocomai.eu/2016/06/29/presidents-and-prime-ministers-in-romanian-media/)
+
+Interactive examples:
+
+* [Armenia's president website](https://giocomai.shinyapps.io/ArmeniaPresident/)
+* [Official websites of South Caucasus presidents](https://giocomai.shinyapps.io/SouthCaucasusPresidents/)
+* [Kremlin's official website - only time series](https://giocomai.shinyapps.io/kremlinregex/)
+
+## Installation
+
+N.B. Please consider that this document illustrates only the most basic parameters of `castarter` functions. More advanced options can be seen by running `?nameOfFunction`.
+
+`castarter` is hosted on GitHub. The easiest way to install it on your system, is to run the following commands in R:
+
+``` {r Install castarter, eval = FALSE}
+install.packages("devtools")
+devtools::install_github("giocomai/castarter")
+```
+
+For detailed install instructions, including references to packages that need to be preliminary installed on Linux system, as well as advanced setups (including Docker images), see [install instructions](./install.md).
+
+Load `castarter` with:
+```{r Load castarter, message=FALSE, warning=FALSE}
+library("castarter")
+```
+
+## Using castarter
+`castarter` facilitates downloading and extracting textual contents from a given section of a website. `castarter` can be used to analyse one single website, or more websites as part of a project, facilitating comparison among cases. In order to smoothen replication and prevent data losses, by default `castarter` stores a copy of downloaded web pages in html format. To do so, it includes a function that creates the relevant folder structure, and another function that facilitates archiving the html files in compressed format.
+
+In `castarter` every dataset is expected to be extracted from a website, and each website is expected to be part of a project. This is useful to give a consistent way of storing the materials gathered and to facilitate comparison among cases, but it does not imply additional limitations: it is possible to have projects composed of a single website, and it is possible to make comparisons among websites that are part of different projects. 
+
+[Readme to be completed]
+
+## Disclaimer
+`castarter` is under active development:
+
+* some functions may not work as expected;
+* documentation is incomplete (however, most paramaters should be self-descriptive);
+* the code has not been optimised. 
 
 ## About the author
-Giorgio Comai is doctoral researcher at the School of Law and Government, Dublin City University, and a member of the Marie Curie ITN network “Post-Soviet tensions”. You can find out more about his work on his [personal website](http://giorgiocomai.eu/). He is on Twitter: https://twitter.com/giocomai.
+Giorgio Comai is a researcher at OBCT/CCI (https://www.balcanicaucaso.org/) and a data cruncher at EDJNET (https://www.europeandatajournalism.eu/). He has completed his PhD at the School of Law and Government, Dublin City University. You can find out more about his work on his [personal website](http://giorgiocomai.eu/). He is on Twitter: https://twitter.com/giocomai.
