@@ -4,24 +4,27 @@
 \alias{ExtractLinks}
 \title{Extracts direct links to individual articles from index pages.}
 \usage{
-ExtractLinks(domain, partOfLink, html, containerType = NULL,
-  containerClass = NULL, containerId = NULL, divClass = NULL,
-  attributeType = NULL, partOfLinkToExclude = NULL, minLength = NULL,
-  maxLength = NULL, indexLinks = NULL, sortLinks = TRUE,
-  linkTitle = TRUE, export = FALSE, appendString = NULL,
-  removeString = NULL, progressBar = TRUE, exportParameters = TRUE,
-  project = NULL, website = NULL)
+ExtractLinks(htmlLocation = NULL, domain = NULL, partOfLink = NULL,
+  partOfLinkToExclude = NULL, extractText = FALSE, container = NULL,
+  containerClass = NULL, containerId = NULL, attributeType = NULL,
+  minLength = NULL, maxLength = NULL, indexLinks = NULL,
+  sortLinks = TRUE, linkTitle = TRUE, export = FALSE,
+  appendString = NULL, removeString = NULL, progressBar = TRUE,
+  project = NULL, website = NULL, importParameters = NULL,
+  exportParameters = TRUE)
 }
 \arguments{
+\item{htmlLocation}{Path to folder where html files, tipically downloaded with DownloadContents(links, type = "index") are stored. If not given, it defaults to the IndexHtml folder inside project/website folders.}
+
 \item{domain}{Web domain of the website. Will be added at the beginning of each link found.If links in the page already include the full web address this should be ignored. Defaults to "".}
 
 \item{partOfLink}{Part of URL found only in links of individual articles to be downloaded. If more than one provided, it includes all links that contains either of the strings provided.}
 
-\item{containerType}{Type of html container from where links are to be extracted, such as "ul", "div", and others. containerClass must also be provided.}
+\item{partOfLinkToExclude}{If an URL includes this string, it is excluded from the output. One or more strings may be provided.}
+
+\item{container}{Type of html container from where links are to be extracted, such as "div", "ul", and others. containerClass or containerId must also be provided.}
 
 \item{attributeType}{Type of attribute to extract from links, when different from href.}
-
-\item{partOfLinkToExclude}{If an URL includes this string, it is excluded from the output. One or more strings may be provided.}
 
 \item{minLength}{If a link is shorter than the number of characters given in minLength, it is excluded from the output.}
 

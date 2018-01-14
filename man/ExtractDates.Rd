@@ -4,16 +4,16 @@
 \alias{ExtractDates}
 \title{Extracts dates from a vector of html files}
 \usage{
-ExtractDates(articlesHtml, dateFormat = "dmY", divClass = NULL,
-  divId = NULL, spanClass = NULL, customXpath = NULL,
+ExtractDates(dateFormat = "dmY", container = NULL, containerClass = NULL,
+  containerId = NULL, htmlLocation = NULL, id = NULL,
+  customXpath = NULL, customRegex = NULL, attribute = NULL,
   language = Sys.getlocale(category = "LC_TIME"), customString = "",
   minDate = NULL, maxDate = NULL, encoding = "UTF-8",
   keepAllString = FALSE, removeEverythingBefore = NULL,
-  exportParameters = TRUE, project = NULL, website = NULL)
+  progressBar = TRUE, exportParameters = TRUE, importParameters = NULL,
+  project = NULL, website = NULL)
 }
 \arguments{
-\item{articlesHtml}{A character vector of html files.}
-
 \item{dateFormat}{A string expressing the date format. In line with standards (see ?strptime), 'd' stands for day, 'm' stands for month in figures, 'b' for months spelled out as words, 'y' as year without the century, 'Y' as year with four digits. Standard separation marks among parts of the date (e.g. '-', '/', '.') should not be included. The following date formats are available :
 \itemize{
  \item{"dmY"}{: Default.}
@@ -26,6 +26,12 @@ ExtractDates(articlesHtml, dateFormat = "dmY", divClass = NULL,
  \item{"xdBY"}{: customString must be provided.}
 }}
 
+\item{id}{Defaults to NULL. If provided, it should be a vector of integers. Only html files corresponding to given id in the relevant htmlLocation will be processed.}
+
+\item{customRegex}{Defaults to NULL. If provided, regex parsing pre-data extraction will follow this forumula, e.g. `[[:digit:]][[:digit:]][[:punct:]][[:space:]][[:digit:]][[:digit:]][[:punct:]][[:space:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]`.}
+
+\item{attribute}{Defaults to NULL. Can be specified only if customXpath is given, in order to extract a given attribute e.g. if customXpath = "//meta[@property='article:published_time']", and attribute = "content".}
+
 \item{language}{Provide a language in order to extract name of months. Defaults to the locale currently active in R (usually, the system language). Generic forms such as "english" or "russian", are usually accepted. See ?locales for more details. On linux, you can run system("locale -a", intern = TRUE) to see all available locales.}
 
 \item{minDate, }{maxDate Minimum and maximum possible dates in the format year-month-date, e.g. "2007-06-24". Introduces NA in the place of impossibly high or low dates.}
@@ -34,12 +40,18 @@ ExtractDates(articlesHtml, dateFormat = "dmY", divClass = NULL,
 
 \item{keepAllString}{Logical, defaults to FALSE. If TRUE, it directly tries to parse the date with the given dateFormat, without trying to polish the string provided accordingly.}
 
+\item{progressBar}{Logical, defaults to TRUE. If FALSE, progress bar is not shown.}
+
+\item{exportParameters}{Defaults to TRUE. If TRUE, function parameters are exported in the project/website folder. They can be used to update the corpus. Requires parameters project/website.}
+
+\item{importParameters}{Defaults to NULL. If TRUE, ignores all parameters given in the function call, and imports them from parameters file stored in "project/website/Logs/parameters.rds".}
+
 \item{project}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. Defaults to NULL, required for storing export parameters (with exportParameters = TRUE). This can be left blank if previously set with SetCastarter(project = "project", website = "website").}
 
 \item{website}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder. Defaults to NULL, required for storing export parameters (with exportParameters = TRUE). This can be left blank if previously set with SetCastarter(project = "project", website = "website").}
 }
 \value{
-A vector of the POSIXct class.
+A vector of the Date class.
 }
 \description{
 Extracts dates from a vector of html files.

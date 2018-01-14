@@ -3,17 +3,17 @@
 #' Updates a dataset given a previously created parameters export file.
 #'
 #' @param dataset A 'castarter' dataset.
-#' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.
-#' @param website Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
+#' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. Defaults to NULL, required for importing parameters. This can be left blank if previously set with SetCastarter(project = "project", website = "website").
+#' @param website Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder. Defaults to NULL, required for importing parameters. This can be left blank if previously set with SetCastarter(project = "project", website = "website").
 #' @return A castarter dataset.
 #' @export
 #' @examples
 #' dataset <- UpdateDataset(dataset)
 UpdateDataset <- function(dataset, links = NULL, numberOfIndexPages = 10, wget = FALSE, wait = 1, project = NULL, website = NULL) {
-    if (gtools::invalid(project) == TRUE) {
+    if (is.null(project) == TRUE) {
         project <- CastarterOptions("project")
     }
-    if (gtools::invalid(website) == TRUE) {
+    if (is.null(website) == TRUE) {
         website <- CastarterOptions("website")
     }
     params <- read.table(file = file.path(project, website, "Logs", paste(website, "updateParameters.csv", sep = " - ")), stringsAsFactors = FALSE)
@@ -37,7 +37,7 @@ UpdateDataset <- function(dataset, links = NULL, numberOfIndexPages = 10, wget =
     articlesHtmlNew <- ImportHtml(from = "articles", project = project, website = website)
     titles <- ExtractTitles(articlesHtml = articlesHtmlNew, links = linksNew, method = params$param[params$args=="method_ExtractTitles"], removePunctuation = params$param[params$args=="removePunctuation_ExtractTitles"], onlyStandardCharacters = params$param[params$args=="onlyStandardCharacters_ExtractTitles"], removeString = params$param[params$args=="removeString_ExtractTitles"], removeEverythingAfter = params$param[params$args=="removeEverythingAfter_ExtractTitles"], customXpath = params$param[params$args=="customXpath_ExtractTitles"], maxCharacters = params$param[params$args=="maxCharacters_ExtractTitles"], exportParameters = FALSE)
     language_ExtractDates <- params$param[params$args=="language_ExtractDates"]
-    if (gtools::invalid(language_ExtractDates) == TRUE) {
+    if (is.null(language_ExtractDates) == TRUE) {
         language_ExtractDates <- Sys.getlocale(category = "LC_TIME")
     }
     dates <- ExtractDates(articlesHtml = articlesHtmlNew, dateFormat = params$param[params$args=="dateFormat_ExtractDates"], customString = params$param[params$args=="customString_ExtractDates"], divClass = params$param[params$args=="divClass_ExtractDates"], spanClass = params$param[params$args=="spanClass_ExtractDates"], customXpath = params$param[params$args=="customXpath_ExtractDates"], language = language_ExtractDates, keepAllString = params$param[params$args=="keepAllString_ExtractDates"], minDate = params$param[params$args=="minDate"], maxDate = params$param[params$args=="maxDate"], removeEverythingBefore = params$param[params$args=="removeEverythingBefore_ExtractDates"], exportParameters = FALSE)

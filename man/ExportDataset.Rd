@@ -4,10 +4,14 @@
 \alias{ExportDataset}
 \title{Exports dataset}
 \usage{
-ExportDataset(contents, metadata, exportRdata = TRUE, exportCsv = FALSE,
-  exportXlsx = FALSE, project = NULL, website = NULL)
+ExportDataset(text, metadata, exportRds = TRUE, exportRdata = FALSE,
+  exportCsv = FALSE, exportXlsx = FALSE, project = NULL, website = NULL)
 }
 \arguments{
+\item{text}{A character vector.}
+
+\item{metadata}{A data.frame typically created with ExportMetadata(). Number of rows must be the same as the number of text items in `text`.}
+
 \item{exportCsv}{If equal to TRUE, exports the complete dataset in the .csv file format in the Dataset sub-folder.}
 
 \item{exportXlsx}{If equal to TRUE, exports the complete dataset in the .xlsx file format in the Dataset sub-folder.}

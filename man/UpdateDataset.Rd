@@ -10,9 +10,9 @@ UpdateDataset(dataset, links = NULL, numberOfIndexPages = 10,
 \arguments{
 \item{dataset}{A 'castarter' dataset.}
 
-\item{project}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
+\item{project}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. Defaults to NULL, required for importing parameters. This can be left blank if previously set with SetCastarter(project = "project", website = "website").}
 
-\item{website}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
+\item{website}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder. Defaults to NULL, required for importing parameters. This can be left blank if previously set with SetCastarter(project = "project", website = "website").}
 }
 \value{
 A castarter dataset.

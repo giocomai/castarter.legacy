@@ -5,10 +5,10 @@
 #' @examples
 #' CreateFolders(project, website)
 CreateFolders <- function(project = NULL, website = NULL) {
-    if (gtools::invalid(project) == TRUE) {
+    if (is.null(project) == TRUE) {
         project <- CastarterOptions("project")
     }
-    if (gtools::invalid(website) == TRUE) {
+    if (is.null(website) == TRUE) {
         website <- CastarterOptions("website")
     }
     if (!file.exists(file.path(project))) {
@@ -46,10 +46,10 @@ CreateFolders <- function(project = NULL, website = NULL) {
 #' @examples
 #' load(LoadLatest(project, website))
 LoadLatest <- function(project = NULL, website = NULL) {
-    if (gtools::invalid(project) == TRUE) {
+    if (is.null(project) == TRUE) {
         project <- CastarterOptions("project")
     }
-    if (gtools::invalid(website) == TRUE) {
+    if (is.null(website) == TRUE) {
         website <- CastarterOptions("website")
     }
     lastSavedFile <- file.path(file.path(project, website), sort(list.files(file.path(project, website))[stringr::str_extract(list.files(file.path(project, website)), "RData") == "RData"], decreasing = TRUE)[1])
@@ -69,49 +69,31 @@ LoadLatest <- function(project = NULL, website = NULL) {
 #' @export
 #' @examples
 #' SaveWebsite(project, website)
-SaveWebsite <- function(saveEnvironment = TRUE, dataset = NULL, corpus = NULL, tidyCorpus = NULL, corpusDtm = NULL, project = NULL, website = NULL, exportCsv = FALSE, exportTxt = FALSE, exportXlsx = FALSE) {
-    if (gtools::invalid(project) == TRUE) {
+SaveWebsite <- function(saveEnvironment = TRUE, dataset = NULL, tidyCorpus = NULL, project = NULL, website = NULL, exportCsv = FALSE, exportTxt = FALSE, exportXlsx = FALSE) {
+    if (is.null(project) == TRUE) {
         project <- CastarterOptions("project")
     }
-    if (gtools::invalid(website) == TRUE) {
+    if (is.null(website) == TRUE) {
         website <- CastarterOptions("website")
     }
     if (saveEnvironment == TRUE) {
-        save.image(file = file.path(project, website, paste0(paste(Sys.Date(), project, website, sep = " - "), ".RData")))
-        print(paste("Environment saved in", file.path(project, website, paste0(paste(Sys.Date(), project, website, sep = " - "), ".RData"))))
+        save.image(file = file.path(project, website, paste0(paste(Sys.Date(), project, website, sep = "-"), ".RData")))
+        message(paste("Environment saved in", file.path(project, website, paste0(paste(Sys.Date(), project, website, sep = "-"), ".RData"))))
     }
     if (is.null(dataset) == FALSE) {
         if (is.data.frame(dataset)==TRUE) {
-            save(dataset, file = file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".RData")))
-            print(paste("Dataset saved in", file.path(project, website, paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".RData"))))
+            saveRDS(object = dataset, file = file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = "-"), ".rds")))
+            message(paste("Dataset saved in", file.path(project, website, paste0(paste(Sys.Date(), project, website, "dataset", sep = "-"), ".rds"))))
         } else if (dataset == TRUE) {
-            dataset <- cbind(metadata, contents, stringsAsFactors = FALSE)
-            save(dataset, file = file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".RData")))
-            print(paste("Dataset saved in", file.path(project, website, paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".RData"))))
-        }
-    }
-    if (is.null(corpus)==FALSE) {
-        if (quanteda::is.corpus(corpus)==TRUE) {
-            save(corpus, file = file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "corpusQ", sep = " - "), ".RData")))
-            message(paste("Corpus of the 'quanteda' type saved in", file.path(project, website, paste0(paste(Sys.Date(), project, website, "corpusQ", sep = " - "), ".RData"))))
-        } else {
-            save(corpus, file = file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "corpusTM", sep = " - "), ".RData")))
-            message(paste("Corpus of the 'tm' type saved in", file.path(project, website, paste0(paste(Sys.Date(), project, website, "corpusTM", sep = " - "), ".RData"))))
-        }
+            dataset <- dplyr::bind_cols(tibble::data_frame(doc_id = metadata$doc_id, text = text), metadata %>% select(-doc_id))
+            saveRDS(object = dataset, file = file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = "-"), ".rds")))
+            message(paste("Dataset saved in", file.path(project, website, paste0(paste(Sys.Date(), project, website, "dataset", sep = "-"), ".rds"))))
+            }
     }
     if (is.null(tidyCorpus)==FALSE) {
             saveRDS(object = tidyCorpus, file = file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "tidyCorpus", sep = " - "), ".rds")))
             message(paste("Tidy corpus saved in", file.path(project, website, paste0(paste(Sys.Date(), project, website, "tidyCorpus", sep = " - "), ".rds"))))
     }
-    if (is.null(corpusDtm)==FALSE) {
-        if (quanteda::is.dfm(corpusDtm)) {
-            save(corpusDtm, file = file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "corpusDtmQ", sep = " - "), ".RData")))
-            message(paste("corpusDtm of the 'quanteda' type saved in", file.path(project, website, paste0(paste(Sys.Date(), project, website, "corpusDtmQ", sep = " - "), ".RData"))))
-        } else {
-            save(corpusDtm, file = file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "corpusDtmTM", sep = " - "), ".RData")))
-            message(paste("corpusDtm of the 'tm' type saved in", file.path(project, website, paste0(paste(Sys.Date(), project, website, "corpusDtmTM", sep = " - "), ".RData"))))
-        }
- }
     if (exportCsv == TRUE) {
         write.csv(dataset, file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".csv")))
     }
@@ -119,7 +101,7 @@ SaveWebsite <- function(saveEnvironment = TRUE, dataset = NULL, corpus = NULL, t
         xlsx::write.xlsx(dataset, file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".xlsx")))
     }
     if (exportTxt == TRUE) {
-        writeLines(paste(paste("Date:", dataset$date), paste("Title:", dataset$title), paste("Link:", dataset$link), paste("ID:", dataset$id), dataset$contents, " ___  ______  ______  ______  ______  ______  ______  ______  ______  ___\n  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__\n (______)(______)(______)(______)(______)(______)(______)(______)(______)\n", sep = "\n"), file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".txt")))
+        writeLines(paste(paste("Date:", dataset$date), paste("Title:", dataset$title), paste("Link:", dataset$link), paste("ID:", dataset$id), dataset$text, " ___  ______  ______  ______  ______  ______  ______  ______  ______  ___\n  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__\n (______)(______)(______)(______)(______)(______)(______)(______)(______)\n", sep = "\n"), file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".txt")))
         message(paste("Full dataset in txt format saved in", file.path(project, website, paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".txt"))))
     }
 }

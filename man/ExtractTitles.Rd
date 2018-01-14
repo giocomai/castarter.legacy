@@ -4,27 +4,28 @@
 \alias{ExtractTitles}
 \title{Extracts titles of individual pages}
 \usage{
-ExtractTitles(articlesHtml = NULL, links = NULL, method = "htmlTitle",
+ExtractTitles(container = "title", containerClass = NULL,
+  containerId = NULL, htmlLocation = NULL, id = NULL, links = NULL,
   removePunctuation = FALSE, onlyStandardCharacters = FALSE,
   removeString = NULL, removeEverythingBefore = NULL,
   removeEverythingAfter = NULL, customXpath = "", maxCharacters = NULL,
-  progressBar = TRUE, exportParameters = TRUE, project = NULL,
-  website = NULL)
+  progressBar = TRUE, exportParameters = TRUE, importParameters = NULL,
+  project = NULL, website = NULL)
 }
 \arguments{
-\item{articlesHtml}{A character vector of html files.}
+\item{container}{HTML element where the title is found. The title can usually be found in one of the following:
+\itemize{
+ \item{"links"}{: Extract the title from links (required). Titles are taken from the textual element of the link taken from the index pages. }
+ \item{"title"}{: Default. Extract the title from the Html <title> field, usually shown on the top bar of web browsers.}
+ \item{"h1"}{: Extract the title from the first occurence of text that has heading 1, the <h1> html tag, as its style.}
+ \item{"h2"}{: Extract the title from the first occurence of text that has heading 2, the <h2> html tag, as its style.}
+}}
+
+\item{htmlLocation}{Path to folder where html files, tipically downloaded with DownloadContents(links) are stored. If not given, it defaults to the Html folder inside project/website folders.}
+
+\item{id}{Defaults to NULL. If provided, it should be a vector of integers. Only html files corresponding to given id in the relevant htmlLocation will be processed.}
 
 \item{links}{A named character vector, typically created by the ExtractLinks function.}
-
-\item{method}{Title extract method, to be given as a text string. Available options are:
-\itemize{
- \item{"indexLink"}{: Default. Extract the title from links (required). Titles are taken from the textual element of the link taken from the index pages. }
- \item{"htmlTitle"}{: Extract the title from the Html <title> field, usually shown on the top bar of web browsers.}
- \item{"htmlH1"}{: Extract the title from the first occurence of text that has heading 1, the <h1> html tag, as its style.}
- \item{"htmlH2"}{: Extract the title from the first occurence of text that has heading 2, the <h2> html tag, as its style.}
- \item{"customXpath"}{: Allows to input a custom Xpath to extract the title.}
- \item{"beginning"}{: Outputs as title the first textual elements found in the html file. Title length can be defined with the 'maxCharacters' option.}
-}}
 
 \item{removeString}{A character vector of one or more strings to be removed from the extracted title.}
 
@@ -33,6 +34,10 @@ ExtractTitles(articlesHtml = NULL, links = NULL, method = "htmlTitle",
 \item{maxCharacters}{An integer. Defines the maximum number of characters to be kept in the output for each title.}
 
 \item{progressBar}{Logical, defaults to TRUE. If FALSE, progress bar is not shown (useful for example when including scripts in rmarkdown)}
+
+\item{exportParameters}{Defaults to TRUE. If TRUE, function parameters are exported in the project/website folder. They can be used to update the corpus. Requires parameters project/website.}
+
+\item{importParameters}{Defaults to NULL. If TRUE, ignores all parameters given in the function call, and imports them from parameters file stored in "project/website/Logs/parameters.rds".}
 }
 \value{
 A character vector of article titles.

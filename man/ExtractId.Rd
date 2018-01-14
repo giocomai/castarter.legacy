@@ -4,10 +4,14 @@
 \alias{ExtractId}
 \title{Extracts id from filename}
 \usage{
-ExtractId(project = NULL, website = NULL, accordingToDate = FALSE,
-  dates = NULL)
+ExtractId(sample = NULL, htmlLocation = NULL, project = NULL,
+  website = NULL)
 }
 \arguments{
+\item{sample}{Defaults to NULL. If given, it must be an integer corresponding to the desired sample size.}
+
+\item{htmlLocation}{Path to folder where html files, tipically downloaded with DownloadContents(links) are stored. If not given, it defaults to the `Html` folder inside project/website folders.}
+
 \item{project}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
 
 \item{website}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.Defaults to NULL. If no website is provided, exported files are saved in the project/Outputs folder.}

@@ -1,8 +1,13 @@
 Package: castarter
 Type: Package
 Title: Content analysis starter toolkit for R
+<<<<<<< HEAD
+Version: 0.2.2.90004
+Date: 2018-01-05
+=======
 Version: 0.2.1.90005
 Date: 2017-06-27
+>>>>>>> master
 Author: Giorgio Comai <giorgiocomai@gmail.com>
 Maintainer: Giorgio Comai <giorgiocomai@gmail.com>
 Description: castarter is an R package that facilitates the process of extracting
@@ -10,38 +15,20 @@ Description: castarter is an R package that facilitates the process of extractin
     qualitative content analysis.
 License: GPL-3
 Depends:
-    data.table,
-    tm,
-    NLP,
-    scales,
     dplyr
 Imports:
     stringr,
-    gtools,
-    boilerpipeR,
     lubridate,
-    tm,
-    SnowballC,
     ggplot2,
-    wordcloud,
-    plyr,
-    xlsx,
-    slam,
-    zoo,
-    RCurl,
-    XML, 
-    xts, 
-    dygraphs, 
+    xml2, 
     settings,
-    quanteda,
     tidyr,
-    reshape2,
-    shiny,
-    svglite,
-    mgcv,
-    tidytext
+    purrr,
+    rvest,
+    zoo
 Suggests:
     knitr,
-    testthat
+    testthat,
+    shiny
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1

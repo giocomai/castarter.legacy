@@ -15,7 +15,7 @@
 #' projectsAndWebsites <- c("ProjectX/Website1", "ProjectY/Website3", "ProjectZ/Website2")
 #' allDatasets <- LoadDatasets(projectsAndWebsites)
 LoadDatasets <- function(projectsAndWebsites = NULL, type = "dataset", removeNAdates = TRUE) {
-    if (gtools::invalid(projectsAndWebsites) == TRUE) {
+    if (is.null(projectsAndWebsites) == TRUE) {
         project <- CastarterOptions("project")
         website <- CastarterOptions("website")
         projectsAndWebsites <- list(projectsAndWebsites = c(project, website))
@@ -26,9 +26,9 @@ LoadDatasets <- function(projectsAndWebsites = NULL, type = "dataset", removeNAd
     for (i in 1:length(projectsAndWebsites)) {
         project <- projectsAndWebsites[[i]][1]
         website <- projectsAndWebsites[[i]][2]
-        if (type == "corpusQ") {
-            datasetFilename <- sort(list.files(file.path(project, website, "Dataset"))[stringr::str_extract(list.files(file.path(project, website, "Dataset")), "corpusQ.RData") == "corpusQ.RData"], decreasing = TRUE)[1]
-        } else if (type == "dataset") {
+        if (type == "dataset") {
+            datasetFilename <- sort(list.files(file.path(project, website, "Dataset"))[stringr::str_extract(list.files(file.path(project, website, "Dataset")), "dataset.rds") == "dataset.rds"], decreasing = TRUE)[1]
+        } else if (type == "datasetRdata") {
             datasetFilename <- sort(list.files(file.path(project, website, "Dataset"))[stringr::str_extract(list.files(file.path(project, website, "Dataset")), "dataset.RData") == "dataset.RData"], decreasing = TRUE)[1]
         } else if (type == "corpusDtmQ") {
             datasetFilename <- sort(list.files(file.path(project, website, "Dataset"))[stringr::str_extract(list.files(file.path(project, website, "Dataset")), "corpusDtmQ.RData") == "corpusDtmQ.RData"], decreasing = TRUE)[1]
@@ -41,34 +41,22 @@ LoadDatasets <- function(projectsAndWebsites = NULL, type = "dataset", removeNAd
         }
         lastSavedDatasets <- lastSavedDatasets[!is.na(lastSavedDatasets)]
     }
-    if (type == "corpusQ") {
+    if (type == "dataset") {
+        allDatasets <- tibble::data_frame()
         for (i in 1:length(lastSavedDatasets)) {
-            load(lastSavedDatasets[i])
-            if (exists("corpusTemp") == TRUE) {
-                corpusAll <- corpusTemp+corpus
-                rm(corpusTemp)
-            } else if (exists("corpusAll")) {
-                corpusAll <- corpusAll+corpus
-            } else {
-                corpusTemp <- corpus
-            }
-            rm(corpus)
-        }
-    } else if (type == "dataset") {
-        allDatasets <- data.frame()
-        for (i in 1:length(lastSavedDatasets)) {
-            load(lastSavedDatasets[i])
+            dataset <- readRDS(lastSavedDatasets[i])
             # introduced for backward compatibility with datasets created with castarter ver<0.2 #legacy
             colnames(x = dataset)[colnames(dataset)=="nameOfProject"]<-"project"
             colnames(x = dataset)[colnames(dataset)=="nameOfWebsite"]<-"website"
-            colnames(x = dataset)[colnames(dataset)=="articlesTxt"]<-"contents"
+            colnames(x = dataset)[colnames(dataset)=="articlesTxt"]<-"text"
+            colnames(x = dataset)[colnames(dataset)=="contents"]<-"text"
             colnames(x = dataset)[colnames(dataset)=="articlesId"]<-"id"
             colnames(x = dataset)[colnames(dataset)=="articlesLinks"]<-"link"
             colnames(x = dataset)[colnames(dataset)=="links"]<-"link"
             colnames(x = dataset)[colnames(dataset)=="titles"]<-"title"
             colnames(x = dataset)[colnames(dataset)=="dates"]<-"date"
-            dataset$contents <- base::iconv(x = dataset$contents, to = "UTF-8")
-            allDatasets <- rbind(allDatasets, dataset)
+            dataset$text <- base::iconv(x = dataset$text, to = "UTF-8")
+            allDatasets <- dplyr::bind_rows(allDatasets, dataset)
             rm(dataset)
         }
         if (removeNAdates == TRUE) {
