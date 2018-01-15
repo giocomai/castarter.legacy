@@ -7,11 +7,12 @@
 ExtractText(container = NULL, containerClass = NULL, containerId = NULL,
   htmlLocation = NULL, id = NULL, metadata = NULL, export = FALSE,
   maxTitleCharacters = 80, removeString = NULL, divClass = NULL,
-  divId = NULL, customXpath = NULL, removeEverythingAfter = NULL,
-  removeEverythingBefore = NULL, removePunctuationInFilename = TRUE,
-  removeTitleFromTxt = FALSE, titles = NULL, keepEverything = FALSE,
-  importParameters = NULL, exportParameters = TRUE, progressBar = TRUE,
-  project = NULL, website = NULL)
+  divId = NULL, customXpath = NULL, removeEverythingAfter_pre = NULL,
+  removeEverythingBefore_pre = NULL, removeEverythingBefore = NULL,
+  removeEverythingAfter = NULL, keepEverything = FALSE,
+  removePunctuationInFilename = TRUE, removeTitleFromTxt = FALSE,
+  titles = NULL, importParameters = NULL, exportParameters = TRUE,
+  progressBar = TRUE, project = NULL, website = NULL)
 }
 \arguments{
 \item{htmlLocation}{Path to folder where html files, tipically downloaded with DownloadContents(links) are stored. If not given, it defaults to the Html folder inside project/website folders.}
@@ -26,9 +27,13 @@ ExtractText(container = NULL, containerClass = NULL, containerId = NULL,
 
 \item{removeString}{A character vector of one or more strings. Provided strings are removed from each article.}
 
-\item{removePunctuationInFilename}{Logical, defaults to TRUE. If TRUE (and export == TRUE), it removes punctuation signs from filemanes to prevent errors in saving files.}
+\item{removeEverythingAfter_pre}{Defaults to NULL. Everything after this string is removed before processing the HTML file.}
 
-\item{keepEverything}{Logical. If TRUE, the functions calls the boilerpipeR::KeepEverythingExtractor from boilerpipeR, instead of boilerpipeR::ArticleExtractor.}
+\item{removeEverythingBefore_pre}{Defaults to NULL. Everything before this string is removed before processing the HTML file.}
+
+\item{keepEverything}{Logical. If TRUE, extracts all visible text.}
+
+\item{removePunctuationInFilename}{Logical, defaults to TRUE. If TRUE (and export == TRUE), it removes punctuation signs from filemanes to prevent errors in saving files.}
 }
 \value{
 A character vector of text, and individual articles saved as txt files in a dedicated folder if 'export' is set to TRUE.

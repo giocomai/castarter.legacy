@@ -5,7 +5,9 @@
 #' @param id Defaults to NULL. If provided, it should be a vector of integers. Only html files corresponding to given id in the relevant htmlLocation will be processed.
 #' @param htmlLocation Path to folder where html files, tipically downloaded with DownloadContents(links) are stored. If not given, it defaults to the Html folder inside project/website folders.
 #' @param metadata Defaults to NULL. A data.frame presumably created with ExportMetadata() including information on all articles. Number of rows must correspond to the number of articles to be elaborated. This is required when export == TRUE, in order to provide meaningful filenames.
-#' @param keepEverything Logical. If TRUE, the functions calls the boilerpipeR::KeepEverythingExtractor from boilerpipeR, instead of boilerpipeR::ArticleExtractor.
+#' @param removeEverythingBefore_pre Defaults to NULL. Everything before this string is removed before processing the HTML file.
+#' @param removeEverythingAfter_pre Defaults to NULL. Everything after this string is removed before processing the HTML file.
+#' @param keepEverything Logical. If TRUE, extracts all visible text.
 #' @param removeString A character vector of one or more strings. Provided strings are removed from each article.
 #' @param export Logical, defaults to TRUE. If TRUE, textual contents are saved as individual txt files in a dedicated folder. Filename is based on the medatadata.
 #' @param maxTitleCharacters Maximum number of characters allowed in the title. Defaults to 80.
@@ -19,7 +21,13 @@ ExtractText <- function(container = NULL,
                         containerId = NULL,
                         htmlLocation = NULL,
                         id = NULL,
-                        metadata = NULL, export = FALSE, maxTitleCharacters = 80, removeString = NULL, divClass = NULL, divId = NULL, customXpath = NULL, removeEverythingAfter = NULL, removeEverythingBefore = NULL, removePunctuationInFilename = TRUE, removeTitleFromTxt = FALSE, titles = NULL, keepEverything = FALSE,
+                        metadata = NULL, export = FALSE, maxTitleCharacters = 80, removeString = NULL, divClass = NULL, divId = NULL, customXpath = NULL,
+                        removeEverythingAfter_pre = NULL,
+                        removeEverythingBefore_pre = NULL,
+                        removeEverythingBefore = NULL,
+                        removeEverythingAfter = NULL,
+                        keepEverything = FALSE,
+                        removePunctuationInFilename = TRUE, removeTitleFromTxt = FALSE, titles = NULL,
                         importParameters = NULL,
                         exportParameters = TRUE, progressBar = TRUE, project = NULL, website = NULL) {
     if (is.null(project) == TRUE) {
@@ -72,15 +80,35 @@ ExtractText <- function(container = NULL,
     if (progressBar == TRUE) {
         pb <- txtProgressBar(min = 0, max = length(HtmlFiles), style = 3, title = "Extracting text")
     }
-    # if no div or such, get all links
     for (i in seq_along(HtmlFiles)) {
-        temp <-  tryCatch(expr = xml2::read_html(HtmlFiles[i]),
-                          error = function(e) {
-                              warning(paste("Could not read", HtmlFiles[i]))
-                              NA
-                          })
+        if (is.null(removeEverythingAfter_pre)==FALSE|is.null(removeEverythingBefore_pre)==FALSE) {
+            temp <-  tryCatch(expr = paste(readLines(HtmlFiles[i]), collapse = "\n"),
+                              error = function(e) {
+                                  warning(paste("Could not read", HtmlFiles[i]))
+                                  NA
+                              })
+            if (is.null(removeEverythingAfter_pre)==FALSE) {
+                temp <- base::gsub(base::paste0(removeEverythingAfter_pre, ".*"), "", temp, fixed = FALSE)
+            }
+            if (is.null(removeEverythingBefore_pre)==FALSE){
+                temp <- base::gsub(base::paste0(".*", removeEverythingBefore_pre), "", temp, fixed = FALSE)
+            }
+            temp <- tryCatch(expr = xml2::read_html(temp),
+                             error = function(e) {
+                                 warning(paste("Could not read", HtmlFiles[i]))
+                                 NA
+                             })
+        } else {
+            temp <-  tryCatch(expr = xml2::read_html(HtmlFiles[i]),
+                              error = function(e) {
+                                  warning(paste("Could not read", HtmlFiles[i]))
+                                  NA
+                              })
+        }
         if (is.element("xml_node", set = class(temp))==TRUE) {
-            if (is.null(containerClass)==TRUE&is.null(containerId)==TRUE) {
+            if (keepEverything == TRUE) {
+                temp <- temp %>% rvest::html_text()
+            } else if (is.null(containerClass)==TRUE&is.null(containerId)==TRUE) {
                 temp <- temp %>%
                     rvest::html_nodes(container) %>% rvest::html_text()
             } else if (is.null(containerClass)==FALSE) {
