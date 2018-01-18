@@ -35,7 +35,9 @@ ExtractLinks <- function(htmlLocation = NULL,
                          indexLinks = NULL,
                          sortLinks = TRUE,
                          linkTitle = TRUE,
-                         export = FALSE, appendString = NULL, removeString = NULL,
+                         appendString = NULL,
+                         export = FALSE,
+                         removeString = NULL,
                          progressBar = TRUE,
                          project = NULL,
                          website = NULL,
@@ -160,6 +162,9 @@ ExtractLinks <- function(htmlLocation = NULL,
         names(links) <- linkTitles
     } else if (is.null(domain)==FALSE&is.null(names(links))==TRUE) {
         links <- paste0(domain, links)
+    }
+    if (is.null(appendString)==FALSE) {
+        links <- paste0(links, appendString)
     }
     links <- gsub("//", "/", links, fixed = TRUE)
     links <- gsub("http:/", "http://", links, fixed = TRUE)
