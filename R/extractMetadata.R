@@ -99,9 +99,12 @@ ExtractDates <- function(dateFormat = "dmY",
     }
     datesTxt <- vector(mode = "character", length = length(HtmlFiles))
     if (progressBar == TRUE) {
-        pb <- txtProgressBar(min = 0, max = length(HtmlFiles), style = 3, title = "Extracting dates")
+        pb <- dplyr::progress_estimated(n = length(HtmlFiles), min_time = 1)
     }
     for (i in seq_along(HtmlFiles)) {
+        if (progressBar == TRUE) {
+            pb$tick()$print()
+        }
         temp <-  tryCatch(expr = xml2::read_html(HtmlFiles[i]),
                           error = function(e) {
                               warning(paste("Could not read", HtmlFiles[i]))
@@ -141,13 +144,7 @@ ExtractDates <- function(dateFormat = "dmY",
             } else {
                 datesTxt[i] <- temp
             }
-            if (progressBar == TRUE) {
-                setTxtProgressBar(pb, i)
-            }
         }
-    }
-    if (progressBar == TRUE) {
-        close(pb)
     }
     if (keepAllString == FALSE) {
         if (is.null(customRegex) == FALSE) {
@@ -402,10 +399,13 @@ ExtractTitles <- function(container = "title",
         }
         titles <- vector(mode = "character", length = length(HtmlFiles))
         if (progressBar == TRUE) {
-            pb <- txtProgressBar(min = 0, max = length(HtmlFiles), style = 3, title = "Extracting titles")
+            pb <- dplyr::progress_estimated(n = length(HtmlFiles), min_time = 1)
         }
         # if no div or such, get all links
         for (i in seq_along(HtmlFiles)) {
+            if (progressBar == TRUE) {
+                pb$tick()$print()
+            }
             temp <-  tryCatch(expr = xml2::read_html(HtmlFiles[i]),
                               error = function(e) {
                                   warning(paste("Could not read", HtmlFiles[i]))
@@ -432,13 +432,7 @@ ExtractTitles <- function(container = "title",
                 } else {
                     titles[i] <- temp
                 }
-                if (progressBar == TRUE) {
-                    setTxtProgressBar(pb, i)
-                }
             }
-        }
-        if (progressBar == TRUE) {
-            close(pb)
         }
     }
     if (is.null(removeString) == FALSE) {

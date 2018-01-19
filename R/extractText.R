@@ -78,9 +78,12 @@ ExtractText <- function(container = NULL,
     }
     text <- vector(mode = "character", length = length(HtmlFiles))
     if (progressBar == TRUE) {
-        pb <- txtProgressBar(min = 0, max = length(HtmlFiles), style = 3, title = "Extracting text")
+        pb <- dplyr::progress_estimated(n = length(HtmlFiles), min_time = 1)
     }
     for (i in seq_along(HtmlFiles)) {
+        if (progressBar == TRUE) {
+            pb$tick()$print()
+        }
         if (is.null(removeEverythingAfter_pre)==FALSE|is.null(removeEverythingBefore_pre)==FALSE) {
             temp <-  tryCatch(expr = paste(readLines(HtmlFiles[i]), collapse = "\n"),
                               error = function(e) {
@@ -128,13 +131,7 @@ ExtractText <- function(container = NULL,
             } else {
                 text[i] <- temp
             }
-            if (progressBar == TRUE) {
-                setTxtProgressBar(pb, i)
-            }
         }
-    }
-    if (progressBar == TRUE) {
-        close(pb)
     }
     if (removeTitleFromTxt == TRUE) {
         if (is.null(titles) == TRUE) {
