@@ -89,11 +89,14 @@ ExtractLinks <- function(htmlLocation = NULL,
     indexHtml <- indexHtml[stringr::str_extract(string = indexHtml, pattern = "[[:digit:]]+[[:punct:]]html") %>% stringr::str_sub(start = 1L, end = -6L) %>% as.integer() %>% order()]
     tempLinks <- vector("list", length(indexHtml))
     if (progressBar == TRUE) {
-        pb <- txtProgressBar(min = 0, max = length(indexHtml), style = 3, title = "Extracting links")
+        pb <- dplyr::progress_estimated(n = length(indexHtml), min_time = 1)
     }
     if (is.null(container)) {
         # if no div or such, get all links
         for (i in seq_along(indexHtml)) {
+            if (progressBar == TRUE) {
+                pb$tick()$print()
+            }
             temp <-  xml2::read_html(indexHtml[i])
             if (is.element("xml_node", set = class(temp))==TRUE) {
                 temp <- temp %>%
@@ -103,13 +106,13 @@ ExtractLinks <- function(htmlLocation = NULL,
                 if (linkTitle == TRUE) {
                     names(tempLinks[[i]]) <- temp %>% rvest::html_text()
                 }
-                if (progressBar == TRUE) {
-                    setTxtProgressBar(pb, i)
-                }
             }
         }
     } else if (is.null(containerId)) {
         for (i in seq_along(indexHtml)) {
+            if (progressBar == TRUE) {
+                pb$tick()$print()
+            }
             temp <- xml2::read_html(indexHtml[i])
             if (is.element("xml_node", set = class(temp))==TRUE) {
                 temp <- temp %>%
@@ -119,13 +122,13 @@ ExtractLinks <- function(htmlLocation = NULL,
                 if (linkTitle == TRUE) {
                     names(tempLinks[[i]]) <- temp %>% rvest::html_text()
                 }
-                if (progressBar == TRUE) {
-                    setTxtProgressBar(pb, i)
-                }
             }
         }
     } else if (is.null(containerClass)) {
         for (i in seq_along(indexHtml)) {
+            if (progressBar == TRUE) {
+                pb$tick()$print()
+            }
             temp <- xml2::read_html(indexHtml[i])
             if (is.element("xml_node", set = class(temp))==TRUE) {
                 temp <- temp %>%
@@ -135,14 +138,8 @@ ExtractLinks <- function(htmlLocation = NULL,
                 if (linkTitle == TRUE) {
                     names(tempLinks[[i]]) <- temp %>% rvest::html_text()
                 }
-                if (progressBar == TRUE) {
-                    setTxtProgressBar(pb, i)
-                }
             }
         }
-    }
-    if (progressBar == TRUE) {
-        close(pb)
     }
     links <- unlist(tempLinks, recursive = FALSE)
     # introduce logical filter vector
