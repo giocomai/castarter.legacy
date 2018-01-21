@@ -68,14 +68,14 @@ DownloadContents <- function(links,
     }
     if (wgetSystem == TRUE) {
         if (createScript == TRUE) {
-            if (file.exists(file.path(project, website, "downloadArticles.sh")) == TRUE) {
-                file.remove(file.path(project, website, "downloadArticles.sh"))
+            if (file.exists(file.path(project, website, "downloadPages.sh")) == TRUE) {
+                file.remove(file.path(project, website, "downloadPages.sh"))
             }
             write(x = paste0("wget '", links[linksToDownload], "' -O '",
                             file.path("..", "..", htmlFilePath, paste0(articlesId[linksToDownload], ".html")), "'",
                             " -t 1 -T 20", "; ", "sleep ", wait),
-                  file = file.path(project, website, "downloadArticles.sh"), append = TRUE)
-            system(paste("chmod +x", file.path(project, website, "downloadArticles.sh")))
+                  file = file.path(project, website, "downloadPages.sh"), append = TRUE)
+            system(paste("chmod +x", file.path(project, website, "downloadPages.sh")))
         } else {
             options(useFancyQuotes = FALSE)
             for (i in links[linksToDownload]) {
