@@ -8,8 +8,8 @@ ExtractLinks(htmlLocation = NULL, domain = NULL, partOfLink = NULL,
   partOfLinkToExclude = NULL, extractText = FALSE, container = NULL,
   containerClass = NULL, containerId = NULL, attributeType = NULL,
   minLength = NULL, maxLength = NULL, indexLinks = NULL,
-  sortLinks = TRUE, linkTitle = TRUE, export = FALSE,
-  appendString = NULL, removeString = NULL, progressBar = TRUE,
+  sortLinks = TRUE, linkTitle = TRUE, appendString = NULL,
+  export = FALSE, removeString = NULL, progressBar = TRUE,
   project = NULL, website = NULL, importParameters = NULL,
   exportParameters = TRUE)
 }
