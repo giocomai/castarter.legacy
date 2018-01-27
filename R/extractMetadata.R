@@ -135,7 +135,7 @@ ExtractTitles <- function(container = "title",
         titles <- gsub(paste0(removeEverythingAfter, ".*"), replacement = "", x = titles)
     }
     if (is.null(removeEverythingBefore) == FALSE) {
-        titles <- gsub(paste0(removeEverythingBefore, "*."), replacement = "", x = titles)
+        titles <- gsub(paste0(".*", removeEverythingBefore), replacement = "", x = titles)
     }
     if (is.null(onlyStandardCharacters) == FALSE) {
         if (onlyStandardCharacters == TRUE) {
