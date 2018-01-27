@@ -119,11 +119,31 @@ ExtractDates <- function(dateFormat = "dmY",
                         rvest::html_text()
                 } else {
                     temp <-  temp %>%
-                        rvest::html_attr(attribute)
+                        rvest::html_attr(attribute) %>%
+                        rvest::html_text()
                 }
-
+            } else if (is.null(container)==FALSE&is.null(containerClass)==FALSE&is.null(attribute)==FALSE) {
+                temp <- tryCatch(expr = temp %>%
+                             rvest::html_nodes(container) %>%
+                             rvest::html_nodes(xpath = paste0("//", container, "[@class='", containerClass, "']")) %>%
+                             rvest::html_attr(attribute),
+                         error = function(e) {
+                             warning(paste("Could not find attribute in", HtmlFiles[i]))
+                             NA
+                         })
+            } else if (is.null(container)==FALSE&is.null(containerClass)==TRUE&is.null(attribute)==FALSE) {
+                temp <- tryCatch(expr = temp %>%
+                             rvest::html_nodes(container) %>%
+                             rvest::html_attr(attribute),
+                         error = function(e) {
+                             warning(paste("Could not find attribute in", HtmlFiles[i]))
+                             NA
+                         })
             } else if (is.null(containerClass)==TRUE&is.null(containerId)==TRUE&is.null(removeEverythingBefore) == FALSE) {
                 temp <- as.character(temp)
+                if (is.null(removeEverythingBefore) == FALSE) {
+                    temp <- stringr::str_replace(string = temp, pattern = stringr::regex(paste0(".*", removeEverythingBefore)), replacement = "")
+                }
             } else if (is.null(containerClass)==TRUE&is.null(containerId)==TRUE) {
                 temp <- temp %>%
                     rvest::html_nodes(container) %>% rvest::html_text()
@@ -131,7 +151,7 @@ ExtractDates <- function(dateFormat = "dmY",
                 temp <- temp %>%
                     rvest::html_nodes(xpath = paste0("//", container, "[@class='", containerClass, "']")) %>%
                     rvest::html_text()
-            } else if (is.null(containerClass)==FALSE) {
+            } else if (is.null(containerId)==FALSE) {
                 temp <- temp %>%
                     rvest::html_nodes(xpath = paste0("//", container, "[@id='", containerId, "']")) %>%
                     rvest::html_text()
