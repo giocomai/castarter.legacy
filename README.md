@@ -1,9 +1,18 @@
 An introduction to 'castarter' - content analysis starter toolkit for R
 ================
 Giorgio Comai
-2018-01-14
+2018-01-28
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+Preliminary note (2018-01-28)
+-----------------------------
+
+`castarter` is being completely rewritten in order to implement a number of enhancements. As of today, it is again possible to use all key functions for downloading sections of websites, extracting text, and key metadata.
+
+An example of a script that generates such a dataset is [now available](https://github.com/giocomai/castarter/blob/master/inst/R-Script-examples/Kremlin_en.R).
+
+An example Shiny app that allows to explore the dataset thus created is now [part of the package](https://github.com/giocomai/castarter/blob/master/inst/R-Script-examples/Kremlin_en.R) and [can be seen in action online](https://giocomai.shinyapps.io/Kremlin_en/).
+
 Preliminary note (2018-01-14)
 -----------------------------
 
