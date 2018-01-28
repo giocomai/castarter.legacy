@@ -328,7 +328,7 @@ ExportMetadata <- function(dates, id, titles, language, links, exportXlsx = FALS
     if (is.null(ignoreVector) == FALSE) {
         links <- links[ignoreVector]
     }
-    metadata <- tibble::data_frame(doc_id = paste(website, id, sep = "-"), website = website, id = id, date = dates, title = titles, language = language, link = links, check.names = FALSE, stringsAsFactors = FALSE)
+    metadata <- tibble::data_frame(doc_id = paste(website, id, sep = "-"), website = website, id = id, date = dates, title = titles, language = language, link = links)
     if (accordingToDate == TRUE) {
         metadata <- metadata[order(metadata$date), ]
     }
