@@ -17,7 +17,7 @@ shinyServer(function(input, output) {
           castarter::ShowRelativeTS(terms = as.character(tolower(trimws(stringr::str_split(string = input$term, pattern = ",", simplify = TRUE)))),
                                     dataset = dataset,
                                     type = "graph",
-                                    rollingAverage = input$rollingAverage)
+                                    rollingAverage = input$rollingAverage, startDate = input$dateRange[1], endDate = input$dateRange[2])
       }
   })
 
