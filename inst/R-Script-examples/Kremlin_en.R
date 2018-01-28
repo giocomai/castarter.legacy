@@ -43,7 +43,8 @@ links <- ExtractLinks(domain = "http://en.kremlin.ru/",
                       partOfLinkToExclude = c("page", "photos", "videos", "special"),
                       minLength = nchar("http://en.kremlin.ru/events/president/news/"))
 
-links2 <- stringr::str_replace(string = links, pattern = stringr::fixed("news/"), replacement = "news/copy/")
+# for the print version
+# links2 <- stringr::str_replace(string = links, pattern = stringr::fixed("news/"), replacement = "news/copy/")
 
 # Explore links and check if more or less alright, if number realistic
 # length(links)/length(indexLinks)
@@ -66,7 +67,6 @@ titles <- ExtractTitles(removeEverythingAfter = " •")
 
 
 dates <- ExtractDates(container = "time",
-                      containerClass = "read__published",
                       attribute = "datetime",
                       dateFormat = "Ymd",
                       keepAllString = TRUE)
