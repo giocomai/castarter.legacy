@@ -78,10 +78,10 @@ ShowAbsoluteTS <- function(terms,
             ggplot2::theme(legend.title=ggplot2::element_blank()) +
             ggplot2::scale_color_brewer(type = "qual", palette = 6) +
             if (is.null(website) == TRUE) {
-                ggplot2::labs(title = paste("Number of occurrences of ", paste(sQuote(terms), collapse = ", ")),
+                ggplot2::labs(title = paste("Number of occurrences per day of ", paste(sQuote(terms), collapse = ", ")),
                               caption = paste0("Calculated on a ", rollingAverage, "-days rolling average"))
             } else {
-                ggplot2::labs(title = paste("Number of occurrences of", paste(sQuote(terms), collapse = ", "), "on", website),
+                ggplot2::labs(title = paste("Number of occurrences per day of", paste(sQuote(terms), collapse = ", "), "on", website),
                               caption = paste0("Calculated on a ", rollingAverage, "-days rolling average"))
             }
         if (length(terms)>1) {
