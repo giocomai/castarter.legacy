@@ -46,7 +46,7 @@ ShowAbsoluteTS <- function(terms,
         dataset <- dataset %>% dplyr::filter(date >= as.Date(startDate))
     }
     if (is.null(endDate)==FALSE) {
-        dataset <- dataset %>% dplyr::filter(date >= as.Date(startDate))
+        dataset <- dataset %>% dplyr::filter(date <= as.Date(endDate))
     }
     temp <-
         bind_cols(dplyr::as_data_frame(sapply(terms, function(x) stringr::str_count(string = dataset$text, pattern = stringr::regex(x, ignore_case = TRUE)))),
@@ -180,7 +180,7 @@ ShowRelativeTS <- function(terms,
         dataset <- dataset %>% dplyr::filter(date >= as.Date(startDate))
     }
     if (is.null(endDate)==FALSE) {
-        dataset <- dataset %>% dplyr::filter(date >= as.Date(startDate))
+        dataset <- dataset %>% dplyr::filter(date <= as.Date(endDate))
     }
     temp <-
         bind_cols(dplyr::as_data_frame(sapply(terms, function(x) stringr::str_count(string = dataset$text, pattern = stringr::regex(x, ignore_case = TRUE)))),
