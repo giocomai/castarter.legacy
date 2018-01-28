@@ -163,6 +163,9 @@ ExtractLinks <- function(htmlLocation = NULL,
     if (is.null(appendString)==FALSE) {
         links <- paste0(links, appendString)
     }
+    if (is.null(removeString)==FALSE) {
+        stringr::str_replace_all(string = links, pattern = stringr::fixed(removeString), replacement = "")
+    }
     links <- gsub("//", "/", links, fixed = TRUE)
     links <- gsub("http:/", "http://", links, fixed = TRUE)
     links <- gsub("https:/", "https://", links, fixed = TRUE)
