@@ -1,19 +1,19 @@
-#' Archives Html, Txt, and IndexHtml folders in .tar.gz files. 
+#' Archives Html, Txt, and IndexHtml folders in .tar.gz files.
 #'
-#' It archives  Html, Txt, and IndexHtml folders in .tar.gz files, and stores them in a dated sub-folder within the Archives sub-folder. 
-#' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
+#' It archives  Html, Txt, and IndexHtml folders in .tar.gz files, and stores them in a dated sub-folder within the Archives sub-folder.
+#' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.
 #' @param website Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
-#' @param removeArchivedFolders If equal to TRUE, it removes the folders and the original html and txt files from the hard disk, after having archived them. 
+#' @param removeArchivedFolders If equal to TRUE, it removes the folders and the original html and txt files from the hard disk, after having archived them.
 #' @export
 #' @section Warning:
 #' If the option removeArchivedFolders is enabled, the function actually deletes files from the hard disk. Files are removed only after they have been successfully stored in compressed .tar.gz file, but it is recommended to backup valuable data before enabling this option.
 #' @examples
 #' ArchiveFolders(project, website, removeArchivedFolders = FALSE))
 ArchiveFolders <- function(project = NULL, website = NULL, removeArchivedFolders = FALSE) {
-    if (gtools::invalid(project) == TRUE) {
+    if (is.null(project) == TRUE) {
         project <- CastarterOptions("project")
     }
-    if (gtools::invalid(website) == TRUE) {
+    if (is.null(website) == TRUE) {
         website <- CastarterOptions("website")
     }
     if (!file.exists(file.path(project, website, "Archives"))) {
@@ -22,7 +22,7 @@ ArchiveFolders <- function(project = NULL, website = NULL, removeArchivedFolders
     today <- Sys.Date()
     if (!file.exists(file.path(project, website, "Archives", today))) {
       dir.create(file.path(project, website, "Archives", today))
-    }    
+    }
     if (file.exists(file.path(project, website, "Html"))) {
         tar(file.path(project, website, "Archives", today, "Html.tar.gz"), file.path(project, website, "Html"), compression = "gzip")
     }
@@ -51,18 +51,18 @@ ArchiveFolders <- function(project = NULL, website = NULL, removeArchivedFolders
 #' @param html Logical, defaults to FALSE. If TRUE, restores previously archived html files in their standard folder.
 #' @param indeHtml Logical, defaults to FALSE. If TRUE, restores previously archived indexHtml files in their standard folder.
 #' @param txt Logical, defaults to FALSE. If TRUE, restores previously archived txt files in their standard folder.
-#' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. 
+#' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.
 #' @param website Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
 #' @export
 #' @section Warning:
-#' If the option overwrite is enabled, the function will overwrite files in Html, IndexHtml and Txt folders. 
+#' If the option overwrite is enabled, the function will overwrite files in Html, IndexHtml and Txt folders.
 #' @examples
 #' RestoreArchives(project, website, removeArchivedFolders = FALSE))
 RestoreArchives <- function(html = FALSE, indexHtml = FALSE, txt = FALSE, overwrite = FALSE, project = NULL, website = NULL) {
-    if (gtools::invalid(project) == TRUE) {
+    if (is.null(project) == TRUE) {
         project <- CastarterOptions("project")
     }
-    if (gtools::invalid(website) == TRUE) {
+    if (is.null(website) == TRUE) {
         website <- CastarterOptions("website")
     }
     if (html==TRUE) {
@@ -92,4 +92,4 @@ RestoreArchives <- function(html = FALSE, indexHtml = FALSE, txt = FALSE, overwr
             untar(tarfile = lastSavedTxtFile)
         }
     }
-} 
+}
