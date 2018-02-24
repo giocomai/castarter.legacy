@@ -145,7 +145,7 @@ ExtractLinks <- function(htmlLocation = NULL,
     # introduce logical filter vector
     linkFilter <- seq_along(links)
     if (is.null(partOfLink)==FALSE) {
-        linkFilter <- links %>% stringr::str_which(pattern = partOfLink)
+        linkFilter <- links %>% stringr::str_which(pattern = paste(partOfLink, collapse = "|"))
     }
     if (is.null(partOfLinkToExclude)==FALSE) {
         for (i in seq_along(partOfLinkToExclude)) {
