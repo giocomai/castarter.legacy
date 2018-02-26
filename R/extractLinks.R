@@ -108,7 +108,7 @@ ExtractLinks <- function(htmlLocation = NULL,
                 }
             }
         }
-    } else if (is.null(containerId)) {
+    } else if (is.null(containerId)==TRUE&is.null(containerClass)==FALSE) {
         for (i in seq_along(indexHtml)) {
             if (progressBar == TRUE) {
                 pb$tick()$print()
@@ -124,7 +124,7 @@ ExtractLinks <- function(htmlLocation = NULL,
                 }
             }
         }
-    } else if (is.null(containerClass)) {
+    } else if (is.null(containerClass)==TRUE&is.null(containerId)==FALSE) {
         for (i in seq_along(indexHtml)) {
             if (progressBar == TRUE) {
                 pb$tick()$print()
@@ -133,6 +133,22 @@ ExtractLinks <- function(htmlLocation = NULL,
             if (is.element("xml_node", set = class(temp))==TRUE) {
                 temp <- temp %>%
                     rvest::html_nodes(xpath = paste0("//", container, "[@id='", containerId, "']//a"))
+                tempLinks[[i]] <-  temp %>%
+                    xml2::xml_attr("href")
+                if (linkTitle == TRUE) {
+                    names(tempLinks[[i]]) <- temp %>% rvest::html_text()
+                }
+            }
+        }
+    } else if (is.null(containerClass)&is.null(containerId)) {
+        for (i in seq_along(indexHtml)) {
+            if (progressBar == TRUE) {
+                pb$tick()$print()
+            }
+            temp <- xml2::read_html(indexHtml[i])
+            if (is.element("xml_node", set = class(temp))==TRUE) {
+                temp <- temp %>%
+                    rvest::html_nodes(xpath = paste0("//", container, "//a"))
                 tempLinks[[i]] <-  temp %>%
                     xml2::xml_attr("href")
                 if (linkTitle == TRUE) {
