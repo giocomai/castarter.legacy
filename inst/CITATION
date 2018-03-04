@@ -1,0 +1,18 @@
+citHeader("To cite 'castarter' in publications use:")
+
+citEntry(entry = "Article",
+         title        = "Quantitative Analysis of Web Content in Support of Qualitative Research. Examples from the Study of Post-Soviet De Facto States",
+         author       = "Giorgio Comai",
+         journal      = "Studies of Transition States and Societies",
+         year         = "2017",
+         volume       = "9",
+         number       = "1",
+         pages        = "14--34",
+         url          = "http://publications.tlu.ee/index.php/stss/article/view/346/446/",
+
+         textVersion  =
+             paste("Comai, Giorgio (2017).",
+                   "Quantitative Analysis of Web Content in Support of Qualitative Research. Examples from the Study of Post-Soviet De Facto States",
+                   "Studies of Transition States and Societies, 9(1), 14-34.",
+                   "http://publications.tlu.ee/index.php/stss/article/view/346/446.")
+)
