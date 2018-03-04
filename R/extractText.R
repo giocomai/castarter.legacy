@@ -2,6 +2,11 @@
 #'
 #' Extracts textual contents from a vector of html files.
 #'
+#' @param container Defaults to NULL. If provided, it must be an html element such as "div", "span", etc.
+#' @param containerClass Defaults to NULL. If provided, also `container` must be given (and `containerId` must be NULL). Only text found inside the provided combination of container/class will be extracted.
+#' @param containerId Defaults to NULL. If provided, also `container` must be given (and `containerClass` must be NULL). Only text found inside the provided combination of container/class will be extracted.
+#' @param subElement Defaults to NULL. If provided, also `container` must be given. Only text within elements of given type under the chosen combination of container/containerClass will be extracted. When given, it will tipically be "p", to extract all p elements inside the selected div.
+#' @param noChildren Defaults to FALSE, i.e. by default all subelements of the selected combination (e.g. div with given class) are extracted. If TRUE, only text found under the given combination (but not its subelements) will be extracted. Corresponds to the xpath string `/node()[not(self::div)]`.
 #' @param id Defaults to NULL. If provided, it should be a vector of integers. Only html files corresponding to given id in the relevant htmlLocation will be processed.
 #' @param htmlLocation Path to folder where html files, tipically downloaded with DownloadContents(links) are stored. If not given, it defaults to the Html folder inside project/website folders.
 #' @param metadata Defaults to NULL. A data.frame presumably created with ExportMetadata() including information on all articles. Number of rows must correspond to the number of articles to be elaborated. This is required when export == TRUE, in order to provide meaningful filenames.
@@ -12,6 +17,7 @@
 #' @param export Logical, defaults to TRUE. If TRUE, textual contents are saved as individual txt files in a dedicated folder. Filename is based on the medatadata.
 #' @param maxTitleCharacters Maximum number of characters allowed in the title. Defaults to 80.
 #' @param removePunctuationInFilename Logical, defaults to TRUE. If TRUE (and export == TRUE), it removes punctuation signs from filemanes to prevent errors in saving files.
+#' @param progressBar Logical, defaults to TRUE. If FALSE, progress bar is not shown.
 #' @return A character vector of text, and individual articles saved as txt files in a dedicated folder if 'export' is set to TRUE.
 #' @export
 #' @examples
@@ -19,9 +25,11 @@
 ExtractText <- function(container = NULL,
                         containerClass = NULL,
                         containerId = NULL,
+                        subElement = NULL,
+                        noChildren = NULL,
                         htmlLocation = NULL,
                         id = NULL,
-                        metadata = NULL, export = FALSE, maxTitleCharacters = 80, removeString = NULL, divClass = NULL, divId = NULL, customXpath = NULL,
+                        metadata = NULL, export = FALSE, maxTitleCharacters = 80, removeString = NULL, customXpath = NULL,
                         removeEverythingAfter_pre = NULL,
                         removeEverythingBefore_pre = NULL,
                         removeEverythingBefore = NULL,
@@ -29,7 +37,8 @@ ExtractText <- function(container = NULL,
                         keepEverything = FALSE,
                         removePunctuationInFilename = TRUE, removeTitleFromTxt = FALSE, titles = NULL,
                         importParameters = NULL,
-                        exportParameters = TRUE, progressBar = TRUE, project = NULL, website = NULL) {
+                        exportParameters = TRUE,
+                        progressBar = TRUE, project = NULL, website = NULL) {
     if (is.null(project) == TRUE) {
         project <- CastarterOptions("project")
     }
@@ -112,16 +121,40 @@ ExtractText <- function(container = NULL,
             if (keepEverything == TRUE) {
                 temp <- temp %>% rvest::html_text()
             } else if (is.null(containerClass)==TRUE&is.null(containerId)==TRUE) {
+                if (is.null(subElement)==TRUE) {
                 temp <- temp %>%
-                    rvest::html_nodes(container) %>% rvest::html_text()
-            } else if (is.null(containerClass)==FALSE) {
-                temp <- temp %>%
-                    rvest::html_nodes(xpath = paste0("//", container, "[@class='", containerClass, "']")) %>%
+                    rvest::html_nodes(container) %>%
                     rvest::html_text()
-            } else if (is.null(containerClass)==FALSE) {
+                } else {
+                    temp <- temp %>%
+                        rvest::html_nodes(container) %>%
+                        rvest::html_nodes(subElement) %>%
+                        rvest::html_text()
+                }
+            } else if (is.null(containerClass)==FALSE&is.null(containerId)==TRUE) {
+                if (is.null(subElement)==TRUE) {
+                    temp <- temp %>%
+                        rvest::html_nodes(xpath = paste0("//", container, "[@class='", containerClass, "']")) %>%
+                        rvest::html_text()
+                } else {
+                    temp <- temp %>%
+                        rvest::html_nodes(xpath = paste0("//", container, "[@class='", containerClass, "']")) %>%
+                        rvest::html_nodes(subElement) %>%
+                        rvest::html_text() %>%
+                        paste(collapse = "\n")
+                }
+
+            } else if (is.null(containerClass)==TRUE&is.null(containerId)==FALSE) {
+                if (is.null(subElement)==TRUE) {
                 temp <- temp %>%
                     rvest::html_nodes(xpath = paste0("//", container, "[@id='", containerId, "']")) %>%
                     rvest::html_text()
+                } else {
+                    temp <- temp %>%
+                        rvest::html_nodes(xpath = paste0("//", container, "[@id='", containerId, "']")) %>%
+                        rvest::html_nodes(subElement) %>%
+                        rvest::html_text()
+                }
             }
             if (length(temp)>1) {
                 text[i] <- temp[1]
@@ -150,10 +183,10 @@ ExtractText <- function(container = NULL,
         }
     }
     if (is.null(removeEverythingAfter) == FALSE) {
-        text <- base::gsub(base::paste0(removeEverythingAfter, ".*"), "", text, fixed = FALSE)
+        text <- stringr::str_replace(string = text, pattern = stringr::regex(base::paste0(removeEverythingAfter, ".*"), dotall = TRUE), replacement = "")
     }
     if (is.null(removeEverythingBefore) == FALSE) {
-        text <- base::gsub(base::paste0(".*", removeEverythingBefore), "", text, fixed = FALSE)
+        text <- stringr::str_replace(string = text, pattern = stringr::regex(base::paste0(".*", removeEverythingBefore), dotall = TRUE), replacement = "")
     }
     if (is.null(removeString) == FALSE) {
         for (i in 1:length(removeString)) {

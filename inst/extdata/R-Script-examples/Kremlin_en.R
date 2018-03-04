@@ -84,10 +84,10 @@ metadata <- ExportMetadata(dates = dates,
                            links = links)
 
 ## Extract text
-text <- ExtractText(metadata = metadata, container = "div",
+text <- ExtractText(container = "div",
                     containerClass = "read__content",
-                    removeEverythingAfter = "Publication status Published",
-                    removeString = "    Events ")
+                    subElement = "p",
+                    removeEverythingAfter = "\nPublished in")
 
 i <- sample(x = 1:length(text), 1)
 titles[i]

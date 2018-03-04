@@ -5,16 +5,27 @@
 \title{Extracts textual contents from a vector of html files}
 \usage{
 ExtractText(container = NULL, containerClass = NULL, containerId = NULL,
-  htmlLocation = NULL, id = NULL, metadata = NULL, export = FALSE,
-  maxTitleCharacters = 80, removeString = NULL, divClass = NULL,
-  divId = NULL, customXpath = NULL, removeEverythingAfter_pre = NULL,
-  removeEverythingBefore_pre = NULL, removeEverythingBefore = NULL,
-  removeEverythingAfter = NULL, keepEverything = FALSE,
-  removePunctuationInFilename = TRUE, removeTitleFromTxt = FALSE,
-  titles = NULL, importParameters = NULL, exportParameters = TRUE,
-  progressBar = TRUE, project = NULL, website = NULL)
+  subElement = NULL, noChildren = NULL, htmlLocation = NULL, id = NULL,
+  metadata = NULL, export = FALSE, maxTitleCharacters = 80,
+  removeString = NULL, customXpath = NULL,
+  removeEverythingAfter_pre = NULL, removeEverythingBefore_pre = NULL,
+  removeEverythingBefore = NULL, removeEverythingAfter = NULL,
+  keepEverything = FALSE, removePunctuationInFilename = TRUE,
+  removeTitleFromTxt = FALSE, titles = NULL, importParameters = NULL,
+  exportParameters = TRUE, progressBar = TRUE, project = NULL,
+  website = NULL)
 }
 \arguments{
+\item{container}{Defaults to NULL. If provided, it must be an html element such as "div", "span", etc.}
+
+\item{containerClass}{Defaults to NULL. If provided, also `container` must be given (and `containerId` must be NULL). Only text found inside the provided combination of container/class will be extracted.}
+
+\item{containerId}{Defaults to NULL. If provided, also `container` must be given (and `containerClass` must be NULL). Only text found inside the provided combination of container/class will be extracted.}
+
+\item{subElement}{Defaults to NULL. If provided, also `container` must be given. Only text within elements of given type under the chosen combination of container/containerClass will be extracted. When given, it will tipically be "p", to extract all p elements inside the selected div.}
+
+\item{noChildren}{Defaults to FALSE, i.e. by default all subelements of the selected combination (e.g. div with given class) are extracted. If TRUE, only text found under the given combination (but not its subelements) will be extracted. Corresponds to the xpath string `/node()[not(self::div)]`.}
+
 \item{htmlLocation}{Path to folder where html files, tipically downloaded with DownloadContents(links) are stored. If not given, it defaults to the Html folder inside project/website folders.}
 
 \item{id}{Defaults to NULL. If provided, it should be a vector of integers. Only html files corresponding to given id in the relevant htmlLocation will be processed.}
@@ -34,6 +45,8 @@ ExtractText(container = NULL, containerClass = NULL, containerId = NULL,
 \item{keepEverything}{Logical. If TRUE, extracts all visible text.}
 
 \item{removePunctuationInFilename}{Logical, defaults to TRUE. If TRUE (and export == TRUE), it removes punctuation signs from filemanes to prevent errors in saving files.}
+
+\item{progressBar}{Logical, defaults to TRUE. If FALSE, progress bar is not shown.}
 }
 \value{
 A character vector of text, and individual articles saved as txt files in a dedicated folder if 'export' is set to TRUE.
