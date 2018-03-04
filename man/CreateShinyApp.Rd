@@ -4,11 +4,11 @@
 \alias{CreateShinyApp}
 \title{Creates and starts a Shiny App exposing basic 'castarter' functions based on the given dataset}
 \usage{
-CreateShinyApp(dataset, terms = "europ*", customTitle = NULL,
+CreateShinyApp(dataset, terms = "europe", customTitle = NULL,
   project = NULL, website = NULL)
 }
 \arguments{
-\item{dataset}{A 'castarter' dataset or a corpus created with 'castarter' of the quanteda type.}
+\item{dataset}{A 'castarter' dataset.}
 
 \item{project}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
 
