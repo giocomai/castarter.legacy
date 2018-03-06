@@ -72,7 +72,7 @@ LoadDatasets <- function(projectsAndWebsites = NULL, type = "dataset", removeNAd
             return(corpusAll)
         }
     } else if (type == "dataset") {
-        return(as_data_frame(allDatasets))
+        return(dplyr::as_data_frame(allDatasets))
     } else if (type == "corpusDtmQ") {
         load(lastSavedDatasets)
         return(corpusDtm)
@@ -121,7 +121,7 @@ LoadAllDatasets <- function(project, removeNAdates = TRUE) {
     if (removeNAdates == TRUE) {
         allDatasets <- allDatasets[is.na(allDatasets$date) == FALSE, ]
     }
-    return(as_data_frame(allDatasets))
+    return(dplyr::as_data_frame(allDatasets))
 }
 
 #' Converts a 'castarter' dataset into a 'quanteda' or 'tm' corpus.
