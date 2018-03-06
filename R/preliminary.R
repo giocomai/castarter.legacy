@@ -85,7 +85,7 @@ SaveWebsite <- function(saveEnvironment = TRUE, dataset = NULL, tidyCorpus = NUL
             saveRDS(object = dataset, file = file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = "-"), ".rds")))
             message(paste("Dataset saved in", file.path(project, website, paste0(paste(Sys.Date(), project, website, "dataset", sep = "-"), ".rds"))))
         } else if (dataset == TRUE) {
-            dataset <- dplyr::bind_cols(tibble::data_frame(doc_id = metadata$doc_id, text = text), metadata %>% select(-doc_id))
+            dataset <- dplyr::bind_cols(tibble::data_frame(doc_id = metadata$doc_id, text = text), metadata %>% dplyr::select(-doc_id))
             saveRDS(object = dataset, file = file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = "-"), ".rds")))
             message(paste("Dataset saved in", file.path(project, website, paste0(paste(Sys.Date(), project, website, "dataset", sep = "-"), ".rds"))))
             }
