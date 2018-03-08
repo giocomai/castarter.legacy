@@ -4,18 +4,16 @@
 \alias{ExtractLinks}
 \title{Extracts direct links to individual articles from index pages.}
 \usage{
-ExtractLinks(htmlLocation = NULL, domain = NULL, partOfLink = NULL,
-  partOfLinkToExclude = NULL, extractText = FALSE, container = NULL,
-  containerClass = NULL, containerId = NULL, attributeType = NULL,
-  minLength = NULL, maxLength = NULL, indexLinks = NULL,
-  sortLinks = TRUE, linkTitle = TRUE, appendString = NULL,
-  export = FALSE, removeString = NULL, progressBar = TRUE,
-  project = NULL, website = NULL, importParameters = NULL,
-  exportParameters = TRUE)
+ExtractLinks(domain = NULL, partOfLink = NULL, partOfLinkToExclude = NULL,
+  container = NULL, containerClass = NULL, containerId = NULL,
+  attributeType = NULL, htmlLocation = NULL, id = NULL,
+  extractText = FALSE, minLength = NULL, maxLength = NULL,
+  indexLinks = NULL, sortLinks = TRUE, linkTitle = TRUE,
+  appendString = NULL, export = FALSE, removeString = NULL,
+  progressBar = TRUE, project = NULL, website = NULL,
+  importParameters = NULL, exportParameters = TRUE)
 }
 \arguments{
-\item{htmlLocation}{Path to folder where html files, tipically downloaded with DownloadContents(links, type = "index") are stored. If not given, it defaults to the IndexHtml folder inside project/website folders.}
-
 \item{domain}{Web domain of the website. Will be added at the beginning of each link found.If links in the page already include the full web address this should be ignored. Defaults to "".}
 
 \item{partOfLink}{Part of URL found only in links of individual articles to be downloaded. If more than one provided, it includes all links that contains either of the strings provided.}
@@ -25,6 +23,10 @@ ExtractLinks(htmlLocation = NULL, domain = NULL, partOfLink = NULL,
 \item{container}{Type of html container from where links are to be extracted, such as "div", "ul", and others. containerClass or containerId must also be provided.}
 
 \item{attributeType}{Type of attribute to extract from links, when different from href.}
+
+\item{htmlLocation}{Path to folder where html files, tipically downloaded with DownloadContents(links, type = "index") are stored. If not given, it defaults to the IndexHtml folder inside project/website folders.}
+
+\item{id}{Defaults to NULL. If provided, it should be a vector of integers. Only html files corresponding to given id in the relevant htmlLocation will be processed.}
 
 \item{minLength}{If a link is shorter than the number of characters given in minLength, it is excluded from the output.}
 

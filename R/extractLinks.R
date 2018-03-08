@@ -3,6 +3,7 @@
 #' Extracts direct links to individual articles from index pages according to a selcted pattern.
 #'
 #' @param htmlLocation Path to folder where html files, tipically downloaded with DownloadContents(links, type = "index") are stored. If not given, it defaults to the IndexHtml folder inside project/website folders.
+#' @param id Defaults to NULL. If provided, it should be a vector of integers. Only html files corresponding to given id in the relevant htmlLocation will be processed.
 #' @param domain Web domain of the website. Will be added at the beginning of each link found.If links in the page already include the full web address this should be ignored. Defaults to "".
 #' @param partOfLink Part of URL found only in links of individual articles to be downloaded. If more than one provided, it includes all links that contains either of the strings provided.
 #' @param partOfLinkToExclude If an URL includes this string, it is excluded from the output. One or more strings may be provided.
@@ -21,15 +22,16 @@
 #' @export
 #' @examples
 #' articlesLinks <- ExtractLinks(domain = "http://www.example.com/", partOfLink = "news/", html)
-ExtractLinks <- function(htmlLocation = NULL,
-                         domain = NULL,
+ExtractLinks <- function(domain = NULL,
                          partOfLink = NULL,
                          partOfLinkToExclude = NULL,
-                         extractText = FALSE,
                          container = NULL,
                          containerClass = NULL,
                          containerId = NULL,
                          attributeType = NULL,
+                         htmlLocation = NULL,
+                         id = NULL,
+                         extractText = FALSE,
                          minLength = NULL,
                          maxLength = NULL,
                          indexLinks = NULL,
@@ -79,25 +81,29 @@ ExtractLinks <- function(htmlLocation = NULL,
         params$ExtractLinks <-  as.list(environment())
         saveRDS(object = params, file = paramsFile)
     }
-    # define htmlLocation, if not given
     if (is.null(htmlLocation)) {
         htmlLocation <- file.path(project, website, "IndexHtml")
     }
-    # list files
-    indexHtml <- list.files(path = htmlLocation, full.names = TRUE)
-    # put them in order [equivalent to gtools::mixedorder()]
-    indexHtml <- indexHtml[stringr::str_extract(string = indexHtml, pattern = "[[:digit:]]+[[:punct:]]html") %>% stringr::str_sub(start = 1L, end = -6L) %>% as.integer() %>% order()]
-    tempLinks <- vector("list", length(indexHtml))
+    # If IDs not given, list files
+    if (is.null(id)==FALSE) {
+        HtmlFiles <- file.path(htmlLocation, paste0(id, ".html"))
+    } else {
+        # list files
+        HtmlFiles <- list.files(path = htmlLocation, full.names = TRUE)
+        # put them in order [equivalent to gtools::mixedorder()]
+        HtmlFiles <- HtmlFiles[stringr::str_extract(string = HtmlFiles, pattern = "[[:digit:]]+[[:punct:]]html") %>% stringr::str_sub(start = 1L, end = -6L) %>% as.integer() %>% order()]
+    }
+    tempLinks <- vector("list", length(HtmlFiles))
     if (progressBar == TRUE) {
-        pb <- dplyr::progress_estimated(n = length(indexHtml), min_time = 1)
+        pb <- dplyr::progress_estimated(n = length(HtmlFiles), min_time = 1)
     }
     if (is.null(container)) {
         # if no div or such, get all links
-        for (i in seq_along(indexHtml)) {
+        for (i in seq_along(HtmlFiles)) {
             if (progressBar == TRUE) {
                 pb$tick()$print()
             }
-            temp <-  xml2::read_html(indexHtml[i])
+            temp <-  xml2::read_html(HtmlFiles[i])
             if (is.element("xml_node", set = class(temp))==TRUE) {
                 temp <- temp %>%
                     rvest::html_nodes("a")
@@ -109,11 +115,11 @@ ExtractLinks <- function(htmlLocation = NULL,
             }
         }
     } else if (is.null(containerId)==TRUE&is.null(containerClass)==FALSE) {
-        for (i in seq_along(indexHtml)) {
+        for (i in seq_along(HtmlFiles)) {
             if (progressBar == TRUE) {
                 pb$tick()$print()
             }
-            temp <- xml2::read_html(indexHtml[i])
+            temp <- xml2::read_html(HtmlFiles[i])
             if (is.element("xml_node", set = class(temp))==TRUE) {
                 temp <- temp %>%
                     rvest::html_nodes(xpath = paste0("//", container, "[@class='", containerClass, "']//a"))
@@ -125,11 +131,11 @@ ExtractLinks <- function(htmlLocation = NULL,
             }
         }
     } else if (is.null(containerClass)==TRUE&is.null(containerId)==FALSE) {
-        for (i in seq_along(indexHtml)) {
+        for (i in seq_along(HtmlFiles)) {
             if (progressBar == TRUE) {
                 pb$tick()$print()
             }
-            temp <- xml2::read_html(indexHtml[i])
+            temp <- xml2::read_html(HtmlFiles[i])
             if (is.element("xml_node", set = class(temp))==TRUE) {
                 temp <- temp %>%
                     rvest::html_nodes(xpath = paste0("//", container, "[@id='", containerId, "']//a"))
@@ -141,11 +147,11 @@ ExtractLinks <- function(htmlLocation = NULL,
             }
         }
     } else if (is.null(containerClass)&is.null(containerId)) {
-        for (i in seq_along(indexHtml)) {
+        for (i in seq_along(HtmlFiles)) {
             if (progressBar == TRUE) {
                 pb$tick()$print()
             }
-            temp <- xml2::read_html(indexHtml[i])
+            temp <- xml2::read_html(HtmlFiles[i])
             if (is.element("xml_node", set = class(temp))==TRUE) {
                 temp <- temp %>%
                     rvest::html_nodes(xpath = paste0("//", container, "//a"))
