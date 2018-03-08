@@ -33,7 +33,7 @@ shinyServer(function(input, output) {
   })
 
   kwic_react <- eventReactive(input$go, {
-      dataset_bySentence %>%
+      temp <- dataset_bySentence %>%
           filter(date>input$dateRange[1], date<input$dateRange[2]) %>%
           filter(stringr::str_detect(string = sentence,
                                      pattern = stringr::regex(ignore_case = TRUE,
@@ -42,9 +42,17 @@ shinyServer(function(input, output) {
           rename(Sentence = sentence, Date = date) %>%
           select(Date, Source, Sentence) %>%
           arrange(desc(Date))
+
+      if (length(as.character(tolower(trimws(stringr::str_split(string = input$term, pattern = ",", simplify = TRUE)))))==1) {
+          temp$Sentence <- purrr::map_chr(.x = temp$Sentence, .f = function (x) paste(c(rbind(as.character(stringr::str_split(string = x,
+                                                        pattern = stringr::regex(pattern = as.character(input$term), ignore_case = TRUE), simplify = TRUE)),
+                        c(paste0("<span style='background-color: #FFFF00'>", as.character(str_extract_all(string = x, pattern = regex(as.character(input$term), ignore_case = TRUE), simplify = TRUE)), "</span>"), ""))),
+                collapse = ""))
+      }
+      temp
   })
 
-  output$kwic <- DT::renderDataTable({
+      output$kwic <- DT::renderDataTable({
       if (input$go==0) {
           DT::datatable(data = dataset_bySentence %>%
                             filter(stringr::str_detect(string = sentence,
