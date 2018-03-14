@@ -35,6 +35,7 @@ ExtractTitles <- function(container = "title",
                           removeEverythingAfter = NULL,
                           customXpath = "",
                           maxCharacters = NULL,
+                          encoding = "UTF-8",
                           progressBar = TRUE,
                           exportParameters = TRUE,
                           importParameters = NULL,
@@ -99,7 +100,7 @@ ExtractTitles <- function(container = "title",
             if (progressBar == TRUE) {
                 pb$tick()$print()
             }
-            temp <-  tryCatch(expr = xml2::read_html(HtmlFiles[i]),
+            temp <-  tryCatch(expr = xml2::read_html(HtmlFiles[i], encoding = encoding),
                               error = function(e) {
                                   warning(paste("Could not read", HtmlFiles[i]))
                                   NA

@@ -29,6 +29,7 @@ ExtractText <- function(container = NULL,
                         noChildren = NULL,
                         htmlLocation = NULL,
                         id = NULL,
+                        encoding = "UTF-8",
                         metadata = NULL, export = FALSE, maxTitleCharacters = 80, removeString = NULL, customXpath = NULL,
                         removeEverythingAfter_pre = NULL,
                         removeEverythingBefore_pre = NULL,
@@ -105,7 +106,7 @@ ExtractText <- function(container = NULL,
             if (is.null(removeEverythingBefore_pre)==FALSE){
                 temp <- base::gsub(base::paste0(".*", removeEverythingBefore_pre), "", temp, fixed = FALSE)
             }
-            temp <- tryCatch(expr = xml2::read_html(temp),
+            temp <- tryCatch(expr = xml2::read_html(temp, encoding = encoding),
                              error = function(e) {
                                  warning(paste("Could not read", HtmlFiles[i]))
                                  NA

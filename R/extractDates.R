@@ -2,6 +2,7 @@
 #'
 #' Extracts dates from a vector of html files.
 #'
+#' @param inputVector Defaults to NULL. If provided, instead of looking for downloaded Html files it parses the given character vector.
 #' @param id Defaults to NULL. If provided, it should be a vector of integers. Only html files corresponding to given id in the relevant htmlLocation will be processed.
 #' @param dateFormat A string expressing the date format. In line with standards (see ?strptime), 'd' stands for day, 'm' stands for month in figures, 'b' for months spelled out as words, 'y' as year without the century, 'Y' as year with four digits. Standard separation marks among parts of the date (e.g. '-', '/', '.') should not be included. The following date formats are available :
 ##' \itemize{
@@ -18,7 +19,7 @@
 #' @param minDate, maxDate Minimum and maximum possible dates in the format year-month-date, e.g. "2007-06-24". Introduces NA in the place of impossibly high or low dates.
 #' @param language Provide a language in order to extract name of months. Defaults to the locale currently active in R (usually, the system language). Generic forms such as "english" or "russian", are usually accepted. See ?locales for more details. On linux, you can run system("locale -a", intern = TRUE) to see all available locales.
 #' @param attribute Defaults to NULL. Can be specified only if customXpath is given, in order to extract a given attribute e.g. if customXpath = "//meta[@property='article:published_time']", and attribute = "content".
-#' @param encoding Defaults to NULL. If source is not in UTF, encoding can be specified here for conversion. A list of valid values can be found using iconvlist().
+#' @param encoding Defaults to 'UTF-8'. If source is not in UTF, encoding can be specified here. A list of valid values can be found using iconvlist().
 #' @param keepAllString Logical, defaults to FALSE. If TRUE, it directly tries to parse the date with the given dateFormat, without trying to polish the string provided accordingly.
 #' @param progressBar Logical, defaults to TRUE. If FALSE, progress bar is not shown.
 #' @param importParameters Defaults to NULL. If TRUE, ignores all parameters given in the function call, and imports them from parameters file stored in "project/website/Logs/parameters.rds".
@@ -34,6 +35,7 @@ ExtractDates <- function(dateFormat = "dmY",
                          containerClass = NULL,
                          containerId = NULL,
                          htmlLocation = NULL,
+                         inputVector = NULL,
                          id = NULL,
                          customXpath = NULL,
                          customRegex = NULL,
@@ -105,7 +107,7 @@ ExtractDates <- function(dateFormat = "dmY",
         if (progressBar == TRUE) {
             pb$tick()$print()
         }
-        temp <-  tryCatch(expr = xml2::read_html(HtmlFiles[i]),
+        temp <-  tryCatch(expr = xml2::read_html(HtmlFiles[i], encoding = encoding),
                           error = function(e) {
                               warning(paste("Could not read", HtmlFiles[i]))
                               NA

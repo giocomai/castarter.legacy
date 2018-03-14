@@ -5,8 +5,8 @@
 \title{Extracts dates from a vector of html files}
 \usage{
 ExtractDates(dateFormat = "dmY", container = NULL, containerClass = NULL,
-  containerId = NULL, htmlLocation = NULL, id = NULL,
-  customXpath = NULL, customRegex = NULL, attribute = NULL,
+  containerId = NULL, htmlLocation = NULL, inputVector = NULL,
+  id = NULL, customXpath = NULL, customRegex = NULL, attribute = NULL,
   language = Sys.getlocale(category = "LC_TIME"), customString = "",
   minDate = NULL, maxDate = NULL, encoding = "UTF-8",
   keepAllString = FALSE, removeEverythingBefore = NULL,
@@ -26,6 +26,8 @@ ExtractDates(dateFormat = "dmY", container = NULL, containerClass = NULL,
  \item{"xdBY"}{: customString must be provided.}
 }}
 
+\item{inputVector}{Defaults to NULL. If provided, instead of looking for downloaded Html files it parses the given character vector.}
+
 \item{id}{Defaults to NULL. If provided, it should be a vector of integers. Only html files corresponding to given id in the relevant htmlLocation will be processed.}
 
 \item{customRegex}{Defaults to NULL. If provided, regex parsing pre-data extraction will follow this forumula, e.g. `[[:digit:]][[:digit:]][[:punct:]][[:space:]][[:digit:]][[:digit:]][[:punct:]][[:space:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]`.}
@@ -36,7 +38,7 @@ ExtractDates(dateFormat = "dmY", container = NULL, containerClass = NULL,
 
 \item{minDate, }{maxDate Minimum and maximum possible dates in the format year-month-date, e.g. "2007-06-24". Introduces NA in the place of impossibly high or low dates.}
 
-\item{encoding}{Defaults to NULL. If source is not in UTF, encoding can be specified here for conversion. A list of valid values can be found using iconvlist().}
+\item{encoding}{Defaults to 'UTF-8'. If source is not in UTF, encoding can be specified here. A list of valid values can be found using iconvlist().}
 
 \item{keepAllString}{Logical, defaults to FALSE. If TRUE, it directly tries to parse the date with the given dateFormat, without trying to polish the string provided accordingly.}
 
