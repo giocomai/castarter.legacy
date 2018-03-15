@@ -141,11 +141,8 @@ ExtractDates <- function(dateFormat = "dmY",
                              warning(paste("Could not find attribute in", HtmlFiles[i]))
                              NA
                          })
-            } else if (is.null(containerClass)==TRUE&is.null(containerId)==TRUE&is.null(removeEverythingBefore) == FALSE) {
+            } else if (is.null(containerClass)==TRUE&is.null(containerId)==TRUE) {
                 temp <- as.character(temp)
-                if (is.null(removeEverythingBefore) == FALSE) {
-                    temp <- stringr::str_replace(string = temp, pattern = stringr::regex(paste0(".*", removeEverythingBefore)), replacement = "")
-                }
             } else if (is.null(containerClass)==TRUE&is.null(containerId)==TRUE) {
                 temp <- temp %>%
                     rvest::html_nodes(container) %>% rvest::html_text()
@@ -157,6 +154,9 @@ ExtractDates <- function(dateFormat = "dmY",
                 temp <- temp %>%
                     rvest::html_nodes(xpath = paste0("//", container, "[@id='", containerId, "']")) %>%
                     rvest::html_text()
+            }
+            if (is.null(removeEverythingBefore) == FALSE) {
+                temp <- stringr::str_replace(string = temp, pattern = stringr::regex(paste0(".*", removeEverythingBefore)), replacement = "")
             }
             if (length(temp)>1) {
                 datesTxt[i] <- temp[1]
