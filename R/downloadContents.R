@@ -58,7 +58,8 @@ DownloadContents <- function(links,
     }
     if (is.null(linksToDownload) == TRUE) {
         smallFiles <- htmlFilesList[htmlFileSize < size]
-        smallFilesId <- as.integer(stringr::str_extract(string = smallFiles, pattern = "[[:digit:]]+[[:punct:]]html"))
+        smallFilesId <- as.integer(stringr::str_extract(string = smallFiles, pattern = "[[:digit:]]+[[:punct:]]html") %>%
+                                       stringr::str_sub(start = 1L, end = -6L))
         linksToDownload <- rep(x = FALSE, times = length(links))
         linksToDownload[smallFilesId] <- TRUE
     }
