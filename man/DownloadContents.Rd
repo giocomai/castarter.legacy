@@ -17,6 +17,8 @@ DownloadContents(links, type = "articles", path = NULL, size = 500,
 
 \item{path}{Defaults to NULL. If given, overrides the "type" param and stores html files in given path as a subfolder of project/website. Folder must already exist, and should be empty.}
 
+\item{size}{Defaults to 500. It represents the minimum size in bytes that downloaded html files should have: files that are smaller will be downloaded again. Used only when missingPages == FALSE.}
+
 \item{linksToDownload}{A logical vector. Only links corresponding to TRUE will be downloaded: links[linksToDownload]}
 
 \item{wgetSystem}{Logical, defaults to FALSE. Calls wget as a system command through the system() function. Wget must be previously installed on the system.}
