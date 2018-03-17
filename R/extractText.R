@@ -112,7 +112,7 @@ ExtractText <- function(container = NULL,
                                  NA
                              })
         } else {
-            temp <-  tryCatch(expr = xml2::read_html(HtmlFiles[i]),
+            temp <-  tryCatch(expr = xml2::read_html(HtmlFiles[i], encoding = encoding),
                               error = function(e) {
                                   warning(paste("Could not read", HtmlFiles[i]))
                                   NA
