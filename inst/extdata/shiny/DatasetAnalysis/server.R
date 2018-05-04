@@ -11,13 +11,17 @@ shinyServer(function(input, output) {
           castarter::ShowAbsoluteTS(terms = as.character(tolower(trimws(stringr::str_split(string = input$term, pattern = ",", simplify = TRUE)))),
                                     dataset = dataset,
                                     type = "graph",
-                                    rollingAverage = input$rollingAverage, startDate = input$dateRange[1], endDate = input$dateRange[2])
+                                    rollingAverage = input$rollingAverage,
+                                    startDate = input$dateRange[1],
+                                    endDate = input$dateRange[2])
 
       } else if (input$freq=="Relative frequency") {
           castarter::ShowRelativeTS(terms = as.character(tolower(trimws(stringr::str_split(string = input$term, pattern = ",", simplify = TRUE)))),
                                     dataset = dataset,
                                     type = "graph",
-                                    rollingAverage = input$rollingAverage, startDate = input$dateRange[1], endDate = input$dateRange[2])
+                                    rollingAverage = input$rollingAverage,
+                                    startDate = input$dateRange[1],
+                                    endDate = input$dateRange[2])
       }
   })
 
@@ -33,7 +37,7 @@ shinyServer(function(input, output) {
   })
 
   kwic_react <- eventReactive(input$go, {
-      temp <- dataset_bySentence %>%
+      temp <- dataset %>%
           filter(date>input$dateRange[1], date<input$dateRange[2]) %>%
           filter(stringr::str_detect(string = sentence,
                                      pattern = stringr::regex(ignore_case = TRUE,

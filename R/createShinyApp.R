@@ -26,9 +26,6 @@ CreateShinyApp <- function(dataset,
     if (!file.exists(file.path(project, website, "Outputs", "shinyApp", "data"))) {
         dir.create(file.path(project, website, "Outputs", "shinyApp", "data"))
     }
-    # copy dataset to shiny folder
-    saveRDS(object = dataset,
-            file = file.path(project, website, "Outputs", "shinyApp", "data", "dataset.rds"))
     # create dataset divided by sentence and store in shiny folder
     saveRDS(object = tidytext::unnest_tokens(tbl = dataset,
                                              input = text,
