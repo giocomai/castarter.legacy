@@ -98,6 +98,8 @@ text[i]
 
 SaveWebsite(dataset = TRUE)
 
+CreateShinyApp(dataset = LoadDatasets() %>% filter(date<as.Date("2018-01-01")))
+
 ### Examples of further exports
 
 # dataset <- LoadDatasets() %>% filter(date<as.Date("2018-01-01")) %>% arrange(date)
