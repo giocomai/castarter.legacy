@@ -48,6 +48,12 @@ ShowAbsoluteTS <- function(terms,
     if (is.null(endDate)==FALSE) {
         dataset <- dataset %>% dplyr::filter(date <= as.Date(endDate))
     }
+    # Introduce compatibility with tidytext data frames
+    if (is.element(el = "sentence", colnames(dataset))) {
+        dataset <- dataset %>% rename(text = sentence)
+    } else if (is.element(el = "word", colnames(dataset))) {
+        dataset <- dataset %>% rename(text = word)
+    }
     temp <-
         bind_cols(dplyr::as_data_frame(sapply(terms, function(x) stringr::str_count(string = dataset$text, pattern = stringr::regex(x, ignore_case = TRUE)))),
                   tibble::data_frame(ItemDate = dataset$date)) %>%
@@ -181,6 +187,12 @@ ShowRelativeTS <- function(terms,
     }
     if (is.null(endDate)==FALSE) {
         dataset <- dataset %>% dplyr::filter(date <= as.Date(endDate))
+    }
+    # Introduce compatibility with tidytext data frames
+    if (is.element(el = "sentence", colnames(dataset))) {
+        dataset <- dataset %>% rename(text = sentence)
+    } else if (is.element(el = "word", colnames(dataset))) {
+        dataset <- dataset %>% rename(text = word)
     }
     temp <-
         bind_cols(dplyr::as_data_frame(sapply(terms, function(x) stringr::str_count(string = dataset$text, pattern = stringr::regex(x, ignore_case = TRUE)))),
