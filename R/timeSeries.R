@@ -55,7 +55,7 @@ ShowAbsoluteTS <- function(terms,
         dataset <- dataset %>% rename(text = word)
     }
     temp <-
-        bind_cols(dplyr::as_data_frame(sapply(terms, function(x) stringr::str_count(string = dataset$text, pattern = stringr::regex(x, ignore_case = TRUE)))),
+        dplyr::bind_cols(dplyr::as_data_frame(sapply(terms, function(x) stringr::str_count(string = dataset$text, pattern = stringr::regex(x, ignore_case = TRUE)))),
                   tibble::data_frame(ItemDate = dataset$date)) %>%
         dplyr::arrange(ItemDate) %>%
         dplyr::full_join(tibble(ItemDate = seq.Date(from = min(dataset$date, na.rm = TRUE), to = max(dataset$date, na.rm = TRUE), by = "day")), by = "ItemDate") %>%
@@ -195,7 +195,7 @@ ShowRelativeTS <- function(terms,
         dataset <- dataset %>% rename(text = word)
     }
     temp <-
-        bind_cols(dplyr::as_data_frame(sapply(terms, function(x) stringr::str_count(string = dataset$text, pattern = stringr::regex(x, ignore_case = TRUE)))),
+        dplyr::bind_cols(dplyr::as_data_frame(sapply(terms, function(x) stringr::str_count(string = dataset$text, pattern = stringr::regex(x, ignore_case = TRUE)))),
                                 tibble::data_frame(nWords = stringr::str_count(string = dataset$text, pattern = "\\w+")),
                   tibble::data_frame(ItemDate = dataset$date)) %>%
         dplyr::arrange(ItemDate) %>%
