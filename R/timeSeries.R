@@ -50,9 +50,9 @@ ShowAbsoluteTS <- function(terms,
     }
     # Introduce compatibility with tidytext data frames
     if (is.element(el = "sentence", colnames(dataset))) {
-        dataset <- dataset %>% rename(text = sentence)
+        dataset <- dataset %>% dplyr::rename(text = sentence)
     } else if (is.element(el = "word", colnames(dataset))) {
-        dataset <- dataset %>% rename(text = word)
+        dataset <- dataset %>% dplyr::rename(text = word)
     }
     temp <-
         dplyr::bind_cols(dplyr::as_data_frame(sapply(terms, function(x) stringr::str_count(string = dataset$text, pattern = stringr::regex(x, ignore_case = TRUE)))),
@@ -134,7 +134,7 @@ ShowAbsoluteTS <- function(terms,
         }
         graph
     } else {
-        temp %>% rename(Date = ItemDate)
+        temp %>% dplyr::rename(Date = ItemDate)
     }
 }
 
@@ -190,9 +190,9 @@ ShowRelativeTS <- function(terms,
     }
     # Introduce compatibility with tidytext data frames
     if (is.element(el = "sentence", colnames(dataset))) {
-        dataset <- dataset %>% rename(text = sentence)
+        dataset <- dataset %>% dplyr::rename(text = sentence)
     } else if (is.element(el = "word", colnames(dataset))) {
-        dataset <- dataset %>% rename(text = word)
+        dataset <- dataset %>% dplyr::rename(text = word)
     }
     temp <-
         dplyr::bind_cols(dplyr::as_data_frame(sapply(terms, function(x) stringr::str_count(string = dataset$text, pattern = stringr::regex(x, ignore_case = TRUE)))),
@@ -201,7 +201,7 @@ ShowRelativeTS <- function(terms,
         dplyr::arrange(ItemDate) %>%
         # Count all words per item
         dplyr::add_count(ItemDate, wt = nWords) %>%
-        dplyr::rename(TotalWords = n) %>%
+        dplyr::dplyr::rename(TotalWords = n) %>%
         dplyr::group_by(ItemDate, TotalWords) %>%
         dplyr::select(-nWords) %>%
         dplyr::summarise_all(sum) %>%
@@ -290,7 +290,7 @@ ShowRelativeTS <- function(terms,
         }
         graph
     } else {
-        temp %>% rename(Date = ItemDate)
+        temp %>% dplyr::rename(Date = ItemDate)
     }
 }
 
