@@ -313,10 +313,10 @@ ShowRelativeTS <- function(terms,
 #' ShowDistribution(dataset)
 
 ShowDistribution <- function(dataset, specificWebsites = NULL, rollingAverage = 30, align = "center", customTitle = NULL, method = "numberOfArticles", export = FALSE, project = NULL, website = NULL) {
-    if (gtools::invalid(project) == TRUE) {
+    if (is.null(project) == TRUE) {
         project <- CastarterOptions("project")
     }
-    if (gtools::invalid(website) == TRUE) {
+    if (is.null(website) == TRUE) {
         website <- CastarterOptions("website")
     }
     tab <- base::table(dataset$date, dataset$website)
