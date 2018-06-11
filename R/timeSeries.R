@@ -201,7 +201,7 @@ ShowRelativeTS <- function(terms,
         dplyr::arrange(ItemDate) %>%
         # Count all words per item
         dplyr::add_count(ItemDate, wt = nWords) %>%
-        dplyr::dplyr::rename(TotalWords = n) %>%
+        dplyr::rename(TotalWords = n) %>%
         dplyr::group_by(ItemDate, TotalWords) %>%
         dplyr::select(-nWords) %>%
         dplyr::summarise_all(sum) %>%
