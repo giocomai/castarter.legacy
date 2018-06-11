@@ -58,7 +58,7 @@ ShowAbsoluteTS <- function(terms,
         dplyr::bind_cols(dplyr::as_data_frame(sapply(terms, function(x) stringr::str_count(string = dataset$text, pattern = stringr::regex(x, ignore_case = TRUE)))),
                   tibble::data_frame(ItemDate = dataset$date)) %>%
         dplyr::arrange(ItemDate) %>%
-        dplyr::full_join(tibble(ItemDate = seq.Date(from = min(dataset$date, na.rm = TRUE), to = max(dataset$date, na.rm = TRUE), by = "day")), by = "ItemDate") %>%
+        dplyr::full_join(tibble::tibble(ItemDate = seq.Date(from = min(dataset$date, na.rm = TRUE), to = max(dataset$date, na.rm = TRUE), by = "day")), by = "ItemDate") %>%
         dplyr::mutate_at(1:length(terms),funs(coalesce(., 0L)))  %>%
         tidyr::gather(word, n, 1:length(terms)) %>%
         dplyr::count(ItemDate, word, wt = n) %>%
@@ -210,7 +210,7 @@ ShowRelativeTS <- function(terms,
         dplyr::mutate_at(3:sum(2, length(terms)), funs(./TotalWords)) %>%
         dplyr::select(-TotalWords) %>%
         # Include missing date, if no item on a given date
-        dplyr::full_join(tibble(ItemDate = seq.Date(from = min(dataset$date, na.rm = TRUE), to = max(dataset$date, na.rm = TRUE), by = "day")), by = "ItemDate") %>%
+        dplyr::full_join(tibble::tibble(ItemDate = seq.Date(from = min(dataset$date, na.rm = TRUE), to = max(dataset$date, na.rm = TRUE), by = "day")), by = "ItemDate") %>%
         dplyr::arrange(ItemDate) %>%
         # Substitute NA values with 0 for all dates for which no item was present
         dplyr::mutate_at(2:sum(1, length(terms)),funs(coalesce(., 0))) %>%
