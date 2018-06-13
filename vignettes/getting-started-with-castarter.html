@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Giorgio Comai" />
+
+<meta name="date" content="2018-06-13" />
+
+<title>Getting started with castarter</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#header {
+text-align: center;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Getting started with <code>castarter</code></h1>
+<h4 class="author"><em>Giorgio Comai</em></h4>
+<h4 class="date"><em>2018-06-13</em></h4>
+
+
+
+<p>Books dedicated to content analysis typically assume that the researcher has already created, has access or may buy access to a structured dataset. They may include sections on sampling (Krippendorff 2004; Riffe, Lacy, and Fico 2005), but they do not debate explicitly how new datasets can be built. Commercial software packages generally share the same expectation. In the R ecosystem, there are a number of packages that can be used to access existing datasets (e.g. tm.plugin.lexisnexis, manifestoR) or import into R textual content from social media through their APIs (e.g. twitteR). However, there is no package dedicated to getting into R the textual contents of regular websites and extracting key metadata (date and title) in order to populate a corpus that can be analysed in R or with other software packages. ‘castarter - content analysis starter toolkit for R’ aims to accomplish just that, offering to moderately incompetent users the opportunity to extract textual contents from websites and prepare them for content analysis. It allows to export the datasets in a number of standard formats for further processing and facilitates basic word frequency analysis in R.</p>
+<p>For further debate on the usefulness of a structured approach to analysing web contents in the context of area studies, and for some practical examples of how <code>castarter</code> has been used, see:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">citation</span>(<span class="st">&quot;castarter&quot;</span>)</a></code></pre></div>
+<blockquote>
+<p>Comai, Giorgio (2017). Quantitative Analysis of Web Content in Support of Qualitative Research. Examples from the Study of Post-Soviet De Facto States, <em>Studies of Transition States and Societies</em>, 9(1), 14-34. <a href="http://publications.tlu.ee/index.php/stss/article/view/346/446" class="uri">http://publications.tlu.ee/index.php/stss/article/view/346/446</a>.</p>
+</blockquote>
+<div id="installation" class="section level2">
+<h2>Installation</h2>
+<p><code>castarter</code> can easily be installed from GitHub with <code>devtools</code>:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co">#install.packages(&quot;devtools&quot;)</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;giocomai/castarter&quot;</span>)</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw">library</span>(<span class="st">&quot;castarter&quot;</span>)</a></code></pre></div>
+</div>
+<div id="preliminary-note" class="section level2">
+<h2>Preliminary note</h2>
+<p><code>castarter</code> targets specifically relatively inexperienced users. Many of the functions it offers will look trivial to expert R users. Yet, even experienced users will benefit of some of <code>castarter</code>’s convenience functions, including its ability to download and parse pages systematically (and continue download processes if it has been interrupted).</p>
+</div>
+<div id="setting-up-the-environment" class="section level2">
+<h2>Setting up the environment</h2>
+<p><code>castarter</code> facilitates downloading and extracting textual contents from a website, or a given section of a website. <code>castarter</code> can be used to analyse a single website, or more websites as part of a project, facilitating comparison among cases. In order to smoothen replication and prevent data losses, by default <code>castarter</code> stores a copy of downloaded web pages in html format. To do so, it includes a function that creates the relevant folder structure, and another function that facilitates archiving the html files in compressed format. In <code>castarter</code> every dataset is expected to be extracted from a website, and each website is expected to be part of a project. This is useful to give a consistent way of storing the materials gathered and to facilitate comparison among cases, but it does not imply additional limitations: it is possible to have projects composed of a single website, and it is possible to make comparisons among websites that are part of different projects.</p>
+<p>As an example, this vignette will demonstrate how to extract press releases published by the Kremlin. When starting a new <code>castarter</code> project, the first step is usally that of defining the name of the project and the name of website. In this case, the project will be called “Presidents”, assuming other websites to be analysed later may be of presidents of other countries.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">SetCastarter</span>(<span class="dt">project =</span> <span class="st">&quot;Presidents&quot;</span>, <span class="dt">website =</span> <span class="st">&quot;Kremlin_en&quot;</span>)</a></code></pre></div>
+<p>This stores the names of project and website as options that can be retrieved by all <code>castarter</code> functions automatically, without the need to inputting them each time a function requires to save or load files.</p>
+<p>Then, it is time to create the folder structure where all outputs will be saved:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">CreateFolders</span>()</a></code></pre></div>
+<p>This creates the following folders in the current working directory:</p>
+<ul>
+<li>Presidents
+<ul>
+<li>Kremlin_en
+<ul>
+<li>Archives</li>
+<li>Dataset</li>
+<li>Html</li>
+<li>IndexHtml</li>
+<li>Logs</li>
+<li>Outputs</li>
+<li>Txt</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>Notice that there is no need to provide names of project and website to the function <code>CreateFolders()</code>, since they are retrieved from the previously set options.</p>
+</div>
+<div id="download-index-pages" class="section level2">
+<h2>Download index pages</h2>
+<p>From the Kremlin’s website, as in many other websites, it is easy to understand the structure of the archive: it is composed by <code>http://en.kremlin.ru/events/president/news/page/</code> plus a number. By clicking on the “previous” link at the bottom of the page, as it is customary, the user is given the possibility to see older press released. In <code>castarter</code>, it is possible to get the links to all the pages we would see by clicking subsequent times on the ‘previous page’ link, with the following command function:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">indexLinks &lt;-<span class="st"> </span><span class="kw">CreateLinks</span>(<span class="dt">linkFirstChunk =</span> <span class="st">&quot;http://en.kremlin.ru/events/president/news/page/&quot;</span>,</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">                          <span class="dt">startPage =</span> <span class="dv">1</span>,</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">                          <span class="dt">endPage =</span> <span class="dv">1060</span>)</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="kw">head</span>(indexLinks)</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt; [1] &quot;http://en.kremlin.ru/events/president/news/page/1&quot;</span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt; [2] &quot;http://en.kremlin.ru/events/president/news/page/2&quot;</span></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt; [3] &quot;http://en.kremlin.ru/events/president/news/page/3&quot;</span></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">#&gt; [4] &quot;http://en.kremlin.ru/events/president/news/page/4&quot;</span></a>
+<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">#&gt; [5] &quot;http://en.kremlin.ru/events/president/news/page/5&quot;</span></a>
+<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">#&gt; [6] &quot;http://en.kremlin.ru/events/president/news/page/6&quot;</span></a></code></pre></div>
+<p>N.B. Another frequently found way for websites to provide access to their archives is by creating pages with dates directly in their URL. If, for example, a website offers its contents in the form of <a href="http://www.example.com/archive/2015-10-22" class="uri">http://www.example.com/archive/2015-10-22</a>, then it would be possible to generate the links for all the dates, say, between January 2012 and December 2015, with the following parameters: <code>CreateLinks(linkFirstChunk = &quot;http://www.example.com/&quot;, startDate = &quot;2012-01-01&quot;, endDate = &quot;2015-12-31&quot;, dateSeparator = &quot;-&quot;)</code></p>
+<p>This command creates a vector (<code>indexLinks</code>) including direct links to the index pages.</p>
+<p>It is now necessary to download these index pages. The following command downloads the relevant index pages and saves them in html format in the <code>/Presidents/Kremlin_en/IndexHtml/</code> folder.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">DownloadContents</span>(<span class="dt">links =</span> indexLinks, <span class="dt">type =</span> <span class="st">&quot;index&quot;</span>)</a></code></pre></div>
+<p>If the process is interrupted for any reason, it is possible simply to run again the same function, which will check which files have already been downloaded, and will download the missing ones. Sometimes, due to a number of reasons, one or a few pages may not download correctly. It is usually appropriate to run the following function, which will re-download files that are too small to contain meaningful contents (if all pages have been downloaded correctly, the following will not do anything).</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">DownloadContents</span>(<span class="dt">links =</span> indexLinks, <span class="dt">type =</span> <span class="st">&quot;index&quot;</span>, <span class="dt">missingPages =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+</div>
+<div id="extracting-links" class="section level2">
+<h2>Extracting links</h2>
+<p>Now that we have the index pages, we need to extract direct links to the individual press releases. There are various ways to do this, but the easiest approach is looking at the URLs of individual articles, and see if there is a pattern (this is very often the case in modern websites). Hovering over the titles of an index page, it is easy to see the links to indivudal news items. In this case, we see that the URL to each news item includes in the URL the following string: “/news/en/news-room/content/”. We use this to extract relevant links, and discard all links to other pages or sections of the website scattered around the page that we are not interested in. The following command extracts links to individual articles, and tries to guess the title of the article.</p>
+<hr />
+<p>[in progress]</p>
+<p><a href="https://github.com/giocomai/castarter/blob/master/inst/extdata/R-Script-examples/Kremlin_en.R">See full script to create a new dataset</a>.</p>
+<p>See an <a href="https://giocomai.shinyapps.io/Kremlin_en/">online interactive interface</a> allowing to explore the dataset, created with the <code>castarter::CreateShinyApp()</code> function.</p>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

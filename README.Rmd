@@ -22,7 +22,7 @@ knitr::opts_knit$set(root.dir = normalizePath('./data'))
 
 An example of a script that generates such a dataset is [now available](https://github.com/giocomai/castarter/blob/master/inst/extdata/R-Script-examples/Kremlin_en.R).
 
-An example Shiny app that allows to explore the dataset thus created is now [part of the package](https://github.com/giocomai/castarter/blob/master/inst/R-Script-examples/Kremlin_en.R) and [can be seen in action online](https://giocomai.shinyapps.io/Kremlin_en/).
+An example Shiny app that allows to explore the dataset thus created is now [part of the package](https://github.com/giocomai/castarter/tree/master/inst/extdata/shiny/DatasetAnalysis) and [can be seen in action online](https://giocomai.shinyapps.io/Kremlin_en/).
 
 ## Preliminary note (2018-01-14)
 
