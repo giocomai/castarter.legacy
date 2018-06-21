@@ -5,8 +5,8 @@
 \title{Exports metadata}
 \usage{
 ExportMetadata(dates, id, titles, language, links, exportXlsx = FALSE,
-  accordingToDate = FALSE, ignoreNAdates = FALSE,
-  onlyExistingHtmlFiles = FALSE, project = NULL, website = NULL)
+  accordingToDate = FALSE, ignoreNAdates = FALSE, project = NULL,
+  website = NULL)
 }
 \arguments{
 \item{exportXlsx}{If equal to TRUE, exports the complete dataset in the .xlsx file format in the Dataset sub-folder.}

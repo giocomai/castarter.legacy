@@ -188,115 +188,6 @@ ExtractId <- function(sample = NULL, htmlLocation = NULL, project = NULL, websit
     }
 }
 
-#' Extracts metadata and text from local html files
-#'
-#' Extracts metadata and text from local html files.
-#'
-#' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.
-#' @param website Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.Defaults to NULL. If no website is provided, exported files are saved in the project/Outputs folder.
-#' @return A data.frame with the complete dataset.
-#' @export
-#' @examples
-#' dataset <- CreateDatasetFromHtml()
-CreateDatasetFromHtml <- function(links = NULL,
-                                  dateFormat = NULL, divClass_ExtractDates = NULL, spanClass_ExtractDates = NULL, customXpath_ExtractDates = NULL, language_ExtractDates = Sys.getlocale(category = "LC_TIME"), removeEverythingBefore_ExtractDates = NULL,
-                                  method_ExtractTitles = "htmlTitle", removeString_ExtractTitles = NULL, removeEverythingAfter_ExtractTitles = NULL, removePunctuation_ExtractTitles = NULL,
-                                  divClass_ExtractTxt = NULL, divId_ExtractTxt = NULL, removeString_ExtractTxt = NULL, removeEverythingAfter_ExtractTxt = NULL, removeEverythingBefore_ExtractTxt = NULL, removeTitleFromTxt = FALSE, customXpath_ExtractTxt = NULL,
-                                  language = "English", encoding = NULL,
-                                  logProgress = FALSE,
-                                  exportParameters = TRUE, project = NULL, website = NULL) {
-    if (is.null(project) == TRUE) {
-        project <- CastarterOptions("project")
-    }
-    if (is.null(website) == TRUE) {
-        website <- CastarterOptions("website")
-    }
-    if (exportParameters == TRUE && exists("project") == FALSE | exportParameters == TRUE && exists("website") == FALSE) {
-        stop("If exportParameters == TRUE, both project and website must be defined either as parameters or previously with .")
-    }
-    if (exportParameters == TRUE) {
-        args <- c("dateFormat_ExtractDates", "divClass_ExtractDates", "spanClass_ExtractDates", "customXpath_ExtractDates", "language_ExtractDates", "removeEverythingBefore_ExtractDates",
-                  "method_ExtractTitles", "removeString_ExtractTitles", "removeEverythingAfter_ExtractTitles", "removePunctuation_ExtractTitles",
-                  "divClass_ExtractTxt", "divId_ExtractTxt", "removeString_ExtractTxt", "removeEverythingAfter_ExtractTxt", "removeEverythingBefore_ExtractTxt",
-                  "language", "encoding")
-        param <- list(dateFormat, divClass_ExtractDates, spanClass_ExtractDates, customXpath_ExtractDates, language_ExtractDates, removeEverythingBefore_ExtractDates,
-                      method_ExtractTitles, removeString_ExtractTitles, removeEverythingAfter_ExtractTitles, removePunctuation_ExtractTitles,
-                      divClass_ExtractTxt, divId_ExtractTxt, removeString_ExtractTxt, removeEverythingAfter_ExtractTxt, removeEverythingBefore_ExtractTxt,
-                      language, encoding)
-        for (i in 1:length(param)) {
-            if (is.null(param[[i]])==TRUE) {
-                param[[i]] <- "NULL"
-            }
-        }
-        param <- unlist(param)
-        updateParametersTemp <- data.frame(args, param, stringsAsFactors = FALSE)
-        if (file.exists(base::file.path(project, website, "Logs", paste(website, "updateParameters.csv", sep = " - "))) == TRUE) {
-            updateParameters <- utils::read.table(base::file.path(project, website, "Logs", paste(website, "updateParameters.csv", sep = " - ")), stringsAsFactors = FALSE)
-            for (i in 1:length(updateParametersTemp$args)) {
-                updateParameters$param[updateParameters$args == updateParametersTemp$args[i]] <- updateParametersTemp$param[i]
-                if (is.element(updateParametersTemp$args[i], updateParameters$args) == FALSE) {
-                    updateParameters <- rbind(updateParameters, updateParametersTemp[i,] )
-                }
-            }
-        } else {
-            updateParameters <- updateParametersTemp
-        }
-        write.table(updateParameters, file = base::file.path(project, website, "Logs", paste(website, "updateParameters.csv", sep = " - ")))
-    }
-    castarter::CreateFolders(project = project, website = website)
-    htmlFilesList <- gtools::mixedsort(list.files(file.path(project, website, "Html"), pattern = "\\.html$", full.names = TRUE))
-    numberOfArticles <- length(htmlFilesList)
-    id <- as.integer(stringr::str_extract(string = stringr::str_extract(string = htmlFilesList, pattern = "/[[:digit:]]+\\.html$"), pattern = "[[:digit:]]+"))
-    date <- as.POSIXct(rep(NA, numberOfArticles))
-    contents <- rep(NA, numberOfArticles)
-    if (method_ExtractTitles == "indexLink") {
-        title <- ExtractTitles(articlesHtml = NULL, links = links, method = "indexLink", removeString = removeString_ExtractTitles, removeEverythingAfter = removeEverythingAfter_ExtractTitles, exportParameters = FALSE)
-    } else {
-        title <- rep(NA, numberOfArticles)
-    }
-    x <- 1
-    xlist <- seq(0,numberOfArticles,by=100)
-    for (i in 1:numberOfArticles) {
-        htmlFile <- readLines(htmlFilesList[i])
-        if (length(htmlFile)==0) {
-            htmlFile <- "<head></head><body><p></p></body>"
-        }
-        htmlFile <- paste(htmlFile, collapse = "\n")
-        if (is.null(encoding) == FALSE) {
-            htmlFile <- iconv(htmlFile, from = encoding, to = "utf8")
-        }
-        dateTemp <- ExtractDates(articlesHtml = htmlFile, dateFormat = dateFormat, divClass = divClass_ExtractDates, spanClass = spanClass_ExtractDates, customXpath = customXpath_ExtractDates, language = language_ExtractDates, removeEverythingBefore = removeEverythingBefore_ExtractDates, exportParameters = FALSE)
-        if (length(dateTemp) == 1) {
-            date[i] <- dateTemp
-        } else {
-            date[i] <- NA
-        }
-        contents[i] <- ExtractTxt(articlesHtml = htmlFile, export = FALSE, removeEverythingAfter = removeEverythingAfter_ExtractTxt, removeEverythingBefore = removeEverythingBefore_ExtractTxt, divClass = divClass_ExtractTxt, divId = divId_ExtractTxt, removeString = removeString_ExtractTxt, customXpath = customXpath_ExtractTxt, progressBar = FALSE, exportParameters = FALSE)
-        if (method_ExtractTitles != "indexLink") {
-            titleTemp <- ExtractTitles(articlesHtml = htmlFile, method = method_ExtractTitles, removeString = removeString_ExtractTitles, progressBar = FALSE)
-            if (length(titleTemp) == 1) {
-                title[i] <- titleTemp
-            } else {
-                title[i] <- NA
-            }
-        }
-        x <- x + 1
-        if (logProgress == TRUE) {
-            write(paste("Html file", x, "processed."), file = file.path(project, website,"Logs", "CreateDatasetFromHtmlProgress.log"))
-        }
-        if (is.element(x, xlist)) {
-            print(paste("Processed", x, "of", numberOfArticles, "articles."))
-        }
-    }
-    if (is.null(links) == FALSE) {
-        dataset <- data.frame(project, website, date, id, title, language, link = links, contents, check.names = FALSE, stringsAsFactors = FALSE)
-    } else {
-        dataset <- data.frame(project, website, date, id, title, language, link = NA, contents, check.names = FALSE, stringsAsFactors = FALSE)
-    }
-    save(dataset, file = file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".RData")))
-    print(paste("Dataset saved in", file.path(project, website, paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".RData"))))
-    invisible(dataset)
-}
 
 #' Exports metadata
 #'
@@ -309,11 +200,11 @@ CreateDatasetFromHtml <- function(links = NULL,
 #' @export
 #' @examples
 #' metadata <- ExportMetadata(project, website, dates, id, titles, language, links)
-ExportMetadata <- function(dates, id, titles, language, links, exportXlsx = FALSE, accordingToDate = FALSE, ignoreNAdates = FALSE, onlyExistingHtmlFiles = FALSE, project = NULL, website = NULL) {
-    if (gtools::invalid(project) == TRUE) {
+ExportMetadata <- function(dates, id, titles, language, links, exportXlsx = FALSE, accordingToDate = FALSE, ignoreNAdates = FALSE, project = NULL, website = NULL) {
+    if (is.null(project) == TRUE) {
         project <- CastarterOptions("project")
     }
-    if (gtools::invalid(website) == TRUE) {
+    if (is.null(website) == TRUE) {
         website <- CastarterOptions("website")
     }
     ignoreVector <- NULL
