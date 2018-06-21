@@ -208,12 +208,6 @@ ExportMetadata <- function(dates, id, titles, language, links, exportXlsx = FALS
         website <- CastarterOptions("website")
     }
     ignoreVector <- NULL
-    if (onlyExistingHtmlFiles == TRUE) {
-        htmlFilesList <- gtools::mixedsort(list.files(file.path(project, website, "Html"), full.names = TRUE))
-        id <- as.integer(regmatches(htmlFilesList, regexpr("[[:digit:]]+", htmlFilesList)))
-        idInTheory <- 1:length(links)
-        ignoreVector <- !is.element(id, idInTheory)
-    }
     if (ignoreNAdates == TRUE) {
         ignoreVector <- is.na(dates)
     }
