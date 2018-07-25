@@ -61,6 +61,7 @@ ExtractLinks <- function(domain = NULL,
         if (importParameters == TRUE) { # Import parameters
             if (file.exists(paramsFile) == TRUE) {
                 params <- readRDS(paramsFile)
+                params$ExtractLinks$exportParameters <- FALSE
                 for (i in seq_along(params$ExtractLinks)) {
                     assign(names(params$ExtractLinks)[i], params$ExtractLinks[[i]])
                 }
