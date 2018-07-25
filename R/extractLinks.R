@@ -74,12 +74,13 @@ ExtractLinks <- function(domain = NULL,
         importParameters <- FALSE
     }
     if (exportParameters == TRUE & importParameters == FALSE) { # Export parameters
+        extractLinksParams <-  as.list(environment())
         if (file.exists(paramsFile) == TRUE) {
             params <- readRDS(paramsFile)
         } else {
             params <- list()
         }
-        params$ExtractLinks <-  as.list(environment())
+        params$ExtractLinks <- extractLinksParams
         saveRDS(object = params, file = paramsFile)
     }
     if (is.null(htmlLocation)) {

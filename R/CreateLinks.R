@@ -61,14 +61,13 @@ CreateLinks <- function(linkFirstChunk,
     }
     if (exportParameters == TRUE & importParameters == FALSE) { # Export parameters
         if (file.exists(paramsFile) == TRUE) {
+            createLinksParams <- as.list(environment())
             params <- readRDS(paramsFile)
             params$CreateLinks <- NULL
         } else {
             params <- list()
         }
-        params$CreateLinks <-  as.list(environment())
-        params$CreateLinks$paramsFile <- NULL
-        params$CreateLinks$params <- NULL
+        params$CreateLinks <- createLinksParams
         saveRDS(object = params, file = paramsFile)
     }
     # Create links based on date format, if provided
