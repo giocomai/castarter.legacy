@@ -269,13 +269,17 @@ ExtractDates <- function(dateFormat = "dmY",
         }
     }
     if (language == "ru" | language == "russian") {
-        monthsRu <- c("Января", "Февраля", "Марта", "Апреля", "Мая", "Июня", "Июля", "Августа", "Сентября",
-                      "Октября", "Ноября", "Декабря")
-        monthsEn <- month.name
-        monthsRu <- tolower(monthsRu)
+        monthsRu <- tolower(c("Января", "Февраля", "Марта", "Апреля", "Мая", "Июня", "Июля", "Августа", "Сентября",
+                      "Октября", "Ноября", "Декабря"))
+        monthsRu_2 <- c("январь", "февраль", "март", "апрель", "май", "июнь", "июль", "август",
+                        "сентябрь", "октябрь", "ноябрь", "декабрь")
+        monthsLocale <- month.name
         datesTxt <- tolower(datesTxt)
         for (i in 1:12) {
-            datesTxt <- gsub(monthsRu[i], monthsEn[i], datesTxt)
+            datesTxt <- gsub(monthsRu[i], monthsLocale[i], datesTxt)
+        }
+        for (i in 1:12) {
+            datesTxt <- gsub(monthsRu_2[i], monthsLocale[i], datesTxt)
         }
         dates <- as.Date(lubridate::parse_date_time(datesTxt, dateFormat))
     } else {
