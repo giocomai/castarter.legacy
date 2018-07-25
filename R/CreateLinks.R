@@ -60,8 +60,8 @@ CreateLinks <- function(linkFirstChunk,
         importParameters <- FALSE
     }
     if (exportParameters == TRUE & importParameters == FALSE) { # Export parameters
+        createLinksParams <- as.list(environment())
         if (file.exists(paramsFile) == TRUE) {
-            createLinksParams <- as.list(environment())
             params <- readRDS(paramsFile)
             params$CreateLinks <- NULL
         } else {
