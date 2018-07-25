@@ -44,6 +44,7 @@ CreateLinks <- function(linkFirstChunk,
         if (importParameters == TRUE) { # Import parameters
             if (file.exists(paramsFile) == TRUE) {
                 params <- readRDS(paramsFile)
+                params$CreateLinks$exportParameters <- FALSE
                 for (i in seq_along(params$CreateLinks)) {
                     assign(names(params$CreateLinks)[i], params$CreateLinks[[i]])
                 }
