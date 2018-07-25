@@ -56,18 +56,17 @@ ExtractLinks <- function(domain = NULL,
     if (exportParameters == TRUE && exists("project") == FALSE | exportParameters == TRUE && exists("website") == FALSE) {
         stop("If exportParameters == TRUE, both project and website must be defined either as parameters or previously with SetCastarter(project = '...', website = '...').")
     }
-    paramsFile <- base::file.path(project, website, "Logs", paste(project, website, "parameters.rds", sep = "-"))
     if (is.null(importParameters)==FALSE) {
         if (importParameters == TRUE) { # Import parameters
-            if (file.exists(paramsFile) == TRUE) {
-                params <- readRDS(paramsFile)
+            if (file.exists(base::file.path(project, website, "Logs", paste(project, website, "parameters.rds", sep = "-"))) == TRUE) {
+                params <- readRDS(base::file.path(project, website, "Logs", paste(project, website, "parameters.rds", sep = "-")))
                 params$ExtractLinks$exportParameters <- FALSE
                 for (i in seq_along(params$ExtractLinks)) {
                     assign(names(params$ExtractLinks)[i], params$ExtractLinks[[i]])
                 }
             } else {
                 # throw error if parameters file not found
-                stop(paste("Parameters file not found in", paramsFile))
+                stop(paste("Parameters file not found in", base::file.path(project, website, "Logs", paste(project, website, "parameters.rds", sep = "-"))))
             }
         }
     } else {
@@ -75,13 +74,14 @@ ExtractLinks <- function(domain = NULL,
     }
     if (exportParameters == TRUE & importParameters == FALSE) { # Export parameters
         extractLinksParams <-  as.list(environment())
-        if (file.exists(paramsFile) == TRUE) {
-            params <- readRDS(paramsFile)
+        if (file.exists(base::file.path(project, website, "Logs", paste(project, website, "parameters.rds", sep = "-"))) == TRUE) {
+            params <- readRDS(base::file.path(project, website, "Logs", paste(project, website, "parameters.rds", sep = "-")))
+            params$ExtractLinks <- NULL
         } else {
             params <- list()
         }
         params$ExtractLinks <- extractLinksParams
-        saveRDS(object = params, file = paramsFile)
+        saveRDS(object = params, file = base::file.path(project, website, "Logs", paste(project, website, "parameters.rds", sep = "-")))
     }
     if (is.null(htmlLocation)) {
         htmlLocation <- file.path(project, website, "IndexHtml")

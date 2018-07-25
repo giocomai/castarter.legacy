@@ -39,18 +39,17 @@ CreateLinks <- function(linkFirstChunk,
     if (is.null(website) == TRUE) {
         website <- CastarterOptions("website")
     }
-    paramsFile <- base::file.path(project, website, "Logs", paste(project, website, "parameters.rds", sep = "-"))
     if (is.null(importParameters)==FALSE) {
         if (importParameters == TRUE) { # Import parameters
-            if (file.exists(paramsFile) == TRUE) {
-                params <- readRDS(paramsFile)
+            if (file.exists(base::file.path(project, website, "Logs", paste(project, website, "parameters.rds", sep = "-"))) == TRUE) {
+                params <- readRDS(base::file.path(project, website, "Logs", paste(project, website, "parameters.rds", sep = "-")))
                 params$CreateLinks$exportParameters <- FALSE
                 for (i in seq_along(params$CreateLinks)) {
                     assign(names(params$CreateLinks)[i], params$CreateLinks[[i]])
                 }
             } else {
                 # throw error if parameters file not found
-                stop(paste("Parameters file not found in", paramsFile))
+                stop(paste("Parameters file not found in", base::file.path(project, website, "Logs", paste(project, website, "parameters.rds", sep = "-"))))
             }
             if (exportParameters==TRUE) {
                 stop("Parameters can either be imported or exported ('exportParameters' and 'importParameters' cannot both be TRUE.")
@@ -61,14 +60,14 @@ CreateLinks <- function(linkFirstChunk,
     }
     if (exportParameters == TRUE & importParameters == FALSE) { # Export parameters
         createLinksParams <- as.list(environment())
-        if (file.exists(paramsFile) == TRUE) {
-            params <- readRDS(paramsFile)
+        if (file.exists(base::file.path(project, website, "Logs", paste(project, website, "parameters.rds", sep = "-"))) == TRUE) {
+            params <- readRDS(base::file.path(project, website, "Logs", paste(project, website, "parameters.rds", sep = "-")))
             params$CreateLinks <- NULL
         } else {
             params <- list()
         }
         params$CreateLinks <- createLinksParams
-        saveRDS(object = params, file = paramsFile)
+        saveRDS(object = params, file = base::file.path(project, website, "Logs", paste(project, website, "parameters.rds", sep = "-")))
     }
     # Create links based on date format, if provided
     if (is.null(dateFormat) == FALSE) {
