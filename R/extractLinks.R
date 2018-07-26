@@ -61,6 +61,9 @@ ExtractLinks <- function(domain = NULL,
             if (file.exists(base::file.path(project, website, "Logs", paste(project, website, "parameters.rds", sep = "-"))) == TRUE) {
                 params <- readRDS(base::file.path(project, website, "Logs", paste(project, website, "parameters.rds", sep = "-")))
                 params$ExtractLinks$exportParameters <- FALSE
+                if (is.null(id)==FALSE) {
+                    params$ExtractLinks$id <- id
+                }
                 for (i in seq_along(params$ExtractLinks)) {
                     assign(names(params$ExtractLinks)[i], params$ExtractLinks[[i]])
                 }
