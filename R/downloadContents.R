@@ -66,7 +66,7 @@ DownloadContents <- function(links,
                                            stringr::str_sub(start = 1L, end = -6L))
             linksToDownload <- rep(x = FALSE, times = length(links))
             linksToDownload[smallFilesId] <- TRUE
-            linksToDownload <- Reduce(f = "&", x = list(missingPagesLinks, linksToCheck))
+            linksToDownload <- Reduce(f = "&", x = list(linksToDownload, linksToCheck))
         }
     } else if (is.null(linksToDownload) == FALSE) {
         # do nothing
