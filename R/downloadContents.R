@@ -10,7 +10,8 @@
 #' @param method Defaults to "auto". Method is passed to the function utils::download.file(); available options are "internal", "wininet" (Windows only) "libcurl", "wget" and "curl". For more information see ?utils::download.file()
 #' @param missingPages Logical, defaults to TRUE. If TRUE, verifies if a downloaded html file exists for each element in articlesLinks; when there is no such file, it downloads it.
 #' @param size Defaults to 500. It represents the minimum size in bytes that downloaded html files should have: files that are smaller will be downloaded again. Used only when missingPages == FALSE.
-#' @param linksToDownload A logical vector. Only links corresponding to TRUE will be downloaded: links[linksToDownload]
+#' @param linksToDownload A logical vector. Only links corresponding to TRUE will be downloaded. Corresponds to `links[linksToDownload]` but keeps the id in line with the original location in the links vector. If given, it ignores other parameters and downloads all selected pages (overwriting if they exist already).
+#' @param linksToCheck A logical vector. Only links corresponding to TRUE will be considered for download. Corresponds to `links[linksToCheck]` but keeps the id in line with the original location in the links vector. If given, unlike the `linksToDownload` parameter it considers other parameters, e.g. if `missingPages=TRUE`, it downloads selected pages only if they have not been previously downloaded.
 #' @param wgetSystem Logical, defaults to FALSE. Calls wget as a system command through the system() function. Wget must be previously installed on the system.
 #' @param start Integer. Only links with position higher than start in the links vector will be downloaded: links[start:length(links)]
 #' @param ignoreSSLcertificates Logical, defaults to FALSE. If TRUE it uses wget to download the page, and does not check if the SSL certificate is valid. Useful, for example, for https pages with expired or mis-configured SSL certificate.
@@ -23,6 +24,7 @@ DownloadContents <- function(links,
                              type = "articles",
                              path = NULL,
                              size = 500,
+                             linksToCheck = NULL,
                              linksToDownload = NULL,
                              wgetSystem = FALSE,
                              method = "auto",
@@ -52,16 +54,22 @@ DownloadContents <- function(links,
     htmlFilesList <- htmlFilesList[stringr::str_extract(string = htmlFilesList, pattern = "[[:digit:]]+[[:punct:]]html") %>% stringr::str_sub(start = 1L, end = -6L) %>% as.integer() %>% order()]
     htmlFileSize <- file.info(htmlFilesList)["size"]
     articlesId <- 1:length(links)
-    if (missingPages == TRUE) {
-        articlesHtmlFilenamesInTheory <- file.path(htmlFilePath, paste0(articlesId, ".html"))
-        linksToDownload <- !is.element(articlesHtmlFilenamesInTheory, htmlFilesList)
-    }
     if (is.null(linksToDownload) == TRUE) {
-        smallFiles <- htmlFilesList[htmlFileSize < size]
-        smallFilesId <- as.integer(stringr::str_extract(string = smallFiles, pattern = "[[:digit:]]+[[:punct:]]html") %>%
-                                       stringr::str_sub(start = 1L, end = -6L))
-        linksToDownload <- rep(x = FALSE, times = length(links))
-        linksToDownload[smallFilesId] <- TRUE
+        if (missingPages == TRUE) {
+            articlesHtmlFilenamesInTheory <- file.path(htmlFilePath, paste0(articlesId, ".html"))
+            missingPagesLinks <- !is.element(articlesHtmlFilenamesInTheory, htmlFilesList)
+            linksToDownload <- Reduce(f = "&", x = list(missingPagesLinks, linksToCheck))
+        } else if (missingPages == FALSE) {
+
+            smallFiles <- htmlFilesList[htmlFileSize < size]
+            smallFilesId <- as.integer(stringr::str_extract(string = smallFiles, pattern = "[[:digit:]]+[[:punct:]]html") %>%
+                                           stringr::str_sub(start = 1L, end = -6L))
+            linksToDownload <- rep(x = FALSE, times = length(links))
+            linksToDownload[smallFilesId] <- TRUE
+            linksToDownload <- Reduce(f = "&", x = list(missingPagesLinks, linksToCheck))
+        }
+    } else if (is.null(linksToDownload) == FALSE) {
+        # do nothing
     }
     linksToDownload[1:start-1] <- FALSE
     temp <- 1

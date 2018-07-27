@@ -5,8 +5,8 @@
 \title{Downloads html pages based on a vector of links}
 \usage{
 DownloadContents(links, type = "articles", path = NULL, size = 500,
-  linksToDownload = NULL, wgetSystem = FALSE, method = "auto",
-  missingPages = TRUE, start = 1, wait = 1,
+  linksToCheck = NULL, linksToDownload = NULL, wgetSystem = FALSE,
+  method = "auto", missingPages = TRUE, start = 1, wait = 1,
   ignoreSSLcertificates = FALSE, createScript = FALSE, project = NULL,
   website = NULL)
 }
@@ -19,7 +19,9 @@ DownloadContents(links, type = "articles", path = NULL, size = 500,
 
 \item{size}{Defaults to 500. It represents the minimum size in bytes that downloaded html files should have: files that are smaller will be downloaded again. Used only when missingPages == FALSE.}
 
-\item{linksToDownload}{A logical vector. Only links corresponding to TRUE will be downloaded: links[linksToDownload]}
+\item{linksToCheck}{A logical vector. Only links corresponding to TRUE will be considered for download. Corresponds to `links[linksToCheck]` but keeps the id in line with the original location in the links vector. If given, unlike the `linksToDownload` parameter it considers other parameters, e.g. if `missingPages=TRUE`, it downloads selected pages only if they have not been previously downloaded.}
+
+\item{linksToDownload}{A logical vector. Only links corresponding to TRUE will be downloaded. Corresponds to `links[linksToDownload]` but keeps the id in line with the original location in the links vector. If given, it ignores other parameters and downloads all selected pages (overwriting if they exist already).}
 
 \item{wgetSystem}{Logical, defaults to FALSE. Calls wget as a system command through the system() function. Wget must be previously installed on the system.}
 
