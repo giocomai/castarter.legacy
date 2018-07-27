@@ -57,8 +57,10 @@ DownloadContents <- function(links,
     if (is.null(linksToDownload) == TRUE) {
         if (missingPages == TRUE) {
             articlesHtmlFilenamesInTheory <- file.path(htmlFilePath, paste0(articlesId, ".html"))
-            missingPagesLinks <- !is.element(articlesHtmlFilenamesInTheory, htmlFilesList)
-            linksToDownload <- Reduce(f = "&", x = list(missingPagesLinks, linksToCheck))
+            linksToDownload <- !is.element(articlesHtmlFilenamesInTheory, htmlFilesList)
+            if (is.null(linksToCheck)==FALSE) {
+                linksToDownload <- Reduce(f = "&", x = list(linksToDownload, linksToCheck))
+            }
         } else if (missingPages == FALSE) {
 
             smallFiles <- htmlFilesList[htmlFileSize < size]
@@ -66,7 +68,9 @@ DownloadContents <- function(links,
                                            stringr::str_sub(start = 1L, end = -6L))
             linksToDownload <- rep(x = FALSE, times = length(links))
             linksToDownload[smallFilesId] <- TRUE
-            linksToDownload <- Reduce(f = "&", x = list(linksToDownload, linksToCheck))
+            if (is.null(linksToCheck)==FALSE) {
+                linksToDownload <- Reduce(f = "&", x = list(linksToDownload, linksToCheck))
+            }
         }
     } else if (is.null(linksToDownload) == FALSE) {
         # do nothing
