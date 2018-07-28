@@ -8,7 +8,7 @@ ExtractLinks(domain = NULL, partOfLink = NULL, partOfLinkToExclude = NULL,
   container = NULL, containerClass = NULL, containerId = NULL,
   attributeType = NULL, htmlLocation = NULL, id = NULL,
   extractText = FALSE, minLength = NULL, maxLength = NULL,
-  indexLinks = NULL, sortLinks = TRUE, linkTitle = TRUE,
+  indexLinks = NULL, sortLinks = FALSE, linkTitle = TRUE,
   appendString = NULL, export = FALSE, removeString = NULL,
   progressBar = TRUE, project = NULL, website = NULL,
   importParameters = NULL, exportParameters = TRUE)
@@ -34,7 +34,7 @@ ExtractLinks(domain = NULL, partOfLink = NULL, partOfLinkToExclude = NULL,
 
 \item{indexLinks}{A character vector, defaults to NULL. If provided, indexLinks are removed from the extracted articlesLinks.}
 
-\item{sortLinks}{Defaults to TRUE. If TRUE, links are sorted in aphabetical order.}
+\item{sortLinks}{Defaults to FALSE If TRUE, links are sorted in alphabetical order.}
 
 \item{linkTitle}{Defaults to TRUE. If TRUE, text of links is included as names of the vector.}
 
@@ -53,5 +53,5 @@ A named character vector of links to articles. Name of the link may be the artic
 Extracts direct links to individual articles from index pages according to a selcted pattern.
 }
 \examples{
-articlesLinks <- ExtractLinks(domain = "http://www.example.com/", partOfLink = "news/", html)
+links <- ExtractLinks(domain = "http://www.example.com/", partOfLink = "news/")
 }

@@ -12,7 +12,7 @@
 #' @param attributeType Type of attribute to extract from links, when different from href.
 #' @param minLength If a link is shorter than the number of characters given in minLength, it is excluded from the output.
 #' @param maxLength If a link is longer than the number of characters given in maxLength, it is excluded from the output.
-#' @param sortLinks Defaults to TRUE. If TRUE, links are sorted in aphabetical order.
+#' @param sortLinks Defaults to FALSE If TRUE, links are sorted in alphabetical order.
 #' @param linkTitle Defaults to TRUE. If TRUE, text of links is included as names of the vector.
 #' @param appendString If provided, appends given string to the extracted articles. Typically used to create links for print or mobile versions of the extracted page.
 #' @param removeString If provided, remove given string (or strings) from links.
@@ -21,7 +21,7 @@
 #' @return A named character vector of links to articles. Name of the link may be the article title.
 #' @export
 #' @examples
-#' articlesLinks <- ExtractLinks(domain = "http://www.example.com/", partOfLink = "news/", html)
+#' links <- ExtractLinks(domain = "http://www.example.com/", partOfLink = "news/")
 ExtractLinks <- function(domain = NULL,
                          partOfLink = NULL,
                          partOfLinkToExclude = NULL,
@@ -35,7 +35,7 @@ ExtractLinks <- function(domain = NULL,
                          minLength = NULL,
                          maxLength = NULL,
                          indexLinks = NULL,
-                         sortLinks = TRUE,
+                         sortLinks = FALSE,
                          linkTitle = TRUE,
                          appendString = NULL,
                          export = FALSE,
@@ -202,6 +202,9 @@ ExtractLinks <- function(domain = NULL,
     }
     if (is.null(maxLength)==FALSE) {
         links <- links[nchar(links)<maxLength]
+    }
+    if (sortLinks == TRUE) {
+        links <- sort(links)
     }
     if (export == TRUE) {
         writeLines(links, file.path(project, website, "Logs", paste(Sys.Date(), website, "articlesLinks.txt", sep = "-")))
