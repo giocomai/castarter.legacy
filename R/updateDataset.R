@@ -147,6 +147,9 @@ UpdateDataset <- function(dataset = NULL,
                           exportParameters = FALSE,
                           project = project,
                           website = website)
+    if (sum(is.na(dates))>0) {
+        warning(paste("The date could not be extracted for", sum(is.na(dates)), "of the", length(id), "new pages found."))
+    }
 
     language <- dataset$language[1]
 
