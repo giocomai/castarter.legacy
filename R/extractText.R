@@ -49,31 +49,38 @@ ExtractText <- function(container = NULL,
     if (exportParameters == TRUE && exists("project") == FALSE | exportParameters == TRUE && exists("website") == FALSE) {
         stop("If exportParameters == TRUE, both project and website must be defined either as parameters or previously with SetCastarter(project = '...', website = '...').")
     }
-    paramsFile <- base::file.path(project, website, "Logs", paste(project, website, "parameters.rds", sep = "-"))
+
     if (is.null(importParameters)==FALSE) {
         if (importParameters == TRUE) { # Import parameters
-            if (file.exists(paramsFile) == TRUE) {
-                params <- readRDS(paramsFile)
+            if (file.exists(base::file.path(project, website, "Logs", paste(project, website, "parameters.rds", sep = "-"))) == TRUE) {
+                params <- readRDS(base::file.path(project, website, "Logs", paste(project, website, "parameters.rds", sep = "-")))
+                params$ExtractText$exportParameters <- FALSE
+                if (is.null(id)==FALSE) {
+                    params$ExtractText$id <- id
+                }
                 for (i in seq_along(params$ExtractText)) {
                     assign(names(params$ExtractText)[i], params$ExtractText[[i]])
                 }
             } else {
                 # throw error if parameters file not found
-                stop(paste("Parameters file not found in", paramsFile))
+                stop(paste("Parameters file not found in", base::file.path(project, website, "Logs", paste(project, website, "parameters.rds", sep = "-"))))
             }
         }
     } else {
         importParameters <- FALSE
     }
     if (exportParameters == TRUE & importParameters == FALSE) { # Export parameters
-        if (file.exists(paramsFile) == TRUE) {
-            params <- readRDS(paramsFile)
+        ExtractTextParams <-  as.list(environment())
+        if (file.exists(base::file.path(project, website, "Logs", paste(project, website, "parameters.rds", sep = "-"))) == TRUE) {
+            params <- readRDS(base::file.path(project, website, "Logs", paste(project, website, "parameters.rds", sep = "-")))
+            params$ExtractText <- NULL
         } else {
             params <- list()
         }
-        params$ExtractText <-  as.list(environment())
-        saveRDS(object = params, file = paramsFile)
+        params$ExtractText <- ExtractTextParams
+        saveRDS(object = params, file = base::file.path(project, website, "Logs", paste(project, website, "parameters.rds", sep = "-")))
     }
+
     if (is.null(htmlLocation)) {
         htmlLocation <- file.path(project, website, "Html")
     }

@@ -50,31 +50,37 @@ ExtractTitles <- function(container = "title",
     if (exportParameters == TRUE && exists("project") == FALSE | exportParameters == TRUE && exists("website") == FALSE) {
         stop("If exportParameters == TRUE, both project and website must be defined either as parameters or previously with SetCastarter(project = '...', website = '...').")
     }
-    paramsFile <- base::file.path(project, website, "Logs", paste(project, website, "parameters.rds", sep = "-"))
     if (is.null(importParameters)==FALSE) {
         if (importParameters == TRUE) { # Import parameters
-            if (file.exists(paramsFile) == TRUE) {
-                params <- readRDS(paramsFile)
+            if (file.exists(base::file.path(project, website, "Logs", paste(project, website, "parameters.rds", sep = "-"))) == TRUE) {
+                params <- readRDS(base::file.path(project, website, "Logs", paste(project, website, "parameters.rds", sep = "-")))
+                params$ExtractTitles$exportParameters <- FALSE
+                if (is.null(id)==FALSE) {
+                    params$ExtractTitles$id <- id
+                }
                 for (i in seq_along(params$ExtractTitles)) {
                     assign(names(params$ExtractTitles)[i], params$ExtractTitles[[i]])
                 }
             } else {
                 # throw error if parameters file not found
-                stop(paste("Parameters file not found in", paramsFile))
+                stop(paste("Parameters file not found in", base::file.path(project, website, "Logs", paste(project, website, "parameters.rds", sep = "-"))))
             }
         }
     } else {
         importParameters <- FALSE
     }
     if (exportParameters == TRUE & importParameters == FALSE) { # Export parameters
-        if (file.exists(paramsFile) == TRUE) {
-            params <- readRDS(paramsFile)
+        extractTitlesParams <-  as.list(environment())
+        if (file.exists(base::file.path(project, website, "Logs", paste(project, website, "parameters.rds", sep = "-"))) == TRUE) {
+            params <- readRDS(base::file.path(project, website, "Logs", paste(project, website, "parameters.rds", sep = "-")))
+            params$ExtractTitles <- NULL
         } else {
             params <- list()
         }
-        params$ExtractTitles <-  as.list(environment())
-        saveRDS(object = params, file = paramsFile)
+        params$ExtractTitles <- extractTitlesParams
+        saveRDS(object = params, file = base::file.path(project, website, "Logs", paste(project, website, "parameters.rds", sep = "-")))
     }
+
     if (container == "indexLink"|container == "links") {
         titles <- names(links)
     } else {
@@ -249,7 +255,7 @@ ExportDataset <- function(dataset = NULL, text = NULL, metadata = NULL, exportRd
         project <- CastarterOptions("website")
     }
     if (is.null(dataset)==TRUE) {
-        dataset <- dplyr::bind_cols(tibble::data_frame(doc_id = metadata$doc_id, text = text), metadata %>% select(-doc_id))
+        dataset <- dplyr::bind_cols(tibble::data_frame(doc_id = metadata$doc_id, text = text), metadata %>% dplyr::select(-doc_id))
     }
     if (exportRds == TRUE) {
         saveRDS(object = dataset, file = file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = "-"), ".rds")))
@@ -267,7 +273,7 @@ ExportDataset <- function(dataset = NULL, text = NULL, metadata = NULL, exportRd
         xlsx::write.xlsx(dataset, file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".xlsx")))
         print(paste("Dataset saved as .xlsx file in", file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".xlsx"))))
     }
-    dataset
+    invisible(dataset)
 }
 
 #' Extracts string included in an html element
