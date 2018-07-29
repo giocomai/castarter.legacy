@@ -38,10 +38,10 @@ UpdateDataset <- function(dataset = NULL,
             message("Downloading index pages as long as they include links to pages not included in the dataset")
 
             indexLinks <- CreateLinks(linkFirstChunk = params$CreateLinks$linkFirstChunk,
-                                 linkSecondChunk = params$CreateLinks$linkSecondChunk,
-                                 startPage = params$CreateLinks$startPage,
-                                 endPage = params$CreateLinks$startPage,
-                                 exportParameters = FALSE)
+                                      linkSecondChunk = params$CreateLinks$linkSecondChunk,
+                                      startPage = params$CreateLinks$startPage,
+                                      endPage = params$CreateLinks$startPage,
+                                      exportParameters = FALSE)
             DownloadContents(links = indexLinks, type = "index", wait = wait, project = project, website = website)
             DownloadContents(links = indexLinks, type = "index", wait = wait, project = project, website = website)
             DownloadContents(links = indexLinks, type = "index", missingPages = FALSE, wait = wait, project = project, website = website)
@@ -70,42 +70,44 @@ UpdateDataset <- function(dataset = NULL,
             }
             message("Extracting links to new pages")
             newLinks <- ExtractLinks(importParameters = TRUE, id = NULL)
-        } else {
-            newLinks <- links
         }
-        newLinks <- newLinks[!is.element(el = newLinks, set = dataset$link)]
-        allLinks <- c(dataset$link, newLinks)
-        toDownloadL <- is.element(el = allLinks, set = newLinks)
-        message(paste(sum(toDownloadL), "new pages founds."))
-
-        DownloadContents(links = allLinks,
-                         type = "articles",
-                         linksToCheck = toDownloadL,
-                         wait = wait, project = project, website = website)
-
-        DownloadContents(links = allLinks,
-                         type = "articles",
-                         linksToCheck = toDownloadL,
-                         wait = wait,
-                         project = project,
-                         website = website,
-                         missingPages = FALSE)
-
-        DownloadContents(links = allLinks,
-                         type = "articles",
-                         linksToCheck = toDownloadL,
-                         wait = wait,
-                         project = project,
-                         website = website)
-
-        DownloadContents(links = allLinks,
-                         type = "articles",
-                         linksToCheck = toDownloadL,
-                         wait = wait,
-                         project = project,
-                         website = website,
-                         missingPages = FALSE)
+    } else {
+        newLinks <- links
     }
+    newLinks <- newLinks[!is.element(el = newLinks, set = dataset$link)]
+    allLinks <- c(dataset$link, newLinks)
+    toDownloadL <- is.element(el = allLinks, set = newLinks)
+    message(paste(sum(toDownloadL), "new pages founds."))
+
+    DownloadContents(links = allLinks,
+                     type = "articles",
+                     linksToCheck = toDownloadL,
+                     wait = wait, project = project, website = website)
+
+    DownloadContents(links = allLinks,
+                     type = "articles",
+                     linksToCheck = toDownloadL,
+                     wait = wait,
+                     project = project,
+                     website = website,
+                     missingPages = FALSE)
+
+    DownloadContents(links = allLinks,
+                     type = "articles",
+                     linksToCheck = toDownloadL,
+                     wait = wait,
+                     project = project,
+                     website = website)
+
+    DownloadContents(links = allLinks,
+                     type = "articles",
+                     linksToCheck = toDownloadL,
+                     wait = wait,
+                     project = project,
+                     website = website,
+                     missingPages = FALSE)
+
+    # Extract metadata
     id <- ExtractId(project = project, website = website)
     titles <- ExtractTitles(id = id,
                             importParameters = TRUE,
