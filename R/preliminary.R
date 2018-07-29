@@ -35,6 +35,9 @@ CreateFolders <- function(project = NULL, website = NULL) {
     if (!file.exists(file.path(project, website, "Outputs"))) {
         dir.create(file.path(project, website, "Outputs"))
     }
+    if (!file.exists(file.path(project, website, "SessionRdata"))) {
+        dir.create(file.path(project, website, "SessionRdata"))
+    }
 }
 
 #' Finds the full path of the latest saved workspace for selected website.
@@ -52,7 +55,7 @@ LoadLatest <- function(project = NULL, website = NULL) {
     if (is.null(website) == TRUE) {
         website <- CastarterOptions("website")
     }
-    lastSavedFile <- file.path(file.path(project, website), sort(list.files(file.path(project, website))[stringr::str_extract(list.files(file.path(project, website)), "RData") == "RData"], decreasing = TRUE)[1])
+    lastSavedFile <- file.path(file.path(project, website, "SessionRdata"), sort(list.files(file.path(project, website))[stringr::str_extract(list.files(file.path(project, website)), "RData") == "RData"], decreasing = TRUE)[1])
 }
 
 #' Saves working environment and dataset.
@@ -77,8 +80,8 @@ SaveWebsite <- function(saveEnvironment = TRUE, dataset = NULL, tidyCorpus = NUL
         website <- CastarterOptions("website")
     }
     if (saveEnvironment == TRUE) {
-        save.image(file = file.path(project, website, paste0(paste(Sys.Date(), project, website, sep = "-"), ".RData")))
-        message(paste("Environment saved in", file.path(project, website, paste0(paste(Sys.Date(), project, website, sep = "-"), ".RData"))))
+        save.image(file = file.path(project, website, "SessionRdata", paste0(paste(Sys.Date(), project, website, sep = "-"), ".RData")))
+        message(paste("Environment saved in", file.path(project, website, "SessionRdata", paste0(paste(Sys.Date(), project, website, sep = "-"), ".RData"))))
     }
     if (is.null(dataset) == FALSE) {
         if (is.data.frame(dataset)==TRUE) {
