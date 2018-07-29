@@ -47,7 +47,9 @@ UpdateDataset <- function(dataset = NULL,
             DownloadContents(links = indexLinks, type = "index", missingPages = FALSE, wait = wait, project = project, website = website)
             DownloadContents(links = indexLinks, type = "index", missingPages = FALSE, wait = wait, project = project, website = website)
 
-            links <- ExtractLinks(importParameters = TRUE)
+            links <- ExtractLinks(importParameters = TRUE,
+                                  project = project,
+                                  website = website)
 
             while(sum(is.element(el = links, set = dataset$link))<length(links)&length(indexLinks)<=maxNumberOfIndexPages) {
                 indexLinks <- CreateLinks(linkFirstChunk = params$CreateLinks$linkFirstChunk,
@@ -62,7 +64,9 @@ UpdateDataset <- function(dataset = NULL,
                 DownloadContents(links = indexLinks, type = "index", missingPages = FALSE, wait = wait, project = project, website = website)
 
                 links <- ExtractLinks(importParameters = TRUE,
-                                      id = length(indexLinks))
+                                      id = length(indexLinks),
+                                      project = project,
+                                      website = website)
 
             }
             if (length(indexLinks)==maxNumberOfIndexPages) {
@@ -70,6 +74,28 @@ UpdateDataset <- function(dataset = NULL,
             }
             message("Extracting links to new pages")
             newLinks <- ExtractLinks(importParameters = TRUE, id = NULL)
+        } else {
+
+            message("Downloading index pages between the last day available in the dataset and today.")
+
+            indexLinks <- CreateLinks(linkFirstChunk = params$CreateLinks$linkFirstChunk,
+                                      linkSecondChunk = params$CreateLinks$linkSecondChunk,
+                                      dateFormat = params$CreateLinks$dateFormat,
+                                      startDate = max(dataset$date),
+                                      endDate = as.character(as.Date(Sys.Date())),
+                                      dateSeparator = params$CreateLinks$dateSeparator,
+                                      exportParameters = FALSE)
+            DownloadContents(links = indexLinks, type = "index", wait = wait, project = project, website = website)
+            DownloadContents(links = indexLinks, type = "index", wait = wait, project = project, website = website)
+            DownloadContents(links = indexLinks, type = "index", missingPages = FALSE, wait = wait, project = project, website = website)
+            DownloadContents(links = indexLinks, type = "index", missingPages = FALSE, wait = wait, project = project, website = website)
+
+            message("Extracting links to new pages")
+
+            newLinks <- ExtractLinks(importParameters = TRUE,
+                                     project = project,
+                                     website = website)
+
         }
     } else {
         newLinks <- links
@@ -78,7 +104,7 @@ UpdateDataset <- function(dataset = NULL,
     allLinks <- c(dataset$link, newLinks)
     toDownloadL <- is.element(el = allLinks, set = newLinks)
     message(paste(sum(toDownloadL), "new pages founds."))
-
+    Sys.sleep(time = 1)
     DownloadContents(links = allLinks,
                      type = "articles",
                      linksToCheck = toDownloadL,
