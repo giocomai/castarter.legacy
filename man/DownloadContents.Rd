@@ -31,6 +31,8 @@ DownloadContents(links, type = "articles", path = NULL, size = 500,
 
 \item{start}{Integer. Only links with position higher than start in the links vector will be downloaded: links[start:length(links)]}
 
+\item{wait}{Defaults to 1. Number of seconds to wait between downloading one page and the next. Can be increased to reduce server load, or can be set to 0 when this is not an issue.}
+
 \item{ignoreSSLcertificates}{Logical, defaults to FALSE. If TRUE it uses wget to download the page, and does not check if the SSL certificate is valid. Useful, for example, for https pages with expired or mis-configured SSL certificate.}
 
 \item{project}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
