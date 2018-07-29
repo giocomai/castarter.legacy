@@ -229,24 +229,28 @@ ExportMetadata <- function(dates, id, titles, language, links, exportXlsx = FALS
 #'
 #' Exports dataset to a data.frame, with options to save it as an R object, and export it as a .csv or .xlsx file.
 #'
-#' @param text A character vector.
+#' @param dataset A 'castarter' dataset.
+#' @param text A character vector typically created with ExtractText().
 #' @param metadata A data.frame typically created with ExportMetadata(). Number of rows must be the same as the number of text items in `text`.
 #' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.
 #' @param website Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
+#' @param exportRdsIf equal to TRUE, exports the complete dataset in R's .rds file format in the Dataset sub-folder.
 #' @param exportCsv If equal to TRUE, exports the complete dataset in the .csv file format in the Dataset sub-folder.
 #' @param exportXlsx If equal to TRUE, exports the complete dataset in the .xlsx file format in the Dataset sub-folder.
 #' @return A data.frame, a 'castarter' dataset.
 #' @export
 #' @examples
-#' dataset <- ExportDataset(contents, metadata, project, website)
-ExportDataset <- function(text, metadata, exportRds = TRUE, exportRdata = FALSE, exportCsv = FALSE, exportXlsx = FALSE, project = NULL, website = NULL) {
+#' dataset <- ExportDataset(text, metadata, project, website)
+ExportDataset <- function(dataset = NULL, text = NULL, metadata = NULL, exportRds = FALSE, exportRdata = FALSE, exportCsv = FALSE, exportXlsx = FALSE, project = NULL, website = NULL) {
     if (is.null(project) == TRUE) {
         project <- CastarterOptions("project")
     }
     if (is.null(website) == TRUE) {
         project <- CastarterOptions("website")
     }
-    dataset <- dplyr::bind_cols(tibble::data_frame(doc_id = metadata$doc_id, text = text), metadata %>% select(-doc_id))
+    if (is.null(dataset)==TRUE) {
+        dataset <- dplyr::bind_cols(tibble::data_frame(doc_id = metadata$doc_id, text = text), metadata %>% select(-doc_id))
+    }
     if (exportRds == TRUE) {
         saveRDS(object = dataset, file = file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = "-"), ".rds")))
         message(paste("Dataset saved in", file.path(project, website, paste0(paste(Sys.Date(), project, website, "dataset", sep = "-"), ".rds"))))

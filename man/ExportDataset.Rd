@@ -4,11 +4,14 @@
 \alias{ExportDataset}
 \title{Exports dataset}
 \usage{
-ExportDataset(text, metadata, exportRds = TRUE, exportRdata = FALSE,
-  exportCsv = FALSE, exportXlsx = FALSE, project = NULL, website = NULL)
+ExportDataset(dataset = NULL, text = NULL, metadata = NULL,
+  exportRds = FALSE, exportRdata = FALSE, exportCsv = FALSE,
+  exportXlsx = FALSE, project = NULL, website = NULL)
 }
 \arguments{
-\item{text}{A character vector.}
+\item{dataset}{A 'castarter' dataset.}
+
+\item{text}{A character vector typically created with ExtractText().}
 
 \item{metadata}{A data.frame typically created with ExportMetadata(). Number of rows must be the same as the number of text items in `text`.}
 
@@ -19,6 +22,8 @@ ExportDataset(text, metadata, exportRds = TRUE, exportRdata = FALSE,
 \item{project}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
 
 \item{website}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
+
+\item{exportRdsIf}{equal to TRUE, exports the complete dataset in R's .rds file format in the Dataset sub-folder.}
 }
 \value{
 A data.frame, a 'castarter' dataset.
@@ -27,5 +32,5 @@ A data.frame, a 'castarter' dataset.
 Exports dataset to a data.frame, with options to save it as an R object, and export it as a .csv or .xlsx file.
 }
 \examples{
-dataset <- ExportDataset(contents, metadata, project, website)
+dataset <- ExportDataset(text, metadata, project, website)
 }
