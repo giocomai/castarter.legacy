@@ -109,12 +109,13 @@ UpdateDataset <- function(dataset = NULL,
 
     # Extract metadata
     id <- ExtractId(project = project, website = website)
+    message("Extracting titles")
     titles <- ExtractTitles(id = id,
                             importParameters = TRUE,
                             exportParameters = FALSE,
                             project = project,
                             website = website)
-
+    message("Extracting dates")
     dates <- ExtractDates(id = id,
                           importParameters = TRUE,
                           exportParameters = FALSE,
@@ -131,6 +132,8 @@ UpdateDataset <- function(dataset = NULL,
                                language = language,
                                links = newLinks)
 
+    message("Extracting text")
+
     text <- ExtractText(id = id,
                         importParameters = TRUE,
                         exportParameters = FALSE)
@@ -139,10 +142,12 @@ UpdateDataset <- function(dataset = NULL,
     dataset <- dplyr::bind_rows(dataset, newDataset)
 
     if (exportRds==TRUE) {
+        message("Saving dataset in .rds format.")
         ExportDataset(dataset = dataset,
                       exportRds = TRUE,
                       project = project,
                       website = website)
     }
+    message(paste(sum(toDownloadL), "new pages added to dataset."))
     invisible(dataset)
 }
