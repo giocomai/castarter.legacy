@@ -11,32 +11,40 @@ CreateFolders <- function(project = NULL, website = NULL) {
     if (is.null(website) == TRUE) {
         website <- CastarterOptions("website")
     }
-    if (!file.exists(file.path(project))) {
-        dir.create(file.path(project))
+    if (is.null(CastarterOptions("baseFolder"))) {
+        baseFolder <- "castarter"
+    } else {
+        baseFolder <- CastarterOptions("baseFolder")
     }
-    if (!file.exists(file.path(project, website))) {
-        dir.create(file.path(project, website))
+    if (!file.exists(file.path(baseFolder))) {
+        dir.create(file.path(baseFolder))
     }
-    if (!file.exists(file.path(project, website, "Logs"))) {
-        dir.create(file.path(project, website, "Logs"))
+    if (!file.exists(file.path(baseFolder, project))) {
+        dir.create(file.path(baseFolder, project))
     }
-    if (!file.exists(file.path(project, website, "IndexHtml"))) {
-        dir.create(file.path(project, website, "IndexHtml"))
+    if (!file.exists(file.path(baseFolder, project, website))) {
+        dir.create(file.path(baseFolder, project, website))
     }
-    if (!file.exists(file.path(project, website, "Html"))) {
-        dir.create(file.path(project, website, "Html"))
+    if (!file.exists(file.path(baseFolder, project, website, "Logs"))) {
+        dir.create(file.path(baseFolder, project, website, "Logs"))
     }
-    if (!file.exists(file.path(project, website, "Txt"))) {
-        dir.create(file.path(project, website, "Txt"))
+    if (!file.exists(file.path(baseFolder, project, website, "IndexHtml"))) {
+        dir.create(file.path(baseFolder, project, website, "IndexHtml"))
     }
-    if (!file.exists(file.path(project, website, "Dataset"))) {
-        dir.create(file.path(project, website, "Dataset"))
+    if (!file.exists(file.path(baseFolder, project, website, "Html"))) {
+        dir.create(file.path(baseFolder, project, website, "Html"))
     }
-    if (!file.exists(file.path(project, website, "Outputs"))) {
-        dir.create(file.path(project, website, "Outputs"))
+    if (!file.exists(file.path(baseFolder, project, website, "Txt"))) {
+        dir.create(file.path(baseFolder, project, website, "Txt"))
     }
-    if (!file.exists(file.path(project, website, "SessionRdata"))) {
-        dir.create(file.path(project, website, "SessionRdata"))
+    if (!file.exists(file.path(baseFolder, project, website, "Dataset"))) {
+        dir.create(file.path(baseFolder, project, website, "Dataset"))
+    }
+    if (!file.exists(file.path(baseFolder, project, website, "Outputs"))) {
+        dir.create(file.path(baseFolder, project, website, "Outputs"))
+    }
+    if (!file.exists(file.path(baseFolder, project, website, "SessionRdata"))) {
+        dir.create(file.path(baseFolder, project, website, "SessionRdata"))
     }
 }
 
@@ -55,7 +63,12 @@ LoadLatest <- function(project = NULL, website = NULL) {
     if (is.null(website) == TRUE) {
         website <- CastarterOptions("website")
     }
-    lastSavedFile <- file.path(file.path(project, website, "SessionRdata"), sort(list.files(file.path(project, website))[stringr::str_extract(list.files(file.path(project, website)), "RData") == "RData"], decreasing = TRUE)[1])
+    if (is.null(CastarterOptions("baseFolder"))) {
+        baseFolder <- "castarter"
+    } else {
+        baseFolder <- CastarterOptions("baseFolder")
+    }
+    lastSavedFile <- file.path(file.path(baseFolder, project, website, "SessionRdata"), sort(list.files(file.path(baseFolder, project, website))[stringr::str_extract(list.files(file.path(baseFolder, project, website)), "RData") == "RData"], decreasing = TRUE)[1])
 }
 
 #' Saves working environment and dataset.
@@ -79,32 +92,37 @@ SaveWebsite <- function(saveEnvironment = TRUE, dataset = NULL, tidyCorpus = NUL
     if (is.null(website) == TRUE) {
         website <- CastarterOptions("website")
     }
+    if (is.null(CastarterOptions("baseFolder"))) {
+        baseFolder <- "castarter"
+    } else {
+        baseFolder <- CastarterOptions("baseFolder")
+    }
     if (saveEnvironment == TRUE) {
-        save.image(file = file.path(project, website, "SessionRdata", paste0(paste(Sys.Date(), project, website, sep = "-"), ".RData")))
-        message(paste("Environment saved in", file.path(project, website, "SessionRdata", paste0(paste(Sys.Date(), project, website, sep = "-"), ".RData"))))
+        save.image(file = file.path(baseFolder, project, website, "SessionRdata", paste0(paste(Sys.Date(), project, website, sep = "-"), ".RData")))
+        message(paste("Environment saved in", file.path(baseFolder, project, website, "SessionRdata", paste0(paste(Sys.Date(), project, website, sep = "-"), ".RData"))))
     }
     if (is.null(dataset) == FALSE) {
         if (is.data.frame(dataset)==TRUE) {
-            saveRDS(object = dataset, file = file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = "-"), ".rds")))
-            message(paste("Dataset saved in", file.path(project, website, paste0(paste(Sys.Date(), project, website, "dataset", sep = "-"), ".rds"))))
+            saveRDS(object = dataset, file = file.path(baseFolder, project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = "-"), ".rds")))
+            message(paste("Dataset saved in", file.path(baseFolder, project, website, paste0(paste(Sys.Date(), project, website, "dataset", sep = "-"), ".rds"))))
         } else if (dataset == TRUE) {
             dataset <- dplyr::bind_cols(tibble::data_frame(doc_id = metadata$doc_id, text = text), metadata %>% dplyr::select(-doc_id))
-            saveRDS(object = dataset, file = file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = "-"), ".rds")))
-            message(paste("Dataset saved in", file.path(project, website, paste0(paste(Sys.Date(), project, website, "dataset", sep = "-"), ".rds"))))
+            saveRDS(object = dataset, file = file.path(baseFolder, project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = "-"), ".rds")))
+            message(paste("Dataset saved in", file.path(baseFolder, project, website, paste0(paste(Sys.Date(), project, website, "dataset", sep = "-"), ".rds"))))
             }
     }
     if (is.null(tidyCorpus)==FALSE) {
-            saveRDS(object = tidyCorpus, file = file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "tidyCorpus", sep = " - "), ".rds")))
-            message(paste("Tidy corpus saved in", file.path(project, website, paste0(paste(Sys.Date(), project, website, "tidyCorpus", sep = " - "), ".rds"))))
+            saveRDS(object = tidyCorpus, file = file.path(baseFolder, project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "tidyCorpus", sep = " - "), ".rds")))
+            message(paste("Tidy corpus saved in", file.path(baseFolder, project, website, paste0(paste(Sys.Date(), project, website, "tidyCorpus", sep = " - "), ".rds"))))
     }
     if (exportCsv == TRUE) {
-        write.csv(dataset, file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".csv")))
+        write.csv(dataset, file.path(baseFolder, project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".csv")))
     }
     if (exportXlsx == TRUE) {
-        xlsx::write.xlsx(dataset, file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".xlsx")))
+        xlsx::write.xlsx(dataset, file.path(baseFolder, project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".xlsx")))
     }
     if (exportTxt == TRUE) {
-        writeLines(paste(paste("Date:", dataset$date), paste("Title:", dataset$title), paste("Link:", dataset$link), paste("ID:", dataset$id), dataset$text, " ___  ______  ______  ______  ______  ______  ______  ______  ______  ___\n  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__\n (______)(______)(______)(______)(______)(______)(______)(______)(______)\n", sep = "\n"), file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".txt")))
-        message(paste("Full dataset in txt format saved in", file.path(project, website, paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".txt"))))
+        writeLines(paste(paste("Date:", dataset$date), paste("Title:", dataset$title), paste("Link:", dataset$link), paste("ID:", dataset$id), dataset$text, " ___  ______  ______  ______  ______  ______  ______  ______  ______  ___\n  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__\n (______)(______)(______)(______)(______)(______)(______)(______)(______)\n", sep = "\n"), file.path(baseFolder, project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".txt")))
+        message(paste("Full dataset in txt format saved in", file.path(baseFolder, project, website, paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".txt"))))
     }
 }

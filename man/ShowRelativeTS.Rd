@@ -7,7 +7,8 @@
 ShowRelativeTS(terms, dataset, type = "graph", specificWebsites = NULL,
   startDate = NULL, endDate = NULL, rollingAverage = 31,
   align = "center", verticalLine = NULL, smoothLine = FALSE,
-  customTitle = NULL, export = FALSE, project = NULL, website = NULL)
+  customTitle = NULL, export = FALSE, project = NULL,
+  website = NULL)
 }
 \arguments{
 \item{terms}{A character vector with one or more words to be analysed.}

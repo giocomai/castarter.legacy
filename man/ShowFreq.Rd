@@ -8,8 +8,8 @@ ShowFreq(corpusDtm, mode = "data.frame", number = 10, terms = NULL,
   corpus = NULL, order = TRUE, stemCompletion = FALSE,
   corpusOriginal = "", minFrequency = 0, export = FALSE,
   customTitle = NULL, tipology = NULL, byDate = FALSE,
-  byWebsite = FALSE, stacked = FALSE, relFreq = TRUE, percent = TRUE,
-  invert = FALSE, project = NULL, website = NULL)
+  byWebsite = FALSE, stacked = FALSE, relFreq = TRUE,
+  percent = TRUE, invert = FALSE, project = NULL, website = NULL)
 }
 \arguments{
 \item{corpusDtm}{A document-term matrix created with the 'TM' package or a document-feature matrix of the 'quanteda' type.}

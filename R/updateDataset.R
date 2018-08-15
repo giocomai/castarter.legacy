@@ -26,11 +26,16 @@ UpdateDataset <- function(dataset = NULL,
     if (is.null(website) == TRUE) {
         website <- CastarterOptions("website")
     }
+    if (is.null(CastarterOptions("baseFolder"))) {
+        baseFolder <- "castarter"
+    } else {
+        baseFolder <- CastarterOptions("baseFolder")
+    }
     if (is.null(dataset) == TRUE) {
         dataset <- LoadDatasets(projectsAndWebsites = paste(project, website, sep = "/"))
     }
     castarter::CreateFolders(project = project, website = website)
-    paramsFile <- base::file.path(project, website, "Logs", paste(project, website, "parameters.rds", sep = "-"))
+    paramsFile <- base::file.path(baseFolder, project, website, "Logs", paste(project, website, "parameters.rds", sep = "-"))
     params <- readRDS(paramsFile)
     if (base::is.null(links)==TRUE) {
         if (is.null(params$CreateLinks$dateFormat)) {

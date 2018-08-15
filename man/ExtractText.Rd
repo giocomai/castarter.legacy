@@ -4,10 +4,11 @@
 \alias{ExtractText}
 \title{Extracts textual contents from a vector of html files}
 \usage{
-ExtractText(container = NULL, containerClass = NULL, containerId = NULL,
-  subElement = NULL, noChildren = NULL, htmlLocation = NULL, id = NULL,
-  encoding = "UTF-8", metadata = NULL, export = FALSE,
-  maxTitleCharacters = 80, removeString = NULL, customXpath = NULL,
+ExtractText(container = NULL, containerClass = NULL,
+  containerId = NULL, subElement = NULL, noChildren = NULL,
+  htmlLocation = NULL, id = NULL, encoding = "UTF-8",
+  metadata = NULL, export = FALSE, maxTitleCharacters = 80,
+  removeString = NULL, customXpath = NULL,
   removeEverythingAfter_pre = NULL, removeEverythingBefore_pre = NULL,
   removeEverythingBefore = NULL, removeEverythingAfter = NULL,
   keepEverything = FALSE, removePunctuationInFilename = TRUE,

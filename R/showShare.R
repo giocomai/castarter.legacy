@@ -16,6 +16,18 @@
 #' ShowShare(dataset, breaks = "months", project, website)
 
 ShowShare <- function(dataset, terms, breaks = "year", output = "graph", startDate = NULL, customTitle = NULL, export = FALSE, project = NULL, website = NULL) {
+    # If `project` and `website` not given, tries to get them from environment
+    if (is.null(project) == TRUE) {
+        project <- CastarterOptions("project")
+    }
+    if (is.null(website) == TRUE) {
+        website <- CastarterOptions("website")
+    }
+    if (is.null(CastarterOptions("baseFolder"))) {
+        baseFolder <- "castarter"
+    } else {
+        baseFolder <- CastarterOptions("baseFolder")
+    }
     showShareDF <- dataset %>% filter(is.na(date)==FALSE) %>% mutate(Date = as.Date(date)) %>% select(id, Date, contents) %>% arrange(Date) %>% group_by(id) %>% mutate(Mentions = stringr::str_detect(string = contents, pattern = stringr::fixed(terms, ignore_case = TRUE))) %>% select(-contents) %>%  group_by(Date) %>% mutate(nArt = n(), nArtMentions = sum(Mentions)) %>% select(-Mentions, -id) %>% ungroup() %>% distinct() %>% mutate(Date = cut(Date, breaks = breaks)) %>% group_by(Date) %>% mutate(nPerTimeUnit = sum(nArt), nMentionsPerTimeUnit = sum(nArtMentions, na.rm = TRUE)) %>% select(Date, nPerTimeUnit, nMentionsPerTimeUnit) %>% mutate(Share = nMentionsPerTimeUnit/nPerTimeUnit) %>% ungroup() %>% distinct() %>% arrange(Date)
     if (output == "graph") {
         graph <-
@@ -34,13 +46,13 @@ ShowShare <- function(dataset, terms, breaks = "year", output = "graph", startDa
         if (export == TRUE) {
             graph
             if (is.null(project) == FALSE & is.null(website) == FALSE) {
-                if (file.exists(file.path(project, website, "Outputs")) == FALSE) {
-                    dir.create(file.path(project, website, "Outputs"))
+                if (file.exists(file.path(baseFolder, project, website, "Outputs")) == FALSE) {
+                    dir.create(file.path(baseFolder, project, website, "Outputs"))
                 }
-                ggplot2::ggsave(file.path(project, website, "Outputs", paste0(paste("timeseries", project, website, paste(terms, collapse = " - "), sep = " - "), ".png")))
-                print(paste("File saved in", file.path(project, website, "Outputs", paste0(paste("timeseries", project, website, paste(terms, collapse = " - "), sep = " - "), ".png"))))
-                ggplot2::ggsave(file.path(project, website, "Outputs", paste0(paste("timeseries", project, website, paste(terms, collapse = " - "), sep = " - "), ".pdf")))
-                print(paste("File saved in", file.path(project, website, "Outputs", paste0(paste("timeseries", project, website, paste(terms, collapse = " - "), sep = " - "), ".pdf"))))
+                ggplot2::ggsave(file.path(baseFolder, project, website, "Outputs", paste0(paste("timeseries", project, website, paste(terms, collapse = " - "), sep = " - "), ".png")))
+                print(paste("File saved in", file.path(baseFolder, project, website, "Outputs", paste0(paste("timeseries", project, website, paste(terms, collapse = " - "), sep = " - "), ".png"))))
+                ggplot2::ggsave(file.path(baseFolder, project, website, "Outputs", paste0(paste("timeseries", project, website, paste(terms, collapse = " - "), sep = " - "), ".pdf")))
+                print(paste("File saved in", file.path(baseFolder, project, website, "Outputs", paste0(paste("timeseries", project, website, paste(terms, collapse = " - "), sep = " - "), ".pdf"))))
             } else if (is.null(project) == FALSE & is.null(website) == TRUE) {
                 ggplot2::ggsave(file.path("Outputs", paste0(paste("timeseries", project, paste(terms, collapse = " - "), sep = " - "), ".png")))
                 print(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", project, paste(terms, collapse = " - "), sep = " - "), ".png"))))

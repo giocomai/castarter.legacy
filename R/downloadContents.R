@@ -42,13 +42,18 @@ DownloadContents <- function(links,
     if (is.null(website) == TRUE) {
         website <- CastarterOptions("website")
     }
+    if (is.null(CastarterOptions("baseFolder"))) {
+        baseFolder <- "castarter"
+    } else {
+        baseFolder <- CastarterOptions("baseFolder")
+    }
     if (type=="articles") {
-        htmlFilePath <- file.path(project, website, "Html")
+        htmlFilePath <- file.path(baseFolder, project, website, "Html")
     } else if (type=="index") {
-        htmlFilePath <- file.path(project, website, "IndexHtml")
+        htmlFilePath <- file.path(baseFolder, project, website, "IndexHtml")
     }
     if (is.null(path)==FALSE) {
-        htmlFilePath <- file.path(project, website, path)
+        htmlFilePath <- file.path(baseFolder, project, website, path)
     }
     htmlFilesList <- list.files(htmlFilePath, full.names = TRUE)
     # put them in order [equivalent to gtools::mixedorder()]
@@ -83,21 +88,21 @@ DownloadContents <- function(links,
     }
     if (wgetSystem == TRUE) {
         if (createScript == TRUE) {
-            if (file.exists(file.path(project, website, "downloadPages.sh")) == TRUE) {
-                file.remove(file.path(project, website, "downloadPages.sh"))
+            if (file.exists(file.path(baseFolder, project, website, "downloadPages.sh")) == TRUE) {
+                file.remove(file.path(baseFolder, project, website, "downloadPages.sh"))
             }
             write(x = paste0("wget '", links[linksToDownload], "' -O '",
                             file.path("..", "..", htmlFilePath, paste0(articlesId[linksToDownload], ".html")), "'",
                             " -t 1 -T 20", "; ", "sleep ", wait),
-                  file = file.path(project, website, "downloadPages.sh"), append = TRUE)
-            system(paste("chmod +x", file.path(project, website, "downloadPages.sh")))
+                  file = file.path(baseFolder, project, website, "downloadPages.sh"), append = TRUE)
+            system(paste("chmod +x", file.path(baseFolder, project, website, "downloadPages.sh")))
         } else {
             options(useFancyQuotes = FALSE)
             for (i in links[linksToDownload]) {
                 articleId <- articlesId[linksToDownload][temp]
                 system(paste("wget '", i, "' -O", file.path(htmlFilePath, paste0(articleId, ".html"))))
                 message(paste("Downloaded item", temp, "of", length(links[linksToDownload]), ". ID: ", articleId), quote = FALSE)
-                htmlFile <- readLines(file.path(project, website, "Html", paste0(articleId, ".html")))
+                htmlFile <- readLines(file.path(baseFolder, project, website, "Html", paste0(articleId, ".html")))
                 htmlFile <- paste(htmlFile, collapse = "\n")
                 temp <- temp + 1
                 Sys.sleep(wait)
@@ -137,11 +142,16 @@ DownloadContentsForm <- function(linkFirstChunk, startDate, endDate, dateSeparat
     if (is.null(website) == TRUE) {
         website <- CastarterOptions("website")
     }
+    if (is.null(CastarterOptions("baseFolder"))) {
+        baseFolder <- "castarter"
+    } else {
+        baseFolder <- CastarterOptions("baseFolder")
+    }
     listOfDates <- seq(as.Date(startDate, "%Y-%m-%d"), as.Date(endDate, "%Y-%m-%d"), by = dateBy)
     listOfDates <- c(listOfDates, as.Date(endDate, "%Y-%m-%d"))
     numberOfIndexPages <- length(listOfDates) - 1
     listOfnumberOfIndexPages <- 1:numberOfIndexPages
-    indexHtmlFilenames <- file.path(project, website, "IndexHtml", paste0(listOfnumberOfIndexPages, ".html"))
+    indexHtmlFilenames <- file.path(baseFolder, project, website, "IndexHtml", paste0(listOfnumberOfIndexPages, ".html"))
     indexPagesHtml <- vector()
     for (i in start:numberOfIndexPages) {
         indexPagesHtml[i] <- RCurl::postForm(linkFirstChunk, datefrom = listOfDates[i], dateto = listOfDates[i + 1])
@@ -149,6 +159,6 @@ DownloadContentsForm <- function(linkFirstChunk, startDate, endDate, dateSeparat
         write(indexPagesHtml[i], file = indexHtmlFilenames[i])
     }
     dateDownloadedIndex <- date()
-    file.create(file.path(project, website, "Logs", paste(Sys.Date(), "Index downloaded.txt", sep = " - ")))
+    file.create(file.path(baseFolder, project, website, "Logs", paste(Sys.Date(), "Index downloaded.txt", sep = " - ")))
     indexPagesHtml
 }

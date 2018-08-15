@@ -4,8 +4,9 @@
 \alias{AddWordCombinations}
 \title{Prepares combinations of words to be changed}
 \usage{
-AddWordCombinations(wordCombinations = NULL, originalCombination = NULL,
-  toBeUsed = NULL, project = NULL, dfedit = FALSE, importExport = FALSE)
+AddWordCombinations(wordCombinations = NULL,
+  originalCombination = NULL, toBeUsed = NULL, project = NULL,
+  dfedit = FALSE, importExport = FALSE)
 }
 \arguments{
 \item{originalCombination, }{toBeUsed A character vector.of length 1.}

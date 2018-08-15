@@ -22,21 +22,26 @@ LoadDatasets <- function(projectsAndWebsites = NULL, type = "dataset", removeNAd
     } else {
         projectsAndWebsites <- base::strsplit(projectsAndWebsites, "/")
     }
+    if (is.null(CastarterOptions("baseFolder"))) {
+        baseFolder <- "castarter"
+    } else {
+        baseFolder <- CastarterOptions("baseFolder")
+    }
     lastSavedDatasets <- vector()
     for (i in 1:length(projectsAndWebsites)) {
         project <- projectsAndWebsites[[i]][1]
         website <- projectsAndWebsites[[i]][2]
         if (type == "dataset") {
-            datasetFilename <- sort(list.files(file.path(project, website, "Dataset"))[stringr::str_extract(list.files(file.path(project, website, "Dataset")), "dataset.rds") == "dataset.rds"], decreasing = TRUE)[1]
+            datasetFilename <- sort(list.files(file.path(baseFolder, project, website, "Dataset"))[stringr::str_extract(list.files(file.path(baseFolder, project, website, "Dataset")), "dataset.rds") == "dataset.rds"], decreasing = TRUE)[1]
         } else if (type == "datasetRdata") {
-            datasetFilename <- sort(list.files(file.path(project, website, "Dataset"))[stringr::str_extract(list.files(file.path(project, website, "Dataset")), "dataset.RData") == "dataset.RData"], decreasing = TRUE)[1]
+            datasetFilename <- sort(list.files(file.path(baseFolder, project, website, "Dataset"))[stringr::str_extract(list.files(file.path(baseFolder, project, website, "Dataset")), "dataset.RData") == "dataset.RData"], decreasing = TRUE)[1]
         } else if (type == "corpusDtmQ") {
-            datasetFilename <- sort(list.files(file.path(project, website, "Dataset"))[stringr::str_extract(list.files(file.path(project, website, "Dataset")), "corpusDtmQ.RData") == "corpusDtmQ.RData"], decreasing = TRUE)[1]
+            datasetFilename <- sort(list.files(file.path(baseFolder, project, website, "Dataset"))[stringr::str_extract(list.files(file.path(baseFolder, project, website, "Dataset")), "corpusDtmQ.RData") == "corpusDtmQ.RData"], decreasing = TRUE)[1]
         } else {
             stop("Type can be 'dataset', 'corpusQ', 'corpusTM, or 'corpusDtmQ'")
         }
         if (is.na(datasetFilename) == FALSE) {
-            lastSavedDataset <- file.path(file.path(project, website, "Dataset"), datasetFilename)
+            lastSavedDataset <- file.path(file.path(baseFolder, project, website, "Dataset"), datasetFilename)
             lastSavedDatasets[i] <- lastSavedDataset
         }
         lastSavedDatasets <- lastSavedDatasets[!is.na(lastSavedDatasets)]
@@ -91,14 +96,14 @@ LoadDatasets <- function(projectsAndWebsites = NULL, type = "dataset", removeNAd
 #' allDatasets <- LoadAllDatasets(project)
 
 LoadAllDatasets <- function(project, removeNAdates = TRUE) {
-    listOfWebsites <- gsub(paste0(project, "/"), "", list.dirs(file.path(project), recursive = FALSE), fixed = TRUE)
+    listOfWebsites <- gsub(paste0(project, "/"), "", list.dirs(file.path(baseFolder, project), recursive = FALSE), fixed = TRUE)
     lastSavedDatasets <- vector()
     for (i in 1:length(listOfWebsites)) {
         website <- listOfWebsites[i]
-        datasetFilename <- sort(list.files(file.path(project, website, "Dataset"))[stringr::str_extract(list.files(file.path(project,
+        datasetFilename <- sort(list.files(file.path(baseFolder, project, website, "Dataset"))[stringr::str_extract(list.files(file.path(baseFolder, project,
             website, "Dataset")), "dataset.RData") == "dataset.RData"], decreasing = TRUE)[1]
         if (is.na(datasetFilename) == FALSE) {
-            lastSavedDataset <- file.path(file.path(project, website, "Dataset"), datasetFilename)
+            lastSavedDataset <- file.path(file.path(baseFolder, project, website, "Dataset"), datasetFilename)
             lastSavedDatasets[i] <- lastSavedDataset
         }
         lastSavedDatasets <- lastSavedDatasets[!is.na(lastSavedDatasets)]
@@ -167,8 +172,11 @@ CreateCorpus <- function(dataset, quanteda = FALSE, clean = TRUE) {
 #' corpus <- CreateCorpus(dataset)
 CreateTidyCorpus <- function(dataset, thin = TRUE) {
     if (thin == TRUE) {
-        dataset %>% dplyr::select(id, date, contents) %>% tidytext::unnest_tokens(word, contents)
+        dataset %>%
+            dplyr::select(id, date, contents) %>%
+            tidytext::unnest_tokens(word, contents)
     } else {
-        dataset %>% tidytext::unnest_tokens(word, contents)
+        dataset %>%
+            tidytext::unnest_tokens(word, contents)
     }
 }

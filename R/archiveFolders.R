@@ -16,31 +16,31 @@ ArchiveFolders <- function(project = NULL, website = NULL, removeArchivedFolders
     if (is.null(website) == TRUE) {
         website <- CastarterOptions("website")
     }
-    if (!file.exists(file.path(project, website, "Archives"))) {
-        dir.create(file.path(project, website, "Archives"))
+    if (!file.exists(file.path(baseFolder, project, website, "Archives"))) {
+        dir.create(file.path(baseFolder, project, website, "Archives"))
     }
     today <- Sys.Date()
-    if (!file.exists(file.path(project, website, "Archives", today))) {
-      dir.create(file.path(project, website, "Archives", today))
+    if (!file.exists(file.path(baseFolder, project, website, "Archives", today))) {
+      dir.create(file.path(baseFolder, project, website, "Archives", today))
     }
-    if (file.exists(file.path(project, website, "Html"))) {
-        tar(file.path(project, website, "Archives", today, "Html.tar.gz"), file.path(project, website, "Html"), compression = "gzip")
+    if (file.exists(file.path(baseFolder, project, website, "Html"))) {
+        tar(file.path(baseFolder, project, website, "Archives", today, "Html.tar.gz"), file.path(baseFolder, project, website, "Html"), compression = "gzip")
     }
-    if (file.exists(file.path(project, website, "IndexHtml"))) {
-        tar(file.path(project, website, "Archives", today, "IndexHtml.tar.gz"), file.path(project, website, "IndexHtml"), compression = "gzip")
+    if (file.exists(file.path(baseFolder, project, website, "IndexHtml"))) {
+        tar(file.path(baseFolder, project, website, "Archives", today, "IndexHtml.tar.gz"), file.path(baseFolder, project, website, "IndexHtml"), compression = "gzip")
     }
-    if (file.exists(file.path(project, website, "Txt"))) {
-        tar(file.path(project, website, "Archives", today, "Txt.tar.gz"), file.path(project, website, "Txt"), compression = "gzip")
+    if (file.exists(file.path(baseFolder, project, website, "Txt"))) {
+        tar(file.path(baseFolder, project, website, "Archives", today, "Txt.tar.gz"), file.path(baseFolder, project, website, "Txt"), compression = "gzip")
     }
     if (removeArchivedFolders == TRUE) {
-        if (file.exists(file.path(project, website, "Html"))) {
-            unlink(file.path(project, website, "Html"), recursive = TRUE)
+        if (file.exists(file.path(baseFolder, project, website, "Html"))) {
+            unlink(file.path(baseFolder, project, website, "Html"), recursive = TRUE)
         }
-        if (file.exists(file.path(project, website, "IndexHtml"))) {
-            unlink(file.path(project, website, "IndexHtml"), recursive = TRUE)
+        if (file.exists(file.path(baseFolder, project, website, "IndexHtml"))) {
+            unlink(file.path(baseFolder, project, website, "IndexHtml"), recursive = TRUE)
         }
-        if (file.exists(file.path(project, website, "Txt"))) {
-            unlink(file.path(project, website, "Txt"), recursive = TRUE)
+        if (file.exists(file.path(baseFolder, project, website, "Txt"))) {
+            unlink(file.path(baseFolder, project, website, "Txt"), recursive = TRUE)
         }
     }
 }
@@ -66,28 +66,28 @@ RestoreArchives <- function(html = FALSE, indexHtml = FALSE, txt = FALSE, overwr
         website <- CastarterOptions("website")
     }
     if (html==TRUE) {
-        if (file.exists(file.path(project, website, "Html"))==TRUE&overwrite==FALSE) {
+        if (file.exists(file.path(baseFolder, project, website, "Html"))==TRUE&overwrite==FALSE) {
             stop("Html folder already exists, and overwrite option is not enabled. Either remove folder or set overwrite=TRUE")
         } else {
-            lastArchiveFolderDate <- file.path(file.path(project, website, "Archives"), sort(list.files(file.path(project, website, "Archives")), decreasing = TRUE)[1])
+            lastArchiveFolderDate <- file.path(file.path(baseFolder, project, website, "Archives"), sort(list.files(file.path(baseFolder, project, website, "Archives")), decreasing = TRUE)[1])
             lastSavedHtmlFile <- file.path(lastArchiveFolderDate, "Html.tar.gz")
             untar(tarfile = lastSavedHtmlFile)
         }
     }
     if (indexHtml==TRUE) {
-        if (file.exists(file.path(project, website, "IndexHtml"))==TRUE&overwrite==FALSE) {
+        if (file.exists(file.path(baseFolder, project, website, "IndexHtml"))==TRUE&overwrite==FALSE) {
             stop("IndexHtml folder already exists, and overwrite option is not enabled. Either remove folder or set overwrite=TRUE")
         } else {
-            lastArchiveFolderDate <- file.path(file.path(project, website, "Archives"), sort(list.files(file.path(project, website, "Archives")), decreasing = TRUE)[1])
+            lastArchiveFolderDate <- file.path(file.path(baseFolder, project, website, "Archives"), sort(list.files(file.path(baseFolder, project, website, "Archives")), decreasing = TRUE)[1])
             lastSavedIndexHtmlFile <- file.path(lastArchiveFolderDate, "IndexHtml.tar.gz")
             untar(tarfile = lastSavedIndexHtmlFile)
         }
     }
     if (txt==TRUE) {
-        if (file.exists(file.path(project, website, "Txt"))==TRUE) {
+        if (file.exists(file.path(baseFolder, project, website, "Txt"))==TRUE) {
             stop("Txt folder already exists, and overwrite option is not enabled. Either remove folder or set overwrite=TRUE")
         } else {
-            lastArchiveFolderDate <- file.path(file.path(project, website, "Archives"), sort(list.files(file.path(project, website, "Archives")), decreasing = TRUE)[1])
+            lastArchiveFolderDate <- file.path(file.path(baseFolder, project, website, "Archives"), sort(list.files(file.path(baseFolder, project, website, "Archives")), decreasing = TRUE)[1])
             lastSavedTxtFile <- file.path(lastArchiveFolderDate, "Txt.tar.gz")
             untar(tarfile = lastSavedTxtFile)
         }

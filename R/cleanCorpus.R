@@ -170,7 +170,7 @@ CleanCorpus <- function(corpus, stripWhitespace = TRUE, toLowerCase = TRUE, remo
 #' @examples
 #' stemmingDictionary <- ExportStemmingDictionary(corpus, project)
 ExportStemmingDictionary <- function(corpusDtm, project = NULL, stopwords = "", language = "english") {
-    if (gtools::invalid(project) == TRUE) {
+    if (is.null(project) == TRUE) {
         project <- CastarterOptions("project")
     }
     stemmingDictionary <- data.frame(row.names = colnames(corpusDtm), occurrences = slam::col_sums(corpusDtm), stemmedTerm = SnowballC::wordStem(colnames(corpusDtm), language),

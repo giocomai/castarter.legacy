@@ -47,13 +47,18 @@ ExtractTitles <- function(container = "title",
     if (is.null(website) == TRUE) {
         website <- CastarterOptions("website")
     }
+    if (is.null(CastarterOptions("baseFolder"))) {
+        baseFolder <- "castarter"
+    } else {
+        baseFolder <- CastarterOptions("baseFolder")
+    }
     if (exportParameters == TRUE && exists("project") == FALSE | exportParameters == TRUE && exists("website") == FALSE) {
         stop("If exportParameters == TRUE, both project and website must be defined either as parameters or previously with SetCastarter(project = '...', website = '...').")
     }
     if (is.null(importParameters)==FALSE) {
         if (importParameters == TRUE) { # Import parameters
-            if (file.exists(base::file.path(project, website, "Logs", paste(project, website, "parameters.rds", sep = "-"))) == TRUE) {
-                params <- readRDS(base::file.path(project, website, "Logs", paste(project, website, "parameters.rds", sep = "-")))
+            if (file.exists(base::file.path(baseFolder, project, website, "Logs", paste(project, website, "parameters.rds", sep = "-"))) == TRUE) {
+                params <- readRDS(base::file.path(baseFolder, project, website, "Logs", paste(project, website, "parameters.rds", sep = "-")))
                 params$ExtractTitles$exportParameters <- FALSE
                 if (is.null(id)==FALSE) {
                     params$ExtractTitles$id <- id
@@ -63,7 +68,7 @@ ExtractTitles <- function(container = "title",
                 }
             } else {
                 # throw error if parameters file not found
-                stop(paste("Parameters file not found in", base::file.path(project, website, "Logs", paste(project, website, "parameters.rds", sep = "-"))))
+                stop(paste("Parameters file not found in", base::file.path(baseFolder, project, website, "Logs", paste(project, website, "parameters.rds", sep = "-"))))
             }
         }
     } else {
@@ -71,14 +76,14 @@ ExtractTitles <- function(container = "title",
     }
     if (exportParameters == TRUE & importParameters == FALSE) { # Export parameters
         extractTitlesParams <-  as.list(environment())
-        if (file.exists(base::file.path(project, website, "Logs", paste(project, website, "parameters.rds", sep = "-"))) == TRUE) {
-            params <- readRDS(base::file.path(project, website, "Logs", paste(project, website, "parameters.rds", sep = "-")))
+        if (file.exists(base::file.path(baseFolder, project, website, "Logs", paste(project, website, "parameters.rds", sep = "-"))) == TRUE) {
+            params <- readRDS(base::file.path(baseFolder, project, website, "Logs", paste(project, website, "parameters.rds", sep = "-")))
             params$ExtractTitles <- NULL
         } else {
             params <- list()
         }
         params$ExtractTitles <- extractTitlesParams
-        saveRDS(object = params, file = base::file.path(project, website, "Logs", paste(project, website, "parameters.rds", sep = "-")))
+        saveRDS(object = params, file = base::file.path(baseFolder, project, website, "Logs", paste(project, website, "parameters.rds", sep = "-")))
     }
 
     if (container == "indexLink"|container == "links") {
@@ -86,7 +91,7 @@ ExtractTitles <- function(container = "title",
     } else {
         # define htmlLocation, if not given
         if (is.null(htmlLocation)) {
-            htmlLocation <- file.path(project, website, "Html")
+            htmlLocation <- file.path(baseFolder, project, website, "Html")
         }
         # If IDs not given, list files
         if (is.null(id)==FALSE) {
@@ -184,9 +189,9 @@ ExtractId <- function(sample = NULL, htmlLocation = NULL, project = NULL, websit
         website <- CastarterOptions("website")
     }
     if (is.null(htmlLocation)) {
-        htmlLocation <- file.path(project, website, "Html")
+        htmlLocation <- file.path(baseFolder, project, website, "Html")
     }
-    htmlFilesList <- list.files(file.path(project, website, "Html"))
+    htmlFilesList <- list.files(file.path(baseFolder, project, website, "Html"))
     if (is.null(sample)==FALSE) {
         sort.int(x = sample(x = as.integer(stringr::str_extract(string = htmlFilesList, pattern = "[[:digit:]]+")), size = sample, replace = FALSE))
     } else {
@@ -224,9 +229,9 @@ ExportMetadata <- function(dates, id, titles, language, links, exportXlsx = FALS
     if (accordingToDate == TRUE) {
         metadata <- metadata[order(metadata$date), ]
     }
-    write.csv(metadata, file = file.path(project, website, "Dataset", paste(Sys.Date(), website, "metadata.csv", sep = " - ")), row.names = FALSE)
+    write.csv(metadata, file = file.path(baseFolder, project, website, "Dataset", paste(Sys.Date(), website, "metadata.csv", sep = " - ")), row.names = FALSE)
     if (exportXlsx == TRUE) {
-        xlsx::write.xlsx(metadata, file = file.path(project, website, "Dataset", paste(Sys.Date(), website, "metadata.xlsx", sep = " - ")), row.names = FALSE)
+        xlsx::write.xlsx(metadata, file = file.path(baseFolder, project, website, "Dataset", paste(Sys.Date(), website, "metadata.xlsx", sep = " - ")), row.names = FALSE)
     }
     metadata
 }
@@ -254,24 +259,29 @@ ExportDataset <- function(dataset = NULL, text = NULL, metadata = NULL, exportRd
     if (is.null(website) == TRUE) {
         project <- CastarterOptions("website")
     }
+    if (is.null(CastarterOptions("baseFolder"))) {
+        baseFolder <- "castarter"
+    } else {
+        baseFolder <- CastarterOptions("baseFolder")
+    }
     if (is.null(dataset)==TRUE) {
         dataset <- dplyr::bind_cols(tibble::data_frame(doc_id = metadata$doc_id, text = text), metadata %>% dplyr::select(-doc_id))
     }
     if (exportRds == TRUE) {
-        saveRDS(object = dataset, file = file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = "-"), ".rds")))
-        message(paste("Dataset saved in", file.path(project, website, paste0(paste(Sys.Date(), project, website, "dataset", sep = "-"), ".rds"))))
+        saveRDS(object = dataset, file = file.path(baseFolder, project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = "-"), ".rds")))
+        message(paste("Dataset saved in", file.path(baseFolder, project, website, paste0(paste(Sys.Date(), project, website, "dataset", sep = "-"), ".rds"))))
     }
     if (exportRdata == TRUE) {
-        save(dataset, file = file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".RData")))
-        print(paste("Dataset saved in", file.path(project, website, paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".RData"))))
+        save(dataset, file = file.path(baseFolder, project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".RData")))
+        print(paste("Dataset saved in", file.path(baseFolder, project, website, paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".RData"))))
     }
     if (exportCsv == TRUE) {
-        utils::write.csv(dataset, file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".csv")))
-        print(paste("Dataset saved as .csv file in", file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".csv"))))
+        utils::write.csv(dataset, file.path(baseFolder, project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".csv")))
+        print(paste("Dataset saved as .csv file in", file.path(baseFolder, project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".csv"))))
     }
     if (exportXlsx == TRUE) {
-        xlsx::write.xlsx(dataset, file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".xlsx")))
-        print(paste("Dataset saved as .xlsx file in", file.path(project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".xlsx"))))
+        xlsx::write.xlsx(dataset, file.path(baseFolder, project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".xlsx")))
+        print(paste("Dataset saved as .xlsx file in", file.path(baseFolder, project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".xlsx"))))
     }
     invisible(dataset)
 }
@@ -288,7 +298,7 @@ ExportDataset <- function(dataset = NULL, text = NULL, metadata = NULL, exportRd
 ExtractXpath <- function(articlesHtml, divClass = NULL, spanClass = NULL, customXpath = NULL) {
     txt <- rep(NA, length(articlesHtml))
     pb <- txtProgressBar(min = 0, max = length(articlesHtml), style = 3)
-    if (gtools::invalid(divClass) == FALSE) {
+    if (base::is.null(divClass) == FALSE) {
         for (i in seq_along(articlesHtml)) {
             if (articlesHtml[i] != "") {
                 articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T)
@@ -302,7 +312,7 @@ ExtractXpath <- function(articlesHtml, divClass = NULL, spanClass = NULL, custom
             setTxtProgressBar(pb, i)
         }
     }
-    if (gtools::invalid(spanClass)==FALSE) {
+    if (base::is.null(spanClass)==FALSE) {
         for (i in seq_along(articlesHtml)) {
             articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T)
             tempStringXml <- XML::xpathSApply(articleHtmlParsed, paste0("//span[@class='", spanClass, "']"), XML::xmlValue)
@@ -315,7 +325,7 @@ ExtractXpath <- function(articlesHtml, divClass = NULL, spanClass = NULL, custom
             setTxtProgressBar(pb, i)
         }
     }
-    if (gtools::invalid(customXpath) == FALSE) {
+    if (base::is.null(customXpath) == FALSE) {
         for (i in seq_along(articlesHtml)) {
             if (articlesHtml[i] != "") {
                 articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T)

@@ -7,8 +7,8 @@
 DownloadContents(links, type = "articles", path = NULL, size = 500,
   linksToCheck = NULL, linksToDownload = NULL, wgetSystem = FALSE,
   method = "auto", missingPages = TRUE, start = 1, wait = 1,
-  ignoreSSLcertificates = FALSE, createScript = FALSE, project = NULL,
-  website = NULL)
+  ignoreSSLcertificates = FALSE, createScript = FALSE,
+  project = NULL, website = NULL)
 }
 \arguments{
 \item{links}{A character vector of links, commonly generated either with the function CreateLinks or ExtractLinks.}

@@ -20,11 +20,16 @@ CreateShinyApp <- function(dataset,
     if (is.null(website) == TRUE) {
         website <- CastarterOptions("website")
     }
-    if (!file.exists(file.path(project, website, "Outputs", "shinyApp"))) {
-        dir.create(file.path(project, website, "Outputs", "shinyApp"))
+    if (is.null(CastarterOptions("baseFolder"))) {
+        baseFolder <- "castarter"
+    } else {
+        baseFolder <- CastarterOptions("baseFolder")
     }
-    if (!file.exists(file.path(project, website, "Outputs", "shinyApp", "data"))) {
-        dir.create(file.path(project, website, "Outputs", "shinyApp", "data"))
+    if (!file.exists(file.path(baseFolder, project, website, "Outputs", "shinyApp"))) {
+        dir.create(file.path(baseFolder, project, website, "Outputs", "shinyApp"))
+    }
+    if (!file.exists(file.path(baseFolder, project, website, "Outputs", "shinyApp", "data"))) {
+        dir.create(file.path(baseFolder, project, website, "Outputs", "shinyApp", "data"))
     }
     # create dataset divided by sentence and store in shiny folder
     saveRDS(object = tidytext::unnest_tokens(tbl = dataset,
@@ -32,12 +37,12 @@ CreateShinyApp <- function(dataset,
                                              output = sentence,
                                              token = "sentences",
                                              to_lower = FALSE),
-            file = file.path(project, website, "Outputs", "shinyApp", "data", "dataset_bySentence.rds"))
+            file = file.path(baseFolder, project, website, "Outputs", "shinyApp", "data", "dataset_bySentence.rds"))
 
     file.copy(from = system.file("extdata", "shiny", "DatasetAnalysis", "server.R", package = "castarter"),
-              to = file.path(project, website, "Outputs", "shinyApp","server.R"))
+              to = file.path(baseFolder, project, website, "Outputs", "shinyApp","server.R"))
     file.copy(from = system.file("extdata", "shiny", "DatasetAnalysis", "ui.R", package = "castarter"),
-              to = file.path(project, website, "Outputs", "shinyApp","ui.R"))
+              to = file.path(baseFolder, project, website, "Outputs", "shinyApp","ui.R"))
     if (is.null(x = customTitle)==TRUE) {
         customTitle <- website
     }
@@ -54,6 +59,6 @@ CreateShinyApp <- function(dataset,
                       paste0("exampleTerms <- '" , paste(terms, collapse = ', '), "'"),
                       paste0("SetCastarter(project = '", project, "', website = '", website, "')")
     ), sep = "\n")
-    , file = file.path(project, website, "Outputs", "shinyApp", "global.R"))
-    shiny::runApp(file.path(project, website, "Outputs", "shinyApp"), display.mode = "normal")
+    , file = file.path(baseFolder, project, website, "Outputs", "shinyApp", "global.R"))
+    shiny::runApp(file.path(baseFolder, project, website, "Outputs", "shinyApp"), display.mode = "normal")
 }

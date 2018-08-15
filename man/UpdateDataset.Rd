@@ -4,8 +4,9 @@
 \alias{UpdateDataset}
 \title{Updates a dataset}
 \usage{
-UpdateDataset(dataset = NULL, links = NULL, maxNumberOfIndexPages = 1000,
-  wait = 1, exportRds = TRUE, project = NULL, website = NULL)
+UpdateDataset(dataset = NULL, links = NULL,
+  maxNumberOfIndexPages = 1000, wait = 1, exportRds = TRUE,
+  project = NULL, website = NULL)
 }
 \arguments{
 \item{dataset}{A 'castarter' dataset, defaults to NULL. If not given, and project and website are given (possily, through `SetCastarter(project = ..., website =)`), the latest dataset is automatically loaded.}

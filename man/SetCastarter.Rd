@@ -10,6 +10,8 @@ SetCastarter(...)
 \item{project}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
 
 \item{website}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
+
+\item{baseFolder}{Name of the base folder under which all projects will be stored. This defaults to `castarter` and can be set only trhough `SetCastarter()`. It is usually advisable to leave the defaults and set only project and website names.}
 }
 \value{
 Nothing. Used for its side effects (stores settings).

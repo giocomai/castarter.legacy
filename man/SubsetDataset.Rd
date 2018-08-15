@@ -4,8 +4,8 @@
 \alias{SubsetDataset}
 \title{Subsets a 'castarter' dataset}
 \usage{
-SubsetDataset(dataset, terms = NULL, startDate = NULL, endDate = NULL,
-  sample = NULL)
+SubsetDataset(dataset, terms = NULL, startDate = NULL,
+  endDate = NULL, sample = NULL)
 }
 \arguments{
 \item{dataset}{A dataset created with 'castarter'.}

@@ -19,6 +19,11 @@ ImportHtml <- function(from = "articles", sample = NULL, project = NULL, website
     if (is.null(website) == TRUE) {
         website <- CastarterOptions("website")
     }
+    if (is.null(CastarterOptions("baseFolder"))) {
+        baseFolder <- "castarter"
+    } else {
+        baseFolder <- CastarterOptions("baseFolder")
+    }
     if (from == "articles") {
         htmlFilesList <- list.files(file.path(project, website, "Html"), pattern = "\\.html$", full.names = TRUE)
     } else if (from == "index") {

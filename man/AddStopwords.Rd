@@ -4,8 +4,8 @@
 \alias{AddStopwords}
 \title{Adds stopwords to the default list}
 \usage{
-AddStopwords(newStopwords = NULL, project = NULL, includeDefault = TRUE,
-  language = "en", importExport = FALSE)
+AddStopwords(newStopwords = NULL, project = NULL,
+  includeDefault = TRUE, language = "en", importExport = FALSE)
 }
 \arguments{
 \item{newStopwords}{A character vector of words.}

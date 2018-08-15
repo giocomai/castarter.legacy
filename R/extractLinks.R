@@ -53,13 +53,18 @@ ExtractLinks <- function(domain = NULL,
     if (is.null(website) == TRUE) {
         website <- CastarterOptions("website")
     }
+    if (is.null(CastarterOptions("baseFolder"))) {
+        baseFolder <- "castarter"
+    } else {
+        baseFolder <- CastarterOptions("baseFolder")
+    }
     if (exportParameters == TRUE && exists("project") == FALSE | exportParameters == TRUE && exists("website") == FALSE) {
         stop("If exportParameters == TRUE, both project and website must be defined either as parameters or previously with SetCastarter(project = '...', website = '...').")
     }
     if (is.null(importParameters)==FALSE) {
         if (importParameters == TRUE) { # Import parameters
-            if (file.exists(base::file.path(project, website, "Logs", paste(project, website, "parameters.rds", sep = "-"))) == TRUE) {
-                params <- readRDS(base::file.path(project, website, "Logs", paste(project, website, "parameters.rds", sep = "-")))
+            if (file.exists(base::file.path(baseFolder, project, website, "Logs", paste(project, website, "parameters.rds", sep = "-"))) == TRUE) {
+                params <- readRDS(base::file.path(baseFolder, project, website, "Logs", paste(project, website, "parameters.rds", sep = "-")))
                 params$ExtractLinks$exportParameters <- FALSE
                 if (is.null(id)==FALSE) {
                     params$ExtractLinks$id <- id
@@ -69,7 +74,7 @@ ExtractLinks <- function(domain = NULL,
                 }
             } else {
                 # throw error if parameters file not found
-                stop(paste("Parameters file not found in", base::file.path(project, website, "Logs", paste(project, website, "parameters.rds", sep = "-"))))
+                stop(paste("Parameters file not found in", base::file.path(baseFolder, project, website, "Logs", paste(project, website, "parameters.rds", sep = "-"))))
             }
         }
     } else {
@@ -77,17 +82,17 @@ ExtractLinks <- function(domain = NULL,
     }
     if (exportParameters == TRUE & importParameters == FALSE) { # Export parameters
         extractLinksParams <-  as.list(environment())
-        if (file.exists(base::file.path(project, website, "Logs", paste(project, website, "parameters.rds", sep = "-"))) == TRUE) {
-            params <- readRDS(base::file.path(project, website, "Logs", paste(project, website, "parameters.rds", sep = "-")))
+        if (file.exists(base::file.path(baseFolder, project, website, "Logs", paste(project, website, "parameters.rds", sep = "-"))) == TRUE) {
+            params <- readRDS(base::file.path(baseFolder, project, website, "Logs", paste(project, website, "parameters.rds", sep = "-")))
             params$ExtractLinks <- NULL
         } else {
             params <- list()
         }
         params$ExtractLinks <- extractLinksParams
-        saveRDS(object = params, file = base::file.path(project, website, "Logs", paste(project, website, "parameters.rds", sep = "-")))
+        saveRDS(object = params, file = base::file.path(baseFolder, project, website, "Logs", paste(project, website, "parameters.rds", sep = "-")))
     }
     if (is.null(htmlLocation)) {
-        htmlLocation <- file.path(project, website, "IndexHtml")
+        htmlLocation <- file.path(baseFolder, project, website, "IndexHtml")
     }
     # If IDs not given, list files
     if (is.null(id)==FALSE) {
@@ -207,8 +212,8 @@ ExtractLinks <- function(domain = NULL,
         links <- sort(links)
     }
     if (export == TRUE) {
-        writeLines(links, file.path(project, website, "Logs", paste(Sys.Date(), website, "articlesLinks.txt", sep = "-")))
-        message(paste("All links stored in", file.path(project, website, "Logs", paste(Sys.Date(), website, "articlesLinks.txt", sep = "-"))))
+        writeLines(links, file.path(baseFolder, project, website, "Logs", paste(Sys.Date(), website, "articlesLinks.txt", sep = "-")))
+        message(paste("All links stored in", file.path(baseFolder, project, website, "Logs", paste(Sys.Date(), website, "articlesLinks.txt", sep = "-"))))
     }
     links
 }

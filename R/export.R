@@ -20,6 +20,11 @@ ExportArticlesWith <- function(dataset, term, includeNaDates = TRUE, onlyNaDates
     if (is.null(website) == TRUE) {
         website <- CastarterOptions("website")
     }
+    if (is.null(CastarterOptions("baseFolder"))) {
+        baseFolder <- "castarter"
+    } else {
+        baseFolder <- CastarterOptions("baseFolder")
+    }
     if (onlyNaDates == TRUE) {
         dataset <- dataset[is.na(dataset$date),]
     }
@@ -35,39 +40,39 @@ ExportArticlesWith <- function(dataset, term, includeNaDates = TRUE, onlyNaDates
         tempDataset <- tempDataset[order(tempDataset$date), ]
     }
     if (is.null(website) == TRUE) {
-        if (!file.exists(file.path(project, "Outputs"))) {
-            dir.create(file.path(project, "Outputs"))
+        if (!file.exists(file.path(baseFolder, project, "Outputs"))) {
+            dir.create(file.path(baseFolder, project, "Outputs"))
         }
     } else {
-        if (!file.exists(file.path(project, website, "Outputs"))) {
-            dir.create(file.path(project, website, "Outputs"))
+        if (!file.exists(file.path(baseFolder, project, website, "Outputs"))) {
+            dir.create(file.path(baseFolder, project, website, "Outputs"))
         }
     }
     if (csv == TRUE) {
         if (is.null(website) == TRUE) {
-            utils::write.csv(tempDataset, file.path(project, "Outputs", paste(term, " in ", website, ".csv", sep = "")))
-            print(paste("File .csv exported to:", file.path(project, "Outputs", paste(term, " in ", website, ".csv", sep = ""))))
+            utils::write.csv(tempDataset, file.path(baseFolder, project, "Outputs", paste(term, " in ", website, ".csv", sep = "")))
+            print(paste("File .csv exported to:", file.path(baseFolder, project, "Outputs", paste(term, " in ", website, ".csv", sep = ""))))
         } else {
-            utils::write.csv(tempDataset, file.path(project, website, "Outputs", paste(term, " in ", website, ".csv", sep = "")))
-            print(paste("File .csv exported to:", file.path(project, website, "Outputs", paste(term, " in ", website, ".csv", sep = ""))))
+            utils::write.csv(tempDataset, file.path(baseFolder, project, website, "Outputs", paste(term, " in ", website, ".csv", sep = "")))
+            print(paste("File .csv exported to:", file.path(baseFolder, project, website, "Outputs", paste(term, " in ", website, ".csv", sep = ""))))
         }
     }
     if (txt == TRUE) {
         if (is.null(website) == TRUE) {
-            writeLines(paste(paste("Date:", tempDataset$date), paste("Title:", tempDataset$title), paste("Link:", tempDataset$link), paste("ID:", tempDataset$id), tempDataset$text, " ___  ______  ______  ______  ______  ______  ______  ______  ______  ___\n  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__\n (______)(______)(______)(______)(______)(______)(______)(______)(______)\n", sep = "\n"), file.path(project, "Outputs", paste(term, " in ", ".txt", sep = "")))
-            print(paste("File .txt exported to:", file.path(project, "Outputs", paste(term, " in ", project, ".txt", sep = ""))))
+            writeLines(paste(paste("Date:", tempDataset$date), paste("Title:", tempDataset$title), paste("Link:", tempDataset$link), paste("ID:", tempDataset$id), tempDataset$text, " ___  ______  ______  ______  ______  ______  ______  ______  ______  ___\n  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__\n (______)(______)(______)(______)(______)(______)(______)(______)(______)\n", sep = "\n"), file.path(baseFolder, project, "Outputs", paste(term, " in ", ".txt", sep = "")))
+            print(paste("File .txt exported to:", file.path(baseFolder, project, "Outputs", paste(term, " in ", project, ".txt", sep = ""))))
         } else {
-            writeLines(paste(paste("Date:", tempDataset$date), paste("Title:", tempDataset$title), paste("Link:", tempDataset$link), paste("ID:", tempDataset$id), tempDataset$text, " ___  ______  ______  ______  ______  ______  ______  ______  ______  ___\n  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__\n (______)(______)(______)(______)(______)(______)(______)(______)(______)\n", sep = "\n"), file.path(project, website, "Outputs", paste(term, " in ", website, ".txt", sep = "")))
-            print(paste("File .txt exported to:", file.path(project, website, "Outputs", paste(term, " in ", website, ".txt", sep = ""))))
+            writeLines(paste(paste("Date:", tempDataset$date), paste("Title:", tempDataset$title), paste("Link:", tempDataset$link), paste("ID:", tempDataset$id), tempDataset$text, " ___  ______  ______  ______  ______  ______  ______  ______  ______  ___\n  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__\n (______)(______)(______)(______)(______)(______)(______)(______)(______)\n", sep = "\n"), file.path(baseFolder, project, website, "Outputs", paste(term, " in ", website, ".txt", sep = "")))
+            print(paste("File .txt exported to:", file.path(baseFolder, project, website, "Outputs", paste(term, " in ", website, ".txt", sep = ""))))
         }
     }
     if (xlsx == TRUE) {
         if (is.null(website) == TRUE) {
-            xlsx::write.xlsx(tempDataset, file.path(project, "Outputs", paste(term, " in ", website, ".xlsx", sep = "")))
-            print(paste("File .xlsx exported to:", file.path(project, "Outputs", paste(term, " in ", website, ".xlsx", sep = ""))))
+            xlsx::write.xlsx(tempDataset, file.path(baseFolder, project, "Outputs", paste(term, " in ", website, ".xlsx", sep = "")))
+            print(paste("File .xlsx exported to:", file.path(baseFolder, project, "Outputs", paste(term, " in ", website, ".xlsx", sep = ""))))
         } else {
-            xlsx::write.xlsx(tempDataset, file.path(project, website, "Outputs", paste(term, " in ", website, ".xlsx", sep = "")))
-            print(paste("File .xlsx exported to:", file.path(project, website, "Outputs", paste(term, " in ", website, ".xlsx", sep = ""))))
+            xlsx::write.xlsx(tempDataset, file.path(baseFolder, project, website, "Outputs", paste(term, " in ", website, ".xlsx", sep = "")))
+            print(paste("File .xlsx exported to:", file.path(baseFolder, project, website, "Outputs", paste(term, " in ", website, ".xlsx", sep = ""))))
         }
     }
     if (data.frame == TRUE) {
