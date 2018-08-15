@@ -26,5 +26,6 @@ Suggests:
     testthat,
     shiny,
     rmarkdown
+Encoding: UTF-8
 VignetteBuilder: knitr
 RoxygenNote: 6.1.0
