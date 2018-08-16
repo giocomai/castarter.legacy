@@ -9,12 +9,13 @@
 ##'  \item{"corpus"}{: Outputs a corpus.}
 ##' }
 #' @param removeNAdates Logical, defaults to TRUE. If TRUE, dataset items that do not have a date in the records are not imported.
+#' @param addProjectColumn Logical, defatults to FALSE. If TRUE, a column with the project name is appended.
 #' @return A data frame including all loaded datasets.
 #' @export
 #' @examples
 #' projectsAndWebsites <- c("ProjectX/Website1", "ProjectY/Website3", "ProjectZ/Website2")
 #' allDatasets <- LoadDatasets(projectsAndWebsites)
-LoadDatasets <- function(projectsAndWebsites = NULL, type = "dataset", removeNAdates = TRUE) {
+LoadDatasets <- function(projectsAndWebsites = NULL, type = "dataset", removeNAdates = TRUE, addProjectColumn = FALSE) {
     if (is.null(projectsAndWebsites) == TRUE) {
         project <- CastarterOptions("project")
         website <- CastarterOptions("website")
@@ -61,6 +62,9 @@ LoadDatasets <- function(projectsAndWebsites = NULL, type = "dataset", removeNAd
             colnames(x = dataset)[colnames(dataset)=="titles"]<-"title"
             colnames(x = dataset)[colnames(dataset)=="dates"]<-"date"
             dataset$text <- base::iconv(x = dataset$text, to = "UTF-8")
+            if (addProjectColumn == TRUE) {
+                dataset$project <- projectsAndWebsites[[i]][1]
+            }
             allDatasets <- dplyr::bind_rows(allDatasets, dataset)
             rm(dataset)
         }

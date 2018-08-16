@@ -5,7 +5,7 @@
 \title{Loads a specific set of datasets from existings 'castarter' projects.}
 \usage{
 LoadDatasets(projectsAndWebsites = NULL, type = "dataset",
-  removeNAdates = TRUE)
+  removeNAdates = TRUE, addProjectColumn = FALSE)
 }
 \arguments{
 \item{projectsAndWebsites}{A character vector listing websites to be loaded in the format "project/website". If none is given, it will check if project and website have been set with `SetCastarter()`}
@@ -17,6 +17,8 @@ LoadDatasets(projectsAndWebsites = NULL, type = "dataset",
 }}
 
 \item{removeNAdates}{Logical, defaults to TRUE. If TRUE, dataset items that do not have a date in the records are not imported.}
+
+\item{addProjectColumn}{Logical, defatults to FALSE. If TRUE, a column with the project name is appended.}
 }
 \value{
 A data frame including all loaded datasets.
