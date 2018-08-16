@@ -1,0 +1,307 @@
+library("shiny")
+library("castarter")
+
+shinyServer(function(input, output, session) {
+
+
+    #### Select project/website ui ####
+
+    output$selectWebsite_UI <- renderUI({
+
+        projects <- list.dirs(path = "castarter", full.names = FALSE, recursive = FALSE)
+
+        projectsAndWebsites_list <- purrr::map(.x = projects,
+                                               .f = ~stringr::str_remove(string = list.dirs(path = file.path("castarter", .x),
+                                                               full.names = TRUE,
+                                                               recursive = FALSE), pattern = "castarter/"))
+        names(projectsAndWebsites_list) <- projects
+
+        selectizeInput(inputId = "selected_websites",
+                       label = "Available projects and websites",
+                       choices = as.list(c("", projectsAndWebsites_list)),
+                       selected = "",
+                       multiple = TRUE,
+                       width = "95%")
+
+    })
+
+
+
+    ##### Load rds after selection ######
+
+    observeEvent(input$SetCastarter, {
+
+     #  message(paste(input$project, input$website, sep = "/"))
+        datasetOriginal <<- LoadDatasets(projectsAndWebsites = input$selected_websites, addProjectColumn = TRUE)
+        dataset <<- datasetOriginal
+
+        for (i in file.path("castarter", input$selected_websites, "Logs", "tags.rds")[file.exists(file.path("castarter", input$selected_websites, "Logs", "tags.rds"))==FALSE]) {
+        tibble::data_frame(doc_id = dataset$doc_id[input$id],  tag = list(input$tag), category = list(input$category), type = list(input$type))
+
+            saveRDS(object = tibble::data_frame(date = as.Date(NA), doc_id = NA, tag = list(NA), category = list(NA), type=list(NA)) %>% dplyr::filter(is.na(doc_id)==FALSE),
+                    file = i)
+
+        }
+
+        allTags <<- purrr::map_df(.x = file.path("castarter", input$selected_websites, "Logs", "tags.rds"), .f = readRDS)
+
+    })
+
+
+    ##### UI read and tag ######
+
+
+
+    output$id <- renderText({
+        paste("<b>id</b>:", dataset$doc_id[input$id])
+    })
+
+    output$title <- renderText({
+        dataset$title[input$id]
+    })
+
+    output$date <- renderText({
+        as.character(as.Date(dataset$date[input$id]))
+    })
+
+    output$link <- renderText({
+        paste('<a href="', dataset$link[input$id], '">', dataset$link[input$id], '</a>')
+    })
+
+    output$contents <- renderText({
+        if (input$pattern=="") { #output text if no string is given
+            dataset$text[input$id]
+        } else {
+            paste0(unlist(stringr::str_split(string = dataset$text[input$id], pattern = stringr::regex(pattern = input$pattern, ignore_case = TRUE))), collapse = paste0('<span style="background-color: #FFFF00">', input$pattern, '</span>'))
+        }
+    })
+
+    #### Submit tags ####
+
+    observeEvent(input$submit, {
+
+
+        if (file.exists(file.path("castarter", dataset$project[input$id], dataset$website[input$id], "Logs", "tags.rds")) == FALSE) {
+            saveRDS(object = tibble::data_frame(doc_id = NA, tag = list(NA), category = list(NA), type=list(NA)) %>%
+                        dplyr::filter(is.na(doc_id)==FALSE),
+                    file = file.path("castarter", dataset$project[input$id], dataset$website[input$id], "Logs", "tags.rds"))
+        }
+        tags <- readRDS(file = file.path("castarter", dataset$project[input$id], dataset$website[input$id], "Logs", "tags.rds"))
+        if (is.null(nrow(tags))==FALSE) { #check that tags is not empty.
+            if (is.element(el = dataset$doc_id[input$id], set = tags$doc_id)) { #checks if given item has already been added to tags: must have same id, same project name, and same website name
+                tags$tag[tags$doc_id==dataset$doc_id[input$id]] <- list(input$tag)
+                tags$category[tags$doc_id==dataset$doc_id[input$id]] <- list(input$category)
+                tags$type[tags$doc_id==dataset$doc_id[input$id]] <- list(input$type)
+            } else {
+                tags <- dplyr::bind_rows(tags,
+                                  tibble::data_frame(doc_id = dataset$doc_id[input$id],
+                                                     tag = list(input$tag),
+                                                     category = list(input$category),
+                                                     type = list(input$type))) %>%
+                    dplyr::arrange(doc_id)
+            }
+        } else { #runs when *tags* is empty, adds first item
+            tags <- tibble::data_frame(doc_id = dataset$doc_id[input$id],  tag = list(input$tag), category = list(input$category), type = list(input$type))
+        }
+        saveRDS(object = tags, file = file.path("castarter", dataset$project[input$id], dataset$website[input$id], "Logs", "tags.rds"))
+
+        output$previousTags <- renderText({
+            tags <- readRDS(file = file.path("castarter", dataset$project[input$id], dataset$website[input$id], "Logs", "tags.rds"))
+            paste("<b>tag</b>: ", paste(as.character(unlist(tags$tag[tags$doc_id==dataset$doc_id[input$id]])), collapse = ", "), "<br />",
+                  "<b>category</b>: ", paste(as.character(unlist(tags$category[tags$doc_id==dataset$doc_id[input$id]])), collapse = ", "), "<br />",
+                  "<b>type</b>: ", paste(as.character(unlist(tags$type[tags$doc_id==dataset$doc_id[input$id]])), collapse = ", "))
+        })
+    })
+
+    output$totalItems <- renderText({
+        paste("<b>Total items:</b>", nrow(dataset))
+    })
+
+    output$previousTags <- renderText({
+        paste("<b>tag</b>: ", paste(as.character(unlist(allTags$tag[allTags$doc_id==dataset$doc_id[input$id]])), collapse = ", "), "<br />",
+              "<b>category</b>: ", paste(as.character(unlist(allTags$category[allTags$doc_id==dataset$doc_id[input$id]])), collapse = ", "), "<br />",
+              "<b>type</b>: ", paste(as.character(unlist(allTags$type[allTags$doc_id==dataset$doc_id[input$id]])), collapse = ", "))
+    })
+
+    output$filterPattern <- renderUI({
+        if(input$filterCheckbox == TRUE){
+            textInput("patternFilter", "Pattern to filter", value = "")
+        }
+    })
+
+    output$filterTagSelector <- renderUI({
+        if(input$filterCheckbox == TRUE){
+            selectInput('tagFilter', 'Filter by tag',
+                        tibble::data_frame(tag = unlist(tags$tag)) %>%
+                            dplyr::arrange(tag) %>%
+                            dplyr::distinct(),
+                        multiple=TRUE, selectize=FALSE)
+        }
+    })
+
+    output$filtercategorySelector <- renderUI({
+        if(input$filterCheckbox == TRUE){
+            selectInput('categoryFilter', 'Filter by category', tibble::data_frame(category = unlist(tags$category)) %>% arrange(category) %>% distinct(), multiple=TRUE, selectize=FALSE)
+        }
+    })
+
+    output$filterTypeSelector <- renderUI({
+        if(input$filterCheckbox == TRUE){
+            selectInput('typeFilter', 'Filter by type',
+                        tibble::data_frame(type = unlist(tags$type)) %>%
+                            dplyr::arrange(Type) %>%
+                            dplyr::distinct(),
+                        multiple=TRUE, selectize=FALSE)
+        }
+    })
+
+    output$filterAndOrRadio <- renderUI({
+        if(input$filterCheckbox == TRUE){
+            radioButtons(inputId = "andOrFilter", label = "Keep items that belong to any of the above categories, or only those that belong to all of those selected?",
+                         choices = c("Any", "All"),
+                         selected = "Any",
+                         inline = TRUE)
+        }
+    })
+
+    output$invertFilterCheckbox <- renderUI({
+        if(input$filterCheckbox == TRUE){
+            checkboxInput(inputId = "invertFilter", label = "Invert filter?", value = FALSE)
+        }
+    })
+
+
+    output$filterActionButton <- renderUI({
+        if(input$filterCheckbox == TRUE){
+            actionButton("filterAction", "Filter")
+        }
+    })
+
+    output$filterRangeSelector_ui <- renderUI({
+        numericInput(inputId = "id", label = NULL, value = 1, min = 1, max = nrow(dataset))
+    })
+
+    output$filterResetButton <- renderUI({
+        actionButton("filterReset", "Reset filter")
+    })
+
+    observeEvent(input$showRadio, {
+        if (input$showRadio=="Only untagged") {
+            dataset <<- dataset[which(!is.element(el = dataset$doc_id, set = tags$doc_id)),]
+        } else if (input$showRadio=="Only tagged") {
+            dataset <<- dataset[which(is.element(el = dataset$doc_id, set = tags$doc_id)),]
+        }
+        # update input UI
+        updateNumericInput(session = session, inputId = "id", value = 1, min = 1, max = if(exists("dataset")) nrow(dataset) else 100)
+        output$totalItems <- renderText({
+            paste("<b>Total items:</b>", nrow(dataset))
+        })
+    })
+
+    observeEvent(input$filterAction, {
+        # "Neutralising" NULL in tags
+        tagsF <- tags
+        tagsF$tag[purrr::map_lgl(.x = tags$tag, .f = is.null)] <- ""
+        tagsF$category[purrr::map_lgl(.x = tags$category, .f = is.null)] <- ""
+        tagsF$type[purrr::map_lgl(.x = tags$type, .f = is.null)] <- ""
+        # if only one of the filters given, turn others into NA
+        tagFilter <- if (is.null(input$tagFilter)) {NA} else {unlist(input$tagFilter)}
+        categoryFilter <- if (is.null(input$categoryFilter)) {NA} else {unlist(input$categoryFilter)}
+        typeFilter <- if (is.null(input$typeFilter)) {NA} else {unlist(input$typeFilter)}
+        # Creating logical vector for filter
+        if (is.null(input$patternFilter)==FALSE&input$patternFilter!="") {
+            filterPatternL <- stringr::str_detect(string = dataset$text, pattern = stringr::regex(pattern = input$patternFilter, ignore_case = TRUE))
+            dataset <<- dataset[filterPatternL,]
+            #filterL <- Reduce("&", list(filterL, filterPattern))
+        } else {
+            if (length(input$tagFilter)<2&length(input$categoryFilter)<2&length(input$typeFilter)<2) {
+                filterL <- list(tag = purrr::map_lgl(.x = tagsF$tag, .f = is.element, el = tagFilter), category = purrr::map_lgl(.x = tagsF$category, .f = is.element, el = categoryFilter), type = purrr::map_lgl(.x = tagsF$type, .f = is.element, el = typeFilter))[is.na(c(tagFilter, categoryFilter, typeFilter))==FALSE]
+            } else {
+                # enable filter when more than one selected
+                tagL <- rep(x = FALSE, times = length(tagsF$tag))
+                for (i in seq_along(tagFilter)) {
+                    temp <- purrr::map_lgl(.x = tagsF$tag, .f = is.element, el = tagFilter[i])
+                    tagL <- Reduce("|", list(temp, tagL))
+                }
+                categoryL <- rep(x = FALSE, times = length(tagsF$category))
+                for (i in seq_along(categoryFilter)) {
+                    temp <- purrr::map_lgl(.x = tagsF$category, .f = is.element, el = categoryFilter[i])
+                    categoryL <- Reduce("|", list(temp, categoryL))
+                }
+                typeL <- rep(x = FALSE, times = length(tagsF$type))
+                for (i in seq_along(typeFilter)) {
+                    temp <- purrr::map_lgl(.x = tagsF$type, .f = is.element, el = typeFilter[i])
+                    typeL <- Reduce("|", list(temp, typeL))
+                }
+                filterL <- list(tag = tagL, category = categoryL, type = typeL)[is.na(c(tagFilter, categoryFilter, typeFilter))==FALSE]
+            }
+            if (input$andOrFilter == "Any") {
+                filterL <- Reduce("|", filterL)
+            } else if (input$andOrFilter == "All") {
+                filterL <- Reduce("&", filterL)
+            }
+            # Filter (checking if invert filter is enabled)
+            if (input$invertFilter== TRUE) {
+                dataset <<- dataset[which(!is.element(el = dataset$doc_id, set = tags$doc_id[filterL])),]
+            } else {
+                dataset <<- dataset[which(is.element(el = dataset$doc_id, set = tags$doc_id[filterL])),]
+            }
+            # update input UI
+            updateNumericInput(session = session, inputId = "id", value = 1, min = 1, max = nrow(dataset))
+            output$totalItems <- renderText({
+                paste("<b>Total items:</b>", nrow(dataset))
+            })
+            ## update news item shown
+            output$id <- renderText({
+                paste("<b>Project-website-id</b>:", dataset$doc_id[input$id])
+            })
+
+            output$title <- renderText({
+                dataset$title[input$id]
+            })
+
+            output$date <- renderText({
+                as.character(as.Date(dataset$date[input$id]))
+            })
+
+            output$link <- renderText({
+                paste('<a href="', dataset$link[input$id], '">', dataset$link[input$id], '</a>')
+            })
+
+            output$contents <- renderText({
+                if (input$pattern=="") { #output text if no string is given
+                    dataset$text[input$id]
+                } else {
+                    paste0(unlist(stringr::str_split(string = dataset$text[input$id], pattern = regex(pattern = input$pattern, ignore_case = TRUE))), collapse = paste0('<span style="background-color: #FFFF00">', input$pattern, '</span>'))
+                }
+            })
+        }
+    })
+
+    observeEvent(input$filterReset, {
+        dataset <<- datasetOriginal
+        # update input UI
+        updateNumericInput(session = session, inputId = "id", value = 1, min = 1, max = nrow(dataset))
+        output$totalItems <- renderText({
+            paste("<b>Total items:</b>", nrow(dataset))
+        })
+    })
+
+    output$UpdateDataset <- renderText({
+        if (is.null(input$categoryFilter)==FALSE) {
+            filterL <- purrr::map_lgl(.x = tags$category, .f = is.element, el = input$categoryFilter)
+            which(is.element(el = dataset$doc_id, set = tags$doc_id[filterL]))
+        }
+    })
+
+
+
+
+
+
+
+
+
+})
+
+
