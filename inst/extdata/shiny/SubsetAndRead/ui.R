@@ -9,15 +9,21 @@ shinyUI(fluidPage(
         #### Beginning of SetCastarter page ####
         tabPanel("Select dataset(s)",
                  fluidPage(theme="style.css",
+                           fluidRow(
                            column(8,
                                uiOutput(outputId = "selectWebsite_UI")
 
                            ),
                            column(4,
-                               actionButton(inputId = "SetCastarter", label = "Select dataset", icon = icon("check"), style="color: #fff; background-color: #337ab7; border-color: #2e6da4")
-                                                          )
+                               actionButton(inputId = "SetCastarter",
+                                            label = "Select dataset",
+                                            icon = icon("check"),
+                                            style="color: #fff; background-color: #337ab7; border-color: #2e6da4; margin-top: 1.5em;")))
                           ,
-                           uiOutput(outputId = "SetCastarter")
+                          fluidRow(
+                           uiOutput(outputId = "datasetInfo"),
+                           tableOutput("SummariseDataset_table")
+                          )
                  )
         ),
         #### End of SetCastarter page ####

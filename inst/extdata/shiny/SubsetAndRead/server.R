@@ -25,6 +25,14 @@ shinyServer(function(input, output, session) {
 
     })
 
+    output$datasetInfo <- renderUI({
+        if (nrow(dataset)==0) {
+            HTML(text = "Select a dataset from the list above and click on 'Select dataset' to load it in the current session.")
+        } else {
+            HTML(text = paste0("The following datasets are now loaded in the current section:<br>", paste(unique(datasetOriginal$website), collapse = ", ")))
+        }
+    })
+
 
 
     ##### Load rds after selection ######
@@ -36,14 +44,32 @@ shinyServer(function(input, output, session) {
         dataset <<- datasetOriginal
 
         for (i in file.path("castarter", input$selected_websites, "Logs", "tags.rds")[file.exists(file.path("castarter", input$selected_websites, "Logs", "tags.rds"))==FALSE]) {
-        tibble::data_frame(doc_id = dataset$doc_id[input$id],  tag = list(input$tag), category = list(input$category), type = list(input$type))
+            tibble::data_frame(doc_id = dataset$doc_id[input$id],  tag = list(input$tag), category = list(input$category), type = list(input$type))
 
-            saveRDS(object = tibble::data_frame(date = as.Date(NA), doc_id = NA, tag = list(NA), category = list(NA), type=list(NA)) %>% dplyr::filter(is.na(doc_id)==FALSE),
+            saveRDS(object = tibble::data_frame(doc_id = NA, tag = list(NA), category = list(NA), type=list(NA)) %>% dplyr::filter(is.na(doc_id)==FALSE),
                     file = i)
-
         }
 
         allTags <<- purrr::map_df(.x = file.path("castarter", input$selected_websites, "Logs", "tags.rds"), .f = readRDS)
+
+        output$datasetInfo <- renderUI({
+            if (nrow(dataset)==0) {
+                HTML(text = "Select a dataset from the list above and click on 'Select dataset' to load it in the current session.")
+            } else {
+                HTML(text = paste0("The following datasets are now loaded in the current session:<br>"
+                                 #  , paste(unique(datasetOriginal$website), collapse = ", ")
+                                 )
+                     )
+            }
+        })
+
+        output$SummariseDataset_table <-  renderTable(
+            castarter::SummariseDataset(dataset = datasetOriginal) %>%
+                dplyr::mutate(From = as.character(From), Until = as.character(Until), Total = scales::number(as.integer(Total)))
+        )
+
+
+
 
     })
 
