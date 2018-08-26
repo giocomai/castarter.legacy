@@ -53,8 +53,8 @@ shinyUI(fluidPage(
                                   # Only show this panel if Filter is selected
                                   uiOutput("filterPattern"),
                                   uiOutput("filterTagSelector"),
-                                  uiOutput("filtercategorySelector"),
                                   uiOutput("filterTypeSelector"),
+                                  uiOutput("filtercategorySelector"),
                                   uiOutput("filterAndOrRadio"),
                                   uiOutput("invertFilterCheckbox"),
                                   uiOutput("filterActionButton")),
