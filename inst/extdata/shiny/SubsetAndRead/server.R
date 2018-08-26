@@ -321,9 +321,11 @@ shinyServer(function(input, output, session) {
         # Creating logical vector for filter
         if (is.null(input$patternFilter)==FALSE&input$patternFilter!="") {
             filterPatternL <- stringr::str_detect(string = dataset$text, pattern = stringr::regex(pattern = input$patternFilter, ignore_case = TRUE))
-            dataset <<- dataset[filterPatternL,]
+            dataset <<- dataset <- dataset[filterPatternL,]
             #filterL <- Reduce("&", list(filterL, filterPattern))
-        } else {
+        }
+
+
             if (length(input$tagFilter)<2&length(input$categoryFilter)<2&length(input$typeFilter)<2) {
                 filterL <- list(tag = purrr::map_lgl(.x = tagsF$tag, .f = is.element, el = tagFilter),
                                 category = purrr::map_lgl(.x = tagsF$category, .f = is.element, el = categoryFilter),
@@ -381,13 +383,29 @@ shinyServer(function(input, output, session) {
             })
 
             output$contents <- renderText({
-                if (input$pattern=="") { #output text if no string is given
+                if (input$pattern==""&input$highlightDigits==FALSE) {
                     dataset$text[input$id]
                 } else {
-                    paste0(unlist(stringr::str_split(string = dataset$text[input$id], pattern = stringr::regex(pattern = input$pattern, ignore_case = TRUE))), collapse = paste0('<span style="background-color: #FFFF00">', input$pattern, '</span>'))
+
+                    if (input$highlightDigits==TRUE) {
+                        if (input$pattern=="") {
+                            patternToHighlight <- "[[:digit:]]+"
+                        } else {
+                            patternToHighlight <- paste0(as.character(input$pattern), "|[[:digit:]]")
+                        }
+
+                    } else {
+                        patternToHighlight <- as.character(input$pattern)
+                    }
+                    paste(c(rbind(as.character(stringr::str_split(string = dataset$text[input$id],
+                                                                  pattern = stringr::regex(pattern = patternToHighlight, ignore_case = TRUE), simplify = TRUE)),
+                                  c(paste0("<span style='background-color: #FFFF00'>",
+                                           as.character(stringr::str_extract_all(string = dataset$text[input$id], pattern = stringr::regex(patternToHighlight, ignore_case = TRUE), simplify = TRUE)),
+                                           "</span>"), ""))),
+                          collapse = "")
                 }
             })
-        }
+
     })
 
     observeEvent(input$filterReset, {
