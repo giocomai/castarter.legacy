@@ -149,7 +149,9 @@ shinyServer(function(input, output, session) {
         if (input$pattern=="") { #output text if no string is given
             dataset$text[input$id]
         } else {
-            paste0(unlist(stringr::str_split(string = dataset$text[input$id], pattern = stringr::regex(pattern = input$pattern, ignore_case = TRUE))), collapse = paste0('<span style="background-color: #FFFF00">', input$pattern, '</span>'))
+            paste0(unlist(stringr::str_split(string = dataset$text[input$id],
+                                             pattern = stringr::regex(pattern = input$pattern, ignore_case = TRUE))),
+                   collapse = paste0('<span style="background-color: #FFFF00">', input$pattern, '</span>'))
         }
     })
 
@@ -292,9 +294,9 @@ shinyServer(function(input, output, session) {
     observeEvent(input$filterAction, {
         # "Neutralising" NULL in tags
         tagsF <- allTags
-        tagsF$tag[purrr::map_lgl(.x = tags$tag, .f = is.null)] <- ""
-        tagsF$category[purrr::map_lgl(.x = tags$category, .f = is.null)] <- ""
-        tagsF$type[purrr::map_lgl(.x = tags$type, .f = is.null)] <- ""
+        tagsF$tag[purrr::map_lgl(.x = allTags$tag, .f = is.null)] <- ""
+        tagsF$category[purrr::map_lgl(.x = allTags$category, .f = is.null)] <- ""
+        tagsF$type[purrr::map_lgl(.x = allTags$type, .f = is.null)] <- ""
         # if only one of the filters given, turn others into NA
         tagFilter <- if (is.null(input$tagFilter)) {NA} else {unlist(input$tagFilter)}
         categoryFilter <- if (is.null(input$categoryFilter)) {NA} else {unlist(input$categoryFilter)}
@@ -306,7 +308,9 @@ shinyServer(function(input, output, session) {
             #filterL <- Reduce("&", list(filterL, filterPattern))
         } else {
             if (length(input$tagFilter)<2&length(input$categoryFilter)<2&length(input$typeFilter)<2) {
-                filterL <- list(tag = purrr::map_lgl(.x = tagsF$tag, .f = is.element, el = tagFilter), category = purrr::map_lgl(.x = tagsF$category, .f = is.element, el = categoryFilter), type = purrr::map_lgl(.x = tagsF$type, .f = is.element, el = typeFilter))[is.na(c(tagFilter, categoryFilter, typeFilter))==FALSE]
+                filterL <- list(tag = purrr::map_lgl(.x = tagsF$tag, .f = is.element, el = tagFilter),
+                                category = purrr::map_lgl(.x = tagsF$category, .f = is.element, el = categoryFilter),
+                                type = purrr::map_lgl(.x = tagsF$type, .f = is.element, el = typeFilter))[is.na(c(tagFilter, categoryFilter, typeFilter))==FALSE]
             } else {
                 # enable filter when more than one selected
                 tagL <- rep(x = FALSE, times = length(tagsF$tag))
@@ -333,9 +337,9 @@ shinyServer(function(input, output, session) {
             }
             # Filter (checking if invert filter is enabled)
             if (input$invertFilter== TRUE) {
-                dataset <<- dataset[which(!is.element(el = dataset$doc_id, set = tags$doc_id[filterL])),]
+                dataset <<- dataset[which(!is.element(el = dataset$doc_id, set = allTags$doc_id[filterL])),]
             } else {
-                dataset <<- dataset[which(is.element(el = dataset$doc_id, set = tags$doc_id[filterL])),]
+                dataset <<- dataset[which(is.element(el = dataset$doc_id, set = allTags$doc_id[filterL])),]
             }
             # update input UI
             updateNumericInput(session = session, inputId = "id", value = 1, min = 1, max = nrow(dataset))
@@ -363,7 +367,7 @@ shinyServer(function(input, output, session) {
                 if (input$pattern=="") { #output text if no string is given
                     dataset$text[input$id]
                 } else {
-                    paste0(unlist(stringr::str_split(string = dataset$text[input$id], pattern = regex(pattern = input$pattern, ignore_case = TRUE))), collapse = paste0('<span style="background-color: #FFFF00">', input$pattern, '</span>'))
+                    paste0(unlist(stringr::str_split(string = dataset$text[input$id], pattern = stringr::regex(pattern = input$pattern, ignore_case = TRUE))), collapse = paste0('<span style="background-color: #FFFF00">', input$pattern, '</span>'))
                 }
             })
         }
