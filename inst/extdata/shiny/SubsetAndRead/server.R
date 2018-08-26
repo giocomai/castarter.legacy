@@ -308,6 +308,8 @@ shinyServer(function(input, output, session) {
         })
     })
 
+    ##### Filter #####
+
     observeEvent(input$filterAction, {
         # "Neutralising" NULL in tags
         tagsF <- allTags
@@ -355,11 +357,17 @@ shinyServer(function(input, output, session) {
                 filterL <- Reduce("&", filterL)
             }
             # Filter (checking if invert filter is enabled)
+
+        if (length(filterL)>0) {
+
             if (input$invertFilter== TRUE) {
-                dataset <<- dataset[which(!is.element(el = dataset$doc_id, set = allTags$doc_id[filterL])),]
+                dataset <<- dataset <- dataset[which(!is.element(el = dataset$doc_id, set = allTags$doc_id[filterL])),]
             } else {
-                dataset <<- dataset[which(is.element(el = dataset$doc_id, set = allTags$doc_id[filterL])),]
+                dataset <<- dataset <- dataset[which(is.element(el = dataset$doc_id, set = allTags$doc_id[filterL])),]
             }
+
+        }
+
             # update input UI
             updateNumericInput(session = session, inputId = "id", value = 1, min = 1, max = nrow(dataset))
             output$totalItems <- renderText({
