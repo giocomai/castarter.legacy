@@ -94,7 +94,10 @@ shinyServer(function(input, output, session) {
         for (i in file.path("castarter", input$selected_websites, "Logs", "tags.rds")[file.exists(file.path("castarter", input$selected_websites, "Logs", "tags.rds"))==FALSE]) {
             tibble::data_frame(doc_id = dataset$doc_id[input$id],  tag = list(input$tag), category = list(input$category), type = list(input$type))
 
-            saveRDS(object = tibble::data_frame(doc_id = NA, tag = list(NA), category = list(NA), type=list(NA)) %>% dplyr::filter(is.na(doc_id)==FALSE),
+            saveRDS(object = tibble::data_frame(doc_id = NA,
+                                                tag = list(NA),
+                                                category = list(NA),
+                                                type=list(NA)) %>% dplyr::filter(is.na(doc_id)==FALSE),
                     file = i)
         }
 
@@ -206,25 +209,39 @@ shinyServer(function(input, output, session) {
     output$filterTagSelector <- renderUI({
         if(input$filterCheckbox == TRUE){
             selectInput('tagFilter', 'Filter by tag',
-                        tibble::data_frame(tag = unlist(tags$tag)) %>%
+                        choices =  if (is.null(unlist(allTags$tag))) {
+                            NULL
+                        } else {
+                        tibble::data_frame(tag = unlist(allTags$tag)) %>%
                             dplyr::arrange(tag) %>%
-                            dplyr::distinct(),
+                            dplyr::distinct() %>%
+                            dplyr::pull(tag)},
                         multiple=TRUE, selectize=FALSE)
         }
     })
 
     output$filtercategorySelector <- renderUI({
         if(input$filterCheckbox == TRUE){
-            selectInput('categoryFilter', 'Filter by category', tibble::data_frame(category = unlist(tags$category)) %>% arrange(category) %>% distinct(), multiple=TRUE, selectize=FALSE)
+            selectInput('categoryFilter', 'Filter by category',
+                        choices =  if (is.null(unlist(allTags$category))) {
+                            NULL
+                        } else {tibble::data_frame(category = unlist(allTags$category)) %>%
+                            dplyr::arrange(category) %>%
+                            dplyr::distinct() %>%
+                            dplyr::pull(category)},
+                        multiple=TRUE, selectize=FALSE)
         }
     })
 
     output$filterTypeSelector <- renderUI({
         if(input$filterCheckbox == TRUE){
             selectInput('typeFilter', 'Filter by type',
-                        tibble::data_frame(type = unlist(tags$type)) %>%
-                            dplyr::arrange(Type) %>%
-                            dplyr::distinct(),
+                        choices =  if (is.null(unlist(allTags$type))) {
+                            NULL
+                        } else {tibble::data_frame(type = unlist(allTags$type)) %>%
+                            dplyr::arrange(type) %>%
+                            dplyr::distinct() %>%
+                            dplyr::pull(type)},
                         multiple=TRUE, selectize=FALSE)
         }
     })
@@ -274,7 +291,7 @@ shinyServer(function(input, output, session) {
 
     observeEvent(input$filterAction, {
         # "Neutralising" NULL in tags
-        tagsF <- tags
+        tagsF <- allTags
         tagsF$tag[purrr::map_lgl(.x = tags$tag, .f = is.null)] <- ""
         tagsF$category[purrr::map_lgl(.x = tags$category, .f = is.null)] <- ""
         tagsF$type[purrr::map_lgl(.x = tags$type, .f = is.null)] <- ""
