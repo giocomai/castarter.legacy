@@ -1,33 +1,37 @@
 An introduction to ‘castarter’ - content analysis starter toolkit for R
 ================
 Giorgio Comai
-2018-07-29
+2018-08-27
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ## Preliminary notes
 
-### 2018-07-29
-
-A function that allows to automatically update datasets -
-`updateDataset()` - is now functioning, albeit in a relatively limited
-set of scenarios.
-
-### 2018-01-28
+### 2018-08-27
 
 `castarter` is being completely rewritten in order to implement a number
-of enhancements. As of today, it is again possible to use all key
+of enhancements. Currently, it is again possible to use all key
 functions for downloading sections of websites, extracting text, and key
 metadata.
 
 An example of a script that generates such a dataset is [now
 available](https://github.com/giocomai/castarter/blob/master/inst/extdata/R-Script-examples/Kremlin_en.R).
 
+A function that allows to automatically update datasets -
+`updateDataset()` - is now functioning, albeit in a relatively limited
+set of scenarios.
+
 An example Shiny app that allows to explore the dataset thus created is
 now [part of the
 package](https://github.com/giocomai/castarter/tree/master/inst/extdata/shiny/DatasetAnalysis)
 and [can be seen in action
 online](https://giocomai.shinyapps.io/Kremlin_en/).
+
+A Shiny app that allows to read, subset and code datasets for
+qualitative content analysis is now available through the
+SubsetAndRead() function.
+
+Further documentation and polishing of the code are coming soon.
 
 ### 2018-01-14
 
@@ -55,17 +59,13 @@ are available on the author’s blog:
   - [Word frequency of ‘Ukraine’, ‘Crimea’, and ‘Syria’ on Russia’s
     First
     Channel](http://www.giorgiocomai.eu/2015/11/03/word-frequency-of-ukraine-crimea-and-syria-on-russias-first-channel/)
-  - [Presidents and prime ministers in Romanian
-    media](http://www.giorgiocomai.eu/2016/06/29/presidents-and-prime-ministers-in-romanian-media/)
 
 Interactive examples:
 
-  - [Armenia’s president
-    website](https://giocomai.shinyapps.io/ArmeniaPresident/)
   - [Official websites of South Caucasus
     presidents](https://giocomai.shinyapps.io/SouthCaucasusPresidents/)
   - [Kremlin’s official website - only time
-    series](https://giocomai.shinyapps.io/kremlinregex/)
+    series](https://giocomai.shinyapps.io/Kremlin_en/)
 
 ## Installation
 
