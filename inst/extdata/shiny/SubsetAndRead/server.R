@@ -87,7 +87,8 @@ shinyServer(function(input, output, session) {
     observeEvent(input$SetCastarter, {
 
      #  message(paste(input$project, input$website, sep = "/"))
-        datasetOriginal <<- LoadDatasets(projectsAndWebsites = input$selected_websites, addProjectColumn = TRUE)
+        datasetOriginal <<- withProgress(expr = {LoadDatasets(projectsAndWebsites = input$selected_websites, addProjectColumn = TRUE)},
+                                         message = "Loading dataset(s)... please wait")
         dataset <<- datasetOriginal
 
         for (i in file.path("castarter", input$selected_websites, "Logs", "tags.rds")[file.exists(file.path("castarter", input$selected_websites, "Logs", "tags.rds"))==FALSE]) {
