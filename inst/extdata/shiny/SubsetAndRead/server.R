@@ -153,7 +153,12 @@ shinyServer(function(input, output, session) {
         } else {
 
             if (input$highlightDigits==TRUE) {
-                patternToHighlight <- paste0(as.character(input$pattern), "|[[:digit:]]")
+                if (input$pattern=="") {
+                    patternToHighlight <- "[[:digit:]]+"
+                } else {
+                    patternToHighlight <- paste0(as.character(input$pattern), "|[[:digit:]]")
+                }
+
             } else {
                 patternToHighlight <- as.character(input$pattern)
             }
