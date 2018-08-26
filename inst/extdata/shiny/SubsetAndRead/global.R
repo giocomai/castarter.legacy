@@ -1,3 +1,4 @@
+library("magrittr")
 library("shiny")
 if (file.exists("castarter")==FALSE) {
     stop("`castarter` folder not found in the current working directory.")
