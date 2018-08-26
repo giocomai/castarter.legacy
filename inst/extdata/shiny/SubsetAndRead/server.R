@@ -328,91 +328,89 @@ shinyServer(function(input, output, session) {
         }
 
 
-            if (length(input$tagFilter)<2&length(input$categoryFilter)<2&length(input$typeFilter)<2) {
-                filterL <- list(tag = purrr::map_lgl(.x = tagsF$tag, .f = is.element, el = tagFilter),
-                                category = purrr::map_lgl(.x = tagsF$category, .f = is.element, el = categoryFilter),
-                                type = purrr::map_lgl(.x = tagsF$type, .f = is.element, el = typeFilter))[is.na(c(tagFilter, categoryFilter, typeFilter))==FALSE]
-            } else {
-                # enable filter when more than one selected
-                tagL <- rep(x = FALSE, times = length(tagsF$tag))
-                for (i in seq_along(tagFilter)) {
-                    temp <- purrr::map_lgl(.x = tagsF$tag, .f = is.element, el = tagFilter[i])
-                    tagL <- Reduce("|", list(temp, tagL))
-                }
-                categoryL <- rep(x = FALSE, times = length(tagsF$category))
-                for (i in seq_along(categoryFilter)) {
-                    temp <- purrr::map_lgl(.x = tagsF$category, .f = is.element, el = categoryFilter[i])
-                    categoryL <- Reduce("|", list(temp, categoryL))
-                }
-                typeL <- rep(x = FALSE, times = length(tagsF$type))
-                for (i in seq_along(typeFilter)) {
-                    temp <- purrr::map_lgl(.x = tagsF$type, .f = is.element, el = typeFilter[i])
-                    typeL <- Reduce("|", list(temp, typeL))
-                }
-                filterL <- list(tag = tagL, category = categoryL, type = typeL)[is.na(c(tagFilter, categoryFilter, typeFilter))==FALSE]
+        if (length(input$tagFilter)<2&length(input$categoryFilter)<2&length(input$typeFilter)<2) {
+            filterL <- list(tag = purrr::map_lgl(.x = tagsF$tag, .f = is.element, el = tagFilter),
+                            category = purrr::map_lgl(.x = tagsF$category, .f = is.element, el = categoryFilter),
+                            type = purrr::map_lgl(.x = tagsF$type, .f = is.element, el = typeFilter))[is.na(c(tagFilter, categoryFilter, typeFilter))==FALSE]
+        } else {
+            # enable filter when more than one selected
+            tagL <- rep(x = FALSE, times = length(tagsF$tag))
+            for (i in seq_along(tagFilter)) {
+                temp <- purrr::map_lgl(.x = tagsF$tag, .f = is.element, el = tagFilter[i])
+                tagL <- Reduce("|", list(temp, tagL))
             }
-            if (input$andOrFilter == "Any") {
-                filterL <- Reduce("|", filterL)
-            } else if (input$andOrFilter == "All") {
-                filterL <- Reduce("&", filterL)
+            categoryL <- rep(x = FALSE, times = length(tagsF$category))
+            for (i in seq_along(categoryFilter)) {
+                temp <- purrr::map_lgl(.x = tagsF$category, .f = is.element, el = categoryFilter[i])
+                categoryL <- Reduce("|", list(temp, categoryL))
             }
-            # Filter (checking if invert filter is enabled)
+            typeL <- rep(x = FALSE, times = length(tagsF$type))
+            for (i in seq_along(typeFilter)) {
+                temp <- purrr::map_lgl(.x = tagsF$type, .f = is.element, el = typeFilter[i])
+                typeL <- Reduce("|", list(temp, typeL))
+            }
+            filterL <- list(tag = tagL, category = categoryL, type = typeL)[is.na(c(tagFilter, categoryFilter, typeFilter))==FALSE]
+        }
+        if (input$andOrFilter == "Any") {
+            filterL <- Reduce("|", filterL)
+        } else if (input$andOrFilter == "All") {
+            filterL <- Reduce("&", filterL)
+        }
+        # Filter (checking if invert filter is enabled)
 
         if (length(filterL)>0) {
-
             if (input$invertFilter== TRUE) {
                 dataset <<- dataset <- dataset[which(!is.element(el = dataset$doc_id, set = allTags$doc_id[filterL])),]
             } else {
                 dataset <<- dataset <- dataset[which(is.element(el = dataset$doc_id, set = allTags$doc_id[filterL])),]
             }
-
         }
 
-            # update input UI
-            updateNumericInput(session = session, inputId = "id", value = 1, min = 1, max = nrow(dataset))
-            output$totalItems <- renderText({
-                paste("<b>Total items:</b>", nrow(dataset))
-            })
-            ## update news item shown
-            output$id <- renderText({
-                paste("<b>Project-website-id</b>:", dataset$doc_id[input$id])
-            })
+        # update input UI
+        updateNumericInput(session = session, inputId = "id", value = 1, min = 1, max = nrow(dataset))
+        output$totalItems <- renderText({
+            paste("<b>Total items:</b>", nrow(dataset))
+        })
+        ## update news item shown
+        output$id <- renderText({
+            paste("<b>Project-website-id</b>:", dataset$doc_id[input$id])
+        })
 
-            output$title <- renderText({
-                dataset$title[input$id]
-            })
+        output$title <- renderText({
+            dataset$title[input$id]
+        })
 
-            output$date <- renderText({
-                as.character(as.Date(dataset$date[input$id]))
-            })
+        output$date <- renderText({
+            as.character(as.Date(dataset$date[input$id]))
+        })
 
-            output$link <- renderText({
-                paste('<a href="', dataset$link[input$id], '">', dataset$link[input$id], '</a>')
-            })
+        output$link <- renderText({
+            paste('<a href="', dataset$link[input$id], '">', dataset$link[input$id], '</a>')
+        })
 
-            output$contents <- renderText({
-                if (input$pattern==""&input$highlightDigits==FALSE) {
-                    dataset$text[input$id]
-                } else {
+        output$contents <- renderText({
+            if (input$pattern==""&input$highlightDigits==FALSE) {
+                dataset$text[input$id]
+            } else {
 
-                    if (input$highlightDigits==TRUE) {
-                        if (input$pattern=="") {
-                            patternToHighlight <- "[[:digit:]]+"
-                        } else {
-                            patternToHighlight <- paste0(as.character(input$pattern), "|[[:digit:]]")
-                        }
-
+                if (input$highlightDigits==TRUE) {
+                    if (input$pattern=="") {
+                        patternToHighlight <- "[[:digit:]]+"
                     } else {
-                        patternToHighlight <- as.character(input$pattern)
+                        patternToHighlight <- paste0(as.character(input$pattern), "|[[:digit:]]")
                     }
-                    paste(c(rbind(as.character(stringr::str_split(string = dataset$text[input$id],
-                                                                  pattern = stringr::regex(pattern = patternToHighlight, ignore_case = TRUE), simplify = TRUE)),
-                                  c(paste0("<span style='background-color: #FFFF00'>",
-                                           as.character(stringr::str_extract_all(string = dataset$text[input$id], pattern = stringr::regex(patternToHighlight, ignore_case = TRUE), simplify = TRUE)),
-                                           "</span>"), ""))),
-                          collapse = "")
+
+                } else {
+                    patternToHighlight <- as.character(input$pattern)
                 }
-            })
+                paste(c(rbind(as.character(stringr::str_split(string = dataset$text[input$id],
+                                                              pattern = stringr::regex(pattern = patternToHighlight, ignore_case = TRUE), simplify = TRUE)),
+                              c(paste0("<span style='background-color: #FFFF00'>",
+                                       as.character(stringr::str_extract_all(string = dataset$text[input$id], pattern = stringr::regex(patternToHighlight, ignore_case = TRUE), simplify = TRUE)),
+                                       "</span>"), ""))),
+                      collapse = "")
+            }
+        })
 
     })
 
