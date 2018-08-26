@@ -25,6 +25,53 @@ shinyServer(function(input, output, session) {
 
     })
 
+    output$tagSelector <- renderUI({
+        selectizeInput("tag", label = "Tag", choices =
+                           if (is.null(unlist(allTags$tag))) {
+                               NULL
+                           } else {
+                           tibble::data_frame(tag = unlist(allTags$tag)) %>%
+                           dplyr::group_by(tag) %>%
+                           dplyr::tally() %>%
+                           dplyr::arrange(desc(n)) %>%
+                           na.omit() %>%
+                           dplyr::pull(tag)},
+                       multiple = TRUE,
+                       options = list(create = TRUE, placeholder = "Insert tag"))
+    })
+
+    output$typeSelector <- renderUI({
+        selectizeInput("type", label = "Type", choices =
+                           if (is.null(unlist(allTags$type))) {
+                               NULL
+                           } else {
+                           tibble::data_frame(type = unlist(allTags$type)) %>%
+                           dplyr::group_by(type) %>%
+                           dplyr::tally() %>%
+                           dplyr::arrange(desc(n)) %>%
+                           na.omit() %>%
+                           dplyr::pull(type)},
+                       multiple = TRUE,
+                       options = list(create = TRUE, placeholder = "Insert type"))
+
+
+    })
+
+    output$categorySelector <- renderUI({
+        selectizeInput("category", label = "Category", choices =
+                           if (is.null(unlist(allTags$category))) {
+                               NULL
+                           } else {
+                           tibble::data_frame(category = unlist(allTags$category)) %>%
+                           dplyr::group_by(category) %>%
+                           dplyr::tally() %>%
+                           dplyr::arrange(desc(n)) %>%
+                           na.omit() %>%
+                           dplyr::pull(category)},
+                       multiple = TRUE,
+                       options = list(create = TRUE, placeholder = "Insert category"))
+    })
+
     output$datasetInfo <- renderUI({
         if (nrow(dataset)==0) {
             HTML(text = "Select a dataset from the list above and click on 'Select dataset' to load it in the current session.")

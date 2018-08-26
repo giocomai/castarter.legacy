@@ -43,31 +43,9 @@ shinyUI(fluidPage(
                                   # actionButton("nextButton", "Next"),
                                   # check: http://stackoverflow.com/questions/38302682/next-button-in-a-r-shiny-app
                                   textInput("pattern", "Pattern to be highlighted", value = ""),
-                                  selectizeInput("tag", label = "Tag", choices =
-                                                     tibble::data_frame(tag = unlist(allTags$tag)) %>%
-                                                     dplyr::group_by(tag) %>%
-                                                     dplyr::tally() %>%
-                                                     dplyr::arrange(desc(n)) %>%
-                                                     dplyr::select(tag),
-                                                 multiple = TRUE,
-                                                 options = list(create = TRUE, placeholder = "Insert tag")),
-                                  selectizeInput("type",
-                                                 label = "Type",
-                                                 choices =
-                                                     tibble::data_frame(Type = unlist(allTags$type)) %>%
-                                                     dplyr::group_by(Type) %>%
-                                                     dplyr::tally() %>%
-                                                     dplyr::arrange(desc(n)) %>%
-                                                     dplyr::select(Type),
-                                                 multiple = TRUE, options = list(create = TRUE, placeholder = "Insert type")),
-                                  selectizeInput("category",
-                                                 label = "Category",
-                                                 choices = tibble::data_frame(category = unlist(allTags$category)) %>%
-                                                     dplyr::group_by(category) %>%
-                                                     dplyr::tally() %>%
-                                                     dplyr::arrange(desc(n)) %>%
-                                                     dplyr::select(category),
-                                                 multiple = TRUE, options = list(create = TRUE, placeholder = "Insert category")),
+                                  uiOutput("tagSelector"),
+                                  uiOutput("typeSelector"),
+                                  uiOutput("categorySelector"),
                                   actionButton("submit", "Submit"),
                                   htmlOutput("previousTags"),
                                   checkboxInput(inputId = "filterCheckbox", label = "Filter", value = FALSE, width = NULL),
