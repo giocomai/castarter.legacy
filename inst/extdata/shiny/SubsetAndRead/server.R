@@ -146,13 +146,25 @@ shinyServer(function(input, output, session) {
     })
 
     output$contents <- renderText({
-        if (input$pattern=="") { #output text if no string is given
+
+
+        if (input$pattern==""&input$highlightDigits==FALSE) {
             dataset$text[input$id]
         } else {
-            paste0(unlist(stringr::str_split(string = dataset$text[input$id],
-                                             pattern = stringr::regex(pattern = input$pattern, ignore_case = TRUE))),
-                   collapse = paste0('<span style="background-color: #FFFF00">', input$pattern, '</span>'))
+
+            if (input$highlightDigits==TRUE) {
+                patternToHighlight <- paste0(as.character(input$pattern), "|[[:digit:]]")
+            } else {
+                patternToHighlight <- as.character(input$pattern)
+            }
+            paste(c(rbind(as.character(stringr::str_split(string = dataset$text[input$id],
+                                                          pattern = stringr::regex(pattern = patternToHighlight, ignore_case = TRUE), simplify = TRUE)),
+                          c(paste0("<span style='background-color: #FFFF00'>",
+                                   as.character(stringr::str_extract_all(string = dataset$text[input$id], pattern = stringr::regex(patternToHighlight, ignore_case = TRUE), simplify = TRUE)),
+                                   "</span>"), ""))),
+                  collapse = "")
         }
+
     })
 
     #### Submit tags ####

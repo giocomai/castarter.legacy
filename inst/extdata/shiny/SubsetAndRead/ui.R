@@ -43,6 +43,7 @@ shinyUI(fluidPage(
                                   # actionButton("nextButton", "Next"),
                                   # check: http://stackoverflow.com/questions/38302682/next-button-in-a-r-shiny-app
                                   textInput("pattern", "Pattern to be highlighted", value = ""),
+                                  checkboxInput(inputId = "highlightDigits", label = "Highlight digits"),
                                   uiOutput("tagSelector"),
                                   uiOutput("typeSelector"),
                                   uiOutput("categorySelector"),
