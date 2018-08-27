@@ -70,14 +70,20 @@ shinyUI(fluidPage(
                            )
                  )
         ),
-        #### End of CreateLinks page ####
 
-        #### Download index page ####
         tabPanel("Analyse tags",
                  fluidPage(theme="style.css",
                            column(12,
                                   fluidRow(
                                       h3("Analyse tags")
+                                  )
+                           )
+                 )),
+        tabPanel("Export tags",
+                 fluidPage(theme="style.css",
+                           column(12,
+                                  fluidRow(
+                                      h3("Export tags")
                                   )
                            )
                  ))

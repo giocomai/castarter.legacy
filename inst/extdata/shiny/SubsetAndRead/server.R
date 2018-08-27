@@ -76,7 +76,7 @@ shinyServer(function(input, output, session) {
         if (nrow(dataset)==0) {
             HTML(text = "Select a dataset from the list above and click on 'Select dataset' to load it in the current session.")
         } else {
-            HTML(text = paste0("The following datasets are now loaded in the current section:<br>", paste(unique(datasetOriginal$website), collapse = ", ")))
+            HTML(text = paste0("The following datasets are now loaded in the current section:<br>", paste(unique(dataset$website), collapse = ", ")))
         }
     })
 
@@ -86,10 +86,8 @@ shinyServer(function(input, output, session) {
 
     observeEvent(input$SetCastarter, {
 
-     #  message(paste(input$project, input$website, sep = "/"))
-        datasetOriginal <<- withProgress(expr = {LoadDatasets(projectsAndWebsites = input$selected_websites, addProjectColumn = TRUE)},
+        dataset <<- withProgress(expr = {LoadDatasets(projectsAndWebsites = input$selected_websites, addProjectColumn = TRUE)},
                                          message = "Loading dataset(s)... please wait")
-        dataset <<- datasetOriginal
 
         for (i in file.path("castarter", input$selected_websites, "Logs", "tags.rds")[file.exists(file.path("castarter", input$selected_websites, "Logs", "tags.rds"))==FALSE]) {
             tibble::data_frame(doc_id = dataset$doc_id[input$id],  tag = list(input$tag), category = list(input$category), type = list(input$type))
@@ -107,21 +105,16 @@ shinyServer(function(input, output, session) {
             if (nrow(dataset)==0) {
                 HTML(text = "Select a dataset from the list above and click on 'Select dataset' to load it in the current session.")
             } else {
-                HTML(text = paste0("The following datasets are now loaded in the current session:<br>"
-                                 #  , paste(unique(datasetOriginal$website), collapse = ", ")
-                                 )
-                     )
+                HTML(text = "The following datasets are now loaded in the current session:<br>")
             }
         })
 
         output$SummariseDataset_table <-  renderTable(
-            castarter::SummariseDataset(dataset = datasetOriginal) %>%
-                dplyr::mutate(From = as.character(From), Until = as.character(Until), Total = scales::number(as.integer(Total)))
+            castarter::SummariseDataset(dataset = dataset) %>%
+                dplyr::mutate(From = as.character(From),
+                              Until = as.character(Until),
+                              Total = scales::number(as.integer(Total)))
         )
-
-
-
-
     })
 
 
@@ -415,11 +408,52 @@ shinyServer(function(input, output, session) {
     })
 
     observeEvent(input$filterReset, {
-        dataset <<- datasetOriginal
+        dataset <<- dataset <- withProgress(expr = {LoadDatasets(projectsAndWebsites = input$selected_websites, addProjectColumn = TRUE)},
+                                 message = "Loading dataset(s)... please wait")
         # update input UI
         updateNumericInput(session = session, inputId = "id", value = 1, min = 1, max = nrow(dataset))
         output$totalItems <- renderText({
             paste("<b>Total items:</b>", nrow(dataset))
+        })
+        ## update news item shown
+        output$id <- renderText({
+            paste("<b>Project-website-id</b>:", dataset$doc_id[input$id])
+        })
+
+        output$title <- renderText({
+            dataset$title[input$id]
+        })
+
+        output$date <- renderText({
+            as.character(as.Date(dataset$date[input$id]))
+        })
+
+        output$link <- renderText({
+            paste('<a href="', dataset$link[input$id], '">', dataset$link[input$id], '</a>')
+        })
+
+        output$contents <- renderText({
+            if (input$pattern==""&input$highlightDigits==FALSE) {
+                dataset$text[input$id]
+            } else {
+
+                if (input$highlightDigits==TRUE) {
+                    if (input$pattern=="") {
+                        patternToHighlight <- "[[:digit:]]+"
+                    } else {
+                        patternToHighlight <- paste0(as.character(input$pattern), "|[[:digit:]]")
+                    }
+
+                } else {
+                    patternToHighlight <- as.character(input$pattern)
+                }
+                paste(c(rbind(as.character(stringr::str_split(string = dataset$text[input$id],
+                                                              pattern = stringr::regex(pattern = patternToHighlight, ignore_case = TRUE), simplify = TRUE)),
+                              c(paste0("<span style='background-color: #FFFF00'>",
+                                       as.character(stringr::str_extract_all(string = dataset$text[input$id], pattern = stringr::regex(patternToHighlight, ignore_case = TRUE), simplify = TRUE)),
+                                       "</span>"), ""))),
+                      collapse = "")
+            }
         })
     })
 
