@@ -1,9 +1,10 @@
 Package: castarter
 Type: Package
 Title: Content analysis starter toolkit for R
-Version: 0.2.5.00001
+Version: 0.2.5.00002
 Date: 2018-08-27
-Author: Giorgio Comai <giorgiocomai@gmail.com>
+Authors@R: person("Giorgio", "Comai", email = "g@giorgiocomai.eu",
+                  role = c("aut", "cre"))
 Maintainer: Giorgio Comai <giorgiocomai@gmail.com>
 Description: castarter is an R package that facilitates the process of extracting
     text and metadata from online websites and of preparing them for quantitative or
@@ -25,7 +26,8 @@ Suggests:
     knitr,
     testthat,
     shiny,
-    rmarkdown
+    rmarkdown,
+    covr
 Encoding: UTF-8
 VignetteBuilder: knitr
 RoxygenNote: 6.1.0

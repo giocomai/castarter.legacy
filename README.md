@@ -3,6 +3,8 @@ An introduction to ‘castarter’ - content analysis starter toolkit for R
 Giorgio Comai
 2018-08-27
 
+[![Licence](https://img.shields.io/badge/licence-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
+[![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ## Preliminary notes
