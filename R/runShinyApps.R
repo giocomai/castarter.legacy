@@ -1,5 +1,6 @@
 #' Starts a Shiny app that facilitates the creation of a 'castarter' dataset.
 #'
+#' Starts a Shiny app that facilitates the creation of a 'castarter' dataset.
 #'
 #' @export
 #' @examples
@@ -18,6 +19,7 @@ CreateDataset <- function() {
 
 #' Starts a Shiny app that facilitates sub-setting, reading, and tagging a `castarter` dataset.
 #'
+#' Starts a Shiny app that facilitates sub-setting, reading, and tagging a `castarter` dataset.
 #'
 #' @export
 #' @examples
@@ -36,6 +38,7 @@ SubsetAndRead <- function() {
 
 #' Starts a Shiny app that facilitates sub-setting, reading, and tagging a `castarter` dataset.
 #'
+#' Starts a Shiny app that facilitates sub-setting, reading, and tagging a `castarter` dataset.
 #'
 #' @export
 #' @examples
