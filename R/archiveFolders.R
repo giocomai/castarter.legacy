@@ -16,6 +16,11 @@ ArchiveFolders <- function(project = NULL, website = NULL, removeArchivedFolders
     if (is.null(website) == TRUE) {
         website <- CastarterOptions("website")
     }
+    if (is.null(CastarterOptions("baseFolder"))) {
+        baseFolder <- "castarter"
+    } else {
+        baseFolder <- CastarterOptions("baseFolder")
+    }
     if (!file.exists(file.path(baseFolder, project, website, "Archives"))) {
         dir.create(file.path(baseFolder, project, website, "Archives"))
     }
@@ -64,6 +69,11 @@ RestoreArchives <- function(html = FALSE, indexHtml = FALSE, txt = FALSE, overwr
     }
     if (is.null(website) == TRUE) {
         website <- CastarterOptions("website")
+    }
+    if (is.null(CastarterOptions("baseFolder"))) {
+        baseFolder <- "castarter"
+    } else {
+        baseFolder <- CastarterOptions("baseFolder")
     }
     if (html==TRUE) {
         if (file.exists(file.path(baseFolder, project, website, "Html"))==TRUE&overwrite==FALSE) {
