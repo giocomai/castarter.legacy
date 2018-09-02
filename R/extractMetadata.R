@@ -188,6 +188,11 @@ ExtractId <- function(sample = NULL, htmlLocation = NULL, project = NULL, websit
     if (is.null(website) == TRUE) {
         website <- CastarterOptions("website")
     }
+    if (is.null(CastarterOptions("baseFolder"))) {
+        baseFolder <- "castarter"
+    } else {
+        baseFolder <- CastarterOptions("baseFolder")
+    }
     if (is.null(htmlLocation)) {
         htmlLocation <- file.path(baseFolder, project, website, "Html")
     }
