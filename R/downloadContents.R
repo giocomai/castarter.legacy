@@ -92,7 +92,7 @@ DownloadContents <- function(links,
                 file.remove(file.path(baseFolder, project, website, "downloadPages.sh"))
             }
             write(x = paste0("wget '", links[linksToDownload], "' -O '",
-                            file.path("..", "..", htmlFilePath, paste0(articlesId[linksToDownload], ".html")), "'",
+                            file.path("..", "..", "..", htmlFilePath, paste0(articlesId[linksToDownload], ".html")), "'",
                             " -t 1 -T 20", "; ", "sleep ", wait),
                   file = file.path(baseFolder, project, website, "downloadPages.sh"), append = TRUE)
             system(paste("chmod +x", file.path(baseFolder, project, website, "downloadPages.sh")))
