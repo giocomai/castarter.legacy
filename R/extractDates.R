@@ -285,6 +285,8 @@ ExtractDates <- function(dateFormat = "dmY",
                       "Октября", "Ноября", "Декабря"))
         monthsRu_2 <- c("январь", "февраль", "март", "апрель", "май", "июнь", "июль", "август",
                         "сентябрь", "октябрь", "ноябрь", "декабрь")
+        monthsRu_3 <- c("янв", "фев", "мар", "апр", "май", "июн", "июл", "авг",
+                        "сен", "окт", "ноя", "дек")
         monthsLocale <- month.name
         datesTxt <- tolower(datesTxt)
         for (i in 1:12) {
@@ -292,6 +294,9 @@ ExtractDates <- function(dateFormat = "dmY",
         }
         for (i in 1:12) {
             datesTxt <- gsub(monthsRu_2[i], monthsLocale[i], datesTxt)
+        }
+        for (i in 1:12) {
+            datesTxt <- gsub(monthsRu_3[i], monthsLocale[i], datesTxt)
         }
         dates <- as.Date(lubridate::parse_date_time(datesTxt, dateFormat))
     } else {
