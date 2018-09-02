@@ -218,6 +218,11 @@ ExportMetadata <- function(dates, id, titles, language, links, exportXlsx = FALS
     if (is.null(website) == TRUE) {
         website <- CastarterOptions("website")
     }
+    if (is.null(CastarterOptions("baseFolder"))) {
+        baseFolder <- "castarter"
+    } else {
+        baseFolder <- CastarterOptions("baseFolder")
+    }
     ignoreVector <- NULL
     if (ignoreNAdates == TRUE) {
         ignoreVector <- is.na(dates)
