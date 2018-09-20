@@ -68,7 +68,7 @@ LoadLatest <- function(project = NULL, website = NULL) {
     } else {
         baseFolder <- CastarterOptions("baseFolder")
     }
-    lastSavedFile <- file.path(file.path(baseFolder, project, website, "SessionRdata"), sort(list.files(file.path(baseFolder, project, website))[stringr::str_extract(list.files(file.path(baseFolder, project, website)), "RData") == "RData"], decreasing = TRUE)[1])
+    lastSavedFile <- file.path(file.path(baseFolder, project, website, "SessionRdata"), sort(list.files(file.path(baseFolder, project, website, "SessionRdata"))[stringr::str_extract(list.files(file.path(baseFolder, project, website, "SessionRdata")), "RData") == "RData"], decreasing = TRUE)[1])
 }
 
 #' Saves working environment and dataset.
