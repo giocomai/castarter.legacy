@@ -80,7 +80,6 @@ LoadLatest <- function(project = NULL, website = NULL) {
 #' @param website Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
 #' @param dataset A 'castarter' dataset. Required to export dataset in its dedicated folder if no metadata and contents are found in the environment, e.g. because dataset has been created through CreateDatasetFromHtml() function.
 #' @param exportCsv Logical, defaults to FALSE. If TRUE, exports the complete dataset in the .csv file format in the Dataset sub-folder.
-#' @param exportXlsx Logical, defaults to FALSE. If TRUE, exports the complete dataset in the .xlsx file format in the Dataset sub-folder.
 #' @return Nothing. Used for its side effects (save current workspace and dataset in relevant folders).
 #' @export
 #' @examples
@@ -117,9 +116,6 @@ SaveWebsite <- function(saveEnvironment = TRUE, dataset = NULL, tidyCorpus = NUL
     }
     if (exportCsv == TRUE) {
         write.csv(dataset, file.path(baseFolder, project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".csv")))
-    }
-    if (exportXlsx == TRUE) {
-        xlsx::write.xlsx(dataset, file.path(baseFolder, project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".xlsx")))
     }
     if (exportTxt == TRUE) {
         writeLines(paste(paste("Date:", dataset$date), paste("Title:", dataset$title), paste("Link:", dataset$link), paste("ID:", dataset$id), dataset$text, " ___  ______  ______  ______  ______  ______  ______  ______  ______  ___\n  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__\n (______)(______)(______)(______)(______)(______)(______)(______)(______)\n", sep = "\n"), file.path(baseFolder, project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".txt")))

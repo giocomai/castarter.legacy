@@ -28,10 +28,33 @@ ShowShare <- function(dataset, terms, breaks = "year", output = "graph", startDa
     } else {
         baseFolder <- CastarterOptions("baseFolder")
     }
-    showShareDF <- dataset %>% filter(is.na(date)==FALSE) %>% mutate(Date = as.Date(date)) %>% select(id, Date, contents) %>% arrange(Date) %>% group_by(id) %>% mutate(Mentions = stringr::str_detect(string = contents, pattern = stringr::fixed(terms, ignore_case = TRUE))) %>% select(-contents) %>%  group_by(Date) %>% mutate(nArt = n(), nArtMentions = sum(Mentions)) %>% select(-Mentions, -id) %>% ungroup() %>% distinct() %>% mutate(Date = cut(Date, breaks = breaks)) %>% group_by(Date) %>% mutate(nPerTimeUnit = sum(nArt), nMentionsPerTimeUnit = sum(nArtMentions, na.rm = TRUE)) %>% select(Date, nPerTimeUnit, nMentionsPerTimeUnit) %>% mutate(Share = nMentionsPerTimeUnit/nPerTimeUnit) %>% ungroup() %>% distinct() %>% arrange(Date)
+    showShareDF <- dataset %>%
+        dplyr::filter(is.na(date)==FALSE) %>%
+        dplyr::mutate(Date = as.Date(date)) %>%
+        dplyr::select(id, Date, contents) %>%
+        dplyr::arrange(Date) %>%
+        dplyr::group_by(id) %>%
+        dplyr::mutate(Mentions = stringr::str_detect(string = contents, pattern = stringr::fixed(terms, ignore_case = TRUE))) %>%
+        dplyr::select(-contents) %>%
+        dplyr::group_by(Date) %>%
+        dplyr::mutate(nArt = dplyr::n(), nArtMentions = sum(Mentions)) %>%
+        dplyr::select(-Mentions, -id) %>%
+        dplyr::ungroup() %>%
+        dplyr::distinct() %>%
+        dplyr::mutate(Date = cut(Date, breaks = breaks)) %>%
+        dplyr::group_by(Date) %>%
+        dplyr::mutate(nPerTimeUnit = sum(nArt), nMentionsPerTimeUnit = sum(nArtMentions, na.rm = TRUE)) %>%
+        dplyr::select(Date, nPerTimeUnit, nMentionsPerTimeUnit) %>%
+        dplyr::mutate(Share = nMentionsPerTimeUnit/nPerTimeUnit) %>%
+        dplyr::ungroup() %>%
+        dplyr::distinct() %>%
+        dplyr::arrange(Date)
     if (output == "graph") {
         graph <-
-            showShareDF %>% mutate(negative = 1-Share) %>% tidyr::gather(c(Share, negative), key = Mentions, value = Share) %>% mutate(Mentions = gsub(pattern = "Share", replacement = paste("Mentions", sQuote(terms)), x = Mentions)) %>% mutate(Mentions = gsub(pattern = "negative", replacement = paste("Does not mention", sQuote(terms)), x = Mentions)) %>%
+            showShareDF %>%
+            dplyr::mutate(negative = 1-Share) %>%
+            tidyr::gather(c(Share, negative), key = Mentions, value = Share) %>%
+            dplyr::mutate(Mentions = gsub(pattern = "Share", replacement = paste("Mentions", sQuote(terms)), x = Mentions)) %>% mutate(Mentions = gsub(pattern = "negative", replacement = paste("Does not mention", sQuote(terms)), x = Mentions)) %>%
             ggplot2::ggplot(mapping = ggplot2::aes(x=Date, y = Share, fill = Mentions)) + ggplot2::geom_col() + ggplot2::theme_minimal() + ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1)) + ggplot2::scale_y_continuous(name = "", labels = scales::percent) + ggplot2::labs(title = paste("Share of articles including reference to", sQuote(x = terms)), fill="") +
             if(breaks == "year") {
                 ggplot2::scale_x_discrete(name = "", labels = lubridate::year(x = showShareDF$Date))
@@ -50,22 +73,22 @@ ShowShare <- function(dataset, terms, breaks = "year", output = "graph", startDa
                     dir.create(file.path(baseFolder, project, website, "Outputs"))
                 }
                 ggplot2::ggsave(file.path(baseFolder, project, website, "Outputs", paste0(paste("timeseries", project, website, paste(terms, collapse = " - "), sep = " - "), ".png")))
-                print(paste("File saved in", file.path(baseFolder, project, website, "Outputs", paste0(paste("timeseries", project, website, paste(terms, collapse = " - "), sep = " - "), ".png"))))
+                message(paste("File saved in", file.path(baseFolder, project, website, "Outputs", paste0(paste("timeseries", project, website, paste(terms, collapse = " - "), sep = " - "), ".png"))))
                 ggplot2::ggsave(file.path(baseFolder, project, website, "Outputs", paste0(paste("timeseries", project, website, paste(terms, collapse = " - "), sep = " - "), ".pdf")))
-                print(paste("File saved in", file.path(baseFolder, project, website, "Outputs", paste0(paste("timeseries", project, website, paste(terms, collapse = " - "), sep = " - "), ".pdf"))))
+                message(paste("File saved in", file.path(baseFolder, project, website, "Outputs", paste0(paste("timeseries", project, website, paste(terms, collapse = " - "), sep = " - "), ".pdf"))))
             } else if (is.null(project) == FALSE & is.null(website) == TRUE) {
                 ggplot2::ggsave(file.path("Outputs", paste0(paste("timeseries", project, paste(terms, collapse = " - "), sep = " - "), ".png")))
-                print(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", project, paste(terms, collapse = " - "), sep = " - "), ".png"))))
+                message(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", project, paste(terms, collapse = " - "), sep = " - "), ".png"))))
                 ggplot2::ggsave(file.path("Outputs", paste0(paste("timeseries", project, paste(terms, collapse = " - "), sep = " - "), ".pdf")))
-                print(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", project, paste(terms, collapse = " - "), sep = " - "), ".pdf"))))
+                message(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", project, paste(terms, collapse = " - "), sep = " - "), ".pdf"))))
             } else {
                 if (!file.exists(file.path("Outputs"))) {
                     dir.create(file.path("Outputs"))
                 }
                 ggplot2::ggsave(file.path("Outputs", paste0(paste("timeseries", paste(terms, collapse = " - "), sep = " - "), ".png")))
-                print(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", paste(terms, collapse = " - "), sep = " - "), ".png"))))
+                message(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", paste(terms, collapse = " - "), sep = " - "), ".png"))))
                 ggplot2::ggsave(file.path("Outputs", paste0(paste("timeseries", paste(terms, collapse = " - "), sep = " - "), ".pdf")))
-                print(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", paste(terms, collapse = " - "), sep = " - "), ".pdf"))))
+                message(paste("File saved in", file.path("Outputs", paste0(paste("timeseries", paste(terms, collapse = " - "), sep = " - "), ".pdf"))))
             }
         }
         graph

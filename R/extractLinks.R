@@ -217,13 +217,3 @@ ExtractLinks <- function(domain = NULL,
     }
     links
 }
-
-ReadLinkNodes <- function(x, .pb=NULL) {
-    if ((!is.null(.pb)) && inherits(.pb, "Progress") && (.pb$i < .pb$n)) .pb$tick()$print()
-    xml2::read_html(x) %>% rvest::html_nodes("a")
-}
-
-ExtractLinksHref <- function(x, .pb=NULL) {
-    if ((!is.null(.pb)) && inherits(.pb, "Progress") && (.pb$i < .pb$n)) .pb$tick()$print()
-    x %>% rvest::html_attr('href')
-}

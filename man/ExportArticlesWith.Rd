@@ -20,8 +20,6 @@ ExportArticlesWith(dataset, term, includeNaDates = TRUE,
 
 \item{csv}{Logical, defaults to FALSE. If TRUE, exports all articles including the term provided in a .csv file.}
 
-\item{xlsx}{Logical, defaults to FALSE. If TRUE, exports all articles including the term provided in a .xlsx file.}
-
 \item{data.frame}{Logical, defaults to FALSE. If TRUE, the function outputs a data frame. If FALSE, function used only for its side effects (i.e. exporting to files)}
 
 \item{project}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}

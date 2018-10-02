@@ -18,8 +18,6 @@ SaveWebsite(saveEnvironment = TRUE, dataset = NULL,
 \item{website}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
 
 \item{exportCsv}{Logical, defaults to FALSE. If TRUE, exports the complete dataset in the .csv file format in the Dataset sub-folder.}
-
-\item{exportXlsx}{Logical, defaults to FALSE. If TRUE, exports the complete dataset in the .xlsx file format in the Dataset sub-folder.}
 }
 \value{
 Nothing. Used for its side effects (save current workspace and dataset in relevant folders).

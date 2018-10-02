@@ -305,7 +305,7 @@ ShowRelativeTS <- function(terms,
 #'
 #' @param dataset A dataset created with 'castarter'.
 #' @param specificWebsites Character vector indicating which websites (defined by relative website) have to be included in graph. If left to default, includes all websites present in the dataset.
-#' @param rollingAverage Integer, defaults to 30. Number of days used to calculate word frequency as shown in the time series. Time series shows word frequency for each date as an average of the N number of days (N=rollingAverage) following the correspondent date.
+#' @param rollingAverage Integer, defaults to 31. Number of days used to calculate word frequency as shown in the time series. Time series shows word frequency for each date as an average of the N number of days (N=rollingAverage) following the correspondent date.
 #' @param align Defaults to "center", can be either "left", "right" or "center" and refers to the way the rolling average is calculated.
 #' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.
 #' @param website Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
@@ -317,7 +317,7 @@ ShowRelativeTS <- function(terms,
 #' @examples
 #' ShowDistribution(dataset)
 
-ShowDistribution <- function(dataset, specificWebsites = NULL, rollingAverage = 30, align = "center", customTitle = NULL, method = "numberOfArticles", export = FALSE, project = NULL, website = NULL) {
+ShowDistribution <- function(dataset, specificWebsites = NULL, rollingAverage = 31, align = "center", customTitle = NULL, method = "numberOfArticles", export = FALSE, project = NULL, website = NULL) {
     if (is.null(project) == TRUE) {
         project <- CastarterOptions("project")
     }
@@ -360,28 +360,28 @@ ShowDistribution <- function(dataset, specificWebsites = NULL, rollingAverage = 
                 dir.create(file.path(baseFolder, project, website, "Outputs"))
             }
             ggplot2::ggsave(file.path(baseFolder, project, website, "Outputs", paste0(paste("distributionOfCorpus", project, website, sep = " - "), ".png")))
-            print(paste("File saved in", file.path(baseFolder, project, website, "Outputs", paste0(paste("distributionOfCorpus", project, website, sep = " - "), ".png"))))
+            message(paste("File saved in", file.path(baseFolder, project, website, "Outputs", paste0(paste("distributionOfCorpus", project, website, sep = " - "), ".png"))))
             ggplot2::ggsave(file.path(baseFolder, project, website, "Outputs", paste0(paste("distributionOfCorpus", project, website, sep = " - "), ".pdf")))
-            print(paste("File saved in", file.path(baseFolder, project, website, "Outputs", paste0(paste("distributionOfCorpus", project, website, sep = " - "), ".pdf"))))
+            message(paste("File saved in", file.path(baseFolder, project, website, "Outputs", paste0(paste("distributionOfCorpus", project, website, sep = " - "), ".pdf"))))
             ggplot2::ggsave(file.path(baseFolder, project, website, "Outputs", paste0(paste("distributionOfCorpus", project, website, sep = " - "), ".svg")))
-            print(paste("File saved in", file.path(baseFolder, project, website, "Outputs", paste0(paste("distributionOfCorpus", project, website, sep = " - "), ".svg"))))
+            message(paste("File saved in", file.path(baseFolder, project, website, "Outputs", paste0(paste("distributionOfCorpus", project, website, sep = " - "), ".svg"))))
         } else if (is.null(project) == FALSE & is.null(website) == TRUE) {
             ggplot2::ggsave(file.path("Outputs", paste0(paste("distributionOfCorpus", project, sep = " - "), ".png")))
-            print(paste("File saved in", file.path("Outputs", paste0(paste("distributionOfCorpus", project, sep = " - "), ".png"))))
+            message(paste("File saved in", file.path("Outputs", paste0(paste("distributionOfCorpus", project, sep = " - "), ".png"))))
             ggplot2::ggsave(file.path("Outputs", paste0(paste("distributionOfCorpus", project, sep = " - "), ".pdf")))
-            print(paste("File saved in", file.path("Outputs", paste0(paste("distributionOfCorpus", project, sep = " - "), ".pdf"))))
+            message(paste("File saved in", file.path("Outputs", paste0(paste("distributionOfCorpus", project, sep = " - "), ".pdf"))))
             ggplot2::ggsave(file.path("Outputs", paste0(paste("distributionOfCorpus", project, sep = " - "), ".svg")))
-            print(paste("File saved in", file.path("Outputs", paste0(paste("distributionOfCorpus", project, sep = " - "), ".svg"))))
+            message(paste("File saved in", file.path("Outputs", paste0(paste("distributionOfCorpus", project, sep = " - "), ".svg"))))
         } else {
             if (!file.exists(file.path("Outputs"))) {
                 dir.create(file.path("Outputs"))
             }
             ggplot2::ggsave(file.path("Outputs", paste0(paste("distributionOfCorpus", sep = " - "), ".png")))
-            print(paste("File saved in", file.path("Outputs", paste0(paste("distributionOfCorpus", sep = " - "), ".png"))))
+            message(paste("File saved in", file.path("Outputs", paste0(paste("distributionOfCorpus", sep = " - "), ".png"))))
             ggplot2::ggsave(file.path("Outputs", paste0(paste("distributionOfCorpus", sep = " - "), ".pdf")))
-            print(paste("File saved in", file.path("Outputs", paste0(paste("distributionOfCorpus", sep = " - "), ".pdf"))))
+            message(paste("File saved in", file.path("Outputs", paste0(paste("distributionOfCorpus", sep = " - "), ".pdf"))))
             ggplot2::ggsave(file.path("Outputs", paste0(paste("distributionOfCorpus", sep = " - "), ".svg")))
-            print(paste("File saved in", file.path("Outputs", paste0(paste("distributionOfCorpus", sep = " - "), ".svg"))))
+            message(paste("File saved in", file.path("Outputs", paste0(paste("distributionOfCorpus", sep = " - "), ".svg"))))
         }
     }
     distributionOfCorpus

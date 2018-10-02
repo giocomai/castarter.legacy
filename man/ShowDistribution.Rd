@@ -4,7 +4,7 @@
 \alias{ShowDistribution}
 \title{Creates a time series graph showing the distribution of documents by date}
 \usage{
-ShowDistribution(dataset, specificWebsites = NULL, rollingAverage = 30,
+ShowDistribution(dataset, specificWebsites = NULL, rollingAverage = 31,
   align = "center", customTitle = NULL, method = "numberOfArticles",
   export = FALSE, project = NULL, website = NULL)
 }
@@ -13,7 +13,7 @@ ShowDistribution(dataset, specificWebsites = NULL, rollingAverage = 30,
 
 \item{specificWebsites}{Character vector indicating which websites (defined by relative website) have to be included in graph. If left to default, includes all websites present in the dataset.}
 
-\item{rollingAverage}{Integer, defaults to 30. Number of days used to calculate word frequency as shown in the time series. Time series shows word frequency for each date as an average of the N number of days (N=rollingAverage) following the correspondent date.}
+\item{rollingAverage}{Integer, defaults to 31. Number of days used to calculate word frequency as shown in the time series. Time series shows word frequency for each date as an average of the N number of days (N=rollingAverage) following the correspondent date.}
 
 \item{align}{Defaults to "center", can be either "left", "right" or "center" and refers to the way the rolling average is calculated.}
 

@@ -25,19 +25,3 @@ SubsetDataset <- function(dataset, terms = NULL, startDate = NULL, endDate = NUL
     dataset
 }
 
-#' Divide corpus by website
-#'
-#' @param corpus A corpus as created by the 'tm' package including metadata.
-#' @return A data.frame
-#' @export
-#' @examples
-#' DivideByWebsite(corpus, project)
-DivideByWebsite <- function(corpus, project) {
-    listOfWebsites <- levels(as.factor(unlist(NLP::meta(corpus, "author"))))
-    byWebsite <- data.frame(matrix(NA, nrow = length(corpus), ncol = length(listOfWebsites)))
-    names(byWebsite) <- listOfWebsites
-    for (i in 1:length(listOfWebsites)) {
-        byWebsite[, i] <- NLP::meta(corpus, "author") == listOfWebsites[i]
-    }
-    byWebsite
-}

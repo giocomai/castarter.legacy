@@ -5,7 +5,6 @@
 #' @param onlyNaDates Logical, defaults to FALSE. Used to for troubleshooting dataset.
 #' @param txt Logical, defaults to TRUE. If TRUE, exports all articles including the term provided in a .txt file.
 #' @param csv Logical, defaults to FALSE. If TRUE, exports all articles including the term provided in a .csv file.
-#' @param xlsx Logical, defaults to FALSE. If TRUE, exports all articles including the term provided in a .xlsx file.
 #' @param data.frame Logical, defaults to FALSE. If TRUE, the function outputs a data frame. If FALSE, function used only for its side effects (i.e. exporting to files)
 #' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.
 #' @param website Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.Defaults to NULL. If no website is provided, exported files are saved in the project/Outputs folder.
@@ -64,15 +63,6 @@ ExportArticlesWith <- function(dataset, term, includeNaDates = TRUE, onlyNaDates
         } else {
             writeLines(paste(paste("Date:", tempDataset$date), paste("Title:", tempDataset$title), paste("Link:", tempDataset$link), paste("ID:", tempDataset$id), tempDataset$text, " ___  ______  ______  ______  ______  ______  ______  ______  ______  ___\n  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__\n (______)(______)(______)(______)(______)(______)(______)(______)(______)\n", sep = "\n"), file.path(baseFolder, project, website, "Outputs", paste(term, " in ", website, ".txt", sep = "")))
             print(paste("File .txt exported to:", file.path(baseFolder, project, website, "Outputs", paste(term, " in ", website, ".txt", sep = ""))))
-        }
-    }
-    if (xlsx == TRUE) {
-        if (is.null(website) == TRUE) {
-            xlsx::write.xlsx(tempDataset, file.path(baseFolder, project, "Outputs", paste(term, " in ", website, ".xlsx", sep = "")))
-            print(paste("File .xlsx exported to:", file.path(baseFolder, project, "Outputs", paste(term, " in ", website, ".xlsx", sep = ""))))
-        } else {
-            xlsx::write.xlsx(tempDataset, file.path(baseFolder, project, website, "Outputs", paste(term, " in ", website, ".xlsx", sep = "")))
-            print(paste("File .xlsx exported to:", file.path(baseFolder, project, website, "Outputs", paste(term, " in ", website, ".xlsx", sep = ""))))
         }
     }
     if (data.frame == TRUE) {
