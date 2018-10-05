@@ -35,6 +35,8 @@ DownloadContents(links, type = "articles", path = NULL, size = 500,
 
 \item{ignoreSSLcertificates}{Logical, defaults to FALSE. If TRUE it uses wget to download the page, and does not check if the SSL certificate is valid. Useful, for example, for https pages with expired or mis-configured SSL certificate.}
 
+\item{createScript}{Logical, defaults to FALSE. Tested on Linux only. If TRUE, creates a downloadPages.sh executable file that can be used to download all relevant pages from a terminal.}
+
 \item{project}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
 
 \item{website}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}

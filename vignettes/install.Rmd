@@ -1,0 +1,39 @@
+---
+title: "Install `castarter`"
+author: "Giorgio Comai"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Install `castarter`}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Preliminary steps
+In order to use `castarter`, you need to install R and, if on Linux, a few dependencies. 
+
+### On Fedora
+```{install on Fedora}
+sudo dnf install R R-RCurl curl-devel R-zoo R-XML openssl-devel libxml2-devel cairo-devel
+```
+### On Ubuntu
+```{install on Ubuntu}
+sudo apt-get install r-base r-cran-rcurl r-cran-xml r-cran-rjava r-cran-xml libssl-dev libcairo-dev libcurl4-openssl-dev r-cran-slam libxml2-dev
+```
+### On Windows
+Download the latest version of R from [R's official website]( https://www.r-project.org/{https://www.r-project.org/)
+
+### Installing a user interface for R
+No matter which platform you are using, it is suggested you install a dedicated user interface for R such as [RStudio](https://www.rstudio.com/products/rstudio/download/) - open source and available for Linux, Windows and Mac. 
+
+## Installing 'castarter'
+To actually install `castarter`, you can run these commands inside R: they will install the `devtoools` package, which allows to install `castarter` directly from Github.
+
+```{r installing castarter, eval = FALSE}
+install.packages("devtools")
+devtools::install_github("giocomai/castarter")
+```

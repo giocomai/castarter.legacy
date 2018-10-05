@@ -5,8 +5,8 @@
 \title{Shows share of articles including reference to a specific terms}
 \usage{
 ShowShare(dataset, terms, breaks = "year", output = "graph",
-  startDate = NULL, customTitle = NULL, export = FALSE,
-  project = NULL, website = NULL)
+  startDate = NULL, endDate = NULL, customTitle = NULL,
+  export = FALSE, project = NULL, website = NULL)
 }
 \arguments{
 \item{dataset}{A dataset created with 'castarter'.}
@@ -17,7 +17,9 @@ ShowShare(dataset, terms, breaks = "year", output = "graph",
 
 \item{output}{Defaults to "graph". "data.frame" is currently the only alternative option available.}
 
-\item{startDate, }{endDate Character vector with date in the format year-month-date, e.g. "2015-07-14".}
+\item{startDate}{Character vector with date in the format year-month-date, e.g. "2015-07-14".}
+
+\item{endDate}{Character vector with date in the format year-month-date, e.g. "2015-07-14".}
 
 \item{export}{Logical, defaults to FALSE. If TRUE, saves the graph in both png and pdf format. If project and website are provided, in saves the timeseries in the correspondent "Outputs" subfolder.}
 

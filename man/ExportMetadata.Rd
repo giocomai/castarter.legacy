@@ -4,9 +4,9 @@
 \alias{ExportMetadata}
 \title{Exports metadata}
 \usage{
-ExportMetadata(dates, id, titles, language, links, exportXlsx = FALSE,
-  accordingToDate = FALSE, ignoreNAdates = FALSE, project = NULL,
-  website = NULL)
+ExportMetadata(dates, id, titles, language, links, exportCsv = FALSE,
+  exportXlsx = FALSE, accordingToDate = FALSE, ignoreNAdates = FALSE,
+  project = NULL, website = NULL)
 }
 \arguments{
 \item{exportXlsx}{If equal to TRUE, exports the complete dataset in the .xlsx file format in the Dataset sub-folder.}
@@ -14,6 +14,8 @@ ExportMetadata(dates, id, titles, language, links, exportXlsx = FALSE,
 \item{project}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
 
 \item{website}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
+
+\item{exportCsvIf}{equal to TRUE, exports the complete dataset in the .xlsx file format in the Dataset sub-folder.}
 }
 \value{
 A vector of the data.frame class.
@@ -22,5 +24,5 @@ A vector of the data.frame class.
 Exports metadata to a vector, csv or xlsx file.
 }
 \examples{
-metadata <- ExportMetadata(project, website, dates, id, titles, language, links)
+metadata <- ExportMetadata(dates, id, titles, language, links)
 }

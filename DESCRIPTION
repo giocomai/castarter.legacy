@@ -1,8 +1,8 @@
 Package: castarter
 Type: Package
 Title: Content analysis starter toolkit for R
-Version: 0.2.6.00000
-Date: 2018-10-02
+Version: 0.2.6.00001
+Date: 2018-10-05
 Authors@R: person("Giorgio", "Comai", email = "g@giorgiocomai.eu",
                   role = c("aut", "cre"))
 Description: castarter is an R package that facilitates the process of extracting
@@ -20,13 +20,18 @@ Imports:
     rvest,
     zoo,
     magrittr,
-    dplyr
+    dplyr,
+    readr, 
+    scales, 
+    tibble
 Suggests:
     knitr,
     testthat,
     shiny,
     rmarkdown,
-    covr
+    covr,
+    openxlsx, 
+    tidytext
 Encoding: UTF-8
 VignetteBuilder: knitr
 RoxygenNote: 6.1.0

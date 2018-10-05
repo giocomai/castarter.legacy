@@ -12,21 +12,24 @@ knitr::opts_chunk$set(
 #  devtools::install_github("giocomai/castarter")
 #  library("castarter")
 
+## ----eval=TRUE, include=FALSE--------------------------------------------
+library("castarter")
+
 ## ------------------------------------------------------------------------
 SetCastarter(project = "Presidents", website = "Kremlin_en")
 
-## ------------------------------------------------------------------------
-CreateFolders()
+## ----eval=FALSE----------------------------------------------------------
+#  CreateFolders()
 
 ## ------------------------------------------------------------------------
 indexLinks <- CreateLinks(linkFirstChunk = "http://en.kremlin.ru/events/president/news/page/",
                           startPage = 1,
-                          endPage = 1060)
+                          endPage = 1100)
 head(indexLinks)
 
-## ------------------------------------------------------------------------
-DownloadContents(links = indexLinks, type = "index")
+## ----eval=FALSE----------------------------------------------------------
+#  DownloadContents(links = indexLinks, type = "index")
 
-## ------------------------------------------------------------------------
-DownloadContents(links = indexLinks, type = "index", missingPages = FALSE)
+## ----eval=FALSE----------------------------------------------------------
+#  DownloadContents(links = indexLinks, type = "index", missingPages = FALSE)
 

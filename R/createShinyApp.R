@@ -3,6 +3,8 @@
 #' Creates and starts a Shiny App exposing basic 'castarter' functions based on the given dataset
 #'
 #' @param dataset A 'castarter' dataset.
+#' @param terms String to be shown by default in the newly created app. If a vector of multiple strings is given, they are all included separated by a comma.
+#' @param customTitle Cutstom title to be given to shiny app.
 #' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.
 #' @param website Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
 #' @return Nothing, used for side effects: a shiny app is created in the Outputs folder.

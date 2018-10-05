@@ -1,6 +1,8 @@
 #' Creates the folder structure needed by 'castarter'.
 #'
 #' Creates all the standard folders required by a 'castarter' project.
+#' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.
+#' @param website Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
 #' @export
 #' @examples
 #' CreateFolders(project, website)
@@ -115,10 +117,15 @@ SaveWebsite <- function(saveEnvironment = TRUE, dataset = NULL, tidyCorpus = NUL
             message(paste("Tidy corpus saved in", file.path(baseFolder, project, website, paste0(paste(Sys.Date(), project, website, "tidyCorpus", sep = " - "), ".rds"))))
     }
     if (exportCsv == TRUE) {
-        write.csv(dataset, file.path(baseFolder, project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".csv")))
+        readr::write_csv(x = dataset,
+                         path = file.path(baseFolder,
+                                          project,
+                                          website,
+                                          "Dataset",
+                                          paste0(paste(Sys.Date(), project, website, "dataset", sep = "-"), ".csv")))
     }
     if (exportTxt == TRUE) {
         writeLines(paste(paste("Date:", dataset$date), paste("Title:", dataset$title), paste("Link:", dataset$link), paste("ID:", dataset$id), dataset$text, " ___  ______  ______  ______  ______  ______  ______  ______  ______  ___\n  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__\n (______)(______)(______)(______)(______)(______)(______)(______)(______)\n", sep = "\n"), file.path(baseFolder, project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".txt")))
-        message(paste("Full dataset in txt format saved in", file.path(baseFolder, project, website, paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".txt"))))
+        message(paste("Full dataset in txt format saved in", file.path(baseFolder, project, website, paste0(paste(Sys.Date(), project, website, "dataset", sep = "-"), ".txt"))))
     }
 }

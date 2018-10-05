@@ -37,6 +37,10 @@ devtools::install_github("giocomai/castarter")
 library("castarter")
 ```
 
+```{r eval=TRUE, include=FALSE}
+library("castarter")
+```
+
 ## Preliminary note
 
 `castarter` targets specifically relatively inexperienced users. Many of the functions it offers will look trivial to expert R users. Yet, even experienced users will benefit of some of `castarter`'s convenience functions, including its ability to download and parse pages systematically (and continue download processes if it has been interrupted).
@@ -56,7 +60,7 @@ This stores the names of project and website as options that can be retrieved by
 
 Then, it is time to create the folder structure where all outputs will be saved:
 
-```{r}
+```{r eval=FALSE}
 CreateFolders()
 ```
 
@@ -81,7 +85,7 @@ From the Kremlin's website, as in many other websites, it is easy to understand 
 ```{r}
 indexLinks <- CreateLinks(linkFirstChunk = "http://en.kremlin.ru/events/president/news/page/",
                           startPage = 1,
-                          endPage = 1060)
+                          endPage = 1100)
 head(indexLinks)
 ```
 
@@ -91,13 +95,13 @@ This command creates a vector (`indexLinks`) including direct links to the index
 
 It is now necessary to download these index pages. The following command downloads the relevant index pages and saves them in html format in the `/Presidents/Kremlin_en/IndexHtml/` folder.
 
-```{r}
+```{r eval=FALSE}
 DownloadContents(links = indexLinks, type = "index")
 ```
 
 If the process is interrupted for any reason, it is possible simply to run again the same function, which will check which files have already been downloaded, and will download the missing ones. Sometimes, due to a number of reasons, one or a few pages may not download correctly. It is usually appropriate to run the following function, which will re-download files that are too small to contain meaningful contents (if all pages have been downloaded correctly, the following will not do anything).
 
-```{r}
+```{r eval=FALSE}
 DownloadContents(links = indexLinks, type = "index", missingPages = FALSE)
 ```
 

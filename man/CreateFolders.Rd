@@ -6,6 +6,11 @@
 \usage{
 CreateFolders(project = NULL, website = NULL)
 }
+\arguments{
+\item{project}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
+
+\item{website}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
+}
 \description{
 Creates all the standard folders required by a 'castarter' project.
 }

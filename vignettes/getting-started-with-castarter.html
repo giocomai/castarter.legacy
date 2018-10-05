@@ -12,7 +12,7 @@
 
 <meta name="author" content="Giorgio Comai" />
 
-<meta name="date" content="2018-06-13" />
+<meta name="date" content="2018-10-05" />
 
 <title>Getting started with castarter</title>
 
@@ -280,7 +280,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">Getting started with <code>castarter</code></h1>
 <h4 class="author"><em>Giorgio Comai</em></h4>
-<h4 class="date"><em>2018-06-13</em></h4>
+<h4 class="date"><em>2018-10-05</em></h4>
 
 
 
@@ -332,7 +332,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <p>From the Kremlin’s website, as in many other websites, it is easy to understand the structure of the archive: it is composed by <code>http://en.kremlin.ru/events/president/news/page/</code> plus a number. By clicking on the “previous” link at the bottom of the page, as it is customary, the user is given the possibility to see older press released. In <code>castarter</code>, it is possible to get the links to all the pages we would see by clicking subsequent times on the ‘previous page’ link, with the following command function:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">indexLinks &lt;-<span class="st"> </span><span class="kw">CreateLinks</span>(<span class="dt">linkFirstChunk =</span> <span class="st">&quot;http://en.kremlin.ru/events/president/news/page/&quot;</span>,</a>
 <a class="sourceLine" id="cb5-2" data-line-number="2">                          <span class="dt">startPage =</span> <span class="dv">1</span>,</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3">                          <span class="dt">endPage =</span> <span class="dv">1060</span>)</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">                          <span class="dt">endPage =</span> <span class="dv">1100</span>)</a>
 <a class="sourceLine" id="cb5-4" data-line-number="4"><span class="kw">head</span>(indexLinks)</a>
 <a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt; [1] &quot;http://en.kremlin.ru/events/president/news/page/1&quot;</span></a>
 <a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt; [2] &quot;http://en.kremlin.ru/events/president/news/page/2&quot;</span></a>

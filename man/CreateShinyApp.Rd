@@ -10,6 +10,10 @@ CreateShinyApp(dataset, terms = "europe", customTitle = NULL,
 \arguments{
 \item{dataset}{A 'castarter' dataset.}
 
+\item{terms}{String to be shown by default in the newly created app. If a vector of multiple strings is given, they are all included separated by a comma.}
+
+\item{customTitle}{Cutstom title to be given to shiny app.}
+
 \item{project}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
 
 \item{website}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}

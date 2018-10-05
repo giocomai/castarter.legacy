@@ -16,6 +16,7 @@
 #' @param wgetSystem Logical, defaults to FALSE. Calls wget as a system command through the system() function. Wget must be previously installed on the system.
 #' @param start Integer. Only links with position higher than start in the links vector will be downloaded: links[start:length(links)]
 #' @param ignoreSSLcertificates Logical, defaults to FALSE. If TRUE it uses wget to download the page, and does not check if the SSL certificate is valid. Useful, for example, for https pages with expired or mis-configured SSL certificate.
+#' @param createScript Logical, defaults to FALSE. Tested on Linux only. If TRUE, creates a downloadPages.sh executable file that can be used to download all relevant pages from a terminal.
 #' @return By default, returns nothing, used for its side effects (downloads html files in relevant folder). Download files can then be imported in a vector with the function ImportHtml.
 #' @export
 #' @examples
@@ -121,44 +122,4 @@ DownloadContents <- function(links,
             Sys.sleep(wait)
         }
     }
-}
-
-
-#' Downloads html pages that are loaded through a web form.
-#'
-#' Downloads html pages that are loaded through a web form.
-#'
-#' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.
-#' @param website Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
-#' @return A vector of Html files. As a side effect, html files are stored in the IndexHtml folder.
-#' @export
-#' @examples
-#' DownloadContentsForm(links)
-
-DownloadContentsForm <- function(linkFirstChunk, startDate, endDate, dateSeparator = "-", dateBy = "months", start = 1, project = NULL, website = NULL) {
-    if (is.null(project) == TRUE) {
-        project <- CastarterOptions("project")
-    }
-    if (is.null(website) == TRUE) {
-        website <- CastarterOptions("website")
-    }
-    if (is.null(CastarterOptions("baseFolder"))) {
-        baseFolder <- "castarter"
-    } else {
-        baseFolder <- CastarterOptions("baseFolder")
-    }
-    listOfDates <- seq(as.Date(startDate, "%Y-%m-%d"), as.Date(endDate, "%Y-%m-%d"), by = dateBy)
-    listOfDates <- c(listOfDates, as.Date(endDate, "%Y-%m-%d"))
-    numberOfIndexPages <- length(listOfDates) - 1
-    listOfnumberOfIndexPages <- 1:numberOfIndexPages
-    indexHtmlFilenames <- file.path(baseFolder, project, website, "IndexHtml", paste0(listOfnumberOfIndexPages, ".html"))
-    indexPagesHtml <- vector()
-    for (i in start:numberOfIndexPages) {
-        indexPagesHtml[i] <- RCurl::postForm(linkFirstChunk, datefrom = listOfDates[i], dateto = listOfDates[i + 1])
-        message(paste("Downloading index page", i, "of", numberOfIndexPages))
-        write(indexPagesHtml[i], file = indexHtmlFilenames[i])
-    }
-    dateDownloadedIndex <- date()
-    file.create(file.path(baseFolder, project, website, "Logs", paste(Sys.Date(), "Index downloaded.txt", sep = " - ")))
-    indexPagesHtml
 }

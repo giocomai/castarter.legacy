@@ -13,7 +13,6 @@ LoadDatasets(projectsAndWebsites = NULL, type = "dataset",
 \item{type}{Defines the format in which the dataset will be loaded. Available options are:
 \itemize{
  \item{"dataset"}{: Outputs a 'castarter' dataset as data.frame. This is the default option.}
- \item{"corpus"}{: Outputs a corpus.}
 }}
 
 \item{removeNAdates}{Logical, defaults to TRUE. If TRUE, dataset items that do not have a date in the records are not imported.}

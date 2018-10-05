@@ -23,5 +23,5 @@ If the option removeArchivedFolders is enabled, the function actually deletes fi
 }
 
 \examples{
-ArchiveFolders(project, website, removeArchivedFolders = FALSE))
+ArchiveFolders(project, website, removeArchivedFolders = FALSE)
 }

@@ -10,13 +10,13 @@ RestoreArchives(html = FALSE, indexHtml = FALSE, txt = FALSE,
 \arguments{
 \item{html}{Logical, defaults to FALSE. If TRUE, restores previously archived html files in their standard folder.}
 
+\item{indexHtml}{Logical, defaults to FALSE. If TRUE, restores previously archived indexHtml files in their standard folder.}
+
 \item{txt}{Logical, defaults to FALSE. If TRUE, restores previously archived txt files in their standard folder.}
 
 \item{project}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
 
 \item{website}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
-
-\item{indeHtml}{Logical, defaults to FALSE. If TRUE, restores previously archived indexHtml files in their standard folder.}
 }
 \description{
 Restore Html, Txt, and IndexHtml folders previously archived with in .tar.gz files with ArchiveFolders().
@@ -27,5 +27,5 @@ If the option overwrite is enabled, the function will overwrite files in Html, I
 }
 
 \examples{
-RestoreArchives(project, website, removeArchivedFolders = FALSE))
+RestoreArchives(project, website, removeArchivedFolders = FALSE)
 }

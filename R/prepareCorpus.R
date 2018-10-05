@@ -6,7 +6,6 @@
 #' @param type Defines the format in which the dataset will be loaded. Available options are:
 ##' \itemize{
 ##'  \item{"dataset"}{: Outputs a 'castarter' dataset as data.frame. This is the default option.}
-##'  \item{"corpus"}{: Outputs a corpus.}
 ##' }
 #' @param removeNAdates Logical, defaults to TRUE. If TRUE, dataset items that do not have a date in the records are not imported.
 #' @param addProjectColumn Logical, defatults to FALSE. If TRUE, a column with the project name is appended.
@@ -15,7 +14,10 @@
 #' @examples
 #' projectsAndWebsites <- c("ProjectX/Website1", "ProjectY/Website3", "ProjectZ/Website2")
 #' allDatasets <- LoadDatasets(projectsAndWebsites)
-LoadDatasets <- function(projectsAndWebsites = NULL, type = "dataset", removeNAdates = TRUE, addProjectColumn = FALSE) {
+LoadDatasets <- function(projectsAndWebsites = NULL,
+                         type = "dataset",
+                         removeNAdates = TRUE,
+                         addProjectColumn = FALSE) {
     if (is.null(projectsAndWebsites) == TRUE) {
         project <- CastarterOptions("project")
         website <- CastarterOptions("website")
@@ -36,8 +38,6 @@ LoadDatasets <- function(projectsAndWebsites = NULL, type = "dataset", removeNAd
             datasetFilename <- sort(list.files(file.path(baseFolder, project, website, "Dataset"))[stringr::str_extract(list.files(file.path(baseFolder, project, website, "Dataset")), "dataset.rds") == "dataset.rds"], decreasing = TRUE)[1]
         } else if (type == "datasetRdata") {
             datasetFilename <- sort(list.files(file.path(baseFolder, project, website, "Dataset"))[stringr::str_extract(list.files(file.path(baseFolder, project, website, "Dataset")), "dataset.RData") == "dataset.RData"], decreasing = TRUE)[1]
-        } else if (type == "corpusDtmQ") {
-            datasetFilename <- sort(list.files(file.path(baseFolder, project, website, "Dataset"))[stringr::str_extract(list.files(file.path(baseFolder, project, website, "Dataset")), "corpusDtmQ.RData") == "corpusDtmQ.RData"], decreasing = TRUE)[1]
         } else {
             stop("Type can be 'dataset', 'corpusQ', 'corpusTM, or 'corpusDtmQ'")
         }
@@ -71,21 +71,8 @@ LoadDatasets <- function(projectsAndWebsites = NULL, type = "dataset", removeNAd
         if (removeNAdates == TRUE) {
             allDatasets <- allDatasets[is.na(allDatasets$date) == FALSE, ]
         }
-    } else if (type == "corpusDtmQ") {
-        load(lastSavedDatasets[i])
     }
-    if (type == "corpusQ") {
-        if (length(lastSavedDatasets)==1) {
-            return(corpusTemp)
-        } else {
-            return(corpusAll)
-        }
-    } else if (type == "dataset") {
-        return(dplyr::as_data_frame(allDatasets))
-    } else if (type == "corpusDtmQ") {
-        load(lastSavedDatasets)
-        return(corpusDtm)
-    }
+    return(dplyr::as_data_frame(allDatasets))
 }
 
 

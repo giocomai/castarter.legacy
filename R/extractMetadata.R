@@ -211,12 +211,23 @@ ExtractId <- function(sample = NULL, htmlLocation = NULL, project = NULL, websit
 #'
 #' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.
 #' @param website Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
+#' @param exportCsvIf equal to TRUE, exports the complete dataset in the .xlsx file format in the Dataset sub-folder.
 #' @param exportXlsx If equal to TRUE, exports the complete dataset in the .xlsx file format in the Dataset sub-folder.
 #' @return A vector of the data.frame class.
 #' @export
 #' @examples
-#' metadata <- ExportMetadata(project, website, dates, id, titles, language, links)
-ExportMetadata <- function(dates, id, titles, language, links, exportXlsx = FALSE, accordingToDate = FALSE, ignoreNAdates = FALSE, project = NULL, website = NULL) {
+#' metadata <- ExportMetadata(dates, id, titles, language, links)
+ExportMetadata <- function(dates,
+                           id,
+                           titles,
+                           language,
+                           links,
+                           exportCsv = FALSE,
+                           exportXlsx = FALSE,
+                           accordingToDate = FALSE,
+                           ignoreNAdates = FALSE,
+                           project = NULL,
+                           website = NULL) {
     if (is.null(project) == TRUE) {
         project <- CastarterOptions("project")
     }
@@ -235,15 +246,28 @@ ExportMetadata <- function(dates, id, titles, language, links, exportXlsx = FALS
     if (is.null(ignoreVector) == FALSE) {
         links <- links[ignoreVector]
     }
-    metadata <- tibble::data_frame(doc_id = paste(website, id, sep = "-"), website = website, id = id, date = dates, title = titles, language = language, link = links)
+    metadata <- tibble::data_frame(doc_id = paste(website, id, sep = "-"),
+                                   website = website,
+                                   id = id,
+                                   date = dates,
+                                   title = titles,
+                                   language = language,
+                                   link = links)
     if (accordingToDate == TRUE) {
         metadata <- metadata[order(metadata$date), ]
     }
-    write.csv(metadata, file = file.path(baseFolder, project, website, "Dataset", paste(Sys.Date(), website, "metadata.csv", sep = " - ")), row.names = FALSE)
-    if (exportXlsx == TRUE) {
-        xlsx::write.xlsx(metadata, file = file.path(baseFolder, project, website, "Dataset", paste(Sys.Date(), website, "metadata.xlsx", sep = " - ")), row.names = FALSE)
+    if (exportCsv == TRUE) {
+        readr::write_csv(x = metadata,
+                         path = file.path(baseFolder, project, website, "Dataset", paste(Sys.Date(), website, "metadata.csv", sep = "-")))
     }
-    metadata
+    if (exportXlsx == TRUE) {
+        openxlsx::write.xlsx(x = metadata,
+                             file = file.path(
+                                 baseFolder, project, website,
+                                 "Dataset",
+                                 paste(Sys.Date(), website, "metadata.xlsx", sep = "-")))
+    }
+    return(metadata)
 }
 
 #' Exports dataset
