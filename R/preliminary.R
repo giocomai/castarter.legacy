@@ -78,15 +78,23 @@ LoadLatest <- function(project = NULL, website = NULL) {
 #' It saves the working environment in the website folder, the dataset as an .Rdata file in the dataset subfolder, and, if exportXlsx = TRUE (by default), exports it as an .xlsx file in the Dataset sub-folder.
 #' It assumes that previous operations have been completed, and both a 'metadata' and a 'contents' object exist. If they don't, it just prints this to the console.
 #' @param saveEnvironment Logical, defaults to TRUE. If TRUE, saves environment as .Rdata in the correspodning website folder.
+#' @param dataset Defaults to NULL. If TRUE, it seeks for a `metadata` and a `text` object in the current environment. If a `castarter` dataset is provided, this is then stored as the dataset.
+#' @param exportCsv Logical, defaults to FALSE. If TRUE, exports the complete dataset in the .csv file format in the Dataset sub-folder.
+#' @param exportXlsx If equal to TRUE, exports the complete dataset in the .xlsx file format in the Dataset sub-folder.
 #' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.
 #' @param website Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
-#' @param dataset A 'castarter' dataset. Required to export dataset in its dedicated folder if no metadata and contents are found in the environment, e.g. because dataset has been created through CreateDatasetFromHtml() function.
-#' @param exportCsv Logical, defaults to FALSE. If TRUE, exports the complete dataset in the .csv file format in the Dataset sub-folder.
-#' @return Nothing. Used for its side effects (save current workspace and dataset in relevant folders).
+#' @return A castarter dataset. It can however been used only for its side effects (save current workspace and dataset in relevant folders).
 #' @export
 #' @examples
 #' SaveWebsite(project, website)
-SaveWebsite <- function(saveEnvironment = TRUE, dataset = NULL, tidyCorpus = NULL, project = NULL, website = NULL, exportCsv = FALSE, exportTxt = FALSE, exportXlsx = FALSE) {
+SaveWebsite <- function(saveEnvironment = TRUE,
+                        dataset = NULL,
+                        tidyCorpus = NULL,
+                        exportCsv = FALSE,
+                        exportTxt = FALSE,
+                        exportXlsx = FALSE,
+                        project = NULL,
+                        website = NULL) {
     if (is.null(project) == TRUE) {
         project <- CastarterOptions("project")
     }
@@ -107,13 +115,16 @@ SaveWebsite <- function(saveEnvironment = TRUE, dataset = NULL, tidyCorpus = NUL
             saveRDS(object = dataset, file = file.path(baseFolder, project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = "-"), ".rds")))
             message(paste("Dataset saved in", file.path(baseFolder, project, website, paste0(paste(Sys.Date(), project, website, "dataset", sep = "-"), ".rds"))))
         } else if (dataset == TRUE) {
-            dataset <- dplyr::bind_cols(tibble::data_frame(doc_id = metadata$doc_id, text = text), metadata %>% dplyr::select(-doc_id))
+            dataset <- dplyr::bind_cols(tibble::data_frame(doc_id = metadata$doc_id, text = text),
+                                        metadata %>%
+                                            dplyr::select(-doc_id))
             saveRDS(object = dataset, file = file.path(baseFolder, project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = "-"), ".rds")))
             message(paste("Dataset saved in", file.path(baseFolder, project, website, paste0(paste(Sys.Date(), project, website, "dataset", sep = "-"), ".rds"))))
             }
     }
     if (is.null(tidyCorpus)==FALSE) {
-            saveRDS(object = tidyCorpus, file = file.path(baseFolder, project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "tidyCorpus", sep = " - "), ".rds")))
+            saveRDS(object = tidyCorpus,
+                    file = file.path(baseFolder, project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "tidyCorpus", sep = "-"), ".rds")))
             message(paste("Tidy corpus saved in", file.path(baseFolder, project, website, paste0(paste(Sys.Date(), project, website, "tidyCorpus", sep = " - "), ".rds"))))
     }
     if (exportCsv == TRUE) {
@@ -128,4 +139,5 @@ SaveWebsite <- function(saveEnvironment = TRUE, dataset = NULL, tidyCorpus = NUL
         writeLines(paste(paste("Date:", dataset$date), paste("Title:", dataset$title), paste("Link:", dataset$link), paste("ID:", dataset$id), dataset$text, " ___  ______  ______  ______  ______  ______  ______  ______  ______  ___\n  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__  __)(__\n (______)(______)(______)(______)(______)(______)(______)(______)(______)\n", sep = "\n"), file.path(baseFolder, project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".txt")))
         message(paste("Full dataset in txt format saved in", file.path(baseFolder, project, website, paste0(paste(Sys.Date(), project, website, "dataset", sep = "-"), ".txt"))))
     }
+    invisible(dataset)
 }

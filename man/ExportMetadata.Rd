@@ -21,7 +21,7 @@ ExportMetadata(id, dates, titles, language, links, exportCsv = FALSE,
 
 \item{exportCsv}{If equal to TRUE, exports the complete dataset in the .xlsx file format in the Dataset sub-folder.}
 
-\item{exportXlsx}{If equal to TRUE, exports the complete dataset in the .xlsx file format in the Dataset sub-folder.}
+\item{exportXlsx}{If equal to TRUE, exports the metadata in the .xlsx file format in the Dataset sub-folder.}
 
 \item{project}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
 

@@ -5,22 +5,24 @@
 \title{Saves working environment and dataset.}
 \usage{
 SaveWebsite(saveEnvironment = TRUE, dataset = NULL,
-  tidyCorpus = NULL, project = NULL, website = NULL,
-  exportCsv = FALSE, exportTxt = FALSE, exportXlsx = FALSE)
+  tidyCorpus = NULL, exportCsv = FALSE, exportTxt = FALSE,
+  exportXlsx = FALSE, project = NULL, website = NULL)
 }
 \arguments{
 \item{saveEnvironment}{Logical, defaults to TRUE. If TRUE, saves environment as .Rdata in the correspodning website folder.}
 
-\item{dataset}{A 'castarter' dataset. Required to export dataset in its dedicated folder if no metadata and contents are found in the environment, e.g. because dataset has been created through CreateDatasetFromHtml() function.}
+\item{dataset}{Defaults to NULL. If TRUE, it seeks for a `metadata` and a `text` object in the current environment. If a `castarter` dataset is provided, this is then stored as the dataset.}
+
+\item{exportCsv}{Logical, defaults to FALSE. If TRUE, exports the complete dataset in the .csv file format in the Dataset sub-folder.}
+
+\item{exportXlsx}{If equal to TRUE, exports the complete dataset in the .xlsx file format in the Dataset sub-folder.}
 
 \item{project}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
 
 \item{website}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
-
-\item{exportCsv}{Logical, defaults to FALSE. If TRUE, exports the complete dataset in the .csv file format in the Dataset sub-folder.}
 }
 \value{
-Nothing. Used for its side effects (save current workspace and dataset in relevant folders).
+A castarter dataset. It can however been used only for its side effects (save current workspace and dataset in relevant folders).
 }
 \description{
 It saves the working environment in the website folder, the dataset as an .Rdata file in the dataset subfolder, and, if exportXlsx = TRUE (by default), exports it as an .xlsx file in the Dataset sub-folder.

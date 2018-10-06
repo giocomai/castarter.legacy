@@ -215,7 +215,7 @@ ExtractId <- function(sample = NULL, htmlLocation = NULL, project = NULL, websit
 #' @param language A chacter vector, usually of length 1 (e.g. \"english"). It can be of the same length of other vectors when multiple languages are included.
 #' @param links A chacter vector, usually created with `ExtractLinks()`. Only links matching the given `id` are included in the metadata.
 #' @param exportCsv If equal to TRUE, exports the complete dataset in the .xlsx file format in the Dataset sub-folder.
-#' @param exportXlsx If equal to TRUE, exports the complete dataset in the .xlsx file format in the Dataset sub-folder.
+#' @param exportXlsx If equal to TRUE, exports the metadata in the .xlsx file format in the Dataset sub-folder.
 #' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.
 #' @param website Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
 #' @return A vector of the data.frame class.
@@ -326,66 +326,21 @@ ExportDataset <- function(dataset = NULL, text = NULL, metadata = NULL, exportRd
         print(paste("Dataset saved as .csv file in", file.path(baseFolder, project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".csv"))))
     }
     if (exportXlsx == TRUE) {
+        if (!requireNamespace("openxlsx", quietly = TRUE)) {
+            stop("Package \"openxlsx\" needed for exporting to xlsx format. You can install it with `install.packages(\"openxlsx\")`.",
+                 call. = FALSE)
+        } else {
+            openxlsx::write.xlsx(x = metadata,
+                                 file = file.path(baseFolder, project, website,
+                                                  "Dataset",
+                                                  paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".xlsx")))
+            message(paste("Dataset saved as .xlsx file in",
+                          file.path(baseFolder, project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".xlsx"))))
+        }
+    }
+    if (exportXlsx == TRUE) {
         xlsx::write.xlsx(dataset, file.path(baseFolder, project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".xlsx")))
-        print(paste("Dataset saved as .xlsx file in", file.path(baseFolder, project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = " - "), ".xlsx"))))
+
     }
     invisible(dataset)
-}
-
-#' Extracts string included in an html element
-#'
-#' Extracts string included in an html element
-#'
-#' @param articlesHtml A character vector of html files.
-#' @return A character vector with the contents of the given div or custom Xpath.
-#' @export
-#' @examples
-#' string <- ExtractXpath(articlesHtml, divClass = "nameOfDiv")
-ExtractXpath <- function(articlesHtml, divClass = NULL, spanClass = NULL, customXpath = NULL) {
-    txt <- rep(NA, length(articlesHtml))
-    pb <- txtProgressBar(min = 0, max = length(articlesHtml), style = 3)
-    if (base::is.null(divClass) == FALSE) {
-        for (i in seq_along(articlesHtml)) {
-            if (articlesHtml[i] != "") {
-                articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T)
-                if (length(XML::xpathSApply(articleHtmlParsed, paste0("//div[@class='", divClass, "']"), XML::xmlValue)) == 0) {
-                    txt[i] <- NA
-                    print(paste("String in article with ID", i, "could not be extracted."))
-                } else {
-                    txt[i] <- XML::xpathSApply(articleHtmlParsed, paste0("//div[@class='", divClass, "']"), XML::xmlValue)
-                }
-            }
-            setTxtProgressBar(pb, i)
-        }
-    }
-    if (base::is.null(spanClass)==FALSE) {
-        for (i in seq_along(articlesHtml)) {
-            articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T)
-            tempStringXml <- XML::xpathSApply(articleHtmlParsed, paste0("//span[@class='", spanClass, "']"), XML::xmlValue)
-            if (length(tempStringXml) == 0) {
-                txt[i] <- NA
-                print(paste("String in article with ID", i, "could not be extracted."))
-            } else {
-                txt[i] <- tempStringXml
-            }
-            setTxtProgressBar(pb, i)
-        }
-    }
-    if (base::is.null(customXpath) == FALSE) {
-        for (i in seq_along(articlesHtml)) {
-            if (articlesHtml[i] != "") {
-                articleHtmlParsed <- XML::htmlTreeParse(articlesHtml[i], useInternalNodes = T)
-                tempStringXml <- XML::xpathSApply(articleHtmlParsed, customXpath, XML::xmlValue)
-                if (length(tempStringXml) == 0) {
-                    txt[i] <- NA
-                    print(paste("String in article with ID", i, "could not be extracted."))
-                } else {
-                    txt[i] <- tempStringXml
-                }
-            }
-            setTxtProgressBar(pb, i)
-        }
-    }
-    close(pb)
-    return(txt)
 }
