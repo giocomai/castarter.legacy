@@ -5,14 +5,15 @@
 \title{Extracts dates from a vector of html files}
 \usage{
 ExtractDates(dateFormat = "dmY", container = NULL,
-  containerClass = NULL, containerId = NULL, htmlLocation = NULL,
-  inputVector = NULL, id = NULL, customXpath = NULL,
-  customRegex = NULL, attribute = NULL,
-  language = Sys.getlocale(category = "LC_TIME"), customString = "",
-  minDate = NULL, maxDate = NULL, encoding = "UTF-8",
-  keepAllString = FALSE, removeEverythingBefore = NULL,
-  progressBar = TRUE, exportParameters = TRUE,
-  importParameters = NULL, project = NULL, website = NULL)
+  containerClass = NULL, containerId = NULL,
+  containerInstance = NULL, htmlLocation = NULL, inputVector = NULL,
+  id = NULL, customXpath = NULL, customRegex = NULL,
+  attribute = NULL, language = Sys.getlocale(category = "LC_TIME"),
+  customString = "", minDate = NULL, maxDate = NULL,
+  encoding = "UTF-8", keepAllString = FALSE,
+  removeEverythingBefore = NULL, progressBar = TRUE,
+  exportParameters = TRUE, importParameters = NULL, project = NULL,
+  website = NULL)
 }
 \arguments{
 \item{dateFormat}{A string expressing the date format. In line with standards (see ?strptime), 'd' stands for day, 'm' stands for month in figures, 'b' for months spelled out as words, 'y' as year without the century, 'Y' as year with four digits. Standard separation marks among parts of the date (e.g. '-', '/', '.') should not be included. The following date formats are available :
@@ -26,6 +27,8 @@ ExtractDates(dateFormat = "dmY", container = NULL,
  \item{"Bd,Y"}{: }
  \item{"xdBY"}{: customString must be provided.}
 }}
+
+\item{containerInstance}{Defaults to NULL. If given, it must be an integer. If a given element is found more than once in the same page, it keeps only the relevant occurrence for further extraction.}
 
 \item{inputVector}{Defaults to NULL. If provided, instead of looking for downloaded Html files it parses the given character vector.}
 

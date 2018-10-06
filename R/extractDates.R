@@ -2,6 +2,7 @@
 #'
 #' Extracts dates from a vector of html files.
 #'
+#' @param containerInstance Defaults to NULL. If given, it must be an integer. If a given element is found more than once in the same page, it keeps only the relevant occurrence for further extraction.
 #' @param inputVector Defaults to NULL. If provided, instead of looking for downloaded Html files it parses the given character vector.
 #' @param id Defaults to NULL. If provided, it should be a vector of integers. Only html files corresponding to given id in the relevant htmlLocation will be processed.
 #' @param dateFormat A string expressing the date format. In line with standards (see ?strptime), 'd' stands for day, 'm' stands for month in figures, 'b' for months spelled out as words, 'y' as year without the century, 'Y' as year with four digits. Standard separation marks among parts of the date (e.g. '-', '/', '.') should not be included. The following date formats are available :
@@ -34,6 +35,7 @@ ExtractDates <- function(dateFormat = "dmY",
                          container = NULL,
                          containerClass = NULL,
                          containerId = NULL,
+                         containerInstance = NULL,
                          htmlLocation = NULL,
                          inputVector = NULL,
                          id = NULL,
@@ -171,8 +173,15 @@ ExtractDates <- function(dateFormat = "dmY",
                 temp <- stringr::str_replace(string = temp, pattern = stringr::regex(paste0(".*", removeEverythingBefore)), replacement = "")
             }
             if (length(temp)>1) {
-                datesTxt[i] <- temp[1]
-                warning(paste0("ID", stringr::str_extract(string = HtmlFiles[i], pattern = "[[:digit:]]+[[:punct:]]html") %>% stringr::str_sub(start = 1L, end = -6L), ": Found more than one string per page, keeping only first occurrence."))
+
+                if (is.null(containerInstance)==FALSE) {
+                    datesTxt[i] <- temp[containerInstance]
+                } else {
+                    datesTxt[i] <- temp[1]
+                    warning(paste0("ID",
+                                   stringr::str_extract(string = HtmlFiles[i], pattern = "[[:digit:]]+[[:punct:]]html") %>%
+                                       stringr::str_sub(start = 1L, end = -6L), ": Found more than one string per page, keeping only first occurrence. You can specify which occurrence to keep with the param `containerInstance`.\n"))
+                }
             } else if (length(temp)==0) {
                 datesTxt[i] <- NA
             } else {
