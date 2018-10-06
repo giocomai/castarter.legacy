@@ -252,7 +252,7 @@ ExportMetadata <- function(dates,
                                    date = dates,
                                    title = titles,
                                    language = language,
-                                   link = links)
+                                   link = links[id])
     if (accordingToDate == TRUE) {
         metadata <- metadata[order(metadata$date), ]
     }
