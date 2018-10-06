@@ -11,7 +11,9 @@
 #' @return A character vector of html file, or a data frame if includePath is set to TRUE.
 #' @export
 #' @examples
+#' \dontrun{
 #' articlesHtml <- ImportHtml(from = articles, project, website)
+#' }
 ImportHtml <- function(from = "articles", sample = NULL, project = NULL, website = NULL, pathToHtmlFolder = "", sort = TRUE, recursive = FALSE, includePath = FALSE) {
     if (is.null(project) == TRUE) {
         project <- CastarterOptions("project")

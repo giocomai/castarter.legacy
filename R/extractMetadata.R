@@ -21,7 +21,9 @@
 #' @return A character vector of article titles.
 #' @export
 #' @examples
-#' titles <- ExtractTitles(articlesHtml)
+#' \dontrun{
+#' titles <- ExtractTitles()
+#' }
 ExtractTitles <- function(container = "title",
                           containerClass = NULL,
                           containerId = NULL,
@@ -180,7 +182,9 @@ ExtractTitles <- function(container = "title",
 #' @return A vector of the integer class.
 #' @export
 #' @examples
+#' \dontrun{
 #' id <- ExtractId(project, website)
+#' }
 ExtractId <- function(sample = NULL, htmlLocation = NULL, project = NULL, website = NULL) {
     if (is.null(project) == TRUE) {
         project <- CastarterOptions("project")
@@ -221,7 +225,9 @@ ExtractId <- function(sample = NULL, htmlLocation = NULL, project = NULL, websit
 #' @return A vector of the data.frame class.
 #' @export
 #' @examples
+#' \dontrun{
 #' metadata <- ExportMetadata(id, dates, titles, language, links)
+#' }
 ExportMetadata <- function(id,
                            dates,
                            titles,
@@ -297,7 +303,9 @@ ExportMetadata <- function(id,
 #' @return A data.frame, a 'castarter' dataset.
 #' @export
 #' @examples
+#' \dontrun{
 #' dataset <- ExportDataset(text, metadata, project, website)
+#' }
 ExportDataset <- function(dataset = NULL, text = NULL, metadata = NULL, exportRds = FALSE, exportRdata = FALSE, exportCsv = FALSE, exportXlsx = FALSE, project = NULL, website = NULL) {
     if (is.null(project) == TRUE) {
         project <- CastarterOptions("project")

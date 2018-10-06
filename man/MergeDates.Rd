@@ -23,5 +23,7 @@ A vector of the POSIXct class.
 Merge alternative sets of dates for a given dataset.
 }
 \examples{
+\dontrun{
 dates <- MergeDates(dates1, dates2)
+}
 }

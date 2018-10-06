@@ -34,5 +34,7 @@ A vector of the data.frame class.
 Exports metadata to a vector, csv or xlsx file.
 }
 \examples{
+\dontrun{
 metadata <- ExportMetadata(id, dates, titles, language, links)
+}
 }

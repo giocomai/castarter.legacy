@@ -34,5 +34,7 @@ A ggplot2 time series showing number of articles published each day.
 Creates a time series graph showing the distribution of documents by date.
 }
 \examples{
+\dontrun{
 ShowDistribution(dataset)
+}
 }

@@ -40,5 +40,7 @@ A character vector of links to index pages.
 Generates links to index pages listing individual articles.
 }
 \examples{
+\dontrun{
 indexLinks <- CreateLinks("http://www.example.com/news/")
+}
 }

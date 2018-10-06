@@ -15,5 +15,7 @@ CreateFolders(project = NULL, website = NULL)
 Creates all the standard folders required by a 'castarter' project.
 }
 \examples{
+\dontrun{
 CreateFolders(project, website)
+}
 }

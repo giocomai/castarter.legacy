@@ -48,5 +48,7 @@ By default, returns nothing, used for its side effects (downloads html files in 
 Downloads html pages based on a vector of links.
 }
 \examples{
+\dontrun{
 DownloadContents(links)
+}
 }

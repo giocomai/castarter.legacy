@@ -30,5 +30,7 @@ ExportArticlesWith(dataset, term, includeNaDates = TRUE,
 Exports all articles that contain a given term.
 }
 \examples{
+\dontrun{
 ExportArticlesWith(dataset, "example")
+}
 }

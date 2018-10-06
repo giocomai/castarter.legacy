@@ -12,8 +12,10 @@
 #' @return A data frame including all loaded datasets.
 #' @export
 #' @examples
+#' \dontrun{
 #' projectsAndWebsites <- c("ProjectX/Website1", "ProjectY/Website3", "ProjectZ/Website2")
 #' allDatasets <- LoadDatasets(projectsAndWebsites)
+#' }
 LoadDatasets <- function(projectsAndWebsites = NULL,
                          type = "dataset",
                          removeNAdates = TRUE,
@@ -84,7 +86,9 @@ LoadDatasets <- function(projectsAndWebsites = NULL,
 #' @return A data frame including all datasets of a project.
 #' @export
 #' @examples
+#' \dontrun{
 #' allDatasets <- LoadAllDatasets(project)
+#' }
 
 LoadAllDatasets <- function(project, removeNAdates = TRUE) {
     listOfWebsites <- gsub(paste0(project, "/"), "", list.dirs(file.path(baseFolder, project), recursive = FALSE), fixed = TRUE)

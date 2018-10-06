@@ -5,7 +5,9 @@
 #' @param website Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
 #' @export
 #' @examples
+#' \dontrun{
 #' CreateFolders(project, website)
+#' }
 CreateFolders <- function(project = NULL, website = NULL) {
     if (is.null(project) == TRUE) {
         project <- CastarterOptions("project")
@@ -57,7 +59,9 @@ CreateFolders <- function(project = NULL, website = NULL) {
 #' @param website Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
 #' @export
 #' @examples
+#' \dontrun{
 #' load(LoadLatest(project, website))
+#' }
 LoadLatest <- function(project = NULL, website = NULL) {
     if (is.null(project) == TRUE) {
         project <- CastarterOptions("project")
@@ -86,7 +90,9 @@ LoadLatest <- function(project = NULL, website = NULL) {
 #' @return A castarter dataset. It can however been used only for its side effects (save current workspace and dataset in relevant folders).
 #' @export
 #' @examples
+#' \dontrun{
 #' SaveWebsite(project, website)
+#' }
 SaveWebsite <- function(saveEnvironment = TRUE,
                         dataset = NULL,
                         tidyCorpus = NULL,

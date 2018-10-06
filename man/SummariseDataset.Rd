@@ -16,5 +16,7 @@ A data.frame with summary statistics.
 Summarise key data about a dataset in a data.frame
 }
 \examples{
+\dontrun{
 SummariseDataset(dataset)
+}
 }

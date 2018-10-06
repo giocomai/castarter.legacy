@@ -26,6 +26,8 @@ A data frame including all loaded datasets.
 Takes a specific set of datasets from existings 'castarter' projects.
 }
 \examples{
+\dontrun{
 projectsAndWebsites <- c("ProjectX/Website1", "ProjectY/Website3", "ProjectZ/Website2")
 allDatasets <- LoadDatasets(projectsAndWebsites)
+}
 }

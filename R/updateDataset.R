@@ -12,7 +12,9 @@
 #' @return A castarter dataset.
 #' @export
 #' @examples
+#' \dontrun{
 #' dataset <- UpdateDataset()
+#' }
 UpdateDataset <- function(dataset = NULL,
                           links = NULL,
                           maxNumberOfIndexPages = 1000,

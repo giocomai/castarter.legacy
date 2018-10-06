@@ -30,7 +30,9 @@
 #' @return A vector of the Date class.
 #' @export
 #' @examples
-#' dates <- ExtractDates(articlesHtml)
+#' \dontrun{
+#' dates <- ExtractDates()
+#' }
 ExtractDates <- function(dateFormat = "dmY",
                          container = NULL,
                          containerClass = NULL,
@@ -331,7 +333,9 @@ ExtractDates <- function(dateFormat = "dmY",
 #' @return A vector of the POSIXct class.
 #' @export
 #' @examples
+#' \dontrun{
 #' dates <- MergeDates(dates1, dates2)
+#' }
 MergeDates <- function(dates1, dates2, dates3 = NULL, minDate = NULL, maxDate = NULL, fillMissingDates = FALSE, maxgap = 5) {
     dates <- dates1
     for (i in 1:length(dates)) {

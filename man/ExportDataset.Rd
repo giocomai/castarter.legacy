@@ -32,5 +32,7 @@ A data.frame, a 'castarter' dataset.
 Exports dataset to a data.frame, with options to save it as an R object, and export it as a .csv or .xlsx file.
 }
 \examples{
+\dontrun{
 dataset <- ExportDataset(text, metadata, project, website)
+}
 }

@@ -28,5 +28,7 @@ A character vector of html file, or a data frame if includePath is set to TRUE.
 Imports html files already downloaded into a character vector.
 }
 \examples{
+\dontrun{
 articlesHtml <- ImportHtml(from = articles, project, website)
+}
 }

@@ -34,5 +34,7 @@ A ggplot2 barchart showing shares of articles including reference to a specific 
 Shows share of articles including reference to a specific terms.Ignores article that don't have a date in the metadata (date=NA).
 }
 \examples{
-ShowShare(dataset, breaks = "months", project, website)
+\dontrun{
+ShowShare(dataset, breaks = "months")
+}
 }

@@ -63,5 +63,7 @@ A vector of the Date class.
 Extracts dates from a vector of html files.
 }
 \examples{
-dates <- ExtractDates(articlesHtml)
+\dontrun{
+dates <- ExtractDates()
+}
 }

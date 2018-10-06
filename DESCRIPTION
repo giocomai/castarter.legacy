@@ -1,7 +1,7 @@
 Package: castarter
 Type: Package
 Title: Content analysis starter toolkit for R
-Version: 0.2.6.00002
+Version: 0.2.6.00003
 Date: 2018-10-06
 Authors@R: person("Giorgio", "Comai", email = "g@giorgiocomai.eu",
                   role = c("aut", "cre"))

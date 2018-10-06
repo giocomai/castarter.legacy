@@ -43,5 +43,7 @@ ShowAbsoluteTS(terms, dataset, type = "graph", specificWebsites = NULL,
 It creates time series with the absolute frequency of one or more terms, in one or more websites.
 }
 \examples{
+\dontrun{
 ShowAbsoluteTS(terms = c("word1", "word2"), dataset)
+}
 }

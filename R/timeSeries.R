@@ -17,7 +17,9 @@
 #' @param export Logical, defaults to FALSE. If TRUE, saves the time series in both png and pdf format. If project and website are provided, in saves the timeseries in the "Outputs" subfolder.
 #' @export
 #' @examples
+#' \dontrun{
 #' ShowAbsoluteTS(terms = c("word1", "word2"), dataset)
+#' }
 
 ShowAbsoluteTS <- function(terms,
                            dataset,
@@ -162,7 +164,9 @@ ShowAbsoluteTS <- function(terms,
 #' @param export Logical, defaults to FALSE. If TRUE, saves the time series in both png and pdf format. If project and website are provided, in saves the timeseries in the "Outputs" subfolder.
 #' @export
 #' @examples
+#' \dontrun{
 #' ShowRelativeTS(terms = c("word1", "word2"), dataset)
+#' }
 
 ShowRelativeTS <- function(terms,
                            dataset,
@@ -315,9 +319,19 @@ ShowRelativeTS <- function(terms,
 #' @return A ggplot2 time series showing number of articles published each day.
 #' @export
 #' @examples
+#' \dontrun{
 #' ShowDistribution(dataset)
+#' }
 
-ShowDistribution <- function(dataset, specificWebsites = NULL, rollingAverage = 31, align = "center", customTitle = NULL, method = "numberOfArticles", export = FALSE, project = NULL, website = NULL) {
+ShowDistribution <- function(dataset,
+                             specificWebsites = NULL,
+                             rollingAverage = 31,
+                             align = "center",
+                             customTitle = NULL,
+                             method = "numberOfArticles",
+                             export = FALSE,
+                             project = NULL,
+                             website = NULL) {
     if (is.null(project) == TRUE) {
         project <- CastarterOptions("project")
     }

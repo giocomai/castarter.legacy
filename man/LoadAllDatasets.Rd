@@ -16,5 +16,7 @@ A data frame including all datasets of a project.
 Takes all datasets from all websites in a project and outputs them in a data frame.
 }
 \examples{
+\dontrun{
 allDatasets <- LoadAllDatasets(project)
+}
 }

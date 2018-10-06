@@ -15,5 +15,7 @@ LoadLatest(project = NULL, website = NULL)
 Used in combination with load, it loads the most recent workspace saved for a given website based on the date included in the filename of the .Rdata file.
 }
 \examples{
+\dontrun{
 load(LoadLatest(project, website))
+}
 }

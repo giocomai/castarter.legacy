@@ -47,5 +47,7 @@ A character vector of article titles.
 Extracts titles of individual pages from a vector of html files or from a named vector of links.
 }
 \examples{
-titles <- ExtractTitles(articlesHtml)
+\dontrun{
+titles <- ExtractTitles()
+}
 }

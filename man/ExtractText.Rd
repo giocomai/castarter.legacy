@@ -56,5 +56,7 @@ A character vector of text, and individual articles saved as txt files in a dedi
 Extracts textual contents from a vector of html files.
 }
 \examples{
+\dontrun{
 text <- ExtractText(container = "div", containerClass = "article")
+}
 }

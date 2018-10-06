@@ -21,7 +21,9 @@
 #' @return A character vector of text, and individual articles saved as txt files in a dedicated folder if 'export' is set to TRUE.
 #' @export
 #' @examples
+#' \dontrun{
 #' text <- ExtractText(container = "div", containerClass = "article")
+#' }
 ExtractText <- function(container = NULL,
                         containerClass = NULL,
                         containerId = NULL,

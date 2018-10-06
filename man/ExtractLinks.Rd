@@ -54,5 +54,7 @@ A named character vector of links to articles. Name of the link may be the artic
 Extracts direct links to individual articles from index pages according to a selcted pattern.
 }
 \examples{
+\dontrun{
 links <- ExtractLinks(domain = "http://www.example.com/", partOfLink = "news/")
+}
 }

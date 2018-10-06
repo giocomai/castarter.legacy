@@ -8,7 +8,9 @@
 #' @section Warning:
 #' If the option removeArchivedFolders is enabled, the function actually deletes files from the hard disk. Files are removed only after they have been successfully stored in compressed .tar.gz file, but it is recommended to backup valuable data before enabling this option.
 #' @examples
+#' \dontrun{
 #' ArchiveFolders(project, website, removeArchivedFolders = FALSE)
+#' }
 ArchiveFolders <- function(project = NULL, website = NULL, removeArchivedFolders = FALSE) {
     if (is.null(project) == TRUE) {
         project <- CastarterOptions("project")
@@ -62,7 +64,9 @@ ArchiveFolders <- function(project = NULL, website = NULL, removeArchivedFolders
 #' @section Warning:
 #' If the option overwrite is enabled, the function will overwrite files in Html, IndexHtml and Txt folders.
 #' @examples
+#' \dontrun{
 #' RestoreArchives(project, website, removeArchivedFolders = FALSE)
+#' }
 RestoreArchives <- function(html = FALSE, indexHtml = FALSE, txt = FALSE, overwrite = FALSE, project = NULL, website = NULL) {
     if (is.null(project) == TRUE) {
         project <- CastarterOptions("project")

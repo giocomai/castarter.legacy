@@ -14,7 +14,9 @@
 #' @return A ggplot2 barchart showing shares of articles including reference to a specific terms.
 #' @export
 #' @examples
-#' ShowShare(dataset, breaks = "months", project, website)
+#' \dontrun{
+#' ShowShare(dataset, breaks = "months")
+#' }
 
 ShowShare <- function(dataset,
                       terms,

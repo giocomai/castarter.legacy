@@ -6,7 +6,9 @@
 #' @return A dataset in the 'castarter' format.
 #' @export
 #' @examples
+#' \dontrun{
 #' SubsetDataset(dataset, terms)
+#' }
 
 SubsetDataset <- function(dataset, terms = NULL, startDate = NULL, endDate = NULL, sample = NULL) {
     if (is.null(terms) == FALSE) {

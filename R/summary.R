@@ -6,7 +6,9 @@
 #' @return A data.frame with summary statistics.
 #' @export
 #' @examples
+#' \dontrun{
 #' SummariseDataset(dataset)
+#' }
 
 SummariseDataset <- function(dataset) {
     websites <- levels(as.factor(dataset$website))

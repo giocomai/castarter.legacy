@@ -10,7 +10,9 @@
 #' @param website Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.Defaults to NULL. If no website is provided, exported files are saved in the project/Outputs folder.
 #' @export
 #' @examples
+#' \dontrun{
 #' ExportArticlesWith(dataset, "example")
+#' }
 
 ExportArticlesWith <- function(dataset, term, includeNaDates = TRUE, onlyNaDates = FALSE, txt = TRUE, csv = FALSE, xlsx = FALSE, data.frame = FALSE, includeOnly = NULL, sortBy = "date", project = NULL, website = NULL) {
     if (is.null(project) == TRUE) {

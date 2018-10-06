@@ -16,7 +16,9 @@
 #' @return A character vector of links to index pages.
 #' @export
 #' @examples
+#' \dontrun{
 #' indexLinks <- CreateLinks("http://www.example.com/news/")
+#' }
 CreateLinks <- function(linkFirstChunk,
                         linkSecondChunk = NULL,
                         startPage = 1,

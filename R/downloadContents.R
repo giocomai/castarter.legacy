@@ -20,7 +20,9 @@
 #' @return By default, returns nothing, used for its side effects (downloads html files in relevant folder). Download files can then be imported in a vector with the function ImportHtml.
 #' @export
 #' @examples
+#' \dontrun{
 #' DownloadContents(links)
+#' }
 
 DownloadContents <- function(links,
                              type = "articles",

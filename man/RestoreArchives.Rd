@@ -27,5 +27,7 @@ If the option overwrite is enabled, the function will overwrite files in Html, I
 }
 
 \examples{
+\dontrun{
 RestoreArchives(project, website, removeArchivedFolders = FALSE)
+}
 }

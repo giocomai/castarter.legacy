@@ -21,5 +21,7 @@ A dataset in the 'castarter' format.
 Subsets a 'castarter' dataset
 }
 \examples{
+\dontrun{
 SubsetDataset(dataset, terms)
+}
 }

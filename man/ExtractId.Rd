@@ -23,5 +23,7 @@ A vector of the integer class.
 Extracts id from filename
 }
 \examples{
+\dontrun{
 id <- ExtractId(project, website)
+}
 }

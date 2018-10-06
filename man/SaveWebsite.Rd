@@ -29,5 +29,7 @@ It saves the working environment in the website folder, the dataset as an .Rdata
 It assumes that previous operations have been completed, and both a 'metadata' and a 'contents' object exist. If they don't, it just prints this to the console.
 }
 \examples{
+\dontrun{
 SaveWebsite(project, website)
+}
 }

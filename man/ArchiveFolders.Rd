@@ -23,5 +23,7 @@ If the option removeArchivedFolders is enabled, the function actually deletes fi
 }
 
 \examples{
+\dontrun{
 ArchiveFolders(project, website, removeArchivedFolders = FALSE)
+}
 }

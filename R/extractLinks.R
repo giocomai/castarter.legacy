@@ -21,7 +21,9 @@
 #' @return A named character vector of links to articles. Name of the link may be the article title.
 #' @export
 #' @examples
+#' \dontrun{
 #' links <- ExtractLinks(domain = "http://www.example.com/", partOfLink = "news/")
+#' }
 ExtractLinks <- function(domain = NULL,
                          partOfLink = NULL,
                          partOfLinkToExclude = NULL,
