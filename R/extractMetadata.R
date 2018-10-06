@@ -209,16 +209,21 @@ ExtractId <- function(sample = NULL, htmlLocation = NULL, project = NULL, websit
 #'
 #' Exports metadata to a vector, csv or xlsx file.
 #'
+#' @param id A vector of integers, usually created with `ExtractId()`.
+#' @param dates A vector of dates, usually created with `ExtractDates()`.
+#' @param titles A chacter vector, usually created with `ExtractTitles()`.
+#' @param language A chacter vector, usually of length 1 (e.g. \"english"). It can be of the same length of other vectors when multiple languages are included.
+#' @param links A chacter vector, usually created with `ExtractLinks()`. Only links matching the given `id` are included in the metadata.
+#' @param exportCsv If equal to TRUE, exports the complete dataset in the .xlsx file format in the Dataset sub-folder.
+#' @param exportXlsx If equal to TRUE, exports the complete dataset in the .xlsx file format in the Dataset sub-folder.
 #' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.
 #' @param website Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
-#' @param exportCsvIf equal to TRUE, exports the complete dataset in the .xlsx file format in the Dataset sub-folder.
-#' @param exportXlsx If equal to TRUE, exports the complete dataset in the .xlsx file format in the Dataset sub-folder.
 #' @return A vector of the data.frame class.
 #' @export
 #' @examples
-#' metadata <- ExportMetadata(dates, id, titles, language, links)
-ExportMetadata <- function(dates,
-                           id,
+#' metadata <- ExportMetadata(id, dates, titles, language, links)
+ExportMetadata <- function(id,
+                           dates,
                            titles,
                            language,
                            links,
@@ -258,14 +263,21 @@ ExportMetadata <- function(dates,
     }
     if (exportCsv == TRUE) {
         readr::write_csv(x = metadata,
-                         path = file.path(baseFolder, project, website, "Dataset", paste(Sys.Date(), website, "metadata.csv", sep = "-")))
+                         path = file.path(baseFolder, project, website,
+                                          "Dataset",
+                                          paste(Sys.Date(), website, "metadata.csv", sep = "-")))
     }
     if (exportXlsx == TRUE) {
-        openxlsx::write.xlsx(x = metadata,
-                             file = file.path(
-                                 baseFolder, project, website,
-                                 "Dataset",
-                                 paste(Sys.Date(), website, "metadata.xlsx", sep = "-")))
+        if (!requireNamespace("openxlsx", quietly = TRUE)) {
+            stop("Package \"openxlsx\" needed for exporting to xlsx format. You can install it with `install.packages(\"openxlsx\")`.",
+                 call. = FALSE)
+        } else {
+            openxlsx::write.xlsx(x = metadata,
+                                 file = file.path(
+                                     baseFolder, project, website,
+                                     "Dataset",
+                                     paste(Sys.Date(), website, "metadata.xlsx", sep = "-")))
+        }
     }
     return(metadata)
 }

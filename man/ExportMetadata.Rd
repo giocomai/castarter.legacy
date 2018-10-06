@@ -4,18 +4,28 @@
 \alias{ExportMetadata}
 \title{Exports metadata}
 \usage{
-ExportMetadata(dates, id, titles, language, links, exportCsv = FALSE,
+ExportMetadata(id, dates, titles, language, links, exportCsv = FALSE,
   exportXlsx = FALSE, accordingToDate = FALSE, ignoreNAdates = FALSE,
   project = NULL, website = NULL)
 }
 \arguments{
+\item{id}{A vector of integers, usually created with `ExtractId()`.}
+
+\item{dates}{A vector of dates, usually created with `ExtractDates()`.}
+
+\item{titles}{A chacter vector, usually created with `ExtractTitles()`.}
+
+\item{language}{A chacter vector, usually of length 1 (e.g. \"english"). It can be of the same length of other vectors when multiple languages are included.}
+
+\item{links}{A chacter vector, usually created with `ExtractLinks()`. Only links matching the given `id` are included in the metadata.}
+
+\item{exportCsv}{If equal to TRUE, exports the complete dataset in the .xlsx file format in the Dataset sub-folder.}
+
 \item{exportXlsx}{If equal to TRUE, exports the complete dataset in the .xlsx file format in the Dataset sub-folder.}
 
 \item{project}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
 
 \item{website}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
-
-\item{exportCsvIf}{equal to TRUE, exports the complete dataset in the .xlsx file format in the Dataset sub-folder.}
 }
 \value{
 A vector of the data.frame class.
@@ -24,5 +34,5 @@ A vector of the data.frame class.
 Exports metadata to a vector, csv or xlsx file.
 }
 \examples{
-metadata <- ExportMetadata(dates, id, titles, language, links)
+metadata <- ExportMetadata(id, dates, titles, language, links)
 }
