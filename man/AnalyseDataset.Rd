@@ -2,12 +2,12 @@
 % Please edit documentation in R/shinyAnalyseDataset.R
 \name{AnalyseDataset}
 \alias{AnalyseDataset}
-\title{Starts a Shiny app that facilitates sub-setting, reading, and tagging a `castarter` dataset.}
+\title{Starts a Shiny app that facilitates analysing a `castarter` dataset through time series.}
 \usage{
 AnalyseDataset()
 }
 \description{
-Starts a Shiny app that facilitates sub-setting, reading, and tagging a `castarter` dataset.
+Starts a Shiny app that facilitates analysing a `castarter` dataset through time series.
 }
 \examples{
 \dontrun{
