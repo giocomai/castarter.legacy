@@ -5,17 +5,6 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 
-## ----eval=FALSE----------------------------------------------------------
-#  citation("castarter")
-
-## ----eval=FALSE----------------------------------------------------------
-#  #install.packages("devtools")
-#  devtools::install_github("giocomai/castarter")
-#  library("castarter")
-
-## ----eval=TRUE, include=FALSE--------------------------------------------
-library("castarter")
-
 ## ------------------------------------------------------------------------
 #  SetCastarter(project = "Presidents", website = "Kremlin_en")
 

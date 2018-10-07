@@ -12,7 +12,7 @@
 
 <meta name="author" content="Giorgio Comai" />
 
-<meta name="date" content="2018-10-06" />
+<meta name="date" content="2018-10-07" />
 
 <title>Getting started with castarter</title>
 
@@ -280,35 +280,18 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">Getting started with <code>castarter</code></h1>
 <h4 class="author"><em>Giorgio Comai</em></h4>
-<h4 class="date"><em>2018-10-06</em></h4>
+<h4 class="date"><em>2018-10-07</em></h4>
 
 
 
-<p>Books dedicated to content analysis typically assume that the researcher has already created, has access or may buy access to a structured dataset. They may include sections on sampling (Krippendorff 2004; Riffe, Lacy, and Fico 2005), but they do not debate explicitly how new datasets can be built. Commercial software packages generally share the same expectation. In the R ecosystem, there are a number of packages that can be used to access existing datasets (e.g. tm.plugin.lexisnexis, manifestoR) or import into R textual content from social media through their APIs (e.g. twitteR). However, there is no package dedicated to getting into R the textual contents of regular websites and extracting key metadata (date and title) in order to populate a corpus that can be analysed in R or with other software packages. ‘castarter - content analysis starter toolkit for R’ aims to accomplish just that, offering to moderately incompetent users the opportunity to extract textual contents from websites and prepare them for content analysis. It allows to export the datasets in a number of standard formats for further processing and facilitates basic word frequency analysis in R.</p>
-<p>For further debate on the usefulness of a structured approach to analysing web contents in the context of area studies, and for some practical examples of how <code>castarter</code> has been used, see:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">citation</span>(<span class="st">&quot;castarter&quot;</span>)</a></code></pre></div>
-<blockquote>
-<p>Comai, Giorgio (2017). Quantitative Analysis of Web Content in Support of Qualitative Research. Examples from the Study of Post-Soviet De Facto States, <em>Studies of Transition States and Societies</em>, 9(1), 14-34. <a href="http://publications.tlu.ee/index.php/stss/article/view/346/446" class="uri">http://publications.tlu.ee/index.php/stss/article/view/346/446</a>.</p>
-</blockquote>
-<div id="installation" class="section level2">
-<h2>Installation</h2>
-<p><code>castarter</code> can easily be installed from GitHub with <code>devtools</code>:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co">#install.packages(&quot;devtools&quot;)</span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;giocomai/castarter&quot;</span>)</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw">library</span>(<span class="st">&quot;castarter&quot;</span>)</a></code></pre></div>
-</div>
-<div id="preliminary-note" class="section level2">
-<h2>Preliminary note</h2>
-<p><code>castarter</code> targets specifically relatively inexperienced users. Many of the functions it offers will look trivial to expert R users. Yet, even experienced users will benefit of some of <code>castarter</code>’s convenience functions, including its ability to download and parse pages systematically (and continue download processes if it has been interrupted).</p>
-</div>
 <div id="setting-up-the-environment" class="section level2">
 <h2>Setting up the environment</h2>
 <p><code>castarter</code> facilitates downloading and extracting textual contents from a website, or a given section of a website. <code>castarter</code> can be used to analyse a single website, or more websites as part of a project, facilitating comparison among cases. In order to smoothen replication and prevent data losses, by default <code>castarter</code> stores a copy of downloaded web pages in html format. To do so, it includes a function that creates the relevant folder structure, and another function that facilitates archiving the html files in compressed format. In <code>castarter</code> every dataset is expected to be extracted from a website, and each website is expected to be part of a project. This is useful to give a consistent way of storing the materials gathered and to facilitate comparison among cases, but it does not imply additional limitations: it is possible to have projects composed of a single website, and it is possible to make comparisons among websites that are part of different projects.</p>
 <p>As an example, this vignette will demonstrate how to extract press releases published by the Kremlin. When starting a new <code>castarter</code> project, the first step is usally that of defining the name of the project and the name of website. In this case, the project will be called “Presidents”, assuming other websites to be analysed later may be of presidents of other countries.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">SetCastarter</span>(<span class="dt">project =</span> <span class="st">&quot;Presidents&quot;</span>, <span class="dt">website =</span> <span class="st">&quot;Kremlin_en&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">SetCastarter</span>(<span class="dt">project =</span> <span class="st">&quot;Presidents&quot;</span>, <span class="dt">website =</span> <span class="st">&quot;Kremlin_en&quot;</span>)</a></code></pre></div>
 <p>This stores the names of project and website as options that can be retrieved by all <code>castarter</code> functions automatically, without the need to inputting them each time a function requires to save or load files.</p>
 <p>Then, it is time to create the folder structure where all outputs will be saved:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">CreateFolders</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">CreateFolders</span>()</a></code></pre></div>
 <p>This creates the following folders in the current working directory:</p>
 <ul>
 <li>Presidents
@@ -330,145 +313,145 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div id="download-index-pages" class="section level2">
 <h2>Download index pages</h2>
 <p>From the Kremlin’s website, as in many other websites, it is easy to understand the structure of the archive: it is composed by <code>http://en.kremlin.ru/events/president/news/page/</code> plus a number. By clicking on the “previous” link at the bottom of the page, as it is customary, the user is given the possibility to see older press released. In <code>castarter</code>, it is possible to get the links to all the pages we would see by clicking subsequent times on the ‘previous page’ link, with the following command function:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">indexLinks &lt;-<span class="st"> </span><span class="kw">CreateLinks</span>(<span class="dt">linkFirstChunk =</span> <span class="st">&quot;http://en.kremlin.ru/events/president/news/page/&quot;</span>,</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">                          <span class="dt">startPage =</span> <span class="dv">1</span>,</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3">                          <span class="dt">endPage =</span> <span class="dv">1082</span>)</a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="kw">head</span>(indexLinks)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">indexLinks &lt;-<span class="st"> </span><span class="kw">CreateLinks</span>(<span class="dt">linkFirstChunk =</span> <span class="st">&quot;http://en.kremlin.ru/events/president/news/page/&quot;</span>,</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">                          <span class="dt">startPage =</span> <span class="dv">1</span>,</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">                          <span class="dt">endPage =</span> <span class="dv">1082</span>)</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="kw">head</span>(indexLinks)</a></code></pre></div>
 <p>N.B. Another frequently found way for websites to provide access to their archives is by creating pages with dates directly in their URL. If, for example, a website offers its contents in the form of <a href="http://www.example.com/archive/2015-10-22" class="uri">http://www.example.com/archive/2015-10-22</a>, then it would be possible to generate the links for all the dates, say, between January 2012 and December 2015, with the following parameters: <code>CreateLinks(linkFirstChunk = &quot;http://www.example.com/&quot;, startDate = &quot;2012-01-01&quot;, endDate = &quot;2015-12-31&quot;, dateSeparator = &quot;-&quot;)</code></p>
 <p>This command creates a vector (<code>indexLinks</code>) including direct links to the index pages.</p>
 <p>It is now necessary to download these index pages. The following command downloads the relevant index pages and saves them in html format in the <code>/Presidents/Kremlin_en/IndexHtml/</code> folder.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">DownloadContents</span>(<span class="dt">links =</span> indexLinks, <span class="dt">type =</span> <span class="st">&quot;index&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw">DownloadContents</span>(<span class="dt">links =</span> indexLinks, <span class="dt">type =</span> <span class="st">&quot;index&quot;</span>)</a></code></pre></div>
 <p>If the process is interrupted for any reason, it is possible simply to run again the same function, which will check which files have already been downloaded, and will download the missing ones. Sometimes, due to a number of reasons, one or a few pages may not download correctly. It is usually appropriate to run the following function, which will re-download files that are too small to contain meaningful contents (if all pages have been downloaded correctly, the following will not do anything).</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">DownloadContents</span>(<span class="dt">links =</span> indexLinks, <span class="dt">type =</span> <span class="st">&quot;index&quot;</span>, <span class="dt">missingPages =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">DownloadContents</span>(<span class="dt">links =</span> indexLinks, <span class="dt">type =</span> <span class="st">&quot;index&quot;</span>, <span class="dt">missingPages =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
 </div>
 <div id="extracting-links" class="section level2">
 <h2>Extracting links</h2>
 <p>Now that we have the index pages, we need to extract direct links to the individual press releases. There are various ways to do this, but the easiest approach is looking at the URLs of individual articles, and see if there is a pattern (this is very often the case in modern websites). Hovering over the titles of an index page - you can open one with <code>browseURL(url = sample(x = indexLinks, size = 1))</code> - it is easy to see the links to indivudal news items.</p>
 <p>In this case, we see that the URL to each news item includes in the URL the following string: “president/news/”. We can have a quick look at the links to see if the resulting list makes sense. In this case, it appears that also links to photo and videos are included, so we should remove them in order to have a clean list of links to press releases. The following command extracts links to individual articles.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"></a>
-<a class="sourceLine" id="cb8-2" data-line-number="2">links &lt;-<span class="st"> </span><span class="kw">ExtractLinks</span>(<span class="dt">domain =</span> <span class="st">&quot;http://en.kremlin.ru/&quot;</span>,</a>
-<a class="sourceLine" id="cb8-3" data-line-number="3">                      <span class="dt">partOfLink =</span> <span class="st">&quot;president/news/&quot;</span>,</a>
-<a class="sourceLine" id="cb8-4" data-line-number="4">                      <span class="dt">partOfLinkToExclude =</span> <span class="kw">c</span>(<span class="st">&quot;page&quot;</span>,</a>
-<a class="sourceLine" id="cb8-5" data-line-number="5">                                              <span class="st">&quot;photos&quot;</span>,</a>
-<a class="sourceLine" id="cb8-6" data-line-number="6">                                              <span class="st">&quot;videos&quot;</span>,</a>
-<a class="sourceLine" id="cb8-7" data-line-number="7">                                              <span class="st">&quot;special&quot;</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">links &lt;-<span class="st"> </span><span class="kw">ExtractLinks</span>(<span class="dt">domain =</span> <span class="st">&quot;http://en.kremlin.ru/&quot;</span>,</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">                      <span class="dt">partOfLink =</span> <span class="st">&quot;president/news/&quot;</span>,</a>
+<a class="sourceLine" id="cb6-4" data-line-number="4">                      <span class="dt">partOfLinkToExclude =</span> <span class="kw">c</span>(<span class="st">&quot;page&quot;</span>,</a>
+<a class="sourceLine" id="cb6-5" data-line-number="5">                                              <span class="st">&quot;photos&quot;</span>,</a>
+<a class="sourceLine" id="cb6-6" data-line-number="6">                                              <span class="st">&quot;videos&quot;</span>,</a>
+<a class="sourceLine" id="cb6-7" data-line-number="7">                                              <span class="st">&quot;special&quot;</span>))</a></code></pre></div>
 <p>We use this to extract relevant links, and discard all links to other pages or sections of the website scattered around the page that we are not interested in. For details on more advanced options, e.g. extract only links that are inside a given html container in the page, see <code>?ExtractLinks</code>.</p>
 <p>A common approach to find if all relevant links have been extracted, no more no less, is to see how many links per index page have been extracted.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">length</span>(links)<span class="op">/</span><span class="kw">length</span>(indexLinks)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">length</span>(links)<span class="op">/</span><span class="kw">length</span>(indexLinks)</a></code></pre></div>
 <p>This should usually give a number that is very close to the number of links per index page.</p>
 </div>
 <div id="download-pages" class="section level2">
 <h2>Download pages</h2>
 <p>Now it’s time to download the actual press releases.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">DownloadContents</span>(<span class="dt">links =</span> links)</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw">DownloadContents</span>(<span class="dt">links =</span> links)</a></code></pre></div>
 <p>This command downloads html files for each page, and stores them as a numbered html file in the <code>Html</code> subfolder. If for any reason you have to interrupt the process, you can re-run the command and by default it will download only pages that have not been previously downloaded.</p>
 <p>When downloading thousands of pages, it sometimes happens that a few of them are not downloaded correctly due to server errors or connection issues. It is advised to re-run the above command at least once to ensure that all files have been properly downloaded. In other cases, however, an empty or almost-empty page has been downloaded (e.g. a web page with only an error message). Such pages can be downloaded with the following command (it is possible to adjust the minimum size with the <code>size</code> parameter).</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">DownloadContents</span>(<span class="dt">links =</span> links, <span class="dt">missingPages =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">DownloadContents</span>(<span class="dt">links =</span> links, <span class="dt">missingPages =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
 </div>
 <div id="extract-data-and-metadata" class="section level2">
 <h2>Extract data and metadata</h2>
 <p>[vignette do be completed]</p>
 <hr />
 <p>Here’s a whole script that outlines the whole procedure, that can be copy pasted and adapted to different websites:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">#### 1. Preliminary steps ####</a>
-<a class="sourceLine" id="cb12-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb12-3" data-line-number="3">## Install castarter (devtools required for installing from github)</a>
-<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="co"># install.packages(&quot;devtools&quot;)</span></a>
-<a class="sourceLine" id="cb12-5" data-line-number="5">devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="dt">repo =</span> <span class="st">&quot;giocomai/castarter&quot;</span>)</a>
-<a class="sourceLine" id="cb12-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb12-7" data-line-number="7">## Load castarter</a>
-<a class="sourceLine" id="cb12-8" data-line-number="8"><span class="kw">library</span>(<span class="st">&quot;castarter&quot;</span>)</a>
-<a class="sourceLine" id="cb12-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb12-10" data-line-number="10">## Set project and website name.</a>
-<a class="sourceLine" id="cb12-11" data-line-number="11"><span class="co"># They will remain in memory in the current R session,</span></a>
-<a class="sourceLine" id="cb12-12" data-line-number="12"><span class="co"># so need need to include them in each function call.</span></a>
-<a class="sourceLine" id="cb12-13" data-line-number="13"><span class="kw">SetCastarter</span>(<span class="dt">project =</span> <span class="st">&quot;Presidents&quot;</span>, <span class="dt">website =</span> <span class="st">&quot;Kremlin_en&quot;</span>)</a>
-<a class="sourceLine" id="cb12-14" data-line-number="14"></a>
-<a class="sourceLine" id="cb12-15" data-line-number="15">## Creates the folder structure where files will be saved within the</a>
-<a class="sourceLine" id="cb12-16" data-line-number="16">## current working directory</a>
-<a class="sourceLine" id="cb12-17" data-line-number="17"><span class="kw">CreateFolders</span>()</a>
-<a class="sourceLine" id="cb12-18" data-line-number="18"></a>
-<a class="sourceLine" id="cb12-19" data-line-number="19">#### 2. Download index/archive pages ####</a>
-<a class="sourceLine" id="cb12-20" data-line-number="20"></a>
-<a class="sourceLine" id="cb12-21" data-line-number="21"><span class="co"># Check out the archive page, e.g. http://en.kremlin.ru/events/president/news/</span></a>
-<a class="sourceLine" id="cb12-22" data-line-number="22"><span class="co"># See what is the last archive page, if they are defined by consecutive numbers</span></a>
-<a class="sourceLine" id="cb12-23" data-line-number="23"></a>
-<a class="sourceLine" id="cb12-24" data-line-number="24">indexLinks &lt;-<span class="st"> </span><span class="kw">CreateLinks</span>(<span class="dt">linkFirstChunk =</span> <span class="st">&quot;http://en.kremlin.ru/events/president/news/page/&quot;</span>,</a>
-<a class="sourceLine" id="cb12-25" data-line-number="25">                          <span class="dt">startPage =</span> <span class="dv">1</span>,</a>
-<a class="sourceLine" id="cb12-26" data-line-number="26">                          <span class="dt">endPage =</span> <span class="dv">1082</span>)</a>
-<a class="sourceLine" id="cb12-27" data-line-number="27"></a>
-<a class="sourceLine" id="cb12-28" data-line-number="28">## Downloads all html files of the archive pages</a>
-<a class="sourceLine" id="cb12-29" data-line-number="29"><span class="co"># This can be interrupted: by default, if the command is issued again it will download only missing pages (i.e. pages that have not been downloaded previously)</span></a>
-<a class="sourceLine" id="cb12-30" data-line-number="30"><span class="kw">DownloadContents</span>(<span class="dt">links =</span> indexLinks, <span class="dt">type =</span> <span class="st">&quot;index&quot;</span>)</a>
-<a class="sourceLine" id="cb12-31" data-line-number="31"><span class="co"># Downloads again files with oddly small size (usually, errors), if any.</span></a>
-<a class="sourceLine" id="cb12-32" data-line-number="32"><span class="kw">DownloadContents</span>(<span class="dt">links =</span> indexLinks, <span class="dt">type =</span> <span class="st">&quot;index&quot;</span>, <span class="dt">missingPages =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb12-33" data-line-number="33"></a>
-<a class="sourceLine" id="cb12-34" data-line-number="34">#### 3. Extract links to individual pages ####</a>
-<a class="sourceLine" id="cb12-35" data-line-number="35"></a>
-<a class="sourceLine" id="cb12-36" data-line-number="36"><span class="co"># Find criteria to filter only direct links to news items</span></a>
-<a class="sourceLine" id="cb12-37" data-line-number="37"><span class="co"># Open an archive page at random.</span></a>
-<a class="sourceLine" id="cb12-38" data-line-number="38"><span class="co"># browseURL(url = sample(x = indexLinks, size = 1))</span></a>
-<a class="sourceLine" id="cb12-39" data-line-number="39"></a>
-<a class="sourceLine" id="cb12-40" data-line-number="40">links &lt;-<span class="st"> </span><span class="kw">ExtractLinks</span>(<span class="dt">domain =</span> <span class="st">&quot;http://en.kremlin.ru/&quot;</span>,</a>
-<a class="sourceLine" id="cb12-41" data-line-number="41">                      <span class="dt">partOfLink =</span> <span class="st">&quot;president/news/&quot;</span>,</a>
-<a class="sourceLine" id="cb12-42" data-line-number="42">                      <span class="dt">partOfLinkToExclude =</span> <span class="kw">c</span>(<span class="st">&quot;page&quot;</span>,</a>
-<a class="sourceLine" id="cb12-43" data-line-number="43">                                              <span class="st">&quot;photos&quot;</span>,</a>
-<a class="sourceLine" id="cb12-44" data-line-number="44">                                              <span class="st">&quot;videos&quot;</span>,</a>
-<a class="sourceLine" id="cb12-45" data-line-number="45">                                              <span class="st">&quot;special&quot;</span>))</a>
-<a class="sourceLine" id="cb12-46" data-line-number="46"><span class="co"># length(links)/length(indexLinks)</span></a>
-<a class="sourceLine" id="cb12-47" data-line-number="47"><span class="co"># Explore links and check if more or less alright, if number realistic</span></a>
-<a class="sourceLine" id="cb12-48" data-line-number="48"><span class="co"># View(links)</span></a>
-<a class="sourceLine" id="cb12-49" data-line-number="49"><span class="co"># head(links)</span></a>
-<a class="sourceLine" id="cb12-50" data-line-number="50"></a>
-<a class="sourceLine" id="cb12-51" data-line-number="51">#### 4. Download pages ####</a>
-<a class="sourceLine" id="cb12-52" data-line-number="52"></a>
-<a class="sourceLine" id="cb12-53" data-line-number="53"><span class="kw">DownloadContents</span>(<span class="dt">links =</span> links, <span class="dt">wait =</span> <span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb12-54" data-line-number="54"><span class="kw">DownloadContents</span>(<span class="dt">links =</span> links, <span class="dt">missingPages =</span> <span class="ot">FALSE</span>, <span class="dt">wait =</span> <span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb12-55" data-line-number="55"></a>
-<a class="sourceLine" id="cb12-56" data-line-number="56">#### 5. Extract metadata and text ####</a>
-<a class="sourceLine" id="cb12-57" data-line-number="57"></a>
-<a class="sourceLine" id="cb12-58" data-line-number="58"><span class="co"># open an article at random to find out where metadata are located</span></a>
-<a class="sourceLine" id="cb12-59" data-line-number="59"><span class="co"># browseURL(url = sample(x = links, size = 1))</span></a>
-<a class="sourceLine" id="cb12-60" data-line-number="60"></a>
-<a class="sourceLine" id="cb12-61" data-line-number="61">id &lt;-<span class="st"> </span><span class="kw">ExtractId</span>()</a>
-<a class="sourceLine" id="cb12-62" data-line-number="62"></a>
-<a class="sourceLine" id="cb12-63" data-line-number="63">titles &lt;-<span class="st"> </span><span class="kw">ExtractTitles</span>(<span class="dt">removeEverythingAfter =</span> <span class="st">&quot; •&quot;</span>,</a>
-<a class="sourceLine" id="cb12-64" data-line-number="64">                        <span class="dt">id =</span> id)</a>
-<a class="sourceLine" id="cb12-65" data-line-number="65"></a>
-<a class="sourceLine" id="cb12-66" data-line-number="66"></a>
-<a class="sourceLine" id="cb12-67" data-line-number="67">dates &lt;-<span class="st"> </span><span class="kw">ExtractDates</span>(<span class="dt">container =</span> <span class="st">&quot;time&quot;</span>,</a>
-<a class="sourceLine" id="cb12-68" data-line-number="68">                      <span class="dt">attribute =</span> <span class="st">&quot;datetime&quot;</span>,</a>
-<a class="sourceLine" id="cb12-69" data-line-number="69">                      <span class="dt">containerInstance =</span> <span class="dv">1</span>,</a>
-<a class="sourceLine" id="cb12-70" data-line-number="70">                      <span class="dt">dateFormat =</span> <span class="st">&quot;Ymd&quot;</span>,</a>
-<a class="sourceLine" id="cb12-71" data-line-number="71">                      <span class="dt">id =</span> id)</a>
-<a class="sourceLine" id="cb12-72" data-line-number="72"></a>
-<a class="sourceLine" id="cb12-73" data-line-number="73"><span class="co"># check how many dates were not captured</span></a>
-<a class="sourceLine" id="cb12-74" data-line-number="74"><span class="kw">sum</span>(<span class="kw">is.na</span>(dates))</a>
-<a class="sourceLine" id="cb12-75" data-line-number="75">links[<span class="kw">is.na</span>(dates)]</a>
-<a class="sourceLine" id="cb12-76" data-line-number="76"></a>
-<a class="sourceLine" id="cb12-77" data-line-number="77">language &lt;-<span class="st"> &quot;english&quot;</span></a>
-<a class="sourceLine" id="cb12-78" data-line-number="78"></a>
-<a class="sourceLine" id="cb12-79" data-line-number="79">metadata &lt;-<span class="st"> </span><span class="kw">ExportMetadata</span>(<span class="dt">id =</span> id,</a>
-<a class="sourceLine" id="cb12-80" data-line-number="80">                           <span class="dt">dates =</span> dates,</a>
-<a class="sourceLine" id="cb12-81" data-line-number="81">                           <span class="dt">titles =</span> titles,</a>
-<a class="sourceLine" id="cb12-82" data-line-number="82">                           <span class="dt">language =</span> language,</a>
-<a class="sourceLine" id="cb12-83" data-line-number="83">                           <span class="dt">links =</span> links)</a>
-<a class="sourceLine" id="cb12-84" data-line-number="84"></a>
-<a class="sourceLine" id="cb12-85" data-line-number="85">## Extract text</a>
-<a class="sourceLine" id="cb12-86" data-line-number="86">text &lt;-<span class="st"> </span><span class="kw">ExtractText</span>(<span class="dt">container =</span> <span class="st">&quot;div&quot;</span>,</a>
-<a class="sourceLine" id="cb12-87" data-line-number="87">                    <span class="dt">containerClass =</span> <span class="st">&quot;read__content&quot;</span>,</a>
-<a class="sourceLine" id="cb12-88" data-line-number="88">                    <span class="dt">subElement =</span> <span class="st">&quot;p&quot;</span>,</a>
-<a class="sourceLine" id="cb12-89" data-line-number="89">                    <span class="dt">removeEverythingAfter =</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">Published in:&quot;</span>,</a>
-<a class="sourceLine" id="cb12-90" data-line-number="90">                    <span class="dt">id =</span> id)</a>
-<a class="sourceLine" id="cb12-91" data-line-number="91"></a>
-<a class="sourceLine" id="cb12-92" data-line-number="92">i &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dt">x =</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(text), <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb12-93" data-line-number="93">titles[i]</a>
-<a class="sourceLine" id="cb12-94" data-line-number="94">dates[i]</a>
-<a class="sourceLine" id="cb12-95" data-line-number="95">text[i]</a>
-<a class="sourceLine" id="cb12-96" data-line-number="96">links[id][i]</a>
-<a class="sourceLine" id="cb12-97" data-line-number="97">#### 6. Save and export ####</a>
-<a class="sourceLine" id="cb12-98" data-line-number="98"></a>
-<a class="sourceLine" id="cb12-99" data-line-number="99"><span class="kw">SaveWebsite</span>(<span class="dt">dataset =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">#### 1. Preliminary steps ####</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb10-3" data-line-number="3">## Install castarter (devtools required for installing from github)</a>
+<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co"># install.packages(&quot;devtools&quot;)</span></a>
+<a class="sourceLine" id="cb10-5" data-line-number="5">devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="dt">repo =</span> <span class="st">&quot;giocomai/castarter&quot;</span>)</a>
+<a class="sourceLine" id="cb10-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb10-7" data-line-number="7">## Load castarter</a>
+<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="kw">library</span>(<span class="st">&quot;castarter&quot;</span>)</a>
+<a class="sourceLine" id="cb10-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb10-10" data-line-number="10">## Set project and website name.</a>
+<a class="sourceLine" id="cb10-11" data-line-number="11"><span class="co"># They will remain in memory in the current R session,</span></a>
+<a class="sourceLine" id="cb10-12" data-line-number="12"><span class="co"># so need need to include them in each function call.</span></a>
+<a class="sourceLine" id="cb10-13" data-line-number="13"><span class="kw">SetCastarter</span>(<span class="dt">project =</span> <span class="st">&quot;Presidents&quot;</span>, <span class="dt">website =</span> <span class="st">&quot;Kremlin_en&quot;</span>)</a>
+<a class="sourceLine" id="cb10-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb10-15" data-line-number="15">## Creates the folder structure where files will be saved within the</a>
+<a class="sourceLine" id="cb10-16" data-line-number="16">## current working directory</a>
+<a class="sourceLine" id="cb10-17" data-line-number="17"><span class="kw">CreateFolders</span>()</a>
+<a class="sourceLine" id="cb10-18" data-line-number="18"></a>
+<a class="sourceLine" id="cb10-19" data-line-number="19">#### 2. Download index/archive pages ####</a>
+<a class="sourceLine" id="cb10-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb10-21" data-line-number="21"><span class="co"># Check out the archive page, e.g. http://en.kremlin.ru/events/president/news/</span></a>
+<a class="sourceLine" id="cb10-22" data-line-number="22"><span class="co"># See what is the last archive page, if they are defined by consecutive numbers</span></a>
+<a class="sourceLine" id="cb10-23" data-line-number="23"></a>
+<a class="sourceLine" id="cb10-24" data-line-number="24">indexLinks &lt;-<span class="st"> </span><span class="kw">CreateLinks</span>(<span class="dt">linkFirstChunk =</span> <span class="st">&quot;http://en.kremlin.ru/events/president/news/page/&quot;</span>,</a>
+<a class="sourceLine" id="cb10-25" data-line-number="25">                          <span class="dt">startPage =</span> <span class="dv">1</span>,</a>
+<a class="sourceLine" id="cb10-26" data-line-number="26">                          <span class="dt">endPage =</span> <span class="dv">1082</span>)</a>
+<a class="sourceLine" id="cb10-27" data-line-number="27"></a>
+<a class="sourceLine" id="cb10-28" data-line-number="28">## Downloads all html files of the archive pages</a>
+<a class="sourceLine" id="cb10-29" data-line-number="29"><span class="co"># This can be interrupted: by default, if the command is issued again it will download only missing pages (i.e. pages that have not been downloaded previously)</span></a>
+<a class="sourceLine" id="cb10-30" data-line-number="30"><span class="kw">DownloadContents</span>(<span class="dt">links =</span> indexLinks, <span class="dt">type =</span> <span class="st">&quot;index&quot;</span>)</a>
+<a class="sourceLine" id="cb10-31" data-line-number="31"><span class="co"># Downloads again files with oddly small size (usually, errors), if any.</span></a>
+<a class="sourceLine" id="cb10-32" data-line-number="32"><span class="kw">DownloadContents</span>(<span class="dt">links =</span> indexLinks, <span class="dt">type =</span> <span class="st">&quot;index&quot;</span>, <span class="dt">missingPages =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb10-33" data-line-number="33"></a>
+<a class="sourceLine" id="cb10-34" data-line-number="34">#### 3. Extract links to individual pages ####</a>
+<a class="sourceLine" id="cb10-35" data-line-number="35"></a>
+<a class="sourceLine" id="cb10-36" data-line-number="36"><span class="co"># Find criteria to filter only direct links to news items</span></a>
+<a class="sourceLine" id="cb10-37" data-line-number="37"><span class="co"># Open an archive page at random.</span></a>
+<a class="sourceLine" id="cb10-38" data-line-number="38"><span class="co"># browseURL(url = sample(x = indexLinks, size = 1))</span></a>
+<a class="sourceLine" id="cb10-39" data-line-number="39"></a>
+<a class="sourceLine" id="cb10-40" data-line-number="40">links &lt;-<span class="st"> </span><span class="kw">ExtractLinks</span>(<span class="dt">domain =</span> <span class="st">&quot;http://en.kremlin.ru/&quot;</span>,</a>
+<a class="sourceLine" id="cb10-41" data-line-number="41">                      <span class="dt">partOfLink =</span> <span class="st">&quot;president/news/&quot;</span>,</a>
+<a class="sourceLine" id="cb10-42" data-line-number="42">                      <span class="dt">partOfLinkToExclude =</span> <span class="kw">c</span>(<span class="st">&quot;page&quot;</span>,</a>
+<a class="sourceLine" id="cb10-43" data-line-number="43">                                              <span class="st">&quot;photos&quot;</span>,</a>
+<a class="sourceLine" id="cb10-44" data-line-number="44">                                              <span class="st">&quot;videos&quot;</span>,</a>
+<a class="sourceLine" id="cb10-45" data-line-number="45">                                              <span class="st">&quot;special&quot;</span>))</a>
+<a class="sourceLine" id="cb10-46" data-line-number="46"><span class="co"># length(links)/length(indexLinks)</span></a>
+<a class="sourceLine" id="cb10-47" data-line-number="47"><span class="co"># Explore links and check if more or less alright, if number realistic</span></a>
+<a class="sourceLine" id="cb10-48" data-line-number="48"><span class="co"># View(links)</span></a>
+<a class="sourceLine" id="cb10-49" data-line-number="49"><span class="co"># head(links)</span></a>
+<a class="sourceLine" id="cb10-50" data-line-number="50"></a>
+<a class="sourceLine" id="cb10-51" data-line-number="51">#### 4. Download pages ####</a>
+<a class="sourceLine" id="cb10-52" data-line-number="52"></a>
+<a class="sourceLine" id="cb10-53" data-line-number="53"><span class="kw">DownloadContents</span>(<span class="dt">links =</span> links, <span class="dt">wait =</span> <span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb10-54" data-line-number="54"><span class="kw">DownloadContents</span>(<span class="dt">links =</span> links, <span class="dt">missingPages =</span> <span class="ot">FALSE</span>, <span class="dt">wait =</span> <span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb10-55" data-line-number="55"></a>
+<a class="sourceLine" id="cb10-56" data-line-number="56">#### 5. Extract metadata and text ####</a>
+<a class="sourceLine" id="cb10-57" data-line-number="57"></a>
+<a class="sourceLine" id="cb10-58" data-line-number="58"><span class="co"># open an article at random to find out where metadata are located</span></a>
+<a class="sourceLine" id="cb10-59" data-line-number="59"><span class="co"># browseURL(url = sample(x = links, size = 1))</span></a>
+<a class="sourceLine" id="cb10-60" data-line-number="60"></a>
+<a class="sourceLine" id="cb10-61" data-line-number="61">id &lt;-<span class="st"> </span><span class="kw">ExtractId</span>()</a>
+<a class="sourceLine" id="cb10-62" data-line-number="62"></a>
+<a class="sourceLine" id="cb10-63" data-line-number="63">titles &lt;-<span class="st"> </span><span class="kw">ExtractTitles</span>(<span class="dt">removeEverythingAfter =</span> <span class="st">&quot; •&quot;</span>,</a>
+<a class="sourceLine" id="cb10-64" data-line-number="64">                        <span class="dt">id =</span> id)</a>
+<a class="sourceLine" id="cb10-65" data-line-number="65"></a>
+<a class="sourceLine" id="cb10-66" data-line-number="66"></a>
+<a class="sourceLine" id="cb10-67" data-line-number="67">dates &lt;-<span class="st"> </span><span class="kw">ExtractDates</span>(<span class="dt">container =</span> <span class="st">&quot;time&quot;</span>,</a>
+<a class="sourceLine" id="cb10-68" data-line-number="68">                      <span class="dt">attribute =</span> <span class="st">&quot;datetime&quot;</span>,</a>
+<a class="sourceLine" id="cb10-69" data-line-number="69">                      <span class="dt">containerInstance =</span> <span class="dv">1</span>,</a>
+<a class="sourceLine" id="cb10-70" data-line-number="70">                      <span class="dt">dateFormat =</span> <span class="st">&quot;Ymd&quot;</span>,</a>
+<a class="sourceLine" id="cb10-71" data-line-number="71">                      <span class="dt">id =</span> id)</a>
+<a class="sourceLine" id="cb10-72" data-line-number="72"></a>
+<a class="sourceLine" id="cb10-73" data-line-number="73"><span class="co"># check how many dates were not captured</span></a>
+<a class="sourceLine" id="cb10-74" data-line-number="74"><span class="kw">sum</span>(<span class="kw">is.na</span>(dates))</a>
+<a class="sourceLine" id="cb10-75" data-line-number="75">links[<span class="kw">is.na</span>(dates)]</a>
+<a class="sourceLine" id="cb10-76" data-line-number="76"></a>
+<a class="sourceLine" id="cb10-77" data-line-number="77">language &lt;-<span class="st"> &quot;english&quot;</span></a>
+<a class="sourceLine" id="cb10-78" data-line-number="78"></a>
+<a class="sourceLine" id="cb10-79" data-line-number="79">metadata &lt;-<span class="st"> </span><span class="kw">ExportMetadata</span>(<span class="dt">id =</span> id,</a>
+<a class="sourceLine" id="cb10-80" data-line-number="80">                           <span class="dt">dates =</span> dates,</a>
+<a class="sourceLine" id="cb10-81" data-line-number="81">                           <span class="dt">titles =</span> titles,</a>
+<a class="sourceLine" id="cb10-82" data-line-number="82">                           <span class="dt">language =</span> language,</a>
+<a class="sourceLine" id="cb10-83" data-line-number="83">                           <span class="dt">links =</span> links)</a>
+<a class="sourceLine" id="cb10-84" data-line-number="84"></a>
+<a class="sourceLine" id="cb10-85" data-line-number="85">## Extract text</a>
+<a class="sourceLine" id="cb10-86" data-line-number="86">text &lt;-<span class="st"> </span><span class="kw">ExtractText</span>(<span class="dt">container =</span> <span class="st">&quot;div&quot;</span>,</a>
+<a class="sourceLine" id="cb10-87" data-line-number="87">                    <span class="dt">containerClass =</span> <span class="st">&quot;read__content&quot;</span>,</a>
+<a class="sourceLine" id="cb10-88" data-line-number="88">                    <span class="dt">subElement =</span> <span class="st">&quot;p&quot;</span>,</a>
+<a class="sourceLine" id="cb10-89" data-line-number="89">                    <span class="dt">removeEverythingAfter =</span> <span class="st">&quot;</span><span class="ch">\n</span><span class="st">Published in:&quot;</span>,</a>
+<a class="sourceLine" id="cb10-90" data-line-number="90">                    <span class="dt">id =</span> id)</a>
+<a class="sourceLine" id="cb10-91" data-line-number="91"></a>
+<a class="sourceLine" id="cb10-92" data-line-number="92">i &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dt">x =</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(text), <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb10-93" data-line-number="93">titles[i]</a>
+<a class="sourceLine" id="cb10-94" data-line-number="94">dates[i]</a>
+<a class="sourceLine" id="cb10-95" data-line-number="95">text[i]</a>
+<a class="sourceLine" id="cb10-96" data-line-number="96">links[id][i]</a>
+<a class="sourceLine" id="cb10-97" data-line-number="97">#### 6. Save and export ####</a>
+<a class="sourceLine" id="cb10-98" data-line-number="98"></a>
+<a class="sourceLine" id="cb10-99" data-line-number="99"><span class="kw">SaveWebsite</span>(<span class="dt">dataset =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 </div>
 
 

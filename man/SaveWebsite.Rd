@@ -4,14 +4,14 @@
 \alias{SaveWebsite}
 \title{Saves working environment and dataset.}
 \usage{
-SaveWebsite(saveEnvironment = TRUE, dataset = NULL,
+SaveWebsite(dataset = NULL, saveEnvironment = FALSE,
   tidyCorpus = NULL, exportCsv = FALSE, exportTxt = FALSE,
   exportXlsx = FALSE, project = NULL, website = NULL)
 }
 \arguments{
-\item{saveEnvironment}{Logical, defaults to TRUE. If TRUE, saves environment as .Rdata in the correspodning website folder.}
-
 \item{dataset}{Defaults to NULL. If TRUE, it seeks for a `metadata` and a `text` object in the current environment. If a `castarter` dataset is provided, this is then stored as the dataset.}
+
+\item{saveEnvironment}{Logical, defaults to TRUE. If TRUE, saves environment as .Rdata in the correspodning website folder.}
 
 \item{exportCsv}{Logical, defaults to FALSE. If TRUE, exports the complete dataset in the .csv file format in the Dataset sub-folder.}
 
@@ -30,6 +30,6 @@ It assumes that previous operations have been completed, and both a 'metadata' a
 }
 \examples{
 \dontrun{
-SaveWebsite(project, website)
+SaveWebsite(dataset = dataset)
 }
 }
