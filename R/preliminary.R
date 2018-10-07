@@ -91,10 +91,10 @@ LoadLatest <- function(project = NULL, website = NULL) {
 #' @export
 #' @examples
 #' \dontrun{
-#' SaveWebsite(project, website)
+#' SaveWebsite(dataset = dataset)
 #' }
-SaveWebsite <- function(saveEnvironment = TRUE,
-                        dataset = NULL,
+SaveWebsite <- function(dataset = NULL,
+                        saveEnvironment = FALSE,
                         tidyCorpus = NULL,
                         exportCsv = FALSE,
                         exportTxt = FALSE,
