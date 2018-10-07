@@ -5,10 +5,10 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' SubsetAndRead()
+#' ReadAndTag()
 #' }
 
-SubsetAndRead <- function() {
+ReadAndTag <- function() {
     if (requireNamespace("shiny", quietly = TRUE)==FALSE) {
         stop("You need to install the `shiny` package with `install.packages('shiny')` to use this function.")
     }
@@ -32,8 +32,7 @@ SubsetAndRead <- function() {
         tabsetPanel(
             #### Beginning of SetCastarter page ####
             tabPanel("Select dataset(s)",
-                     shiny::fluidPage(theme="style.css",
-                                      fluidRow(
+                     shiny::fluidPage(fluidRow(
                                           column(8,
                                                  uiOutput(outputId = "selectWebsite_UI")
 
@@ -52,11 +51,9 @@ SubsetAndRead <- function() {
             ),
             #### End of SetCastarter page ####
 
-            #### Beginning of CreateLinks page ####
+            #### Beginning of Read and tag page ####
             tabPanel("Read and tag",
-                     shiny::fluidPage(theme="style.css",
-
-                                      column(3,
+                     shiny::fluidPage(column(3,
                                              htmlOutput("totalItems"),
                                              splitLayout(
                                                  uiOutput(outputId = "filterRangeSelector_ui"),
@@ -95,7 +92,7 @@ SubsetAndRead <- function() {
                      )
             ),
 
-            tabPanel("Analyse tags",
+            shiny::tabPanel("Analyse tags",
                      shiny::fluidPage(theme="style.css",
                                       column(12,
                                              fluidRow(
@@ -103,7 +100,7 @@ SubsetAndRead <- function() {
                                              )
                                       )
                      )),
-            tabPanel("Export tags",
+            shiny::tabPanel("Export tags",
                      shiny::fluidPage(theme="style.css",
                                       column(12,
                                              fluidRow(
@@ -128,7 +125,7 @@ SubsetAndRead <- function() {
                                                                                                         recursive = FALSE), pattern = "castarter/"))
                     names(projectsAndWebsites_list) <- projects
 
-                    selectizeInput(inputId = "selected_websites",
+                    shiny::selectizeInput(inputId = "selected_websites",
                                    label = "Available projects and websites",
                                    choices = as.list(c("", projectsAndWebsites_list)),
                                    selected = "",
@@ -136,6 +133,16 @@ SubsetAndRead <- function() {
                                    width = "95%")
 
                 })
+
+                output$datasetInfo <- renderUI({
+                    if (nrow(dataset)==0) {
+                        HTML(text = "Select a dataset from the list above and click on 'Select dataset' to load it in the current session.")
+                    } else {
+                        HTML(text = paste0("The following datasets are now loaded in the current section:<br>", paste(unique(dataset$website), collapse = ", ")))
+                    }
+                })
+
+                #### End of select project/website ui ####
 
                 output$tagSelector <- renderUI({
                     selectizeInput("tag", label = "Tag", choices =
@@ -184,14 +191,6 @@ SubsetAndRead <- function() {
                                    options = list(create = TRUE, placeholder = "Insert category"))
                 })
 
-                output$datasetInfo <- renderUI({
-                    if (nrow(dataset)==0) {
-                        HTML(text = "Select a dataset from the list above and click on 'Select dataset' to load it in the current session.")
-                    } else {
-                        HTML(text = paste0("The following datasets are now loaded in the current section:<br>", paste(unique(dataset$website), collapse = ", ")))
-                    }
-                })
-
 
 
                 ##### Load rds after selection ######
@@ -232,26 +231,23 @@ SubsetAndRead <- function() {
 
                 ##### UI read and tag ######
 
-
-
-                output$id <- renderText({
+                output$id <- shiny::renderText({
                     paste("<b>id</b>:", dataset$doc_id[input$id])
                 })
 
-                output$title <- renderText({
+                output$title <- shiny::renderText({
                     dataset$title[input$id]
                 })
 
-                output$date <- renderText({
+                output$date <- shiny::renderText({
                     as.character(as.Date(dataset$date[input$id]))
                 })
 
-                output$link <- renderText({
+                output$link <- shiny::renderText({
                     paste('<a href="', dataset$link[input$id], '">', dataset$link[input$id], '</a>')
                 })
 
-                output$contents <- renderText({
-
+                output$contents <- shiny::renderText({
 
                     if (input$pattern==""&input$highlightDigits==FALSE) {
                         dataset$text[input$id]
@@ -261,7 +257,8 @@ SubsetAndRead <- function() {
                             if (input$pattern=="") {
                                 patternToHighlight <- "[[:digit:]]+"
                             } else {
-                                patternToHighlight <- paste0(as.character(input$pattern), "|[[:digit:]]")
+                                patternToHighlight <- paste0(as.character(input$pattern),
+                                                             "|[[:digit:]]")
                             }
 
                         } else {
@@ -280,7 +277,6 @@ SubsetAndRead <- function() {
                 #### Submit tags ####
 
                 observeEvent(input$submit, {
-
 
                     if (file.exists(file.path("castarter", dataset$project[input$id], dataset$website[input$id], "Logs", "tags.rds")) == FALSE) {
                         saveRDS(object = tibble::data_frame(doc_id = NA, tag = list(NA), category = list(NA), type=list(NA)) %>%
