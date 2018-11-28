@@ -10,6 +10,7 @@
 ##'  \item{"datasetBySentence"}{: Outputs a 'castarter' dataset, with one sentence per row. This can be used to speed up the loading time of datasets analysed through the `AnalyseDataset()` function.}
 ##' }
 #' @param removeNAdates Logical, defaults to TRUE. If TRUE, dataset items that do not have a date in the records are not imported.
+#' @param convertToUTF8 Logical, defaults to FALSE. If TRUE, converts the `title` and `text` column (or correspondent, in `datasetTidy` and `datasetBySentence`) to UTF8.
 #' @param addProjectColumn Logical, defatults to FALSE. If TRUE, a column with the project name is appended.
 #' @return A data frame including all loaded datasets.
 #' @export
@@ -21,6 +22,7 @@
 LoadDatasets <- function(projectsAndWebsites = NULL,
                          type = "dataset",
                          removeNAdates = TRUE,
+                         convertToUTF8 = FALSE,
                          addProjectColumn = FALSE) {
     if (is.null(projectsAndWebsites) == TRUE) {
         project <- CastarterOptions("project")
@@ -69,7 +71,16 @@ LoadDatasets <- function(projectsAndWebsites = NULL,
             colnames(x = dataset)[colnames(dataset)=="links"]<-"link"
             colnames(x = dataset)[colnames(dataset)=="titles"]<-"title"
             colnames(x = dataset)[colnames(dataset)=="dates"]<-"date"
-            dataset$text <- base::iconv(x = dataset$text, to = "UTF-8")
+            if (convertToUTF8 == TRUE) {
+                dataset$title <- base::iconv(x = dataset$title, to = "UTF-8")
+                if (type == "dataset") {
+                    dataset$text <- base::iconv(x = dataset$text, to = "UTF-8")
+                } else if (type == "datasetTidy") {
+                    dataset$word <- base::iconv(x = dataset$word, to = "UTF-8")
+                } else if (type == "datasetBySentence") {
+                    dataset$sentence <- base::iconv(x = dataset$sentence, to = "UTF-8")
+                }
+            }
             if (addProjectColumn == TRUE) {
                 dataset$project <- projectsAndWebsites[[i]][1]
             }
