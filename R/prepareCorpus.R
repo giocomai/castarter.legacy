@@ -38,10 +38,14 @@ LoadDatasets <- function(projectsAndWebsites = NULL,
         website <- projectsAndWebsites[[i]][2]
         if (type == "dataset") {
             datasetFilename <- sort(list.files(file.path(baseFolder, project, website, "Dataset"))[stringr::str_extract(list.files(file.path(baseFolder, project, website, "Dataset")), "dataset.rds") == "dataset.rds"], decreasing = TRUE)[1]
+        } else if (type == "datasetTidy") {
+            datasetFilename <- sort(list.files(file.path(baseFolder, project, website, "Dataset"))[stringr::str_extract(list.files(file.path(baseFolder, project, website, "Dataset")), "datasetTidy.rds") == "datasetTidy.rds"], decreasing = TRUE)[1]
+        } else if (type == "datasetBySentence") {
+            datasetFilename <- sort(list.files(file.path(baseFolder, project, website, "Dataset"))[stringr::str_extract(list.files(file.path(baseFolder, project, website, "Dataset")), "datasetBySentence.rds") == "datasetBySentence.rds"], decreasing = TRUE)[1]
         } else if (type == "datasetRdata") {
             datasetFilename <- sort(list.files(file.path(baseFolder, project, website, "Dataset"))[stringr::str_extract(list.files(file.path(baseFolder, project, website, "Dataset")), "dataset.RData") == "dataset.RData"], decreasing = TRUE)[1]
         } else {
-            stop("Type can be 'dataset', 'corpusQ', 'corpusTM, or 'corpusDtmQ'")
+            stop("Type can be 'dataset', 'datasetTidy', or 'datasetBySentence'")
         }
         if (is.na(datasetFilename) == FALSE) {
             lastSavedDataset <- file.path(file.path(baseFolder, project, website, "Dataset"), datasetFilename)
