@@ -83,6 +83,8 @@ LoadLatest <- function(project = NULL, website = NULL) {
 #' It assumes that previous operations have been completed, and both a 'metadata' and a 'contents' object exist. If they don't, it just prints this to the console.
 #' @param saveEnvironment Logical, defaults to TRUE. If TRUE, saves environment as .Rdata in the correspodning website folder.
 #' @param dataset Defaults to NULL. If TRUE, it seeks for a `metadata` and a `text` object in the current environment. If a `castarter` dataset is provided, this is then stored as the dataset.
+#' @param datasetTidy Exports the dataset in the .rds format, one word per row, in line with tidy principles. See also the package `tidytext`.
+#' @param datasetBySentence Exports the dataset in the .rds format, one sentence per row.
 #' @param exportCsv Logical, defaults to FALSE. If TRUE, exports the complete dataset in the .csv file format in the Dataset sub-folder.
 #' @param exportXlsx If equal to TRUE, exports the complete dataset in the .xlsx file format in the Dataset sub-folder.
 #' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.
@@ -94,8 +96,9 @@ LoadLatest <- function(project = NULL, website = NULL) {
 #' SaveWebsite(dataset = dataset)
 #' }
 SaveWebsite <- function(dataset = NULL,
+                        datasetTidy = FALSE,
+                        datasetBySentence = FALSE,
                         saveEnvironment = FALSE,
-                        tidyCorpus = NULL,
                         exportCsv = FALSE,
                         exportTxt = FALSE,
                         exportXlsx = FALSE,
@@ -112,6 +115,10 @@ SaveWebsite <- function(dataset = NULL,
     } else {
         baseFolder <- CastarterOptions("baseFolder")
     }
+    if (requireNamespace("tidytext", quietly = TRUE)==FALSE) {
+        stop("You need to install the `tidytext` package with `install.packages('tidytext')` to export datasets by word or by sentence.")
+    }
+
     if (saveEnvironment == TRUE) {
         save.image(file = file.path(baseFolder, project, website, "SessionRdata", paste0(paste(Sys.Date(), project, website, sep = "-"), ".RData")))
         message(paste("Environment saved in", file.path(baseFolder, project, website, "SessionRdata", paste0(paste(Sys.Date(), project, website, sep = "-"), ".RData"))))
@@ -128,10 +135,25 @@ SaveWebsite <- function(dataset = NULL,
             message(paste("Dataset saved in", file.path(baseFolder, project, website, paste0(paste(Sys.Date(), project, website, "dataset", sep = "-"), ".rds"))))
             }
     }
-    if (is.null(tidyCorpus)==FALSE) {
-            saveRDS(object = tidyCorpus,
-                    file = file.path(baseFolder, project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "tidyCorpus", sep = "-"), ".rds")))
-            message(paste("Tidy corpus saved in", file.path(baseFolder, project, website, paste0(paste(Sys.Date(), project, website, "tidyCorpus", sep = " - "), ".rds"))))
+    if (is.null(datasetTidy)==FALSE) {
+        if (datasetTidy==TRUE) {
+            saveRDS(object = tidytext::unnest_tokens(input = text,
+                                                     output = word,
+                                                     token = "words",
+                                                     to_lower = FALSE),
+                    file = file.path(baseFolder, project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "datasetTidy", sep = "-"), ".rds")))
+            message(paste("Tidy dataset saved in", file.path(baseFolder, project, website, paste0(paste(Sys.Date(), project, website, "datasetTidy", sep = " - "), ".rds"))))
+        }
+    }
+    if (is.null(bySentence)==FALSE) {
+        if (bySentence==TRUE) {
+            saveRDS(object = tidytext::unnest_tokens(input = text,
+                                                     output = word,
+                                                     token = "sentences",
+                                                     to_lower = FALSE),
+                    file = file.path(baseFolder, project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "datasetBySentence", sep = "-"), ".rds")))
+            message(paste("Dataset (by sentence) saved in", file.path(baseFolder, project, website, paste0(paste(Sys.Date(), project, website, "datasetBySentence", sep = " - "), ".rds"))))
+        }
     }
     if (exportCsv == TRUE) {
         readr::write_csv(x = dataset,

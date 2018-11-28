@@ -4,12 +4,17 @@
 \alias{SaveWebsite}
 \title{Saves working environment and dataset.}
 \usage{
-SaveWebsite(dataset = NULL, saveEnvironment = FALSE,
-  tidyCorpus = NULL, exportCsv = FALSE, exportTxt = FALSE,
-  exportXlsx = FALSE, project = NULL, website = NULL)
+SaveWebsite(dataset = NULL, datasetTidy = FALSE,
+  datasetBySentence = FALSE, saveEnvironment = FALSE,
+  exportCsv = FALSE, exportTxt = FALSE, exportXlsx = FALSE,
+  project = NULL, website = NULL)
 }
 \arguments{
 \item{dataset}{Defaults to NULL. If TRUE, it seeks for a `metadata` and a `text` object in the current environment. If a `castarter` dataset is provided, this is then stored as the dataset.}
+
+\item{datasetTidy}{Exports the dataset in the .rds format, one word per row, in line with tidy principles. See also the package `tidytext`.}
+
+\item{datasetBySentence}{Exports the dataset in the .rds format, one sentence per row.}
 
 \item{saveEnvironment}{Logical, defaults to TRUE. If TRUE, saves environment as .Rdata in the correspodning website folder.}
 
