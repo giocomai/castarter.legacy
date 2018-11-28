@@ -150,7 +150,7 @@ SaveWebsite <- function(dataset = NULL,
         if (bySentence==TRUE) {
             saveRDS(object = dataset %>%
                         tidytext::unnest_tokens(input = text,
-                                                output = word,
+                                                output = sentence,
                                                 token = "sentences",
                                                 to_lower = FALSE),
                     file = file.path(baseFolder, project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "datasetBySentence", sep = "-"), ".rds")))
