@@ -146,8 +146,8 @@ SaveWebsite <- function(dataset = NULL,
             message(paste("Tidy dataset saved in", file.path(baseFolder, project, website, paste0(paste(Sys.Date(), project, website, "datasetTidy", sep = " - "), ".rds"))))
         }
     }
-    if (is.null(bySentence)==FALSE) {
-        if (bySentence==TRUE) {
+    if (is.null(datasetBySentence)==FALSE) {
+        if (datasetBySentence==TRUE) {
             saveRDS(object = dataset %>%
                         tidytext::unnest_tokens(input = text,
                                                 output = sentence,
