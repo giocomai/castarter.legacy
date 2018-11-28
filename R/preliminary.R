@@ -137,20 +137,22 @@ SaveWebsite <- function(dataset = NULL,
     }
     if (is.null(datasetTidy)==FALSE) {
         if (datasetTidy==TRUE) {
-            saveRDS(object = tidytext::unnest_tokens(input = text,
-                                                     output = word,
-                                                     token = "words",
-                                                     to_lower = FALSE),
+            saveRDS(object = dataset %>%
+                        tidytext::unnest_tokens(input = text,
+                                                output = word,
+                                                token = "words",
+                                                to_lower = FALSE),
                     file = file.path(baseFolder, project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "datasetTidy", sep = "-"), ".rds")))
             message(paste("Tidy dataset saved in", file.path(baseFolder, project, website, paste0(paste(Sys.Date(), project, website, "datasetTidy", sep = " - "), ".rds"))))
         }
     }
     if (is.null(bySentence)==FALSE) {
         if (bySentence==TRUE) {
-            saveRDS(object = tidytext::unnest_tokens(input = text,
-                                                     output = word,
-                                                     token = "sentences",
-                                                     to_lower = FALSE),
+            saveRDS(object = dataset %>%
+                        tidytext::unnest_tokens(input = text,
+                                                output = word,
+                                                token = "sentences",
+                                                to_lower = FALSE),
                     file = file.path(baseFolder, project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "datasetBySentence", sep = "-"), ".rds")))
             message(paste("Dataset (by sentence) saved in", file.path(baseFolder, project, website, paste0(paste(Sys.Date(), project, website, "datasetBySentence", sep = " - "), ".rds"))))
         }
