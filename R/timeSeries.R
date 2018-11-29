@@ -85,7 +85,7 @@ ShowAbsoluteTS <- function(terms,
         graph <- graph +
             ggplot2::geom_line(size = 1) +
             ggplot2::scale_y_continuous(name = "", labels = scales::number_format(accuracy = NULL)) +
-            ggplot2::scale_x_date(name = "") +
+            ggplot2::scale_x_date(name = "", breaks = scales::pretty_breaks(n = 10)) +
             ggplot2::expand_limits(y = 0) +
             ggplot2::theme_minimal() +
             ggplot2::theme(legend.title=ggplot2::element_blank()) +
@@ -243,7 +243,7 @@ ShowRelativeTS <- function(terms,
         graph <- graph +
             ggplot2::geom_line(size = 1) +
             ggplot2::scale_y_continuous(name = "", labels = scales::number_format(accuracy = NULL)) +
-            ggplot2::scale_x_date(name = "") +
+            ggplot2::scale_x_date(name = "", breaks = scales::pretty_breaks(n = 10)) +
             ggplot2::expand_limits(y = 0) +
             ggplot2::theme_minimal() +
             ggplot2::theme(legend.title=ggplot2::element_blank()) +
