@@ -21,8 +21,8 @@
 #' ShowAbsoluteTS(terms = c("word1", "word2"), dataset)
 #' }
 
-ShowAbsoluteTS <- function(terms,
-                           dataset,
+ShowAbsoluteTS <- function(dataset,
+                           terms,
                            type = "graph",
                            specificWebsites = NULL,
                            startDate = NULL,
@@ -168,8 +168,8 @@ ShowAbsoluteTS <- function(terms,
 #' ShowRelativeTS(terms = c("word1", "word2"), dataset)
 #' }
 
-ShowRelativeTS <- function(terms,
-                           dataset,
+ShowRelativeTS <- function(dataset,
+                           terms,
                            type = "graph",
                            specificWebsites = NULL,
                            startDate = NULL,
