@@ -126,13 +126,13 @@ SaveWebsite <- function(dataset = NULL,
     if (is.null(dataset) == FALSE) {
         if (is.data.frame(dataset)==TRUE) {
             saveRDS(object = dataset, file = file.path(baseFolder, project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = "-"), ".rds")))
-            message(paste("Dataset saved in", file.path(baseFolder, project, website, paste0(paste(Sys.Date(), project, website, "dataset", sep = "-"), ".rds"))))
+            message(paste("Dataset saved in", file.path(baseFolder, project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = "-"), ".rds"))))
         } else if (dataset == TRUE) {
             dataset <- dplyr::bind_cols(tibble::data_frame(doc_id = metadata$doc_id, text = text),
                                         metadata %>%
                                             dplyr::select(-doc_id))
             saveRDS(object = dataset, file = file.path(baseFolder, project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = "-"), ".rds")))
-            message(paste("Dataset saved in", file.path(baseFolder, project, website, paste0(paste(Sys.Date(), project, website, "dataset", sep = "-"), ".rds"))))
+            message(paste("Dataset saved in", file.path(baseFolder, project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = "-"), ".rds"))))
             }
     }
     if (is.null(datasetTidy)==FALSE) {
@@ -143,7 +143,7 @@ SaveWebsite <- function(dataset = NULL,
                                                 token = "words",
                                                 to_lower = FALSE),
                     file = file.path(baseFolder, project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "datasetTidy", sep = "-"), ".rds")))
-            message(paste("Tidy dataset saved in", file.path(baseFolder, project, website, paste0(paste(Sys.Date(), project, website, "datasetTidy", sep = " - "), ".rds"))))
+            message(paste("Tidy dataset saved in", file.path(baseFolder, project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "datasetTidy", sep = " - "), ".rds"))))
         }
     }
     if (is.null(datasetBySentence)==FALSE) {
@@ -154,7 +154,7 @@ SaveWebsite <- function(dataset = NULL,
                                                 token = "sentences",
                                                 to_lower = FALSE),
                     file = file.path(baseFolder, project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "datasetBySentence", sep = "-"), ".rds")))
-            message(paste("Dataset (by sentence) saved in", file.path(baseFolder, project, website, paste0(paste(Sys.Date(), project, website, "datasetBySentence", sep = " - "), ".rds"))))
+            message(paste("Dataset (by sentence) saved in", file.path(baseFolder, project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "datasetBySentence", sep = " - "), ".rds"))))
         }
     }
     if (exportCsv == TRUE) {
