@@ -106,88 +106,92 @@ ExtractDates <- function(dateFormat = "dmY",
     if (is.null(htmlLocation)) {
         htmlLocation <- file.path(baseFolder, project, website, "Html")
     }
-    # If IDs not given, list files
-    if (is.null(id)==FALSE) {
-        HtmlFiles <- file.path(htmlLocation, paste0(id, ".html"))
+    if (is.null(inputVector)==FALSE) {
+        datesTxt <- inputVector
     } else {
-        # list files
-        HtmlFiles <- list.files(path = htmlLocation, full.names = TRUE)
-        # put them in order [equivalent to gtools::mixedorder()]
-        HtmlFiles <- HtmlFiles[stringr::str_extract(string = HtmlFiles, pattern = "[[:digit:]]+[[:punct:]]html") %>% stringr::str_sub(start = 1L, end = -6L) %>% as.integer() %>% order()]
-    }
-    datesTxt <- vector(mode = "character", length = length(HtmlFiles))
-    if (progressBar == TRUE) {
-        pb <- dplyr::progress_estimated(n = length(HtmlFiles), min_time = 1)
-    }
-    for (i in seq_along(HtmlFiles)) {
-        if (progressBar == TRUE) {
-            pb$tick()$print()
+        # If IDs not given, list files
+        if (is.null(id)==FALSE) {
+            HtmlFiles <- file.path(htmlLocation, paste0(id, ".html"))
+        } else {
+            # list files
+            HtmlFiles <- list.files(path = htmlLocation, full.names = TRUE)
+            # put them in order [equivalent to gtools::mixedorder()]
+            HtmlFiles <- HtmlFiles[stringr::str_extract(string = HtmlFiles, pattern = "[[:digit:]]+[[:punct:]]html") %>% stringr::str_sub(start = 1L, end = -6L) %>% as.integer() %>% order()]
         }
-        temp <-  tryCatch(expr = xml2::read_html(HtmlFiles[i], encoding = encoding),
-                          error = function(e) {
-                              warning(paste("Could not read", HtmlFiles[i]))
-                              NA
-                          })
-        if (is.element("xml_node", set = class(temp))==TRUE) {
-            if (is.null(customXpath)==FALSE) {
-                temp <- temp %>%
-                    rvest::html_nodes(xpath = customXpath)
-                if (is.null(attribute)) {
-                    temp <-  temp %>%
+        datesTxt <- vector(mode = "character", length = length(HtmlFiles))
+        if (progressBar == TRUE) {
+            pb <- dplyr::progress_estimated(n = length(HtmlFiles), min_time = 1)
+        }
+        for (i in seq_along(HtmlFiles)) {
+            if (progressBar == TRUE) {
+                pb$tick()$print()
+            }
+            temp <-  tryCatch(expr = xml2::read_html(HtmlFiles[i], encoding = encoding),
+                              error = function(e) {
+                                  warning(paste("Could not read", HtmlFiles[i]))
+                                  NA
+                              })
+            if (is.element("xml_node", set = class(temp))==TRUE) {
+                if (is.null(customXpath)==FALSE) {
+                    temp <- temp %>%
+                        rvest::html_nodes(xpath = customXpath)
+                    if (is.null(attribute)) {
+                        temp <-  temp %>%
+                            rvest::html_text()
+                    } else {
+                        temp <-  temp %>%
+                            rvest::html_attr(attribute) %>%
+                            rvest::html_text()
+                    }
+                } else if (is.null(container)==FALSE&is.null(containerClass)==FALSE&is.null(attribute)==FALSE) {
+                    temp <- tryCatch(expr = temp %>%
+                                         rvest::html_nodes(container) %>%
+                                         rvest::html_nodes(xpath = paste0("//", container, "[@class='", containerClass, "']")) %>%
+                                         rvest::html_attr(attribute),
+                                     error = function(e) {
+                                         warning(paste("Could not find attribute in", HtmlFiles[i]))
+                                         NA
+                                     })
+                } else if (is.null(container)==FALSE&is.null(containerClass)==TRUE&is.null(attribute)==FALSE) {
+                    temp <- tryCatch(expr = temp %>%
+                                         rvest::html_nodes(container) %>%
+                                         rvest::html_attr(attribute),
+                                     error = function(e) {
+                                         warning(paste("Could not find attribute in", HtmlFiles[i]))
+                                         NA
+                                     })
+                } else if (is.null(containerClass)==TRUE&is.null(containerId)==TRUE) {
+                    temp <- as.character(temp)
+                } else if (is.null(containerClass)==TRUE&is.null(containerId)==TRUE) {
+                    temp <- temp %>%
+                        rvest::html_nodes(container) %>% rvest::html_text()
+                } else if (is.null(containerClass)==FALSE) {
+                    temp <- temp %>%
+                        rvest::html_nodes(xpath = paste0("//", container, "[@class='", containerClass, "']")) %>%
                         rvest::html_text()
-                } else {
-                    temp <-  temp %>%
-                        rvest::html_attr(attribute) %>%
+                } else if (is.null(containerId)==FALSE) {
+                    temp <- temp %>%
+                        rvest::html_nodes(xpath = paste0("//", container, "[@id='", containerId, "']")) %>%
                         rvest::html_text()
                 }
-            } else if (is.null(container)==FALSE&is.null(containerClass)==FALSE&is.null(attribute)==FALSE) {
-                temp <- tryCatch(expr = temp %>%
-                             rvest::html_nodes(container) %>%
-                             rvest::html_nodes(xpath = paste0("//", container, "[@class='", containerClass, "']")) %>%
-                             rvest::html_attr(attribute),
-                         error = function(e) {
-                             warning(paste("Could not find attribute in", HtmlFiles[i]))
-                             NA
-                         })
-            } else if (is.null(container)==FALSE&is.null(containerClass)==TRUE&is.null(attribute)==FALSE) {
-                temp <- tryCatch(expr = temp %>%
-                             rvest::html_nodes(container) %>%
-                             rvest::html_attr(attribute),
-                         error = function(e) {
-                             warning(paste("Could not find attribute in", HtmlFiles[i]))
-                             NA
-                         })
-            } else if (is.null(containerClass)==TRUE&is.null(containerId)==TRUE) {
-                temp <- as.character(temp)
-            } else if (is.null(containerClass)==TRUE&is.null(containerId)==TRUE) {
-                temp <- temp %>%
-                    rvest::html_nodes(container) %>% rvest::html_text()
-            } else if (is.null(containerClass)==FALSE) {
-                temp <- temp %>%
-                    rvest::html_nodes(xpath = paste0("//", container, "[@class='", containerClass, "']")) %>%
-                    rvest::html_text()
-            } else if (is.null(containerId)==FALSE) {
-                temp <- temp %>%
-                    rvest::html_nodes(xpath = paste0("//", container, "[@id='", containerId, "']")) %>%
-                    rvest::html_text()
-            }
-            if (is.null(removeEverythingBefore) == FALSE) {
-                temp <- stringr::str_replace(string = temp, pattern = stringr::regex(paste0(".*", removeEverythingBefore)), replacement = "")
-            }
-            if (length(temp)>1) {
+                if (is.null(removeEverythingBefore) == FALSE) {
+                    temp <- stringr::str_replace(string = temp, pattern = stringr::regex(paste0(".*", removeEverythingBefore)), replacement = "")
+                }
+                if (length(temp)>1) {
 
-                if (is.null(containerInstance)==FALSE) {
-                    datesTxt[i] <- temp[containerInstance]
+                    if (is.null(containerInstance)==FALSE) {
+                        datesTxt[i] <- temp[containerInstance]
+                    } else {
+                        datesTxt[i] <- temp[1]
+                        warning(paste0("ID",
+                                       stringr::str_extract(string = HtmlFiles[i], pattern = "[[:digit:]]+[[:punct:]]html") %>%
+                                           stringr::str_sub(start = 1L, end = -6L), ": Found more than one string per page, keeping only first occurrence. You can specify which occurrence to keep with the param `containerInstance`.\n"))
+                    }
+                } else if (length(temp)==0) {
+                    datesTxt[i] <- NA
                 } else {
-                    datesTxt[i] <- temp[1]
-                    warning(paste0("ID",
-                                   stringr::str_extract(string = HtmlFiles[i], pattern = "[[:digit:]]+[[:punct:]]html") %>%
-                                       stringr::str_sub(start = 1L, end = -6L), ": Found more than one string per page, keeping only first occurrence. You can specify which occurrence to keep with the param `containerInstance`.\n"))
+                    datesTxt[i] <- temp
                 }
-            } else if (length(temp)==0) {
-                datesTxt[i] <- NA
-            } else {
-                datesTxt[i] <- temp
             }
         }
     }
