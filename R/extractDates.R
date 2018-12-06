@@ -16,6 +16,7 @@
 ##'  \item{"Bd,Y"}{: }
 ##'  \item{"xdBY"}{: customString must be provided.}
 ##' }
+#' @param removeString A character vector of one or more strings to be removed from the extracted title.
 #' @param customRegex Defaults to NULL. If provided, regex parsing pre-data extraction will follow this forumula, e.g. `[[:digit:]][[:digit:]][[:punct:]][[:space:]][[:digit:]][[:digit:]][[:punct:]][[:space:]][[:digit:]][[:digit:]][[:digit:]][[:digit:]]`.
 #' @param minDate, maxDate Minimum and maximum possible dates in the format year-month-date, e.g. "2007-06-24". Introduces NA in the place of impossibly high or low dates.
 #' @param language Provide a language in order to extract name of months. Defaults to the locale currently active in R (usually, the system language). Generic forms such as "english" or "russian", are usually accepted. See ?locales for more details. On linux, you can run system("locale -a", intern = TRUE) to see all available locales.
@@ -194,6 +195,9 @@ ExtractDates <- function(dateFormat = "dmY",
                 }
             }
         }
+    }
+    if (is.null(removeString) == FALSE) {
+        datesTxt <- gsub(removeString, replacement = "", x = datesTxt, fixed = TRUE)
     }
     if (keepAllString == FALSE) {
         if (is.null(customRegex) == FALSE) {
