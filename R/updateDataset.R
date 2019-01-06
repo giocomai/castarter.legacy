@@ -166,7 +166,7 @@ UpdateDataset <- function(dataset = NULL,
                                id = id,
                                titles = titles,
                                language = language,
-                               links = newLinks)
+                               links = allLinks)
 
     message("\nExtracting text")
 
