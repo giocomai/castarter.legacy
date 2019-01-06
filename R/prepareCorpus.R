@@ -9,6 +9,7 @@
 ##'  \item{"datasetTidy"}{: Outputs a 'castarter' dataset, with one word per row, in line with tidy principles. See also the `tidytext` package.}
 ##'  \item{"datasetBySentence"}{: Outputs a 'castarter' dataset, with one sentence per row. This can be used to speed up the loading time of datasets analysed through the `AnalyseDataset()` function.}
 ##' }
+#' @param arrangeByDate Logical, defaults to TRUE. If TRUE, the dataset is put in order by date (oldest first).
 #' @param removeNAdates Logical, defaults to TRUE. If TRUE, dataset items that do not have a date in the records are not imported.
 #' @param convertToUTF8 Logical, defaults to FALSE. If TRUE, converts the `title` and `text` column (or correspondent, in `datasetTidy` and `datasetBySentence`) to UTF8.
 #' @param addProjectColumn Logical, defatults to FALSE. If TRUE, a column with the project name is appended.
@@ -21,6 +22,7 @@
 #' }
 LoadDatasets <- function(projectsAndWebsites = NULL,
                          type = "dataset",
+                         arrangeByDate = TRUE,
                          removeNAdates = TRUE,
                          convertToUTF8 = FALSE,
                          addProjectColumn = FALSE) {
@@ -91,7 +93,12 @@ LoadDatasets <- function(projectsAndWebsites = NULL,
             allDatasets <- allDatasets[is.na(allDatasets$date) == FALSE, ]
         }
     }
-    return(dplyr::as_data_frame(allDatasets))
+    if (arrangeByDate==TRUE) {
+        return(dplyr::as_data_frame(allDatasets) %>%
+                   dplyr::arrange(date))
+    } else {
+        return(dplyr::as_data_frame(allDatasets))
+    }
 }
 
 
