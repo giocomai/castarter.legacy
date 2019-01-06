@@ -4,16 +4,16 @@
 \alias{ShowAbsoluteTS}
 \title{Creates time series of the absolute frequency of specific terms.}
 \usage{
-ShowAbsoluteTS(terms, dataset, type = "graph", specificWebsites = NULL,
+ShowAbsoluteTS(dataset, terms, type = "graph", specificWebsites = NULL,
   startDate = NULL, endDate = NULL, rollingAverage = 31,
   align = "center", verticalLine = NULL, smoothLine = FALSE,
   customTitle = NULL, export = FALSE, project = NULL,
   website = NULL)
 }
 \arguments{
-\item{terms}{A character vector with one or more words to be analysed.}
-
 \item{dataset}{A `castarter` dataset.}
+
+\item{terms}{A character vector with one or more words to be analysed.}
 
 \item{type}{Type of output: either "graph" (default) or "data.frame".}
 
