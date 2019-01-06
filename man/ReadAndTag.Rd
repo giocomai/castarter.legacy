@@ -4,7 +4,10 @@
 \alias{ReadAndTag}
 \title{Starts a Shiny app that facilitates sub-setting, reading, and tagging a `castarter` dataset.}
 \usage{
-ReadAndTag()
+ReadAndTag(archive_org_links = FALSE)
+}
+\arguments{
+\item{archive_org_links}{Logical, defaults to FALSE. If TRUE, adds direct links to the Archive.org version of the current web page, as well as to save a current snapshot of the page on archive.org.}
 }
 \description{
 Starts a Shiny app that facilitates sub-setting, reading, and tagging a `castarter` dataset.

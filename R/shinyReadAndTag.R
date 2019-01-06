@@ -2,13 +2,15 @@
 #'
 #' Starts a Shiny app that facilitates sub-setting, reading, and tagging a `castarter` dataset.
 #'
+#'
+#' @param archive_org_links Logical, defaults to FALSE. If TRUE, adds direct links to the Archive.org version of the current web page, as well as to save a current snapshot of the page on archive.org.
 #' @export
 #' @examples
 #' \dontrun{
 #' ReadAndTag()
 #' }
 
-ReadAndTag <- function() {
+ReadAndTag <- function(archive_org_links = FALSE) {
     if (requireNamespace("shiny", quietly = TRUE)==FALSE) {
         stop("You need to install the `shiny` package with `install.packages('shiny')` to use this function.")
     }
@@ -248,7 +250,13 @@ ReadAndTag <- function() {
         })
 
         output$link <- shiny::renderText({
-            paste('<a href="', dataset$link[input$id], '">', dataset$link[input$id], '</a>')
+            if (archive_org_links == TRUE) {
+                paste0("Original link: ", '<a href="', dataset$link[input$id], '">', dataset$link[input$id], '</a>', "<br />",
+                       '<a href="', "https://web.archive.org/", dataset$link[input$id], '">', "View on Archive.org", '</a>', " - ",
+                       '<a href="', "https://web.archive.org/save/", dataset$link[input$id], '">', "Save on Archive.org", '</a>', "<br /><br />")
+            } else {
+                paste0('<a href="', dataset$link[input$id], '">', dataset$link[input$id], '</a>')
+            }
         })
 
         output$contents <- shiny::renderText({
