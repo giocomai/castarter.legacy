@@ -5,7 +5,7 @@
 \title{Loads a specific set of datasets from existings 'castarter' projects.}
 \usage{
 LoadDatasets(projectsAndWebsites = NULL, type = "dataset",
-  removeNAdates = TRUE, convertToUTF8 = FALSE,
+  arrangeByDate = TRUE, removeNAdates = TRUE, convertToUTF8 = FALSE,
   addProjectColumn = FALSE)
 }
 \arguments{
@@ -17,6 +17,8 @@ LoadDatasets(projectsAndWebsites = NULL, type = "dataset",
  \item{"datasetTidy"}{: Outputs a 'castarter' dataset, with one word per row, in line with tidy principles. See also the `tidytext` package.}
  \item{"datasetBySentence"}{: Outputs a 'castarter' dataset, with one sentence per row. This can be used to speed up the loading time of datasets analysed through the `AnalyseDataset()` function.}
 }}
+
+\item{arrangeByDate}{Logical, defaults to TRUE. If TRUE, the dataset is put in order by date (oldest first).}
 
 \item{removeNAdates}{Logical, defaults to TRUE. If TRUE, dataset items that do not have a date in the records are not imported.}
 
