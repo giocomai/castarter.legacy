@@ -79,11 +79,11 @@ UpdateDataset <- function(dataset = NULL,
             if (length(indexLinks)==maxNumberOfIndexPages) {
                 warning("Download of index pages stopped because maxNumberOfIndexPages has been reached. There may be other new pages that have not been downloaded.")
             }
-            message("Extracting links to new pages")
+            message("\nExtracting links to new pages")
             newLinks <- ExtractLinks(importParameters = TRUE, id = NULL)
         } else {
 
-            message("Downloading index pages between the last day available in the dataset and today.")
+            message("\nDownloading index pages between the last day available in the dataset and today.")
 
             indexLinks <- CreateLinks(linkFirstChunk = params$CreateLinks$linkFirstChunk,
                                       linkSecondChunk = params$CreateLinks$linkSecondChunk,
@@ -97,7 +97,7 @@ UpdateDataset <- function(dataset = NULL,
             DownloadContents(links = indexLinks, type = "index", missingPages = FALSE, wait = wait, project = project, website = website)
             DownloadContents(links = indexLinks, type = "index", missingPages = FALSE, wait = wait, project = project, website = website)
 
-            message("Extracting links to new pages")
+            message("\nExtracting links to new pages")
 
             newLinks <- ExtractLinks(importParameters = TRUE,
                                      project = project,
@@ -142,20 +142,20 @@ UpdateDataset <- function(dataset = NULL,
 
     # Extract metadata
     id <- ExtractId(project = project, website = website)
-    message("Extracting titles")
+    message("\nExtracting titles")
     titles <- ExtractTitles(id = id,
                             importParameters = TRUE,
                             exportParameters = FALSE,
                             project = project,
                             website = website)
-    message("Extracting dates")
+    message("\nExtracting dates")
     dates <- ExtractDates(id = id,
                           importParameters = TRUE,
                           exportParameters = FALSE,
                           project = project,
                           website = website)
     if (sum(is.na(dates))>0) {
-        warning(paste("The date could not be extracted for", sum(is.na(dates)), "of the", length(id), "new pages found."))
+        warning(paste("\nThe date could not be extracted for", sum(is.na(dates)), "of the", length(id), "new pages found."))
     }
 
     language <- dataset$language[1]
@@ -168,7 +168,7 @@ UpdateDataset <- function(dataset = NULL,
                                language = language,
                                links = newLinks)
 
-    message("Extracting text")
+    message("\nExtracting text")
 
     text <- ExtractText(id = id,
                         importParameters = TRUE,
@@ -178,12 +178,12 @@ UpdateDataset <- function(dataset = NULL,
     dataset <- dplyr::bind_rows(dataset, newDataset)
 
     if (exportRds==TRUE) {
-        message("Saving dataset in .rds format.")
+        message("\nSaving dataset in .rds format.")
         ExportDataset(dataset = dataset,
                       exportRds = TRUE,
                       project = project,
                       website = website)
     }
-    message(paste(sum(toDownloadL), "new pages added to dataset."))
+    message(paste("\n", sum(toDownloadL), "new pages added to dataset."))
     invisible(dataset)
 }
