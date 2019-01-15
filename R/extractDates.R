@@ -270,6 +270,16 @@ ExtractDates <- function(dateFormat = "dmY",
                 }
             }
             dateFormat <- "dBY"
+        } else if (dateFormat == "YdB") {
+            for (i in 1:length(datesTxt)) {
+                dateTxt <- regmatches(datesTxt[i], regexpr(paste0(customString, "[[:digit:]][[:digit:]][[:digit:]][[:digit:]][[:space:]][[:digit:]][[:digit:]]?[[:space:]][[:alpha:]]*"),
+                                                           datesTxt[i]))
+                if (length(dateTxt) == 0) {
+                    datesTxt[i] <- NA
+                } else {
+                    datesTxt[i] <- dateTxt
+                }
+            }
         } else if (dateFormat == "ymd" | dateFormat == "Ymd") {
             for (i in 1:length(datesTxt)) {
                 dateTxt <- regmatches(datesTxt[i], regexpr("[[:digit:]][[:digit:]][[:digit:]][[:digit:]][[:punct:]]?[[:digit:]]?[[:digit:]][[:punct:]]?[[:digit:]]?[[:digit:]]", datesTxt[i]))
