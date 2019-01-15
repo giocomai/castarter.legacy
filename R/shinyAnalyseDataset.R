@@ -15,7 +15,9 @@ AnalyseDataset <- function() {
     if (requireNamespace("tidytext", quietly = TRUE)==FALSE) {
         stop("You need to install the `tidytext` package with `install.packages('tidytext')` to use this function.")
     }
-
+    if (requireNamespace("shiny", quietly = TRUE)==FALSE) {
+        stop("You need to install the `DT` package with `install.packages('DT')` to use this function.")
+    }
     shiny::shinyApp(ui = shiny::fluidPage(
 
         shiny::tags$head(
