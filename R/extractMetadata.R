@@ -128,7 +128,7 @@ ExtractTitles <- function(container = "title",
                     temp <- temp %>%
                         rvest::html_nodes(xpath = paste0("//", container, "[@class='", containerClass, "']")) %>%
                         rvest::html_text()
-                } else if (is.null(containerClass)==FALSE) {
+                } else if (is.null(containerId)==FALSE) {
                     temp <- temp %>%
                         rvest::html_nodes(xpath = paste0("//", container, "[@id='", containerId, "']")) %>%
                         rvest::html_text()
