@@ -5,22 +5,24 @@
 \title{Extracts titles of individual pages}
 \usage{
 ExtractTitles(container = "title", containerClass = NULL,
-  containerId = NULL, htmlLocation = NULL, id = NULL, links = NULL,
-  removePunctuation = FALSE, onlyStandardCharacters = FALSE,
-  removeString = NULL, removeEverythingBefore = NULL,
-  removeEverythingAfter = NULL, customXpath = "",
-  maxCharacters = NULL, encoding = "UTF-8", progressBar = TRUE,
-  exportParameters = TRUE, importParameters = NULL, project = NULL,
-  website = NULL)
+  containerId = NULL, containerInstance = NULL, htmlLocation = NULL,
+  id = NULL, links = NULL, removePunctuation = FALSE,
+  onlyStandardCharacters = FALSE, removeString = NULL,
+  removeEverythingBefore = NULL, removeEverythingAfter = NULL,
+  customXpath = "", maxCharacters = NULL, encoding = "UTF-8",
+  progressBar = TRUE, exportParameters = TRUE,
+  importParameters = NULL, project = NULL, website = NULL)
 }
 \arguments{
 \item{container}{HTML element where the title is found. The title can usually be found in one of the following:
 \itemize{
  \item{"links"}{: Extract the title from links (required). Titles are taken from the textual element of the link taken from the index pages. }
  \item{"title"}{: Default. Extract the title from the Html <title> field, usually shown on the top bar of web browsers.}
- \item{"h1"}{: Extract the title from the first occurence of text that has heading 1, the <h1> html tag, as its style.}
- \item{"h2"}{: Extract the title from the first occurence of text that has heading 2, the <h2> html tag, as its style.}
+ \item{"h1"}{: Extract the title from the first occurence of text that has heading 1, the <h1> html tag, as its style, unless containerInstance is provided.}
+ \item{"h2"}{: Extract the title from the first occurence of text that has heading 2, the <h2> html tag, as its style, unless containerInstance is provided.}
 }}
+
+\item{containerInstance}{Defaults to NULL. If given, it must be an integer. If a given element is found more than once in the same page, it keeps only the relevant occurrence for further extraction.}
 
 \item{htmlLocation}{Path to folder where html files, tipically downloaded with DownloadContents(links) are stored. If not given, it defaults to the Html folder inside project/website folders.}
 

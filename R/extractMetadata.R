@@ -10,9 +10,10 @@
 ##' \itemize{
 ##'  \item{"links"}{: Extract the title from links (required). Titles are taken from the textual element of the link taken from the index pages. }
 ##'  \item{"title"}{: Default. Extract the title from the Html <title> field, usually shown on the top bar of web browsers.}
-##'  \item{"h1"}{: Extract the title from the first occurence of text that has heading 1, the <h1> html tag, as its style.}
-##'  \item{"h2"}{: Extract the title from the first occurence of text that has heading 2, the <h2> html tag, as its style.}
+##'  \item{"h1"}{: Extract the title from the first occurence of text that has heading 1, the <h1> html tag, as its style, unless containerInstance is provided.}
+##'  \item{"h2"}{: Extract the title from the first occurence of text that has heading 2, the <h2> html tag, as its style, unless containerInstance is provided.}
 ##' }
+#' @param containerInstance Defaults to NULL. If given, it must be an integer. If a given element is found more than once in the same page, it keeps only the relevant occurrence for further extraction.
 #' @param removeEverythingAfter Removes everything after given string.
 #' @param maxCharacters An integer. Defines the maximum number of characters to be kept in the output for each title.
 #' @param progressBar Logical, defaults to TRUE. If FALSE, progress bar is not shown (useful for example when including scripts in rmarkdown)
@@ -27,6 +28,7 @@
 ExtractTitles <- function(container = "title",
                           containerClass = NULL,
                           containerId = NULL,
+                          containerInstance = NULL,
                           htmlLocation = NULL,
                           id = NULL,
                           links = NULL,
@@ -132,8 +134,12 @@ ExtractTitles <- function(container = "title",
                         rvest::html_text()
                 }
                 if (length(temp)>1) {
-                    titles[i] <- temp[1]
-                    warning(paste0("ID", stringr::str_extract(string = HtmlFiles[i], pattern = "[[:digit:]]+[[:punct:]]html") %>% stringr::str_sub(start = 1L, end = -6L), ": Found more than one string per page, keeping only first occurrence."))
+                    if (is.null(containerInstance)==FALSE) {
+                        titles[i] <- temp[containerInstance]
+                    } else {
+                        titles[i] <- temp[1]
+                        warning(paste0("ID", stringr::str_extract(string = HtmlFiles[i], pattern = "[[:digit:]]+[[:punct:]]html") %>% stringr::str_sub(start = 1L, end = -6L), ": Found more than one string per page, keeping only first occurrence."))
+                    }
                 } else if (length(temp)==0) {
                     titles[i] <- NA
                 } else {
