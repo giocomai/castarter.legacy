@@ -7,12 +7,11 @@
 ExtractLinks(domain = NULL, partOfLink = NULL,
   partOfLinkToExclude = NULL, container = NULL,
   containerClass = NULL, containerId = NULL, attributeType = NULL,
-  htmlLocation = NULL, id = NULL, extractText = FALSE,
-  minLength = NULL, maxLength = NULL, indexLinks = NULL,
-  sortLinks = FALSE, linkTitle = TRUE, appendString = NULL,
-  export = FALSE, removeString = NULL, progressBar = TRUE,
-  project = NULL, website = NULL, importParameters = NULL,
-  exportParameters = TRUE)
+  htmlLocation = NULL, id = NULL, minLength = NULL,
+  maxLength = NULL, indexLinks = NULL, sortLinks = FALSE,
+  linkTitle = TRUE, appendString = NULL, export = FALSE,
+  removeString = NULL, progressBar = TRUE, project = NULL,
+  website = NULL, importParameters = NULL, exportParameters = TRUE)
 }
 \arguments{
 \item{domain}{Web domain of the website. Will be added at the beginning of each link found.If links in the page already include the full web address this should be ignored. Defaults to "".}
