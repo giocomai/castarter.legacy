@@ -13,7 +13,7 @@ DownloadContents(links, type = "articles", path = NULL, size = 500,
 \arguments{
 \item{links}{A character vector of links, commonly generated either with the function CreateLinks or ExtractLinks.}
 
-\item{type}{Accepted values are either "articles" (default), or "index"; it defines the folder where files are stored.}
+\item{type}{Accepted values are either "articles" (default), "index", or "pdf"; it defines the folder where files are stored. If "pdf" is given a dedicated pdf folder is created.}
 
 \item{path}{Defaults to NULL. If given, overrides the "type" param and stores html files in given path as a subfolder of project/website. Folder must already exist, and should be empty.}
 

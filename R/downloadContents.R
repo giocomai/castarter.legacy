@@ -3,7 +3,7 @@
 #' Downloads html pages based on a vector of links.
 #'
 #' @param links A character vector of links, commonly generated either with the function CreateLinks or ExtractLinks.
-#' @param type Accepted values are either "articles" (default), or "index"; it defines the folder where files are stored.
+#' @param type Accepted values are either "articles" (default), "index", or "pdf"; it defines the folder where files are stored. If "pdf" is given a dedicated pdf folder is created.
 #' @param path Defaults to NULL. If given, overrides the "type" param and stores html files in given path as a subfolder of project/website. Folder must already exist, and should be empty.
 #' @param wait Defaults to 1. Number of seconds to wait between downloading one page and the next. Can be increased to reduce server load, or can be set to 0 when this is not an issue.
 #' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.
@@ -50,22 +50,33 @@ DownloadContents <- function(links,
     } else {
         baseFolder <- CastarterOptions("baseFolder")
     }
+    fileFormat <- "html"
     if (type=="articles") {
         htmlFilePath <- file.path(baseFolder, project, website, "Html")
     } else if (type=="index") {
         htmlFilePath <- file.path(baseFolder, project, website, "IndexHtml")
+    } else if (type=="pdf"){
+        dir.create(path = file.path(baseFolder, project, website, "Pdf"), showWarnings = FALSE)
+        htmlFilePath <- file.path(baseFolder, project, website, "Pdf")
+        fileFormat <- "pdf"
+    }  else if (type=="html"){
+        dir.create(path = file.path(baseFolder, project, website, "Html"), showWarnings = FALSE)
+        htmlFilePath <- file.path(baseFolder, project, website, "Html")
     }
     if (is.null(path)==FALSE) {
         htmlFilePath <- file.path(baseFolder, project, website, path)
     }
     htmlFilesList <- list.files(htmlFilePath, full.names = TRUE)
     # put them in order [equivalent to gtools::mixedorder()]
-    htmlFilesList <- htmlFilesList[stringr::str_extract(string = htmlFilesList, pattern = "[[:digit:]]+[[:punct:]]html") %>% stringr::str_sub(start = 1L, end = -6L) %>% as.integer() %>% order()]
+    htmlFilesList <- htmlFilesList[stringr::str_extract(string = htmlFilesList, pattern = "[[:digit:]]+[[:punct:]]html") %>%
+                                       stringr::str_sub(start = 1L, end = -(nchar(fileFormat)+2)) %>%
+                                       as.integer() %>%
+                                       order()]
     htmlFileSize <- file.info(htmlFilesList)["size"]
     articlesId <- 1:length(links)
     if (is.null(linksToDownload) == TRUE) {
         if (missingPages == TRUE) {
-            articlesHtmlFilenamesInTheory <- file.path(htmlFilePath, paste0(articlesId, ".html"))
+            articlesHtmlFilenamesInTheory <- file.path(htmlFilePath, paste0(articlesId, ".", fileFormat))
             linksToDownload <- !is.element(articlesHtmlFilenamesInTheory, htmlFilesList)
             if (is.null(linksToCheck)==FALSE) {
                 linksToDownload <- Reduce(f = "&", x = list(linksToDownload, linksToCheck))
@@ -73,8 +84,9 @@ DownloadContents <- function(links,
         } else if (missingPages == FALSE) {
 
             smallFiles <- htmlFilesList[htmlFileSize < size]
-            smallFilesId <- as.integer(stringr::str_extract(string = smallFiles, pattern = "[[:digit:]]+[[:punct:]]html") %>%
-                                           stringr::str_sub(start = 1L, end = -6L))
+            smallFilesId <- as.integer(stringr::str_extract(string = smallFiles,
+                                                            pattern = paste0("[[:digit:]]+[[:punct:]]", fileFormat)) %>%
+                                           stringr::str_sub(start = 1L, end = -(nchar(fileFormat)+2)))
             linksToDownload <- rep(x = FALSE, times = length(links))
             linksToDownload[smallFilesId] <- TRUE
             if (is.null(linksToCheck)==FALSE) {
@@ -95,7 +107,7 @@ DownloadContents <- function(links,
                 file.remove(file.path(baseFolder, project, website, "downloadPages.sh"))
             }
             write(x = paste0("wget '", links[linksToDownload], "' -O '",
-                            file.path("..", "..", "..", htmlFilePath, paste0(articlesId[linksToDownload], ".html")), "'",
+                            file.path("..", "..", "..", htmlFilePath, paste0(articlesId[linksToDownload], ".", fileFormat)), "'",
                             " -t 1 -T 20", "; ", "sleep ", wait),
                   file = file.path(baseFolder, project, website, "downloadPages.sh"), append = TRUE)
             system(paste("chmod +x", file.path(baseFolder, project, website, "downloadPages.sh")))
@@ -103,10 +115,8 @@ DownloadContents <- function(links,
             options(useFancyQuotes = FALSE)
             for (i in links[linksToDownload]) {
                 articleId <- articlesId[linksToDownload][temp]
-                system(paste("wget '", i, "' -O", file.path(htmlFilePath, paste0(articleId, ".html"))))
+                system(paste("wget '", i, "' -O", file.path(htmlFilePath, paste0(articleId, ".", fileFormat))))
                 message(paste("Downloaded item", temp, "of", length(links[linksToDownload]), ". ID: ", articleId), quote = FALSE)
-                htmlFile <- readLines(file.path(baseFolder, project, website, "Html", paste0(articleId, ".html")))
-                htmlFile <- paste(htmlFile, collapse = "\n")
                 temp <- temp + 1
                 Sys.sleep(wait)
             }
@@ -115,9 +125,9 @@ DownloadContents <- function(links,
         for (i in links[linksToDownload]) {
             articleId <- articlesId[linksToDownload][temp]
             if (ignoreSSLcertificates==TRUE) {
-                try(utils::download.file(url = i, destfile = file.path(htmlFilePath, paste0(articleId, ".html")), method = "wget", extra = "--no-check-certificate"))
+                try(utils::download.file(url = i, destfile = file.path(htmlFilePath, paste0(articleId, ".", fileFormat)), method = "wget", extra = "--no-check-certificate"))
             } else {
-                try(utils::download.file(url = i, destfile = file.path(htmlFilePath, paste0(articleId, ".html")), method = method))
+                try(utils::download.file(url = i, destfile = file.path(htmlFilePath, paste0(articleId, ".", fileFormat)), method = method))
             }
             message(paste("Downloaded item", temp, "of", length(links[linksToDownload]), ". ID: ", articleId))
             temp <- temp + 1
