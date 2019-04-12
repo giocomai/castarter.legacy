@@ -114,7 +114,8 @@ ExtractLinks <- function(domain = NULL,
             if (progressBar == TRUE) {
                 pb$tick()$print()
             }
-            temp <-  xml2::read_html(HtmlFiles[i])
+            temp <-  xml2::read_html(x = HtmlFiles[i],
+                                     options = c("RECOVER", "NOERROR", "NOBLANKS", "HUGE"))
             if (is.element("xml_node", set = class(temp))==TRUE) {
                 temp <- temp %>%
                     rvest::html_nodes("a")
