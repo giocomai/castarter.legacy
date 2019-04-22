@@ -123,15 +123,8 @@ ExtractTitles <- function(container = "title",
             if (is.element("xml_node", set = class(temp))==TRUE) {
                 if (is.null(customXpath)==FALSE) {
                     temp <- temp %>%
-                        rvest::html_nodes(xpath = customXpath)
-                    if (is.null(attribute)) {
-                        temp <-  temp %>%
-                            rvest::html_text()
-                    } else {
-                        temp <-  temp %>%
-                            rvest::html_attr(attribute) %>%
-                            rvest::html_text()
-                    }
+                        rvest::html_nodes(xpath = customXpath)%>%
+                        rvest::html_text()
                 } else if (is.null(containerClass)==TRUE&is.null(containerId)==TRUE) {
                      temp <- temp %>%
                         rvest::html_nodes(container) %>% rvest::html_text()
