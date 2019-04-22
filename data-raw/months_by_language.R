@@ -108,4 +108,4 @@ months_by_language$ukrainian <-
                    month_abb  = format(ISOdate(2000, 1:12, 1), "%b"))
 
 
-usethis::use_data(months_by_language, overwrite = FALSE)
+usethis::use_data(months_by_language, internal = TRUE, overwrite = FALSE)
