@@ -9,7 +9,7 @@ ExtractTitles(container = "title", containerClass = NULL,
   id = NULL, links = NULL, removePunctuation = FALSE,
   onlyStandardCharacters = FALSE, removeString = NULL,
   removeEverythingBefore = NULL, removeEverythingAfter = NULL,
-  customXpath = "", maxCharacters = NULL, encoding = "UTF-8",
+  customXpath = NULL, maxCharacters = NULL, encoding = "UTF-8",
   progressBar = TRUE, exportParameters = TRUE,
   importParameters = NULL, project = NULL, website = NULL)
 }
