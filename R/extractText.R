@@ -172,8 +172,12 @@ ExtractText <- function(container = NULL,
                 }
             }
             if (length(temp)>1) {
-                text[i] <- temp[1]
-                warning(paste0("ID", stringr::str_extract(string = HtmlFiles[i], pattern = "[[:digit:]]+[[:punct:]]html") %>% stringr::str_sub(start = 1L, end = -6L), ": Found more than one string per page, keeping only first occurrence."))
+                if (is.null(subElement)==TRUE) {
+                    text[i] <- temp[1]
+                    warning(paste0("ID", stringr::str_extract(string = HtmlFiles[i], pattern = "[[:digit:]]+[[:punct:]]html") %>% stringr::str_sub(start = 1L, end = -6L), ": Found more than one string per page, keeping only first occurrence."))
+                } else {
+                    text[i] <- paste(temp, collapse = "\n")
+                }
             } else if (length(temp)==0) {
                 text[i] <- NA
             } else {
