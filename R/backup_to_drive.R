@@ -88,8 +88,14 @@ backup_to_google_drive <- function(r_files = TRUE,
                               type = "file",
                               glob = "*.R")
 
-        purrr::walk(.x = r_files[is.element(el = website_folders$name, set = fs::path_file(r_files))==FALSE],
-                    .f = function(x) googledrive::drive_upload(media = x, path = website_folder_d))
+        if(nrow(website_folders)==0) {
+            purrr::walk(.x = r_files,
+                        .f = function(x) googledrive::drive_upload(media = x, path = website_folder_d))
+        } else {
+            purrr::walk(.x = r_files[is.element(el = website_folders$name, set = fs::path_file(r_files))==FALSE],
+                        .f = function(x) googledrive::drive_upload(media = x, path = website_folder_d))
+        }
+
 
         #googledrive::drive_update()
     }
@@ -97,6 +103,7 @@ backup_to_google_drive <- function(r_files = TRUE,
     ## upload datasets
 
     if (datasets == TRUE) {
+
         if (website_folders %>% dplyr::filter(name=="Dataset") %>% nrow() == 0) {
             dataset_folder_d <- googledrive::drive_mkdir(name = "Dataset",
                                                          parent = website_folder_d)
@@ -111,8 +118,14 @@ backup_to_google_drive <- function(r_files = TRUE,
                                               glob = "*.rds")
         rds_dataset_files_remote <- googledrive::drive_ls(path = dataset_folder_d)
 
-        purrr::walk(.x = r_files[is.element(el = rds_dataset_files_remote$name, set = fs::path_file(rds_dataset_files_local))==FALSE],
-                    .f = function(x) googledrive::drive_upload(media = x, path = dataset_folder_d))
+        if (nrow(rds_dataset_files_remote)==0) {
+            purrr::walk(.x = rds_dataset_files_local,
+                        .f = function(x) googledrive::drive_upload(media = x, path = dataset_folder_d))
+        } else {
+            purrr::walk(.x = rds_dataset_files_local[is.element(el = rds_dataset_files_remote$name, set = fs::path_file(rds_dataset_files_local))==FALSE],
+                        .f = function(x) googledrive::drive_upload(media = x, path = dataset_folder_d))
+        }
+
     }
 
 
