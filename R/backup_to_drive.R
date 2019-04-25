@@ -143,7 +143,7 @@ backup_to_google_drive <- function(r_files = TRUE,
                                             full.names = TRUE,
                                             recursive = FALSE)
             for (j in local_daily_files) {
-                if (archive_date_remote_daily_d %>% dplyr::filter(name == fs::file.path(j)) %>% nrow() == 0) {
+                if (archive_date_remote_daily_d %>% dplyr::filter(name == fs::file_path(j)) %>% nrow() == 0) {
                     googledrive::drive_upload(media = j, path = archive_date_remote_d)
                 }
             }
