@@ -11,8 +11,9 @@
 #' backup_to_google_drive()
 #' }
 
-backup_to_google_drive <- function(archive_files = TRUE,
-                                   r_files = TRUE,
+backup_to_google_drive <- function(r_files = TRUE,
+                                   datasets = TRUE,
+                                   archive_files = TRUE,
                                    project = NULL,
                                    website = NULL) {
     if (is.null(project) == TRUE) {
@@ -79,6 +80,43 @@ backup_to_google_drive <- function(archive_files = TRUE,
                                      recursive = FALSE)
     archive_dates_remote <- googledrive::drive_ls(path = archives_folder_d)
 
+
+    ## upload R files
+    if (r_files==TRUE) {
+        r_files <- fs::dir_ls(path = fs::path(baseFolder, project, website),
+                              recursive = FALSE,
+                              type = "file",
+                              glob = "*.R")
+
+        purrr::walk(.x = r_files[is.element(el = website_folders$name, set = fs::path_file(r_files))==FALSE],
+                    .f = function(x) googledrive::drive_upload(media = x, path = website_folder_d))
+
+        #googledrive::drive_update()
+    }
+
+    ## upload datasets
+
+    if (datasets == TRUE) {
+        if (website_folders %>% dplyr::filter(name=="Dataset") %>% nrow() == 0) {
+            dataset_folder_d <- googledrive::drive_mkdir(name = "Dataset",
+                                                         parent = website_folder_d)
+        } else if (website_folders %>% dplyr::filter(name=="Dataset") %>% nrow() == 1) {
+            dataset_folder_d <- website_folders %>% dplyr::filter(name=="Dataset")
+        }
+
+
+        rds_dataset_files_local <- fs::dir_ls(path = fs::path(baseFolder, project, website, "Dataset"),
+                                              recursive = FALSE,
+                                              type = "file",
+                                              glob = "*.rds")
+        rds_dataset_files_remote <- googledrive::drive_ls(path = dataset_folder_d)
+
+        purrr::walk(.x = r_files[is.element(el = rds_dataset_files_remote$name, set = fs::path_file(rds_dataset_files_local))==FALSE],
+                    .f = function(x) googledrive::drive_upload(media = x, path = dataset_folder_d))
+    }
+
+
+
     if (archive_files==TRUE) {
         for (i in archive_dates_local) {
             if (archive_dates_remote %>% dplyr::filter(name==i) %>% nrow() == 0) {
@@ -99,16 +137,4 @@ backup_to_google_drive <- function(archive_files = TRUE,
         }
     }
 
-    ## upload R files
-    if (r_files==TRUE) {
-        r_files <- fs::dir_ls(path = fs::path(baseFolder, project, website),
-                              recursive = FALSE,
-                              type = "file",
-                              glob = "*.R")
-
-        purrr::walk(.x = r_files[is.element(el = website_folders$name, set = fs::path_file(r_files))==FALSE],
-                    .f = function(x) googledrive::drive_upload(media = x, path = website_folder_d))
-
-        #googledrive::drive_update()
-    }
 }
