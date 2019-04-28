@@ -64,7 +64,7 @@ Sys.setlocale("LC_TIME", "italian")
 Sys.setlocale("LC_TIME", "it_IT.utf8")
 months_by_language$italian <-
     tibble::tibble(month_name = format(ISOdate(2000, 1:12, 1), "%B"),
-                   month_abb  = ormat(ISOdate(2000, 1:12, 1), "%b"))
+                   month_abb  = format(ISOdate(2000, 1:12, 1), "%b"))
 
 Sys.setlocale("LC_TIME", "polish")
 # iconv(x = format(ISOdate(2000, 1:12, 1), "%B"), from = "latin2", to = "UTF-8")
@@ -79,6 +79,8 @@ Sys.setlocale("LC_TIME", "ro_RO.utf8")
 months_by_language$romanian <-
     tibble::tibble(month_name = format(ISOdate(2000, 1:12, 1), "%B"),
                    month_abb  = format(ISOdate(2000, 1:12, 1), "%b"))
+
+months_by_language$romanian$month_abb[11] <- "noi"
 
 Sys.setlocale("LC_TIME", "russian")
 # iconv(x = format(ISOdate(2000, 1:12, 1), "%B"), from = "cyrillic", to = "UTF-8")
@@ -108,4 +110,4 @@ months_by_language$ukrainian <-
                    month_abb  = format(ISOdate(2000, 1:12, 1), "%b"))
 
 
-usethis::use_data(months_by_language, internal = TRUE, overwrite = FALSE)
+usethis::use_data(months_by_language, internal = TRUE, overwrite = TRUE)

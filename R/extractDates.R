@@ -316,7 +316,7 @@ ExtractDates <- function(dateFormat = "dmY",
             replacement_vector <- month.name
             names(replacement_vector) <- tolower(months_by_language[[which(x = names(months_by_language)==language)]]$month_name)
         } else if (stringr::str_detect(string = dateFormat, pattern = "b")) {
-            replacement_vector <- month.name
+            replacement_vector <- month.abb
             names(replacement_vector) <- tolower(months_by_language[[which(x = names(months_by_language)==language)]]$month_abb)
         }
         datesTxt <- stringr::str_replace_all(string = tolower(datesTxt), replacement_vector)
