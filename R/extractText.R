@@ -5,6 +5,7 @@
 #' @param container Defaults to NULL. If provided, it must be an html element such as "div", "span", etc.
 #' @param containerClass Defaults to NULL. If provided, also `container` must be given (and `containerId` must be NULL). Only text found inside the provided combination of container/class will be extracted.
 #' @param containerId Defaults to NULL. If provided, also `container` must be given (and `containerClass` must be NULL). Only text found inside the provided combination of container/class will be extracted.
+#' @param containerInstance Defaults to NULL. If given, it must be an integer. If a given element is found more than once in the same page, it keeps only the relevant occurrence for further extraction.
 #' @param subElement Defaults to NULL. If provided, also `container` must be given. Only text within elements of given type under the chosen combination of container/containerClass will be extracted. When given, it will tipically be "p", to extract all p elements inside the selected div.
 #' @param noChildren Defaults to FALSE, i.e. by default all subelements of the selected combination (e.g. div with given class) are extracted. If TRUE, only text found under the given combination (but not its subelements) will be extracted. Corresponds to the xpath string `/node()[not(self::div)]`.
 #' @param id Defaults to NULL. If provided, it should be a vector of integers. Only html files corresponding to given id in the relevant htmlLocation will be processed.
@@ -27,6 +28,7 @@
 ExtractText <- function(container = NULL,
                         containerClass = NULL,
                         containerId = NULL,
+                        containerInstance = NULL,
                         subElement = NULL,
                         noChildren = NULL,
                         htmlLocation = NULL,
@@ -137,9 +139,9 @@ ExtractText <- function(container = NULL,
                 temp <- temp %>% rvest::html_text()
             } else if (is.null(containerClass)==TRUE&is.null(containerId)==TRUE) {
                 if (is.null(subElement)==TRUE) {
-                temp <- temp %>%
-                    rvest::html_nodes(container) %>%
-                    rvest::html_text()
+                    temp <- temp %>%
+                        rvest::html_nodes(container) %>%
+                        rvest::html_text()
                 } else {
                     temp <- temp %>%
                         rvest::html_nodes(container) %>%
@@ -161,9 +163,9 @@ ExtractText <- function(container = NULL,
 
             } else if (is.null(containerClass)==TRUE&is.null(containerId)==FALSE) {
                 if (is.null(subElement)==TRUE) {
-                temp <- temp %>%
-                    rvest::html_nodes(xpath = paste0("//", container, "[@id='", containerId, "']")) %>%
-                    rvest::html_text()
+                    temp <- temp %>%
+                        rvest::html_nodes(xpath = paste0("//", container, "[@id='", containerId, "']")) %>%
+                        rvest::html_text()
                 } else {
                     temp <- temp %>%
                         rvest::html_nodes(xpath = paste0("//", container, "[@id='", containerId, "']")) %>%
@@ -173,8 +175,13 @@ ExtractText <- function(container = NULL,
             }
             if (length(temp)>1) {
                 if (is.null(subElement)==TRUE) {
-                    text[i] <- temp[1]
-                    warning(paste0("ID", stringr::str_extract(string = HtmlFiles[i], pattern = "[[:digit:]]+[[:punct:]]html") %>% stringr::str_sub(start = 1L, end = -6L), ": Found more than one string per page, keeping only first occurrence."))
+                    if (is.null(containerInstance)==TRUE) {
+                        text[i] <- temp[containerInstance]
+                    } else {
+                        text[i] <- paste(temp, collapse = "\n")
+                        warning(paste0("ID", stringr::str_extract(string = HtmlFiles[i], pattern = "[[:digit:]]+[[:punct:]]html") %>% stringr::str_sub(start = 1L, end = -6L), ": Multiple strings matching crieria have been collapsed."))
+                    }
+
                 } else {
                     text[i] <- paste(temp, collapse = "\n")
                 }

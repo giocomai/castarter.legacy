@@ -5,10 +5,10 @@
 \title{Extracts textual contents from a vector of html files}
 \usage{
 ExtractText(container = NULL, containerClass = NULL,
-  containerId = NULL, subElement = NULL, noChildren = NULL,
-  htmlLocation = NULL, id = NULL, encoding = "UTF-8",
-  metadata = NULL, export = FALSE, maxTitleCharacters = 80,
-  removeString = NULL, customXpath = NULL,
+  containerId = NULL, containerInstance = NULL, subElement = NULL,
+  noChildren = NULL, htmlLocation = NULL, id = NULL,
+  encoding = "UTF-8", metadata = NULL, export = FALSE,
+  maxTitleCharacters = 80, removeString = NULL, customXpath = NULL,
   removeEverythingAfter_pre = NULL, removeEverythingBefore_pre = NULL,
   removeEverythingBefore = NULL, removeEverythingAfter = NULL,
   keepEverything = FALSE, removePunctuationInFilename = TRUE,
@@ -22,6 +22,8 @@ ExtractText(container = NULL, containerClass = NULL,
 \item{containerClass}{Defaults to NULL. If provided, also `container` must be given (and `containerId` must be NULL). Only text found inside the provided combination of container/class will be extracted.}
 
 \item{containerId}{Defaults to NULL. If provided, also `container` must be given (and `containerClass` must be NULL). Only text found inside the provided combination of container/class will be extracted.}
+
+\item{containerInstance}{Defaults to NULL. If given, it must be an integer. If a given element is found more than once in the same page, it keeps only the relevant occurrence for further extraction.}
 
 \item{subElement}{Defaults to NULL. If provided, also `container` must be given. Only text within elements of given type under the chosen combination of container/containerClass will be extracted. When given, it will tipically be "p", to extract all p elements inside the selected div.}
 
