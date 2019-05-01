@@ -151,3 +151,60 @@ backup_to_google_drive <- function(r_files = TRUE,
     }
 
 }
+
+
+#' Restore from Google Drive
+#'
+#' Restore from Google Drive
+#'
+#' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. Defaults to NULL, required for storing export parameters (with exportParameters = TRUE). This can be left blank if previously set with SetCastarter(project = "project", website = "website").
+#' @param website Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder. Defaults to NULL, required for storing export parameters (with exportParameters = TRUE). This can be left blank if previously set with SetCastarter(project = "project", website = "website").
+#' @return Nothing, used for its side effects.
+#' @export
+#' @examples
+#' \dontrun{
+#' restore_from_google_drive()
+#' }
+
+restore_from_google_drive <- function(r_files = TRUE,
+                                      dataset = TRUE,
+                                      archive_files = FALSE,
+                                      project = NULL,
+                                      website = NULL) {
+
+    if (is.null(project) == TRUE) {
+        project <- CastarterOptions("project")
+    }
+    if (is.null(website) == TRUE) {
+        website <- CastarterOptions("website")
+    }
+    if (is.null(CastarterOptions("baseFolder"))) {
+        baseFolder <- "castarter"
+    } else {
+        baseFolder <- CastarterOptions("baseFolder")
+    }
+
+    base_folder <- googledrive::drive_ls(recursive = FALSE) %>%
+        dplyr::filter(name==baseFolder)
+    project_folder <- googledrive::drive_ls(path = base_folder) %>%
+        dplyr::filter(name == project)
+    website_folder <- googledrive::drive_ls(path = project_folder) %>%
+        dplyr::filter(name == website)
+    if (dataset==TRUE) {
+
+        dataset_folder <- googledrive::drive_ls(path = website_folder) %>%
+            dplyr::filter(name == "Dataset")
+
+        latest_dataset <- googledrive::drive_ls(path = dataset_folder) %>%
+            dplyr::arrange(dplyr::desc(name)) %>%
+            dplyr::filter(stringr::str_detect(string = name, pattern = ".rds")) %>%
+            dplyr::slice(1)
+
+        dataset_local_path <- fs::path(baseFolder, project, website, "Dataset")
+
+        fs::dir_create(path = dataset_local_path)
+
+        googledrive::drive_download(file = latest_dataset, path = fs::path(dataset_local_path, latest_dataset$name))
+    }
+
+}
