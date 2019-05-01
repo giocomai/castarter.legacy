@@ -190,9 +190,23 @@ restore_from_google_drive <- function(r_files = TRUE,
         dplyr::filter(name == project)
     website_folder <- googledrive::drive_ls(path = project_folder) %>%
         dplyr::filter(name == website)
-    if (dataset==TRUE) {
 
-        dataset_folder <- googledrive::drive_ls(path = website_folder) %>%
+    website_folder_contents <- googledrive::drive_ls(path = website_folder)
+    if (r_files == TRUE) {
+        r_files_latest <- website_folder_contents %>%
+            dplyr::filter(stringr::str_detect(string = name,
+                                              pattern = stringr::fixed(".R"))) %>%
+            dplyr::arrange(dplyr::desc(name)) %>%
+            dplyr::slice(1)
+
+        r_files_local_path <- fs::path(baseFolder, project, website)
+        fs::dir_create(path = r_files_local_path)
+
+        googledrive::drive_download(file = r_files_latest,
+                                    path = fs::path(r_files_local_path, r_files_latest$name))
+    }
+    if (dataset==TRUE) {
+        dataset_folder <- website_folder_contents %>%
             dplyr::filter(name == "Dataset")
 
         latest_dataset <- googledrive::drive_ls(path = dataset_folder) %>%
