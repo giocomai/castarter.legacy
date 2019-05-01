@@ -175,7 +175,7 @@ ExtractText <- function(container = NULL,
             }
             if (length(temp)>1) {
                 if (is.null(subElement)==TRUE) {
-                    if (is.null(containerInstance)==TRUE) {
+                    if (is.null(containerInstance)==FALSE) {
                         text[i] <- temp[containerInstance]
                     } else {
                         text[i] <- paste(temp, collapse = "\n")
