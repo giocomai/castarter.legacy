@@ -4,11 +4,11 @@
 \alias{ShowRelativeTS}
 \title{Creates time series of the relative frequency of specific terms.}
 \usage{
-ShowRelativeTS(dataset, terms, type = "graph", specificWebsites = NULL,
-  startDate = NULL, endDate = NULL, rollingAverage = 31,
-  align = "center", verticalLine = NULL, smoothLine = FALSE,
-  customTitle = NULL, export = FALSE, project = NULL,
-  website = NULL)
+ShowRelativeTS(dataset, terms, type = "graph", ignore_case = TRUE,
+  specificWebsites = NULL, startDate = NULL, endDate = NULL,
+  rollingAverage = 31, align = "center", verticalLine = NULL,
+  smoothLine = FALSE, customTitle = NULL, export = FALSE,
+  project = NULL, website = NULL)
 }
 \arguments{
 \item{dataset}{A `castarter` dataset.}
@@ -38,6 +38,8 @@ ShowRelativeTS(dataset, terms, type = "graph", specificWebsites = NULL,
 \item{project}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.}
 
 \item{website}{Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.}
+
+\item{c}{Logical, defaults to TRUE.}
 }
 \description{
 It creates time series with the relative frequency of one or more terms, in one or more websites.

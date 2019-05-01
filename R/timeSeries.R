@@ -3,6 +3,7 @@
 #' It creates time series with the absolute frequency of one or more terms, in one or more websites.
 #' @param dataset A `castarter` dataset.
 #' @param terms A character vector with one or more words to be analysed.
+#' @param ignore_case Logical, defaults to TRUE.
 #' @param type Type of output: either "graph" (default) or "data.frame".
 #' @param specificWebsites Character vector of the names of one or more websites included in the corpus. Only selected websites will be included in the analysis.
 #' @param rollingAverage Integer, defaults to 31. Number of days used to calculate word frequency as shown in the time series. Time series shows word frequency for each date as an average of the N number of days (N=rollingAverage) around the given date. If align = "centre", and rollingAverage = 31, this means that the value for each day corresponds to the average value for the given day, the 15 days before it, and the 15 days after it.
@@ -23,6 +24,7 @@
 
 ShowAbsoluteTS <- function(dataset,
                            terms,
+                           ignore_case = TRUE,
                            type = "graph",
                            specificWebsites = NULL,
                            startDate = NULL,
@@ -47,7 +49,8 @@ ShowAbsoluteTS <- function(dataset,
         baseFolder <- CastarterOptions("baseFolder")
     }
     if (is.null(specificWebsites)==FALSE) {
-        dataset <- dataset %>% dplyr::filter(website == paste(specificWebsites, collapse = "|"))
+        dataset <- dataset %>%
+            dplyr::filter(website == paste(specificWebsites, collapse = "|"))
     }
     if (is.null(startDate)==FALSE) {
         dataset <- dataset %>% dplyr::filter(date >= as.Date(startDate))
@@ -62,21 +65,25 @@ ShowAbsoluteTS <- function(dataset,
         dataset <- dataset %>% dplyr::rename(text = word)
     }
     temp <-
-        dplyr::bind_cols(dplyr::as_data_frame(sapply(terms, function(x) stringr::str_count(string = dataset$text, pattern = stringr::regex(x, ignore_case = TRUE)))),
-                  tibble::data_frame(ItemDate = dataset$date)) %>%
+        dplyr::bind_cols(tibble::as_tibble(sapply(terms, function(x) stringr::str_count(string = dataset$text, pattern = stringr::regex(x, ignore_case = ignore_case)))),
+                  tibble::tibble(ItemDate = dataset$date)) %>%
         dplyr::arrange(ItemDate) %>%
-        dplyr::full_join(tibble::tibble(ItemDate = seq.Date(from = min(dataset$date, na.rm = TRUE), to = max(dataset$date, na.rm = TRUE), by = "day")), by = "ItemDate") %>%
-        dplyr::mutate_at(1:length(terms),dplyr::funs(dplyr::coalesce(., 0L)))  %>%
+        dplyr::full_join(tibble::tibble(ItemDate = seq.Date(from = min(dataset$date, na.rm = TRUE),
+                                                            to = max(dataset$date, na.rm = TRUE), by = "day")),
+                         by = "ItemDate") %>%
+        dplyr::mutate_at(1:length(terms),base::list(~dplyr::coalesce(., 0L)))  %>%
         tidyr::gather(word, n, 1:length(terms)) %>%
-        dplyr::count(ItemDate, word, wt = n) %>%
-        tidyr::spread(word, nn)
-    for (i in 2:length(temp)) {
-        temp[i] <- zoo::rollmean(x = temp[i], k = rollingAverage, align = align, fill = NA)
-    }
-    temp <- temp %>% tidyr::drop_na()
+        dplyr::count(ItemDate, word, wt = n, name = "n") %>%
+        tidyr::spread(word, n) %>%
+        dplyr::mutate_at(-1, ~zoo::rollmean(x = .,
+                                           k = rollingAverage,
+                                           align = align,
+                                           fill = NA)) %>%
+        tidyr::drop_na()
     if (type == "graph") {
         if (length(terms)>1) {
-            graph <- temp %>% tidyr::gather(word, nRoll, 2:sum(length(terms),1)) %>%
+            graph <- temp %>%
+                tidyr::gather(word, nRoll, 2:sum(length(terms),1)) %>%
                 ggplot2::ggplot(mapping = ggplot2::aes(x = ItemDate, y = nRoll, color = word))
         } else {
             graph <- temp %>% tidyr::gather(word, nRoll, 2) %>%
@@ -150,6 +157,7 @@ ShowAbsoluteTS <- function(dataset,
 #' It creates time series with the relative frequency of one or more terms, in one or more websites.
 #' @param dataset A `castarter` dataset.
 #' @param terms A character vector with one or more words to be analysed.
+#' @param c Logical, defaults to TRUE.
 #' @param type Type of output: either "graph" (default) or "data.frame".
 #' @param specificWebsites Character vector of the names of one or more websites included in the corpus. Only selected websites will be included in the analysis.
 #' @param rollingAverage Integer, defaults to 31. Number of days used to calculate word frequency as shown in the time series. Time series shows word frequency for each date as an average of the N number of days (N=rollingAverage) around the given date. If align = "centre", and rollingAverage = 31, this means that the value for each day corresponds to the average value for the given day, the 15 days before it, and the 15 days after it.
@@ -171,6 +179,7 @@ ShowAbsoluteTS <- function(dataset,
 ShowRelativeTS <- function(dataset,
                            terms,
                            type = "graph",
+                           ignore_case = TRUE,
                            specificWebsites = NULL,
                            startDate = NULL,
                            endDate = NULL,
@@ -204,9 +213,9 @@ ShowRelativeTS <- function(dataset,
         dataset <- dataset %>% dplyr::rename(text = word)
     }
     temp <-
-        dplyr::bind_cols(dplyr::as_data_frame(sapply(terms, function(x) stringr::str_count(string = dataset$text, pattern = stringr::regex(x, ignore_case = TRUE)))),
+        dplyr::bind_cols(tibble::as_tibble(sapply(terms, function(x) stringr::str_count(string = dataset$text, pattern = stringr::regex(x, ignore_case = ignore_case)))),
                                 tibble::data_frame(nWords = stringr::str_count(string = dataset$text, pattern = "\\w+")),
-                  tibble::data_frame(ItemDate = dataset$date)) %>%
+                  tibble::tibble(ItemDate = dataset$date)) %>%
         dplyr::arrange(ItemDate) %>%
         # Count all words per item
         dplyr::add_count(ItemDate, wt = nWords) %>%
@@ -219,19 +228,21 @@ ShowRelativeTS <- function(dataset,
         dplyr::mutate_at(3:sum(2, length(terms)), dplyr::funs(./TotalWords)) %>%
         dplyr::select(-TotalWords) %>%
         # Include missing date, if no item on a given date
-        dplyr::full_join(tibble::tibble(ItemDate = seq.Date(from = min(dataset$date, na.rm = TRUE), to = max(dataset$date, na.rm = TRUE), by = "day")), by = "ItemDate") %>%
+        dplyr::full_join(tibble::tibble(ItemDate = seq.Date(from = min(dataset$date, na.rm = TRUE),
+                                                            to = max(dataset$date, na.rm = TRUE),
+                                                            by = "day")),
+                         by = "ItemDate") %>%
         dplyr::arrange(ItemDate) %>%
         # Substitute NA values with 0 for all dates for which no item was present
-        dplyr::mutate_at(2:sum(1, length(terms)),dplyr::funs(dplyr::coalesce(., 0))) %>%
+        dplyr::mutate_at(2:sum(1, length(terms)), dplyr::funs(dplyr::coalesce(., 0))) %>%
         tidyr::gather(word, n, 2:sum(1, length(terms))) %>%
-        dplyr::count(ItemDate, word, wt = n) %>%
-        tidyr::spread(word, nn)
-    # Calculate rolling average
-    for (i in 2:length(temp)) {
-        temp[i] <- zoo::rollmean(x = temp[i], k = rollingAverage, align = align, fill = NA)
-    }
-    # Drop leading and trailing NA introduced by rolling average to prevent ggplot warning
-    temp <- temp %>% tidyr::drop_na()
+        dplyr::count(ItemDate, word, wt = n, name = "n") %>%
+        tidyr::spread(word, n) %>%
+        dplyr::mutate_at(-1, ~zoo::rollmean(x = .,
+                                            k = rollingAverage,
+                                            align = align,
+                                            fill = NA)) %>%
+        tidyr::drop_na()
     if (type == "graph") {
         if (length(terms)>1) {
             graph <- temp %>% tidyr::gather(word, nRoll, 2:sum(length(terms),1)) %>%
