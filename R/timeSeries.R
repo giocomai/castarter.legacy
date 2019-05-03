@@ -197,6 +197,11 @@ ShowRelativeTS <- function(dataset,
     if (is.null(website) == TRUE) {
         website <- CastarterOptions("website")
     }
+    if (is.null(CastarterOptions("baseFolder"))) {
+        baseFolder <- "castarter"
+    } else {
+        baseFolder <- CastarterOptions("baseFolder")
+    }
     if (is.null(specificWebsites)==FALSE) {
         dataset <- dataset %>% dplyr::filter(website == paste(specificWebsites, collapse = "|"))
     }
@@ -348,6 +353,11 @@ ShowDistribution <- function(dataset,
     }
     if (is.null(website) == TRUE) {
         website <- CastarterOptions("website")
+    }
+    if (is.null(CastarterOptions("baseFolder"))) {
+        baseFolder <- "castarter"
+    } else {
+        baseFolder <- CastarterOptions("baseFolder")
     }
     tab <- base::table(dataset$date, dataset$website)
     date <- base::as.POSIXct(base::rownames(tab))
