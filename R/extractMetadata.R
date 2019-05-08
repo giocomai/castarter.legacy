@@ -195,7 +195,10 @@ ExtractTitles <- function(container = "title",
 #' \dontrun{
 #' id <- ExtractId(project, website)
 #' }
-ExtractId <- function(sample = NULL, htmlLocation = NULL, project = NULL, website = NULL) {
+ExtractId <- function(sample = NULL,
+                      htmlLocation = NULL,
+                      project = NULL,
+                      website = NULL) {
     if (is.null(project) == TRUE) {
         project <- CastarterOptions("project")
     }
@@ -210,7 +213,7 @@ ExtractId <- function(sample = NULL, htmlLocation = NULL, project = NULL, websit
     if (is.null(htmlLocation)) {
         htmlLocation <- file.path(baseFolder, project, website, "Html")
     }
-    htmlFilesList <- list.files(file.path(baseFolder, project, website, "Html"))
+    htmlFilesList <- list.files(htmlLocation)
     if (is.null(sample)==FALSE) {
         sort.int(x = sample(x = as.integer(stringr::str_extract(string = htmlFilesList, pattern = "[[:digit:]]+")), size = sample, replace = FALSE))
     } else {
