@@ -115,10 +115,6 @@ SaveWebsite <- function(dataset = NULL,
     } else {
         baseFolder <- CastarterOptions("baseFolder")
     }
-    if (requireNamespace("tidytext", quietly = TRUE)==FALSE) {
-        stop("You need to install the `tidytext` package with `install.packages('tidytext')` to export datasets by word or by sentence.")
-    }
-
     if (saveEnvironment == TRUE) {
         save.image(file = file.path(baseFolder, project, website, "SessionRdata", paste0(paste(Sys.Date(), project, website, sep = "-"), ".RData")))
         message(paste("Environment saved in", file.path(baseFolder, project, website, "SessionRdata", paste0(paste(Sys.Date(), project, website, sep = "-"), ".RData"))))
