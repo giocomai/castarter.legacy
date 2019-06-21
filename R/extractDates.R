@@ -142,8 +142,7 @@ ExtractDates <- function(dateFormat = "dmY",
                             rvest::html_text()
                     } else {
                         temp <-  temp %>%
-                            rvest::html_attr(attribute) %>%
-                            rvest::html_text()
+                            rvest::html_attr(attribute)
                     }
                 } else if (is.null(container)==FALSE&is.null(containerClass)==FALSE&is.null(attribute)==FALSE) {
                     temp <- tryCatch(expr = temp %>%
