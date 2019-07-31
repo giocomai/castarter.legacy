@@ -52,7 +52,7 @@ backup_to_google_drive <- function(r_files = TRUE,
     }
 
     ## website folder
-    castarter_websites_d <-  googledrive::drive_ls(path = project_folder_d)
+    castarter_websites_d <- googledrive::drive_ls(path = project_folder_d)
 
     website_folder_d <- castarter_websites_d %>%
         dplyr::filter(name==website)
@@ -84,7 +84,7 @@ backup_to_google_drive <- function(r_files = TRUE,
     ## upload R files
     if (r_files==TRUE) {
         r_files <- fs::dir_ls(path = fs::path(baseFolder, project, website),
-                              recursive = FALSE,
+                              recurse = FALSE,
                               type = "file",
                               glob = "*.R")
 
@@ -113,7 +113,7 @@ backup_to_google_drive <- function(r_files = TRUE,
 
 
         rds_dataset_files_local <- fs::dir_ls(path = fs::path(baseFolder, project, website, "Dataset"),
-                                              recursive = FALSE,
+                                              recurse = FALSE,
                                               type = "file",
                                               glob = "*.rds")
         rds_dataset_files_remote <- googledrive::drive_ls(path = dataset_folder_d)
