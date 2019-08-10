@@ -319,7 +319,15 @@ ExportMetadata <- function(id,
 #' \dontrun{
 #' dataset <- ExportDataset(text, metadata, project, website)
 #' }
-ExportDataset <- function(dataset = NULL, text = NULL, metadata = NULL, exportRds = FALSE, exportRdata = FALSE, exportCsv = FALSE, exportXlsx = FALSE, project = NULL, website = NULL) {
+ExportDataset <- function(dataset = NULL,
+                          text = NULL,
+                          metadata = NULL,
+                          exportRds = FALSE,
+                          exportRdata = FALSE,
+                          exportCsv = FALSE,
+                          exportXlsx = FALSE,
+                          project = NULL,
+                          website = NULL) {
     if (is.null(project) == TRUE) {
         project <- CastarterOptions("project")
     }
@@ -332,7 +340,8 @@ ExportDataset <- function(dataset = NULL, text = NULL, metadata = NULL, exportRd
         baseFolder <- CastarterOptions("baseFolder")
     }
     if (is.null(dataset)==TRUE) {
-        dataset <- dplyr::bind_cols(tibble::data_frame(doc_id = metadata$doc_id, text = text), metadata %>% dplyr::select(-doc_id))
+        dataset <- dplyr::bind_cols(tibble::tibble(doc_id = metadata$doc_id, text = text),
+                                    metadata %>% dplyr::select(-doc_id))
     }
     if (exportRds == TRUE) {
         saveRDS(object = dataset, file = file.path(baseFolder, project, website, "Dataset", paste0(paste(Sys.Date(), project, website, "dataset", sep = "-"), ".rds")))

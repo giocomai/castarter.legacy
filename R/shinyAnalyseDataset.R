@@ -68,7 +68,7 @@ AnalyseDataset <- function() {
                                                                                label = NULL,
                                                                                choices = c("Absolute frequency",
                                                                                            "Relative frequency")),
-                                                           shiny::sliderInput(inputId = "rollingAverage",
+                                                           shiny::sliderInput(inputId = "rollingDays",
                                                                               label = "Apply rolling average for ... days",
                                                                               min = 1,
                                                                               max = 91,
@@ -166,7 +166,7 @@ AnalyseDataset <- function() {
                 castarter::ShowAbsoluteTS(terms = as.character(tolower(trimws(stringr::str_split(string = input$term, pattern = ",", simplify = TRUE)))),
                                           dataset = dataset,
                                           type = "graph",
-                                          rollingAverage = input$rollingAverage,
+                                          rollingDays = input$rollingDays,
                                           startDate = input$dateRange[1],
                                           endDate = input$dateRange[2])
 
@@ -174,7 +174,7 @@ AnalyseDataset <- function() {
                 castarter::ShowRelativeTS(terms = as.character(tolower(trimws(stringr::str_split(string = input$term, pattern = ",", simplify = TRUE)))),
                                           dataset = dataset,
                                           type = "graph",
-                                          rollingAverage = input$rollingAverage,
+                                          rollingDays = input$rollingDays,
                                           startDate = input$dateRange[1],
                                           endDate = input$dateRange[2])
             }

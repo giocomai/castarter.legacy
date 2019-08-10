@@ -6,9 +6,9 @@
 \usage{
 ShowAbsoluteTS(dataset, terms, ignore_case = TRUE, type = "graph",
   specificWebsites = NULL, startDate = NULL, endDate = NULL,
-  rollingAverage = 31, align = "center", verticalLine = NULL,
-  smoothLine = FALSE, customTitle = NULL, export = FALSE,
-  project = NULL, website = NULL)
+  rollingDays = 31, rollingType = "average", align = "center",
+  verticalLine = NULL, smoothLine = FALSE, customTitle = NULL,
+  export = FALSE, project = NULL, website = NULL)
 }
 \arguments{
 \item{dataset}{A `castarter` dataset.}
@@ -25,7 +25,9 @@ ShowAbsoluteTS(dataset, terms, ignore_case = TRUE, type = "graph",
 
 \item{endDate}{Character vector with date in the format year-month-date, e.g. "2015-07-14". Given dates are included, e.g. if you wish to include all of 2015, set startDate="2015-01-01", endDate"2015-12-31")}
 
-\item{rollingAverage}{Integer, defaults to 31. Number of days used to calculate word frequency as shown in the time series. Time series shows word frequency for each date as an average of the N number of days (N=rollingAverage) around the given date. If align = "centre", and rollingAverage = 31, this means that the value for each day corresponds to the average value for the given day, the 15 days before it, and the 15 days after it.}
+\item{rollingDays}{Integer, defaults to 31. Number of days used to calculate word frequency as shown in the time series. Time series shows word frequency for each date as an average of the N number of days (N=rollingDays) around the given date. If align = "centre", and rollingDays = 31, this means that the value for each day corresponds to the average value for the given day, the 15 days before it, and the 15 days after it.}
+
+\item{rollingType}{Defaults to "average". Must be either "average" or "median"}
 
 \item{align}{Defaults to "center", can be either "left", "right" or "center" and refers to the way the rolling average is calculated.}
 

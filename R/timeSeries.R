@@ -6,7 +6,8 @@
 #' @param ignore_case Logical, defaults to TRUE.
 #' @param type Type of output: either "graph" (default) or "data.frame".
 #' @param specificWebsites Character vector of the names of one or more websites included in the corpus. Only selected websites will be included in the analysis.
-#' @param rollingAverage Integer, defaults to 31. Number of days used to calculate word frequency as shown in the time series. Time series shows word frequency for each date as an average of the N number of days (N=rollingAverage) around the given date. If align = "centre", and rollingAverage = 31, this means that the value for each day corresponds to the average value for the given day, the 15 days before it, and the 15 days after it.
+#' @param rollingDays Integer, defaults to 31. Number of days used to calculate word frequency as shown in the time series. Time series shows word frequency for each date as an average of the N number of days (N=rollingDays) around the given date. If align = "centre", and rollingDays = 31, this means that the value for each day corresponds to the average value for the given day, the 15 days before it, and the 15 days after it.
+#' @param rollingType Defaults to "average". Must be either "average" or "median"
 #' @param align Defaults to "center", can be either "left", "right" or "center" and refers to the way the rolling average is calculated.
 #' @param startDate Character vector with date in the format year-month-date, e.g. "2015-07-14". Given dates are included, e.g. if you wish to include all of 2015, set startDate="2015-01-01", endDate"2015-12-31")
 #' @param endDate Character vector with date in the format year-month-date, e.g. "2015-07-14". Given dates are included, e.g. if you wish to include all of 2015, set startDate="2015-01-01", endDate"2015-12-31")
@@ -29,7 +30,8 @@ ShowAbsoluteTS <- function(dataset,
                            specificWebsites = NULL,
                            startDate = NULL,
                            endDate = NULL,
-                           rollingAverage = 31,
+                           rollingDays = 31,
+                           rollingType = "average",
                            align = "center",
                            verticalLine = NULL,
                            smoothLine = FALSE,
@@ -74,12 +76,28 @@ ShowAbsoluteTS <- function(dataset,
         dplyr::mutate_at(1:length(terms),base::list(~dplyr::coalesce(., 0L)))  %>%
         tidyr::gather(word, n, 1:length(terms)) %>%
         dplyr::count(ItemDate, word, wt = n, name = "n") %>%
-        tidyr::spread(word, n) %>%
-        dplyr::mutate_at(-1, ~zoo::rollmean(x = .,
-                                           k = rollingAverage,
-                                           align = align,
-                                           fill = NA)) %>%
-        tidyr::drop_na()
+        tidyr::spread(word, n)
+
+    if (rollingType == "average") {
+        temp <- temp %>%
+            dplyr::mutate_at(-1, ~zoo::rollmean(x = .,
+                                                k = rollingDays,
+                                                align = align,
+                                                fill = NA)) %>%
+            tidyr::drop_na()
+
+    } else if (rollingType == "median") {
+        temp <- temp %>%
+            dplyr::mutate_at(-1, ~zoo::rollmedian(x = .,
+                                                  k = rollingDays,
+                                                  align = align,
+                                                  fill = NA)) %>%
+            tidyr::drop_na()
+
+    } else {
+        stop("rollingType must be either 'average' or 'median'")
+    }
+
     if (type == "graph") {
         if (length(terms)>1) {
             graph <- temp %>%
@@ -99,10 +117,10 @@ ShowAbsoluteTS <- function(dataset,
             ggplot2::scale_color_brewer(type = "qual", palette = 6) +
             if (is.null(website) == TRUE) {
                 ggplot2::labs(title = paste("Number of occurrences per day of ", paste(sQuote(terms), collapse = ", ")),
-                              caption = paste0("Calculated on a ", rollingAverage, "-days rolling average"))
+                              caption = paste0("Calculated on a ", rollingDays, "-days rolling ", rollingType))
             } else {
                 ggplot2::labs(title = paste("Number of occurrences per day of", paste(sQuote(terms), collapse = ", "), "on", website),
-                              caption = paste0("Calculated on a ", rollingAverage, "-days rolling average"))
+                              caption = paste0("Calculated on a ", rollingDays, "-days rolling ", rollingType))
             }
         if (length(terms)>1) {
             graph <- graph + ggplot2::labs(color = "Terms")
@@ -160,7 +178,8 @@ ShowAbsoluteTS <- function(dataset,
 #' @param c Logical, defaults to TRUE.
 #' @param type Type of output: either "graph" (default) or "data.frame".
 #' @param specificWebsites Character vector of the names of one or more websites included in the corpus. Only selected websites will be included in the analysis.
-#' @param rollingAverage Integer, defaults to 31. Number of days used to calculate word frequency as shown in the time series. Time series shows word frequency for each date as an average of the N number of days (N=rollingAverage) around the given date. If align = "centre", and rollingAverage = 31, this means that the value for each day corresponds to the average value for the given day, the 15 days before it, and the 15 days after it.
+#' @param rollingDays Integer, defaults to 31. Number of days used to calculate word frequency as shown in the time series. Time series shows word frequency for each date as an average of the N number of days (N=rollingDays) around the given date. If align = "centre", and rollingDays = 31, this means that the value for each day corresponds to the average value for the given day, the 15 days before it, and the 15 days after it.
+#' @param rollingType Defaults to "average". Must be either "average" or "median"
 #' @param align Defaults to "center", can be either "left", "right" or "center" and refers to the way the rolling average is calculated.
 #' @param startDate Character vector with date in the format year-month-date, e.g. "2015-07-14". Given dates are included, e.g. if you wish to include all of 2015, set startDate="2015-01-01", endDate"2015-12-31")
 #' @param endDate Character vector with date in the format year-month-date, e.g. "2015-07-14". Given dates are included, e.g. if you wish to include all of 2015, set startDate="2015-01-01", endDate"2015-12-31")
@@ -183,7 +202,8 @@ ShowRelativeTS <- function(dataset,
                            specificWebsites = NULL,
                            startDate = NULL,
                            endDate = NULL,
-                           rollingAverage = 31,
+                           rollingDays = 31,
+                           rollingType = "average",
                            align = "center",
                            verticalLine = NULL,
                            smoothLine = FALSE,
@@ -203,19 +223,24 @@ ShowRelativeTS <- function(dataset,
         baseFolder <- CastarterOptions("baseFolder")
     }
     if (is.null(specificWebsites)==FALSE) {
-        dataset <- dataset %>% dplyr::filter(website == paste(specificWebsites, collapse = "|"))
+        dataset <- dataset %>%
+            dplyr::filter(website == paste(specificWebsites, collapse = "|"))
     }
     if (is.null(startDate)==FALSE) {
-        dataset <- dataset %>% dplyr::filter(date >= as.Date(startDate))
+        dataset <- dataset %>%
+            dplyr::filter(date >= as.Date(startDate))
     }
     if (is.null(endDate)==FALSE) {
-        dataset <- dataset %>% dplyr::filter(date <= as.Date(endDate))
+        dataset <- dataset %>%
+            dplyr::filter(date <= as.Date(endDate))
     }
     # Introduce compatibility with tidytext data frames
     if (is.element(el = "sentence", colnames(dataset))) {
-        dataset <- dataset %>% dplyr::rename(text = sentence)
+        dataset <- dataset %>%
+            dplyr::rename(text = sentence)
     } else if (is.element(el = "word", colnames(dataset))) {
-        dataset <- dataset %>% dplyr::rename(text = word)
+        dataset <- dataset %>%
+            dplyr::rename(text = word)
     }
     temp <-
         dplyr::bind_cols(tibble::as_tibble(sapply(terms, function(x) stringr::str_count(string = dataset$text, pattern = stringr::regex(x, ignore_case = ignore_case)))),
@@ -242,16 +267,21 @@ ShowRelativeTS <- function(dataset,
         dplyr::mutate_at(2:sum(1, length(terms)), dplyr::funs(dplyr::coalesce(., 0))) %>%
         tidyr::gather(word, n, 2:sum(1, length(terms))) %>%
         dplyr::count(ItemDate, word, wt = n, name = "n") %>%
-        tidyr::spread(word, n) %>%
+        tidyr::spread(word, n)
+
+    temp <- temp %>%
         dplyr::mutate_at(-1, ~zoo::rollmean(x = .,
-                                            k = rollingAverage,
+                                            k = rollingDays,
                                             align = align,
                                             fill = NA)) %>%
         tidyr::drop_na()
     if (type == "graph") {
         if (length(terms)>1) {
-            graph <- temp %>% tidyr::gather(word, nRoll, 2:sum(length(terms),1)) %>%
-                ggplot2::ggplot(mapping = ggplot2::aes(x = ItemDate, y = nRoll, color = word))
+            graph <- temp %>%
+                tidyr::gather(word, nRoll, 2:sum(length(terms),1)) %>%
+                ggplot2::ggplot(mapping = ggplot2::aes(x = ItemDate,
+                                                       y = nRoll,
+                                                       color = word))
         } else {
             graph <- temp %>% tidyr::gather(word, nRoll, 2) %>%
                 ggplot2::ggplot(mapping = ggplot2::aes(x = ItemDate, y = nRoll))
@@ -266,10 +296,10 @@ ShowRelativeTS <- function(dataset,
             ggplot2::scale_color_brewer(type = "qual", palette = 6) +
             if (is.null(website) == TRUE) {
                 ggplot2::labs(title = paste("Frequency of", paste(sQuote(terms), collapse = ", ")),
-                              caption = paste0("Calculated on a ", rollingAverage, "-days rolling average"))
+                              caption = paste0("Calculated on a ", rollingDays, "-days rolling average"))
             } else {
                 ggplot2::labs(title = paste("Frequency of", paste(sQuote(terms), collapse = ", "), "on", website),
-                              caption = paste0("Calculated on a ", rollingAverage, "-days rolling average"))
+                              caption = paste0("Calculated on a ", rollingDays, "-days rolling average"))
             }
         if (length(terms)>1) {
             graph <- graph + ggplot2::labs(color = "Terms")
@@ -315,7 +345,8 @@ ShowRelativeTS <- function(dataset,
         }
         graph
     } else {
-        temp %>% dplyr::rename(Date = ItemDate)
+        temp %>%
+            dplyr::rename(Date = ItemDate)
     }
 }
 
@@ -325,7 +356,7 @@ ShowRelativeTS <- function(dataset,
 #'
 #' @param dataset A dataset created with 'castarter'.
 #' @param specificWebsites Character vector indicating which websites (defined by relative website) have to be included in graph. If left to default, includes all websites present in the dataset.
-#' @param rollingAverage Integer, defaults to 31. Number of days used to calculate word frequency as shown in the time series. Time series shows word frequency for each date as an average of the N number of days (N=rollingAverage) following the correspondent date.
+#' @param rollingDays Integer, defaults to 31. Number of days used to calculate word frequency as shown in the time series. Time series shows word frequency for each date as an average of the N number of days (N=rollingDays) following the correspondent date.
 #' @param align Defaults to "center", can be either "left", "right" or "center" and refers to the way the rolling average is calculated.
 #' @param project Name of 'castarter' project. Must correspond to the name of a folder in the current working directory.
 #' @param website Name of a website included in a 'castarter' project. Must correspond to the name of a sub-folder of the project folder.
@@ -341,7 +372,7 @@ ShowRelativeTS <- function(dataset,
 
 ShowDistribution <- function(dataset,
                              specificWebsites = NULL,
-                             rollingAverage = 31,
+                             rollingDays = 31,
                              align = "center",
                              customTitle = NULL,
                              method = "numberOfArticles",
@@ -378,7 +409,7 @@ ShowDistribution <- function(dataset,
         docSeries <- zoo::zoo(ncharPerDay$ncharPerDay, order.by = date)
     }
     docSeries <- base::merge(docSeries, zoo::zoo(, seq(start(docSeries), end(docSeries), "DSTday")), fill=0)
-    docSeries <- zoo::rollapply(docSeries, rollingAverage, align=align, mean, na.rm=TRUE)
+    docSeries <- zoo::rollapply(docSeries, rollingDays, align=align, mean, na.rm=TRUE)
     distributionOfCorpus <- zoo::autoplot.zoo(docSeries, facets = NULL)
     if (method == "numberOfArticles") {
         distributionOfCorpus <- distributionOfCorpus + ggplot2::ggtitle(paste0("Number of publications per day in ", project)) + ggplot2::scale_x_datetime("") + ggplot2::scale_y_continuous("") + ggplot2::expand_limits(y=0)
