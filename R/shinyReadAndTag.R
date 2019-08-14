@@ -74,7 +74,8 @@ ReadAndTag <- function(additional_links = FALSE) {
                                                            shiny::htmlOutput("previousTags"),
                                                            shiny::checkboxInput(inputId = "filterCheckbox", label = "Filter", value = FALSE, width = NULL),
                                                            # Only show this panel if Filter is selected
-                                                           shiny::uiOutput("filterPattern"),
+                                                           shiny::uiOutput("filterPatternTitle"),
+                                                           shiny::uiOutput("filterPatternText"),
                                                            shiny::uiOutput("filterTagSelector"),
                                                            shiny::uiOutput("filterTypeSelector"),
                                                            shiny::uiOutput("filtercategorySelector"),
@@ -211,9 +212,9 @@ ReadAndTag <- function(additional_links = FALSE) {
                 tibble::tibble(doc_id = dataset$doc_id[input$id],  tag = list(input$tag), category = list(input$category), type = list(input$type))
 
                 readr::write_rds(x = tibble::tibble(doc_id = NA,
-                                                         tag = list(NA),
-                                                         category = list(NA),
-                                                         type=list(NA)) %>%
+                                                    tag = list(NA),
+                                                    category = list(NA),
+                                                    type=list(NA)) %>%
                                      dplyr::filter(is.na(doc_id)==FALSE),
                                  path = i)
             }
@@ -338,9 +339,29 @@ ReadAndTag <- function(additional_links = FALSE) {
                   "<b>type</b>: ", paste(as.character(unlist(allTags$type[allTags$doc_id==dataset$doc_id[input$id]])), collapse = ", "))
         })
 
-        output$filterPattern <- shiny::renderUI({
+        output$filterPatternText <- shiny::renderUI({
             if(input$filterCheckbox == TRUE){
-                shiny::textInput("patternFilter", "Pattern to filter", value = "")
+                shiny::tagList(
+                    shiny::textInput(inputId = "patternFilterText",
+                                     label = "Pattern to filter in text",
+                                     value = ""),
+                    shiny::checkboxInput(inputId = "patternFilterTextInvert",
+                                         label = "Invert (i.e. text does not include pattern)",
+                                         value = FALSE)
+                )
+            }
+        })
+
+        output$filterPatternTitle <- shiny::renderUI({
+            if(input$filterCheckbox == TRUE){
+                shiny::tagList(
+                    shiny::textInput(inputId = "patternFilterTitle",
+                                     label = "Pattern to filter in title",
+                                      value = ""),
+                    shiny::checkboxInput(inputId = "patternFilterTitleInvert",
+                                         label = "Invert (i.e. title does not include pattern)",
+                                         value = FALSE)
+                )
             }
         })
 
@@ -446,8 +467,36 @@ ReadAndTag <- function(additional_links = FALSE) {
             categoryFilter <- if (is.null(input$categoryFilter)) {NA} else {unlist(input$categoryFilter)}
             typeFilter <- if (is.null(input$typeFilter)) {NA} else {unlist(input$typeFilter)}
             # Creating logical vector for filter
-            if (is.null(input$patternFilter)==FALSE&input$patternFilter!="") {
-                filterPatternL <- stringr::str_detect(string = dataset$text, pattern = stringr::regex(pattern = input$patternFilter, ignore_case = TRUE))
+            if (is.null(input$patternFilterText)==FALSE&input$patternFilterText!="") {
+                if (input$patternFilterTextInvert==FALSE) {
+                    filterPatternL <- stringr::str_detect(string = dataset$text,
+                                                          pattern = stringr::regex(pattern = input$patternFilterText,
+                                                                                   ignore_case = TRUE))
+                } else if (input$patternFilterTextInvert==TRUE) {
+                    filterPatternL <- stringr::str_detect(string = dataset$text,
+                                                          pattern = stringr::regex(pattern = input$patternFilterText,
+                                                                                   ignore_case = TRUE),
+                                                          negate = TRUE)
+
+                }
+
+                dataset <<- dataset <- dataset[filterPatternL,]
+                #filterL <- Reduce("&", list(filterL, filterPattern))
+            }
+
+            if (is.null(input$patternFilterTitle)==FALSE&input$patternFilterTitle!="") {
+                if (input$patternFilterTitleInvert==FALSE) {
+                    filterPatternL <- stringr::str_detect(string = dataset$title,
+                                                          pattern = stringr::regex(pattern = input$patternFilterTitle,
+                                                                                   ignore_case = TRUE))
+                } else if (input$patternFilterTitleInvert==TRUE) {
+                    filterPatternL <- stringr::str_detect(string = dataset$title,
+                                                          pattern = stringr::regex(pattern = input$patternFilterTitle,
+                                                                                   ignore_case = TRUE),
+                                                          negate = TRUE)
+
+                }
+
                 dataset <<- dataset <- dataset[filterPatternL,]
                 #filterL <- Reduce("&", list(filterL, filterPattern))
             }
@@ -485,9 +534,11 @@ ReadAndTag <- function(additional_links = FALSE) {
 
             if (length(filterL)>0) {
                 if (input$invertFilter== TRUE) {
-                    dataset <<- dataset <- dataset[which(!is.element(el = dataset$doc_id, set = allTags$doc_id[filterL])),]
+                    dataset <<- dataset <- dataset[which(!is.element(el = dataset$doc_id,
+                                                                     set = allTags$doc_id[filterL])),]
                 } else {
-                    dataset <<- dataset <- dataset[which(is.element(el = dataset$doc_id, set = allTags$doc_id[filterL])),]
+                    dataset <<- dataset <- dataset[which(is.element(el = dataset$doc_id,
+                                                                    set = allTags$doc_id[filterL])),]
                 }
             }
 
@@ -516,7 +567,7 @@ ReadAndTag <- function(additional_links = FALSE) {
                            '<a href="', "https://web.archive.org/save/", dataset$link[input$id], '">', "Save on Archive.org", '</a>', " - ",
                            '<a href="', "https://translate.google.com/translate?sl=auto&tl=en&u=", dataset$link[input$id], '">', "Open in Google Translate", '</a>', "<br /><br />")
                 } else {
-                paste('<a href="', dataset$link[input$id], '">', dataset$link[input$id], '</a>')
+                    paste('<a href="', dataset$link[input$id], '">', dataset$link[input$id], '</a>')
                 }
             })
 
