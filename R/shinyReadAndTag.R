@@ -3,14 +3,14 @@
 #' Starts a Shiny app that facilitates sub-setting, reading, and tagging a `castarter` dataset.
 #'
 #'
-#' @param archive_org_links Logical, defaults to FALSE. If TRUE, adds direct links to the Archive.org version of the current web page, as well as to save a current snapshot of the page on archive.org.
+#' @param additional_links Logical, defaults to FALSE. If TRUE, adds direct links to the Archive.org version of the current web page, as well as to save a current snapshot of the page on archive.org.
 #' @export
 #' @examples
 #' \dontrun{
 #' ReadAndTag()
 #' }
 
-ReadAndTag <- function(archive_org_links = FALSE) {
+ReadAndTag <- function(additional_links = FALSE) {
     if (requireNamespace("shiny", quietly = TRUE)==FALSE) {
         stop("You need to install the `shiny` package with `install.packages('shiny')` to use this function.")
     }
@@ -250,10 +250,11 @@ ReadAndTag <- function(archive_org_links = FALSE) {
         })
 
         output$link <- shiny::renderText({
-            if (archive_org_links == TRUE) {
+            if (additional_links == TRUE) {
                 paste0("Original link: ", '<a href="', dataset$link[input$id], '">', dataset$link[input$id], '</a>', "<br />",
                        '<a href="', "https://web.archive.org/", dataset$link[input$id], '">', "View on Archive.org", '</a>', " - ",
-                       '<a href="', "https://web.archive.org/save/", dataset$link[input$id], '">', "Save on Archive.org", '</a>', "<br /><br />")
+                       '<a href="', "https://web.archive.org/save/", dataset$link[input$id], '">', "Save on Archive.org", '</a>', " - ",
+                       '<a href="', "https://translate.google.com/translate?sl=auto&tl=en&u=", dataset$link[input$id], '">', "Open in Google Translate", '</a>', "<br /><br />")
             } else {
                 paste0('<a href="', dataset$link[input$id], '">', dataset$link[input$id], '</a>')
             }
@@ -507,7 +508,14 @@ ReadAndTag <- function(archive_org_links = FALSE) {
             })
 
             output$link <- shiny::renderText({
+                if (additional_links == TRUE) {
+                    paste0("Original link: ", '<a href="', dataset$link[input$id], '">', dataset$link[input$id], '</a>', "<br />",
+                           '<a href="', "https://web.archive.org/", dataset$link[input$id], '">', "View on Archive.org", '</a>', " - ",
+                           '<a href="', "https://web.archive.org/save/", dataset$link[input$id], '">', "Save on Archive.org", '</a>', " - ",
+                           '<a href="', "https://translate.google.com/translate?sl=auto&tl=en&u=", dataset$link[input$id], '">', "Open in Google Translate", '</a>', "<br /><br />")
+                } else {
                 paste('<a href="', dataset$link[input$id], '">', dataset$link[input$id], '</a>')
+                }
             })
 
             output$contents <- shiny::renderText({
