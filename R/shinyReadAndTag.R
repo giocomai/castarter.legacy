@@ -207,16 +207,18 @@ ReadAndTag <- function(additional_links = FALSE) {
                                             message = "Loading dataset(s)... please wait")
 
             for (i in file.path("castarter", input$selected_websites, "Logs", "tags.rds")[file.exists(file.path("castarter", input$selected_websites, "Logs", "tags.rds"))==FALSE]) {
-                tibble::data_frame(doc_id = dataset$doc_id[input$id],  tag = list(input$tag), category = list(input$category), type = list(input$type))
+                fs::dir_create(path = fs::path("castarter", input$selected_websites, "Logs"))
+                tibble::tibble(doc_id = dataset$doc_id[input$id],  tag = list(input$tag), category = list(input$category), type = list(input$type))
 
-                saveRDS(object = tibble::data_frame(doc_id = NA,
-                                                    tag = list(NA),
-                                                    category = list(NA),
-                                                    type=list(NA)) %>% dplyr::filter(is.na(doc_id)==FALSE),
-                        file = i)
+                readr::write_rds(x = tibble::tibble(doc_id = NA,
+                                                         tag = list(NA),
+                                                         category = list(NA),
+                                                         type=list(NA)) %>%
+                                     dplyr::filter(is.na(doc_id)==FALSE),
+                                 path = i)
             }
 
-            allTags <<- purrr::map_df(.x = file.path("castarter", input$selected_websites, "Logs", "tags.rds"), .f = readRDS)
+            allTags <<- purrr::map_df(.x = file.path("castarter", input$selected_websites, "Logs", "tags.rds"), .f = readr::read_rds)
 
             output$datasetInfo <- shiny::renderUI({
                 if (nrow(dataset)==0) {
