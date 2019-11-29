@@ -4,9 +4,17 @@
 \alias{ExportDataset}
 \title{Exports dataset}
 \usage{
-ExportDataset(dataset = NULL, text = NULL, metadata = NULL,
-  exportRds = FALSE, exportRdata = FALSE, exportCsv = FALSE,
-  exportXlsx = FALSE, project = NULL, website = NULL)
+ExportDataset(
+  dataset = NULL,
+  text = NULL,
+  metadata = NULL,
+  exportRds = FALSE,
+  exportRdata = FALSE,
+  exportCsv = FALSE,
+  exportXlsx = FALSE,
+  project = NULL,
+  website = NULL
+)
 }
 \arguments{
 \item{dataset}{A 'castarter' dataset.}

@@ -4,11 +4,24 @@
 \alias{ShowRelativeTS}
 \title{Creates time series of the relative frequency of specific terms.}
 \usage{
-ShowRelativeTS(dataset, terms, type = "graph", ignore_case = TRUE,
-  specificWebsites = NULL, startDate = NULL, endDate = NULL,
-  rollingDays = 31, rollingType = "average", align = "center",
-  verticalLine = NULL, smoothLine = FALSE, customTitle = NULL,
-  export = FALSE, project = NULL, website = NULL)
+ShowRelativeTS(
+  dataset,
+  terms,
+  type = "graph",
+  ignore_case = TRUE,
+  specificWebsites = NULL,
+  startDate = NULL,
+  endDate = NULL,
+  rollingDays = 31,
+  rollingType = "average",
+  align = "center",
+  verticalLine = NULL,
+  smoothLine = FALSE,
+  customTitle = NULL,
+  export = FALSE,
+  project = NULL,
+  website = NULL
+)
 }
 \arguments{
 \item{dataset}{A `castarter` dataset.}

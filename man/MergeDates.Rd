@@ -4,8 +4,15 @@
 \alias{MergeDates}
 \title{Merge alternative sets of dates for a given dataset}
 \usage{
-MergeDates(dates1, dates2, dates3 = NULL, minDate = NULL,
-  maxDate = NULL, fillMissingDates = FALSE, maxgap = 5)
+MergeDates(
+  dates1,
+  dates2,
+  dates3 = NULL,
+  minDate = NULL,
+  maxDate = NULL,
+  fillMissingDates = FALSE,
+  maxgap = 5
+)
 }
 \arguments{
 \item{dates1, }{dates2, dates3 Vectors of the POSIXct class to be merged. Where a value in dates1 is NA, MergeDates looks for a corresponding value in dates2 and dates3.}

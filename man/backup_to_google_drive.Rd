@@ -4,8 +4,13 @@
 \alias{backup_to_google_drive}
 \title{Backs up files to Google Drive}
 \usage{
-backup_to_google_drive(r_files = TRUE, datasets = TRUE,
-  archive_files = TRUE, project = NULL, website = NULL)
+backup_to_google_drive(
+  r_files = TRUE,
+  datasets = TRUE,
+  archive_files = TRUE,
+  project = NULL,
+  website = NULL
+)
 }
 \arguments{
 \item{project}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. Defaults to NULL, required for storing export parameters (with exportParameters = TRUE). This can be left blank if previously set with SetCastarter(project = "project", website = "website").}

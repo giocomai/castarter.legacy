@@ -4,14 +4,28 @@
 \alias{ExtractTitles}
 \title{Extracts titles of individual pages}
 \usage{
-ExtractTitles(container = "title", containerClass = NULL,
-  containerId = NULL, containerInstance = NULL, htmlLocation = NULL,
-  id = NULL, links = NULL, removePunctuation = FALSE,
-  onlyStandardCharacters = FALSE, removeString = NULL,
-  removeEverythingBefore = NULL, removeEverythingAfter = NULL,
-  customXpath = NULL, maxCharacters = NULL, encoding = "UTF-8",
-  progressBar = TRUE, exportParameters = TRUE,
-  importParameters = NULL, project = NULL, website = NULL)
+ExtractTitles(
+  container = "title",
+  containerClass = NULL,
+  containerId = NULL,
+  containerInstance = NULL,
+  htmlLocation = NULL,
+  id = NULL,
+  links = NULL,
+  removePunctuation = FALSE,
+  onlyStandardCharacters = FALSE,
+  removeString = NULL,
+  removeEverythingBefore = NULL,
+  removeEverythingAfter = NULL,
+  customXpath = NULL,
+  maxCharacters = NULL,
+  encoding = "UTF-8",
+  progressBar = TRUE,
+  exportParameters = TRUE,
+  importParameters = NULL,
+  project = NULL,
+  website = NULL
+)
 }
 \arguments{
 \item{container}{HTML element where the title is found. The title can usually be found in one of the following:

@@ -4,11 +4,24 @@
 \alias{DownloadContents}
 \title{Downloads html pages based on a vector of links}
 \usage{
-DownloadContents(links, type = "articles", path = NULL, size = 500,
-  linksToCheck = NULL, linksToDownload = NULL, wgetSystem = FALSE,
-  method = "auto", missingPages = TRUE, start = 1, wait = 1,
-  ignoreSSLcertificates = FALSE, createScript = FALSE,
-  project = NULL, website = NULL)
+DownloadContents(
+  links,
+  type = "articles",
+  path = NULL,
+  size = 500,
+  linksToCheck = NULL,
+  linksToDownload = NULL,
+  wgetSystem = FALSE,
+  method = "auto",
+  missingPages = TRUE,
+  start = 1,
+  wait = 1,
+  ignoreSSLcertificates = FALSE,
+  use_headless_chromium = FALSE,
+  createScript = FALSE,
+  project = NULL,
+  website = NULL
+)
 }
 \arguments{
 \item{links}{A character vector of links, commonly generated either with the function CreateLinks or ExtractLinks.}
@@ -34,6 +47,8 @@ DownloadContents(links, type = "articles", path = NULL, size = 500,
 \item{wait}{Defaults to 1. Number of seconds to wait between downloading one page and the next. Can be increased to reduce server load, or can be set to 0 when this is not an issue.}
 
 \item{ignoreSSLcertificates}{Logical, defaults to FALSE. If TRUE it uses wget to download the page, and does not check if the SSL certificate is valid. Useful, for example, for https pages with expired or mis-configured SSL certificate.}
+
+\item{use_headless_chromium}{Logical, defaults to FALSE. If TRUE uses the `crrri` package to download pages. Useful in particular when web pages are generated via javascript. See in particular: https://github.com/RLesur/crrri#system-requirements}
 
 \item{createScript}{Logical, defaults to FALSE. Tested on Linux only. If TRUE, creates a downloadPages.sh executable file that can be used to download all relevant pages from a terminal.}
 

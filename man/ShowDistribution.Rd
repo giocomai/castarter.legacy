@@ -4,9 +4,17 @@
 \alias{ShowDistribution}
 \title{Creates a time series graph showing the distribution of documents by date}
 \usage{
-ShowDistribution(dataset, specificWebsites = NULL, rollingDays = 31,
-  align = "center", customTitle = NULL, method = "numberOfArticles",
-  export = FALSE, project = NULL, website = NULL)
+ShowDistribution(
+  dataset,
+  specificWebsites = NULL,
+  rollingDays = 31,
+  align = "center",
+  customTitle = NULL,
+  method = "numberOfArticles",
+  export = FALSE,
+  project = NULL,
+  website = NULL
+)
 }
 \arguments{
 \item{dataset}{A dataset created with 'castarter'.}

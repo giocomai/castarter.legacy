@@ -4,8 +4,13 @@
 \alias{restore_from_google_drive}
 \title{Restore from Google Drive}
 \usage{
-restore_from_google_drive(r_files = TRUE, dataset = TRUE,
-  archive_files = FALSE, project = NULL, website = NULL)
+restore_from_google_drive(
+  r_files = TRUE,
+  dataset = TRUE,
+  archive_files = FALSE,
+  project = NULL,
+  website = NULL
+)
 }
 \arguments{
 \item{project}{Name of 'castarter' project. Must correspond to the name of a folder in the current working directory. Defaults to NULL, required for storing export parameters (with exportParameters = TRUE). This can be left blank if previously set with SetCastarter(project = "project", website = "website").}

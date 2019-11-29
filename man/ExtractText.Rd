@@ -4,17 +4,35 @@
 \alias{ExtractText}
 \title{Extracts textual contents from a vector of html files}
 \usage{
-ExtractText(container = NULL, containerClass = NULL,
-  containerId = NULL, containerInstance = NULL, subElement = NULL,
-  noChildren = NULL, htmlLocation = NULL, id = NULL,
-  encoding = "UTF-8", metadata = NULL, export = FALSE,
-  maxTitleCharacters = 80, removeString = NULL, customXpath = NULL,
-  removeEverythingAfter_pre = NULL, removeEverythingBefore_pre = NULL,
-  removeEverythingBefore = NULL, removeEverythingAfter = NULL,
-  keepEverything = FALSE, removePunctuationInFilename = TRUE,
-  removeTitleFromTxt = FALSE, titles = NULL, importParameters = NULL,
-  exportParameters = TRUE, progressBar = TRUE, project = NULL,
-  website = NULL)
+ExtractText(
+  container = NULL,
+  containerClass = NULL,
+  containerId = NULL,
+  containerInstance = NULL,
+  subElement = NULL,
+  noChildren = NULL,
+  htmlLocation = NULL,
+  id = NULL,
+  encoding = "UTF-8",
+  metadata = NULL,
+  export = FALSE,
+  maxTitleCharacters = 80,
+  removeString = NULL,
+  customXpath = NULL,
+  removeEverythingAfter_pre = NULL,
+  removeEverythingBefore_pre = NULL,
+  removeEverythingBefore = NULL,
+  removeEverythingAfter = NULL,
+  keepEverything = FALSE,
+  removePunctuationInFilename = TRUE,
+  removeTitleFromTxt = FALSE,
+  titles = NULL,
+  importParameters = NULL,
+  exportParameters = TRUE,
+  progressBar = TRUE,
+  project = NULL,
+  website = NULL
+)
 }
 \arguments{
 \item{container}{Defaults to NULL. If provided, it must be an html element such as "div", "span", etc.}

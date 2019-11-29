@@ -4,9 +4,14 @@
 \alias{LoadDatasets}
 \title{Loads a specific set of datasets from existings 'castarter' projects.}
 \usage{
-LoadDatasets(projectsAndWebsites = NULL, type = "dataset",
-  arrangeByDate = TRUE, removeNAdates = TRUE, convertToUTF8 = FALSE,
-  addProjectColumn = FALSE)
+LoadDatasets(
+  projectsAndWebsites = NULL,
+  type = "dataset",
+  arrangeByDate = TRUE,
+  removeNAdates = TRUE,
+  convertToUTF8 = FALSE,
+  addProjectColumn = FALSE
+)
 }
 \arguments{
 \item{projectsAndWebsites}{A character vector listing websites to be loaded in the format "project/website". If none is given, it will check if project and website have been set with `SetCastarter()`}

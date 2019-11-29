@@ -4,10 +4,17 @@
 \alias{SaveWebsite}
 \title{Saves working environment and dataset.}
 \usage{
-SaveWebsite(dataset = NULL, datasetTidy = FALSE,
-  datasetBySentence = FALSE, saveEnvironment = FALSE,
-  exportCsv = FALSE, exportTxt = FALSE, exportXlsx = FALSE,
-  project = NULL, website = NULL)
+SaveWebsite(
+  dataset = NULL,
+  datasetTidy = FALSE,
+  datasetBySentence = FALSE,
+  saveEnvironment = FALSE,
+  exportCsv = FALSE,
+  exportTxt = FALSE,
+  exportXlsx = FALSE,
+  project = NULL,
+  website = NULL
+)
 }
 \arguments{
 \item{dataset}{Defaults to NULL. If TRUE, it seeks for a `metadata` and a `text` object in the current environment. If a `castarter` dataset is provided, this is then stored as the dataset.}

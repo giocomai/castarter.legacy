@@ -4,16 +4,32 @@
 \alias{ExtractDates}
 \title{Extracts dates from a vector of html files}
 \usage{
-ExtractDates(dateFormat = "dmY", container = NULL,
-  containerClass = NULL, containerId = NULL,
-  containerInstance = NULL, removeString = NULL, htmlLocation = NULL,
-  inputVector = NULL, id = NULL, customXpath = NULL,
-  customRegex = NULL, attribute = NULL,
-  language = Sys.getlocale(category = "LC_TIME"), customString = "",
-  minDate = NULL, maxDate = NULL, encoding = "UTF-8",
-  keepAllString = FALSE, removeEverythingBefore = NULL,
-  progressBar = TRUE, exportParameters = TRUE,
-  importParameters = NULL, project = NULL, website = NULL)
+ExtractDates(
+  dateFormat = "dmY",
+  container = NULL,
+  containerClass = NULL,
+  containerId = NULL,
+  containerInstance = NULL,
+  removeString = NULL,
+  htmlLocation = NULL,
+  inputVector = NULL,
+  id = NULL,
+  customXpath = NULL,
+  customRegex = NULL,
+  attribute = NULL,
+  language = Sys.getlocale(category = "LC_TIME"),
+  customString = "",
+  minDate = NULL,
+  maxDate = NULL,
+  encoding = "UTF-8",
+  keepAllString = FALSE,
+  removeEverythingBefore = NULL,
+  progressBar = TRUE,
+  exportParameters = TRUE,
+  importParameters = NULL,
+  project = NULL,
+  website = NULL
+)
 }
 \arguments{
 \item{dateFormat}{A string expressing the date format. In line with standards (see ?strptime), 'd' stands for day, 'm' stands for month in figures, 'b' for months spelled out as words, 'y' as year without the century, 'Y' as year with four digits. Standard separation marks among parts of the date (e.g. '-', '/', '.') should not be included. The following date formats are available :

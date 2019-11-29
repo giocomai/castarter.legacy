@@ -4,8 +4,7 @@
 \alias{ExtractId}
 \title{Extracts id from filename}
 \usage{
-ExtractId(sample = NULL, htmlLocation = NULL, project = NULL,
-  website = NULL)
+ExtractId(sample = NULL, htmlLocation = NULL, project = NULL, website = NULL)
 }
 \arguments{
 \item{sample}{Defaults to NULL. If given, it must be an integer corresponding to the desired sample size.}

@@ -4,9 +4,19 @@
 \alias{ExportMetadata}
 \title{Exports metadata}
 \usage{
-ExportMetadata(id, dates, titles, language, links, exportCsv = FALSE,
-  exportXlsx = FALSE, accordingToDate = FALSE, ignoreNAdates = FALSE,
-  project = NULL, website = NULL)
+ExportMetadata(
+  id,
+  dates,
+  titles,
+  language,
+  links,
+  exportCsv = FALSE,
+  exportXlsx = FALSE,
+  accordingToDate = FALSE,
+  ignoreNAdates = FALSE,
+  project = NULL,
+  website = NULL
+)
 }
 \arguments{
 \item{id}{A vector of integers, usually created with `ExtractId()`.}

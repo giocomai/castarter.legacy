@@ -4,8 +4,14 @@
 \alias{RestoreArchives}
 \title{Restore Html, Txt, and IndexHtml folders previously archived with in .tar.gz files with ArchiveFolders().}
 \usage{
-RestoreArchives(html = FALSE, indexHtml = FALSE, txt = FALSE,
-  overwrite = FALSE, project = NULL, website = NULL)
+RestoreArchives(
+  html = FALSE,
+  indexHtml = FALSE,
+  txt = FALSE,
+  overwrite = FALSE,
+  project = NULL,
+  website = NULL
+)
 }
 \arguments{
 \item{html}{Logical, defaults to FALSE. If TRUE, restores previously archived html files in their standard folder.}

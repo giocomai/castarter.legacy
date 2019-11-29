@@ -4,10 +4,20 @@
 \alias{ExportArticlesWith}
 \title{Exports all articles that contain a given term.}
 \usage{
-ExportArticlesWith(dataset, term, includeNaDates = TRUE,
-  onlyNaDates = FALSE, txt = TRUE, csv = FALSE, xlsx = FALSE,
-  data.frame = FALSE, includeOnly = NULL, sortBy = "date",
-  project = NULL, website = NULL)
+ExportArticlesWith(
+  dataset,
+  term,
+  includeNaDates = TRUE,
+  onlyNaDates = FALSE,
+  txt = TRUE,
+  csv = FALSE,
+  xlsx = FALSE,
+  data.frame = FALSE,
+  includeOnly = NULL,
+  sortBy = "date",
+  project = NULL,
+  website = NULL
+)
 }
 \arguments{
 \item{dataset}{A dataset created with 'castarter'.}
