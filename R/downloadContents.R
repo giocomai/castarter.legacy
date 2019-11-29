@@ -16,6 +16,7 @@
 #' @param wgetSystem Logical, defaults to FALSE. Calls wget as a system command through the system() function. Wget must be previously installed on the system.
 #' @param start Integer. Only links with position higher than start in the links vector will be downloaded: links[start:length(links)]
 #' @param ignoreSSLcertificates Logical, defaults to FALSE. If TRUE it uses wget to download the page, and does not check if the SSL certificate is valid. Useful, for example, for https pages with expired or mis-configured SSL certificate.
+#' @param use_headless_chromium Logical, defaults to FALSE. If TRUE uses the `crrri` package to download pages. Useful in particular when web pages are generated via javascript. See in particular: https://github.com/RLesur/crrri#system-requirements
 #' @param createScript Logical, defaults to FALSE. Tested on Linux only. If TRUE, creates a downloadPages.sh executable file that can be used to download all relevant pages from a terminal.
 #' @return By default, returns nothing, used for its side effects (downloads html files in relevant folder). Download files can then be imported in a vector with the function ImportHtml.
 #' @export
@@ -36,6 +37,7 @@ DownloadContents <- function(links,
                              start = 1,
                              wait = 1,
                              ignoreSSLcertificates = FALSE,
+                             use_headless_chromium = FALSE,
                              createScript = FALSE,
                              project = NULL,
                              website = NULL) {
@@ -50,6 +52,11 @@ DownloadContents <- function(links,
     } else {
         baseFolder <- CastarterOptions("baseFolder")
     }
+
+    if (requireNamespace("crrri", quietly = TRUE)==FALSE) {
+        stop("You need to install the `crrri` package to download pages with headless chrome/chromium. For details, see: https://github.com/RLesur/crrri. Make sure to read the note on system requirements: https://github.com/RLesur/crrri#system-requirements")
+    }
+
     fileFormat <- "html"
     if (type=="articles") {
         htmlFilePath <- file.path(baseFolder, project, website, "Html")
@@ -124,10 +131,39 @@ DownloadContents <- function(links,
     } else {
         for (i in links[linksToDownload]) {
             articleId <- articlesId[linksToDownload][temp]
-            if (ignoreSSLcertificates==TRUE) {
-                try(utils::download.file(url = i, destfile = file.path(htmlFilePath, paste0(articleId, ".", fileFormat)), method = "wget", extra = "--no-check-certificate"))
+            if (use_headless_chromium == TRUE) {
+                #based on example from: https://github.com/RLesur/crrri
+                crrri::perform_with_chrome(function(client) {
+                    Network <- client$Network
+                    Page <- client$Page
+                    Runtime <- client$Runtime
+                    Network$enable() %...>% {
+                        Page$enable()
+                    } %...>% {
+                        Network$setCacheDisabled(cacheDisabled = TRUE)
+                    } %...>% {
+                        Page$navigate(url = i)
+                    } %...>% {
+                        Page$loadEventFired()
+                    } %...>% {
+                        Runtime$evaluate(
+                            expression = 'document.documentElement.outerHTML'
+                        )
+                    } %...>% (function(result) {
+                        writeLines(text = result$result$value,
+                                   con = file.path(htmlFilePath,
+                                                   paste0(articleId, ".", fileFormat)),
+                                   sep = "\n")
+                    })
+                })
+
+
             } else {
-                try(utils::download.file(url = i, destfile = file.path(htmlFilePath, paste0(articleId, ".", fileFormat)), method = method))
+                if (ignoreSSLcertificates==TRUE) {
+                    try(utils::download.file(url = i, destfile = file.path(htmlFilePath, paste0(articleId, ".", fileFormat)), method = "wget", extra = "--no-check-certificate"))
+                } else {
+                    try(utils::download.file(url = i, destfile = file.path(htmlFilePath, paste0(articleId, ".", fileFormat)), method = method))
+                }
             }
             message(paste("Downloaded item", temp, "of", length(links[linksToDownload]), ". ID: ", articleId))
             temp <- temp + 1

@@ -4,12 +4,24 @@
 \alias{CreateLinks}
 \title{Generates links to index pages listing individual articles..}
 \usage{
-CreateLinks(linkFirstChunk, linkSecondChunk = NULL, startPage = 1,
-  endPage = 10, increaseBy = 1, dateFormat = NULL,
-  startDate = NULL, endDate = NULL, dateSeparator = "-",
-  reversedOrder = FALSE, more = NULL, export = FALSE,
-  importParameters = NULL, exportParameters = TRUE, project = NULL,
-  website = NULL)
+CreateLinks(
+  linkFirstChunk,
+  linkSecondChunk = NULL,
+  startPage = 1,
+  endPage = 10,
+  increaseBy = 1,
+  dateFormat = NULL,
+  startDate = NULL,
+  endDate = NULL,
+  dateSeparator = "-",
+  reversedOrder = FALSE,
+  more = NULL,
+  export = FALSE,
+  importParameters = NULL,
+  exportParameters = TRUE,
+  project = NULL,
+  website = NULL
+)
 }
 \arguments{
 \item{linkFirstChunk}{First part of index link that does not change in other index pages.}
