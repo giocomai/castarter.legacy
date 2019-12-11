@@ -7,6 +7,7 @@
 UpdateDataset(
   dataset = NULL,
   links = NULL,
+  indexLinks = NULL,
   maxNumberOfIndexPages = 1000,
   wait = 1,
   exportRds = TRUE,
@@ -19,6 +20,8 @@ UpdateDataset(
 \item{dataset}{A 'castarter' dataset, defaults to NULL. If not given, and project and website are given (possily, through `SetCastarter(project = ..., website =)`), the latest dataset is automatically loaded.}
 
 \item{links}{A chacter vector, defaults to NULL. If given, it is checked against the given dataset: new links are downloaded, the correspondent pages extracted, and the result added to the dataset. If not given, the function downloads index pages along the criteria found in the stores param file and continues downloading them as long as there is at least a new link in an index page. Based on this, it then proceeds to update the dataset.}
+
+\item{indexLinks}{A chacter vector, defaults to NULL. If given, the presence of new articles is checked after downloading the provided index pages.}
 
 \item{maxNumberOfIndexPages}{An integer, defaults to 1000 to prevent function from running indefinitely (however, this can be set to `Inf`). Maximum number of index pages to be downloaded before the function proceeds with updating the dataset.}
 
