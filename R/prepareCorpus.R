@@ -94,10 +94,10 @@ LoadDatasets <- function(projectsAndWebsites = NULL,
         }
     }
     if (arrangeByDate==TRUE) {
-        return(dplyr::as_data_frame(allDatasets) %>%
+        return(tibble::as_tibble(allDatasets) %>%
                    dplyr::arrange(date))
     } else {
-        return(dplyr::as_data_frame(allDatasets))
+        return(tibble::as_tibble(allDatasets))
     }
 }
 
@@ -107,6 +107,8 @@ LoadDatasets <- function(projectsAndWebsites = NULL,
 #' Takes all datasets from all websites in a project and outputs them in a data frame.
 #'
 #' @param project The name of the project whose datasets are to be imported.
+#' @param arrangeByDate Logical, defaults to TRUE. If TRUE, the dataset is put in order by date (oldest first).
+#' @param removeNAdates Logical, defaults to TRUE. If TRUE, dataset items that do not have a date in the records are not imported.
 #' @return A data frame including all datasets of a project.
 #' @export
 #' @examples
@@ -114,36 +116,43 @@ LoadDatasets <- function(projectsAndWebsites = NULL,
 #' allDatasets <- LoadAllDatasets(project)
 #' }
 
-LoadAllDatasets <- function(project, removeNAdates = TRUE) {
-    listOfWebsites <- gsub(paste0(project, "/"), "", list.dirs(file.path(baseFolder, project), recursive = FALSE), fixed = TRUE)
+LoadAllDatasets <- function(project,
+                            removeNAdates = TRUE,
+                            arrangeByDate = TRUE) {
+    if (is.null(CastarterOptions("baseFolder"))) {
+        baseFolder <- "castarter"
+    } else {
+        baseFolder <- CastarterOptions("baseFolder")
+    }
+    listOfWebsites <- fs::dir_ls(path = fs::path(baseFolder, project),
+                                 recurse = FALSE,
+                                 type = "directory") %>%
+        fs::path_file()
     lastSavedDatasets <- vector()
     for (i in 1:length(listOfWebsites)) {
         website <- listOfWebsites[i]
-        datasetFilename <- sort(list.files(file.path(baseFolder, project, website, "Dataset"))[stringr::str_extract(list.files(file.path(baseFolder, project,
-            website, "Dataset")), "dataset.RData") == "dataset.RData"], decreasing = TRUE)[1]
-        if (is.na(datasetFilename) == FALSE) {
-            lastSavedDataset <- file.path(file.path(baseFolder, project, website, "Dataset"), datasetFilename)
-            lastSavedDatasets[i] <- lastSavedDataset
+        datasetFilename <- fs::dir_ls(path = fs::path(baseFolder, project, website, "Dataset"),
+                                      recurse = FALSE,
+                                      type = "file",
+                                      glob = "*dataset.rds") %>%
+            tail(1)
+
+        if (length(datasetFilename) > 0) {
+            lastSavedDatasets[i] <- datasetFilename
         }
-        lastSavedDatasets <- lastSavedDatasets[!is.na(lastSavedDatasets)]
     }
-    allDatasets <- data.frame()
-    for (i in 1:length(lastSavedDatasets)) {
-        load(lastSavedDatasets[i])
-        # introduced for backward compatibility with datasets created with castarter ver<0.2 #legacy
-        colnames(x = dataset)[colnames(dataset)=="nameOfProject"]<-"project"
-        colnames(x = dataset)[colnames(dataset)=="nameOfWebsite"]<-"website"
-        colnames(x = dataset)[colnames(dataset)=="articlesTxt"]<-"contents"
-        colnames(x = dataset)[colnames(dataset)=="articlesId"]<-"id"
-        colnames(x = dataset)[colnames(dataset)=="articlesLinks"]<-"link"
-        colnames(x = dataset)[colnames(dataset)=="links"]<-"link"
-        colnames(x = dataset)[colnames(dataset)=="titles"]<-"title"
-        colnames(x = dataset)[colnames(dataset)=="dates"]<-"date"
-        allDatasets <- rbind(allDatasets, dataset)
-        rm(dataset)
-    }
+    lastSavedDatasets <- lastSavedDatasets[is.na(lastSavedDatasets)==FALSE]
+
+    allDatasets <- purrr::map_dfr(.x = lastSavedDatasets,
+                                  .f = readr::read_rds)
+
     if (removeNAdates == TRUE) {
         allDatasets <- allDatasets[is.na(allDatasets$date) == FALSE, ]
     }
-    return(dplyr::as_data_frame(allDatasets))
+    if (arrangeByDate==TRUE) {
+        return(tibble::as_tibble(allDatasets) %>%
+                   dplyr::arrange(date))
+    } else {
+        return(tibble::as_tibble(allDatasets))
+    }
 }

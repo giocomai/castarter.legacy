@@ -4,10 +4,14 @@
 \alias{LoadAllDatasets}
 \title{Loads all datasets of a 'castarter' project.}
 \usage{
-LoadAllDatasets(project, removeNAdates = TRUE)
+LoadAllDatasets(project, removeNAdates = TRUE, arrangeByDate = TRUE)
 }
 \arguments{
 \item{project}{The name of the project whose datasets are to be imported.}
+
+\item{removeNAdates}{Logical, defaults to TRUE. If TRUE, dataset items that do not have a date in the records are not imported.}
+
+\item{arrangeByDate}{Logical, defaults to TRUE. If TRUE, the dataset is put in order by date (oldest first).}
 }
 \value{
 A data frame including all datasets of a project.

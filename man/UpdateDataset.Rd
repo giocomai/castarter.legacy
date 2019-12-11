@@ -10,6 +10,7 @@ UpdateDataset(
   maxNumberOfIndexPages = 1000,
   wait = 1,
   exportRds = TRUE,
+  use_headless_chromium = FALSE,
   project = NULL,
   website = NULL
 )
