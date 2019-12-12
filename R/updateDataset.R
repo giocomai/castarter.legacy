@@ -126,83 +126,85 @@ UpdateDataset <- function(dataset = NULL,
     allLinks <- c(dataset$link, newLinks)
     toDownloadL <- is.element(el = allLinks, set = newLinks)
     message(paste(sum(toDownloadL), "new pages founds."))
-    Sys.sleep(time = 1)
-    DownloadContents(links = allLinks,
-                     type = "articles",
-                     linksToCheck = toDownloadL,
-                     wait = wait, project = project, website = website,
-                     use_headless_chromium = use_headless_chromium)
+    if (sum(toDownloadL)>0) {
+        Sys.sleep(time = 1)
+        DownloadContents(links = allLinks,
+                         type = "articles",
+                         linksToCheck = toDownloadL,
+                         wait = wait, project = project, website = website,
+                         use_headless_chromium = use_headless_chromium)
 
-    DownloadContents(links = allLinks,
-                     type = "articles",
-                     linksToCheck = toDownloadL,
-                     wait = wait,
-                     project = project,
-                     website = website,
-                     missingPages = FALSE,
-                     use_headless_chromium = use_headless_chromium)
+        DownloadContents(links = allLinks,
+                         type = "articles",
+                         linksToCheck = toDownloadL,
+                         wait = wait,
+                         project = project,
+                         website = website,
+                         missingPages = FALSE,
+                         use_headless_chromium = use_headless_chromium)
 
-    DownloadContents(links = allLinks,
-                     type = "articles",
-                     linksToCheck = toDownloadL,
-                     wait = wait,
-                     project = project,
-                     website = website,
-                     use_headless_chromium = use_headless_chromium)
+        DownloadContents(links = allLinks,
+                         type = "articles",
+                         linksToCheck = toDownloadL,
+                         wait = wait,
+                         project = project,
+                         website = website,
+                         use_headless_chromium = use_headless_chromium)
 
-    DownloadContents(links = allLinks,
-                     type = "articles",
-                     linksToCheck = toDownloadL,
-                     wait = wait,
-                     project = project,
-                     website = website,
-                     missingPages = FALSE,
-                     use_headless_chromium = use_headless_chromium)
+        DownloadContents(links = allLinks,
+                         type = "articles",
+                         linksToCheck = toDownloadL,
+                         wait = wait,
+                         project = project,
+                         website = website,
+                         missingPages = FALSE,
+                         use_headless_chromium = use_headless_chromium)
 
-    # Extract metadata
-    id <- ExtractId(project = project, website = website)
-    message("\nExtracting titles")
-    titles <- ExtractTitles(id = id,
+        # Extract metadata
+        id <- ExtractId(project = project, website = website)
+        message("\nExtracting titles")
+        titles <- ExtractTitles(id = id,
+                                importParameters = TRUE,
+                                exportParameters = FALSE,
+                                project = project,
+                                website = website)
+        message("\nExtracting dates")
+        dates <- ExtractDates(id = id,
+                              importParameters = TRUE,
+                              exportParameters = FALSE,
+                              project = project,
+                              website = website)
+        if (sum(is.na(dates))>0) {
+            warning(paste("\nThe date could not be extracted for", sum(is.na(dates)), "of the", length(id), "new pages found."))
+        }
+
+        language <- dataset$language[1]
+
+        metadata <- ExportMetadata(project = project,
+                                   website = website,
+                                   dates = dates,
+                                   id = id,
+                                   titles = titles,
+                                   language = language,
+                                   links = allLinks)
+
+        message("\nExtracting text")
+
+        text <- ExtractText(id = id,
                             importParameters = TRUE,
-                            exportParameters = FALSE,
-                            project = project,
-                            website = website)
-    message("\nExtracting dates")
-    dates <- ExtractDates(id = id,
-                          importParameters = TRUE,
-                          exportParameters = FALSE,
+                            exportParameters = FALSE)
+        newDataset <- ExportDataset(text = text, metadata = metadata, exportRds = FALSE)
+
+        dataset <- dplyr::bind_rows(dataset, newDataset)
+
+        if (exportRds==TRUE) {
+            message("\nSaving dataset in .rds format.")
+            ExportDataset(dataset = dataset,
+                          exportRds = TRUE,
                           project = project,
                           website = website)
-    if (sum(is.na(dates))>0) {
-        warning(paste("\nThe date could not be extracted for", sum(is.na(dates)), "of the", length(id), "new pages found."))
+        }
+        message(paste("\n", sum(toDownloadL), "new pages added to dataset."))
+        invisible(dataset)
     }
-
-    language <- dataset$language[1]
-
-    metadata <- ExportMetadata(project = project,
-                               website = website,
-                               dates = dates,
-                               id = id,
-                               titles = titles,
-                               language = language,
-                               links = allLinks)
-
-    message("\nExtracting text")
-
-    text <- ExtractText(id = id,
-                        importParameters = TRUE,
-                        exportParameters = FALSE)
-    newDataset <- ExportDataset(text = text, metadata = metadata, exportRds = FALSE)
-
-    dataset <- dplyr::bind_rows(dataset, newDataset)
-
-    if (exportRds==TRUE) {
-        message("\nSaving dataset in .rds format.")
-        ExportDataset(dataset = dataset,
-                      exportRds = TRUE,
-                      project = project,
-                      website = website)
-    }
-    message(paste("\n", sum(toDownloadL), "new pages added to dataset."))
-    invisible(dataset)
 }
