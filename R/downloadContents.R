@@ -53,8 +53,10 @@ DownloadContents <- function(links,
         baseFolder <- CastarterOptions("baseFolder")
     }
 
-    if (requireNamespace("crrri", quietly = TRUE)==FALSE) {
-        stop("You need to install the `crrri` package to download pages with headless chrome/chromium. For details, see: https://github.com/RLesur/crrri. Make sure to read the note on system requirements: https://github.com/RLesur/crrri#system-requirements")
+    if (use_headless_chromium==TRUE) {
+        if (requireNamespace("crrri", quietly = TRUE)==FALSE) {
+            stop("You need to install the `crrri` package to download pages with headless chrome/chromium. For details, see: https://github.com/RLesur/crrri. Make sure to read the note on system requirements: https://github.com/RLesur/crrri#system-requirements")
+        }
     }
 
     fileFormat <- "html"
