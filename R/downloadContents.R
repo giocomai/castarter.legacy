@@ -38,6 +38,7 @@ DownloadContents <- function(links,
                              wait = 1,
                              ignoreSSLcertificates = FALSE,
                              use_headless_chromium = FALSE,
+                             use_phantomjs = FALSE,
                              createScript = FALSE,
                              project = NULL,
                              website = NULL) {
@@ -116,8 +117,8 @@ DownloadContents <- function(links,
                 file.remove(file.path(baseFolder, project, website, "downloadPages.sh"))
             }
             write(x = paste0("wget '", links[linksToDownload], "' -O '",
-                            file.path("..", "..", "..", htmlFilePath, paste0(articlesId[linksToDownload], ".", fileFormat)), "'",
-                            " -t 1 -T 20", "; ", "sleep ", wait),
+                             file.path("..", "..", "..", htmlFilePath, paste0(articlesId[linksToDownload], ".", fileFormat)), "'",
+                             " -t 1 -T 20", "; ", "sleep ", wait),
                   file = file.path(baseFolder, project, website, "downloadPages.sh"), append = TRUE)
             system(paste("chmod +x", file.path(baseFolder, project, website, "downloadPages.sh")))
         } else {
@@ -160,6 +161,12 @@ DownloadContents <- function(links,
                 })
 
 
+            } else if (use_phantomjs == TRUE) {
+                options(useFancyQuotes = FALSE)
+                if (fs::file_exists("save.js")==FALSE) {
+                    download.file(url = "https://raw.githubusercontent.com/giocomai/castarter/master/inst/save.js", destfile = "save.js")
+                }
+                system(paste("phantomjs save.js", sQuote(i), file.path(htmlFilePath, paste0(articleId, ".", fileFormat))))
             } else {
                 if (ignoreSSLcertificates==TRUE) {
                     try(utils::download.file(url = i, destfile = file.path(htmlFilePath, paste0(articleId, ".", fileFormat)), method = "wget", extra = "--no-check-certificate"))
