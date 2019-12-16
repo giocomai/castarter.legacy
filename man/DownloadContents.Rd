@@ -18,6 +18,7 @@ DownloadContents(
   wait = 1,
   ignoreSSLcertificates = FALSE,
   use_headless_chromium = FALSE,
+  use_phantomjs = FALSE,
   createScript = FALSE,
   project = NULL,
   website = NULL

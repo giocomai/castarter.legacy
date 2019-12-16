@@ -12,6 +12,7 @@ UpdateDataset(
   wait = 1,
   exportRds = TRUE,
   use_headless_chromium = FALSE,
+  use_phantomjs = FALSE,
   project = NULL,
   website = NULL
 )

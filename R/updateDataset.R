@@ -23,6 +23,7 @@ UpdateDataset <- function(dataset = NULL,
                           wait = 1,
                           exportRds = TRUE,
                           use_headless_chromium = FALSE,
+                          use_phantomjs = FALSE,
                           project = NULL,
                           website = NULL) {
     if (is.null(project) == TRUE) {
@@ -44,10 +45,10 @@ UpdateDataset <- function(dataset = NULL,
     params <- readRDS(paramsFile)
     if (base::is.null(links)==TRUE) {
         if(is.null(indexLinks)== FALSE) {
-            DownloadContents(links = indexLinks, type = "index", wait = wait, project = project, website = website, use_headless_chromium = use_headless_chromium)
-            DownloadContents(links = indexLinks, type = "index", wait = wait, project = project, website = website, use_headless_chromium = use_headless_chromium)
-            DownloadContents(links = indexLinks, type = "index", missingPages = FALSE, wait = wait, project = project, website = website, use_headless_chromium = use_headless_chromium)
-            DownloadContents(links = indexLinks, type = "index", missingPages = FALSE, wait = wait, project = project, website = website, use_headless_chromium = use_headless_chromium)
+            DownloadContents(links = indexLinks, type = "index", wait = wait, project = project, website = website, use_headless_chromium = use_headless_chromium, use_phantomjs = use_phantomjs)
+            DownloadContents(links = indexLinks, type = "index", wait = wait, project = project, website = website, use_headless_chromium = use_headless_chromium, use_phantomjs = use_phantomjs)
+            DownloadContents(links = indexLinks, type = "index", missingPages = FALSE, wait = wait, project = project, website = website, use_headless_chromium = use_headless_chromium, use_phantomjs = use_phantomjs)
+            DownloadContents(links = indexLinks, type = "index", missingPages = FALSE, wait = wait, project = project, website = website, use_headless_chromium = use_headless_chromium, use_phantomjs = use_phantomjs)
 
             newLinks <- ExtractLinks(importParameters = TRUE,
                                      project = project,
@@ -62,10 +63,10 @@ UpdateDataset <- function(dataset = NULL,
                                           startPage = params$CreateLinks$startPage,
                                           endPage = params$CreateLinks$startPage,
                                           exportParameters = FALSE)
-                DownloadContents(links = indexLinks, type = "index", wait = wait, project = project, website = website, use_headless_chromium = use_headless_chromium)
-                DownloadContents(links = indexLinks, type = "index", wait = wait, project = project, website = website, use_headless_chromium = use_headless_chromium)
-                DownloadContents(links = indexLinks, type = "index", missingPages = FALSE, wait = wait, project = project, website = website, use_headless_chromium = use_headless_chromium)
-                DownloadContents(links = indexLinks, type = "index", missingPages = FALSE, wait = wait, project = project, website = website, use_headless_chromium = use_headless_chromium)
+                DownloadContents(links = indexLinks, type = "index", wait = wait, project = project, website = website, use_headless_chromium = use_headless_chromium, use_phantomjs = use_phantomjs)
+                DownloadContents(links = indexLinks, type = "index", wait = wait, project = project, website = website, use_headless_chromium = use_headless_chromium, use_phantomjs = use_phantomjs)
+                DownloadContents(links = indexLinks, type = "index", missingPages = FALSE, wait = wait, project = project, website = website, use_headless_chromium = use_headless_chromium, use_phantomjs = use_phantomjs)
+                DownloadContents(links = indexLinks, type = "index", missingPages = FALSE, wait = wait, project = project, website = website, use_headless_chromium = use_headless_chromium, use_phantomjs = use_phantomjs)
 
                 links <- ExtractLinks(importParameters = TRUE,
                                       project = project,
@@ -78,10 +79,10 @@ UpdateDataset <- function(dataset = NULL,
                                               endPage = params$CreateLinks$startPage+(params$CreateLinks$increaseBy*length(indexLinks)),
                                               increaseBy = params$CreateLinks$increaseBy,
                                               exportParameters = FALSE)
-                    DownloadContents(links = indexLinks, type = "index", wait = wait, project = project, website = website, use_headless_chromium = use_headless_chromium)
-                    DownloadContents(links = indexLinks, type = "index", missingPages = FALSE, wait = wait, project = project, website = website, use_headless_chromium = use_headless_chromium)
-                    DownloadContents(links = indexLinks, type = "index", wait = wait, project = project, website = website, use_headless_chromium = use_headless_chromium)
-                    DownloadContents(links = indexLinks, type = "index", missingPages = FALSE, wait = wait, project = project, website = website, use_headless_chromium = use_headless_chromium)
+                    DownloadContents(links = indexLinks, type = "index", wait = wait, project = project, website = website, use_headless_chromium = use_headless_chromium, use_phantomjs = use_phantomjs)
+                    DownloadContents(links = indexLinks, type = "index", missingPages = FALSE, wait = wait, project = project, website = website, use_headless_chromium = use_headless_chromium, use_phantomjs = use_phantomjs)
+                    DownloadContents(links = indexLinks, type = "index", wait = wait, project = project, website = website, use_headless_chromium = use_headless_chromium, use_phantomjs = use_phantomjs)
+                    DownloadContents(links = indexLinks, type = "index", missingPages = FALSE, wait = wait, project = project, website = website, use_headless_chromium = use_headless_chromium, use_phantomjs = use_phantomjs)
 
                     links <- ExtractLinks(importParameters = TRUE,
                                           id = length(indexLinks),
@@ -105,10 +106,10 @@ UpdateDataset <- function(dataset = NULL,
                                           endDate = as.character(as.Date(Sys.Date())),
                                           dateSeparator = params$CreateLinks$dateSeparator,
                                           exportParameters = FALSE)
-                DownloadContents(links = indexLinks, type = "index", wait = wait, project = project, website = website, use_headless_chromium = use_headless_chromium)
-                DownloadContents(links = indexLinks, type = "index", wait = wait, project = project, website = website, use_headless_chromium = use_headless_chromium)
-                DownloadContents(links = indexLinks, type = "index", missingPages = FALSE, wait = wait, project = project, website = website, use_headless_chromium = use_headless_chromium)
-                DownloadContents(links = indexLinks, type = "index", missingPages = FALSE, wait = wait, project = project, website = website, use_headless_chromium = use_headless_chromium)
+                DownloadContents(links = indexLinks, type = "index", wait = wait, project = project, website = website, use_headless_chromium = use_headless_chromium, use_phantomjs = use_phantomjs)
+                DownloadContents(links = indexLinks, type = "index", wait = wait, project = project, website = website, use_headless_chromium = use_headless_chromium, use_phantomjs = use_phantomjs)
+                DownloadContents(links = indexLinks, type = "index", missingPages = FALSE, wait = wait, project = project, website = website, use_headless_chromium = use_headless_chromium, use_phantomjs = use_phantomjs)
+                DownloadContents(links = indexLinks, type = "index", missingPages = FALSE, wait = wait, project = project, website = website, use_headless_chromium = use_headless_chromium, use_phantomjs = use_phantomjs)
 
                 message("\nExtracting links to new pages")
 
@@ -132,7 +133,7 @@ UpdateDataset <- function(dataset = NULL,
                          type = "articles",
                          linksToCheck = toDownloadL,
                          wait = wait, project = project, website = website,
-                         use_headless_chromium = use_headless_chromium)
+                         use_headless_chromium = use_headless_chromium, use_phantomjs = use_phantomjs)
 
         DownloadContents(links = allLinks,
                          type = "articles",
@@ -141,7 +142,7 @@ UpdateDataset <- function(dataset = NULL,
                          project = project,
                          website = website,
                          missingPages = FALSE,
-                         use_headless_chromium = use_headless_chromium)
+                         use_headless_chromium = use_headless_chromium, use_phantomjs = use_phantomjs)
 
         DownloadContents(links = allLinks,
                          type = "articles",
@@ -149,7 +150,7 @@ UpdateDataset <- function(dataset = NULL,
                          wait = wait,
                          project = project,
                          website = website,
-                         use_headless_chromium = use_headless_chromium)
+                         use_headless_chromium = use_headless_chromium, use_phantomjs = use_phantomjs)
 
         DownloadContents(links = allLinks,
                          type = "articles",
@@ -158,7 +159,7 @@ UpdateDataset <- function(dataset = NULL,
                          project = project,
                          website = website,
                          missingPages = FALSE,
-                         use_headless_chromium = use_headless_chromium)
+                         use_headless_chromium = use_headless_chromium, use_phantomjs = use_phantomjs)
 
         # Extract metadata
         id <- ExtractId(project = project, website = website)
