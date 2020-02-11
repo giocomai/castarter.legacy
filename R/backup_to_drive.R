@@ -87,15 +87,17 @@ backup_to_google_drive <- function(r_files = TRUE,
                               recurse = FALSE,
                               type = "file",
                               glob = "*.R")
-
-        if(nrow(website_folders)==0) {
-            purrr::walk(.x = r_files,
-                        .f = function(x) googledrive::drive_upload(media = x, path = website_folder_d))
+        if (length(r_files)==0) {
+            warning("No local .R files found.")
         } else {
-            purrr::walk(.x = r_files[is.element(el = website_folders$name, set = fs::path_file(r_files))==FALSE],
-                        .f = function(x) googledrive::drive_upload(media = x, path = website_folder_d))
+            if(nrow(website_folders)==0) {
+                purrr::walk(.x = r_files,
+                            .f = function(x) googledrive::drive_upload(media = x, path = website_folder_d))
+            } else {
+                purrr::walk(.x = r_files[is.element(el = website_folders$name, set = fs::path_file(r_files))==FALSE],
+                            .f = function(x) googledrive::drive_upload(media = x, path = website_folder_d))
+            }
         }
-
 
         #googledrive::drive_update()
     }
