@@ -244,7 +244,7 @@ ShowRelativeTS <- function(dataset,
     }
     temp <-
         dplyr::bind_cols(tibble::as_tibble(sapply(terms, function(x) stringr::str_count(string = dataset$text, pattern = stringr::regex(x, ignore_case = ignore_case)))),
-                                tibble::data_frame(nWords = stringr::str_count(string = dataset$text, pattern = "\\w+")),
+                                tibble::tibble(nWords = stringr::str_count(string = dataset$text, pattern = "\\w+")),
                   tibble::tibble(ItemDate = dataset$date)) %>%
         dplyr::arrange(ItemDate) %>%
         # Count all words per item

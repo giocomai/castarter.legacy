@@ -12,11 +12,11 @@
 
 SummariseDataset <- function(dataset) {
     websites <- levels(as.factor(dataset$website))
-    datasetSummary <- tibble::data_frame(Website = websites,
-                                         From = as.Date(rep(NA, length(websites))),
-                                         Until = as.Date(rep(NA, length(websites))),
-                                         Total = as.numeric(NA),
-                                         `Average daily` = as.numeric(NA))
+    datasetSummary <- tibble::tibble(Website = websites,
+                                     From = as.Date(rep(NA, length(websites))),
+                                     Until = as.Date(rep(NA, length(websites))),
+                                     Total = as.numeric(NA),
+                                     `Average daily` = as.numeric(NA))
     for (i in seq_along(websites)) {
         datasetSummary$From[i] <- min(dataset$date[dataset$website==websites[i]])
         datasetSummary$Until[i] <- max(dataset$date[dataset$website==websites[i]])

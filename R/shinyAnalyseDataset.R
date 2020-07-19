@@ -89,7 +89,7 @@ AnalyseDataset <- function() {
     ),
     server = function(input, output) {
 
-        dataset <- tibble::data_frame(NA) %>% na.omit()
+        dataset <- tibble::tibble(NA) %>% na.omit()
 
         #### Select project/website ui ####
 

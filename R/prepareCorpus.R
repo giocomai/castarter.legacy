@@ -60,7 +60,7 @@ LoadDatasets <- function(projectsAndWebsites = NULL,
         lastSavedDatasets <- lastSavedDatasets[!is.na(lastSavedDatasets)]
     }
     if (type == "dataset"|type == "datasetTidy"|type == "datasetBySentence") {
-        allDatasets <- tibble::data_frame()
+        allDatasets <- tibble::tibble()
         for (i in 1:length(lastSavedDatasets)) {
             dataset <- readRDS(lastSavedDatasets[i])
             # introduced for backward compatibility with datasets created with castarter ver<0.2 #legacy

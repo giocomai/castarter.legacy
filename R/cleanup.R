@@ -14,7 +14,7 @@ CountHtml <- function(exportCsv = FALSE) {
         baseFolder <- CastarterOptions("baseFolder")
     }
 
-    htmlFileNumber <- dplyr::data_frame(
+    htmlFileNumber <- tibble::tibble(
         dir = dirname(list.files(path = baseFolder,
                                  pattern=".html",
                                  full.names = FALSE,

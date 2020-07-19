@@ -270,13 +270,13 @@ ExportMetadata <- function(id,
     if (is.null(ignoreVector) == FALSE) {
         links <- links[ignoreVector]
     }
-    metadata <- tibble::data_frame(doc_id = paste(website, id, sep = "-"),
-                                   website = website,
-                                   id = id,
-                                   date = dates,
-                                   title = titles,
-                                   language = language,
-                                   link = links[id])
+    metadata <- tibble::tibble(doc_id = paste(website, id, sep = "-"),
+                               website = website,
+                               id = id,
+                               date = dates,
+                               title = titles,
+                               language = language,
+                               link = links[id])
     if (accordingToDate == TRUE) {
         metadata <- metadata[order(metadata$date), ]
     }

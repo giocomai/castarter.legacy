@@ -113,8 +113,8 @@ ReadAndTag <- function(additional_links = FALSE) {
                             ))
         )
     ), server = function(input, output, session) {
-        allTags <- tags <- tibble::data_frame(doc_id = NA,  tag = NA, category = NA, type = NA)
-        dataset <- tibble::data_frame(NA) %>% na.omit()
+        allTags <- tags <- tibble::tibble(doc_id = NA,  tag = NA, category = NA, type = NA)
+        dataset <- tibble::tibble(NA) %>% na.omit()
 
         #### Select project/website ui ####
 
@@ -155,7 +155,7 @@ ReadAndTag <- function(additional_links = FALSE) {
                                       if (is.null(unlist(allTags$tag))) {
                                           NULL
                                       } else {
-                                          tibble::data_frame(tag = unlist(allTags$tag)) %>%
+                                          tibble::tibble(tag = unlist(allTags$tag)) %>%
                                               dplyr::group_by(tag) %>%
                                               dplyr::tally() %>%
                                               dplyr::arrange(desc(n)) %>%
@@ -170,7 +170,7 @@ ReadAndTag <- function(additional_links = FALSE) {
                                       if (is.null(unlist(allTags$type))) {
                                           NULL
                                       } else {
-                                          tibble::data_frame(type = unlist(allTags$type)) %>%
+                                          tibble::tibble(type = unlist(allTags$type)) %>%
                                               dplyr::group_by(type) %>%
                                               dplyr::tally() %>%
                                               dplyr::arrange(desc(n)) %>%
@@ -187,7 +187,7 @@ ReadAndTag <- function(additional_links = FALSE) {
                                       if (is.null(unlist(allTags$category))) {
                                           NULL
                                       } else {
-                                          tibble::data_frame(category = unlist(allTags$category)) %>%
+                                          tibble::tibble(category = unlist(allTags$category)) %>%
                                               dplyr::group_by(category) %>%
                                               dplyr::tally() %>%
                                               dplyr::arrange(desc(n)) %>%
@@ -298,7 +298,7 @@ ReadAndTag <- function(additional_links = FALSE) {
         shiny::observeEvent(input$submit, {
 
             if (file.exists(file.path("castarter", dataset$project[input$id], dataset$website[input$id], "Logs", "tags.rds")) == FALSE) {
-                saveRDS(object = tibble::data_frame(doc_id = NA, tag = list(NA), category = list(NA), type=list(NA)) %>%
+                saveRDS(object = tibble::tibble(doc_id = NA, tag = list(NA), category = list(NA), type=list(NA)) %>%
                             dplyr::filter(is.na(doc_id)==FALSE),
                         file = file.path("castarter", dataset$project[input$id], dataset$website[input$id], "Logs", "tags.rds"))
             }
@@ -310,14 +310,14 @@ ReadAndTag <- function(additional_links = FALSE) {
                     tags$type[tags$doc_id==dataset$doc_id[input$id]] <- list(input$type)
                 } else {
                     tags <- dplyr::bind_rows(tags,
-                                             tibble::data_frame(doc_id = dataset$doc_id[input$id],
+                                             tibble::tibble(doc_id = dataset$doc_id[input$id],
                                                                 tag = list(input$tag),
                                                                 category = list(input$category),
                                                                 type = list(input$type))) %>%
                         dplyr::arrange(doc_id)
                 }
             } else { #runs when *tags* is empty, adds first item
-                tags <- tibble::data_frame(doc_id = dataset$doc_id[input$id],  tag = list(input$tag), category = list(input$category), type = list(input$type))
+                tags <- tibble::tibble(doc_id = dataset$doc_id[input$id],  tag = list(input$tag), category = list(input$category), type = list(input$type))
             }
             saveRDS(object = tags, file = file.path("castarter", dataset$project[input$id], dataset$website[input$id], "Logs", "tags.rds"))
 
@@ -371,7 +371,7 @@ ReadAndTag <- function(additional_links = FALSE) {
                             choices =  if (is.null(unlist(allTags$tag))) {
                                 NULL
                             } else {
-                                tibble::data_frame(tag = unlist(allTags$tag)) %>%
+                                tibble::tibble(tag = unlist(allTags$tag)) %>%
                                     dplyr::arrange(tag) %>%
                                     dplyr::distinct() %>%
                                     dplyr::pull(tag)},
@@ -384,7 +384,7 @@ ReadAndTag <- function(additional_links = FALSE) {
                 selectInput('categoryFilter', 'Filter by category',
                             choices =  if (is.null(unlist(allTags$category))) {
                                 NULL
-                            } else {tibble::data_frame(category = unlist(allTags$category)) %>%
+                            } else {tibble::tibble(category = unlist(allTags$category)) %>%
                                     dplyr::arrange(category) %>%
                                     dplyr::distinct() %>%
                                     dplyr::pull(category)},
@@ -397,7 +397,7 @@ ReadAndTag <- function(additional_links = FALSE) {
                 selectInput('typeFilter', 'Filter by type',
                             choices =  if (is.null(unlist(allTags$type))) {
                                 NULL
-                            } else {tibble::data_frame(type = unlist(allTags$type)) %>%
+                            } else {tibble::tibble(type = unlist(allTags$type)) %>%
                                     dplyr::arrange(type) %>%
                                     dplyr::distinct() %>%
                                     dplyr::pull(type)},
