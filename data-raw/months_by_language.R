@@ -4,6 +4,19 @@ months_by_language <- list()
 
 # system("locale -a", intern = TRUE)
 
+
+Sys.setlocale("LC_TIME", "hy_AM.utf8")
+months_by_language$armenian <-
+    tibble::tibble(month_name = format(ISOdate(2000, 1:12, 1), "%B"),
+                   month_abb  = format(ISOdate(2000, 1:12, 1), "%b"))
+
+
+Sys.setlocale("LC_TIME", "az_AZ.utf8")
+months_by_language$azerbaijani <-
+    tibble::tibble(month_name = format(ISOdate(2000, 1:12, 1), "%B"),
+                   month_abb  = format(ISOdate(2000, 1:12, 1), "%b"))
+
+
 Sys.setlocale("LC_TIME", "croatian")
 # iconv(x = format(ISOdate(2000, 1:12, 1), "%B"), from = "latin2", to = "UTF-8")
 # iconv(x = format(ISOdate(2000, 1:12, 1), "%b"), from = "latin2", to = "UTF-8")
@@ -42,6 +55,15 @@ Sys.setlocale("LC_TIME", "et_EE.utf8")
 months_by_language$estonian <-
     tibble::tibble(month_name = format(ISOdate(2000, 1:12, 1), "%B"),
                    month_abb  = stringr::str_squish(format(ISOdate(2000, 1:12, 1), "%b")))
+
+
+
+
+Sys.setlocale("LC_TIME", "ka_GE.utf8")
+months_by_language$georgian <-
+    tibble::tibble(month_name = format(ISOdate(2000, 1:12, 1), "%B"),
+                   month_abb  = format(ISOdate(2000, 1:12, 1), "%b"))
+
 
 Sys.setlocale("LC_TIME", "german")
 # iconv(x = format(ISOdate(2000, 1:12, 1), "%B"), from = "latin1", to = "UTF-8")
