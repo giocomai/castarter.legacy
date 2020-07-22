@@ -332,7 +332,7 @@ ExportDataset <- function(dataset = NULL,
         project <- CastarterOptions("project")
     }
     if (is.null(website) == TRUE) {
-        project <- CastarterOptions("website")
+        website <- CastarterOptions("website")
     }
     if (is.null(CastarterOptions("baseFolder"))) {
         baseFolder <- "castarter"
