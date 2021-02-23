@@ -132,4 +132,11 @@ months_by_language$ukrainian <-
                    month_abb  = format(ISOdate(2000, 1:12, 1), "%b"))
 
 
+Sys.setlocale("LC_TIME", "en_IE.utf8")
+# iconv(x = format(ISOdate(2000, 1:12, 1), "%B"), from = "UTF-8", to = "UTF-8")
+months_by_language$english <-
+    tibble::tibble(month_name = format(ISOdate(2000, 1:12, 1), "%B"),
+                   month_abb  = format(ISOdate(2000, 1:12, 1), "%b"))
+
+
 usethis::use_data(months_by_language, internal = TRUE, overwrite = TRUE)
