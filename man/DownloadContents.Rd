@@ -18,6 +18,7 @@ DownloadContents(
   wait = 1,
   ignoreSSLcertificates = FALSE,
   use_headless_chromium = FALSE,
+  headless_chromium_wait = 1,
   use_phantomjs = FALSE,
   createScript = FALSE,
   project = NULL,
@@ -50,6 +51,8 @@ DownloadContents(
 \item{ignoreSSLcertificates}{Logical, defaults to FALSE. If TRUE it uses wget to download the page, and does not check if the SSL certificate is valid. Useful, for example, for https pages with expired or mis-configured SSL certificate.}
 
 \item{use_headless_chromium}{Logical, defaults to FALSE. If TRUE uses the `crrri` package to download pages. Useful in particular when web pages are generated via javascript. See in particular: https://github.com/RLesur/crrri#system-requirements}
+
+\item{headless_chromium_wait}{Numeric, in seconds. How long should headless chrome wait after loading page?}
 
 \item{createScript}{Logical, defaults to FALSE. Tested on Linux only. If TRUE, creates a downloadPages.sh executable file that can be used to download all relevant pages from a terminal.}
 

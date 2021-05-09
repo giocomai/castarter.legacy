@@ -17,6 +17,7 @@
 #' @param start Integer. Only links with position higher than start in the links vector will be downloaded: links[start:length(links)]
 #' @param ignoreSSLcertificates Logical, defaults to FALSE. If TRUE it uses wget to download the page, and does not check if the SSL certificate is valid. Useful, for example, for https pages with expired or mis-configured SSL certificate.
 #' @param use_headless_chromium Logical, defaults to FALSE. If TRUE uses the `crrri` package to download pages. Useful in particular when web pages are generated via javascript. See in particular: https://github.com/RLesur/crrri#system-requirements
+#' @param headless_chromium_wait Numeric, in seconds. How long should headless chrome wait after loading page?
 #' @param createScript Logical, defaults to FALSE. Tested on Linux only. If TRUE, creates a downloadPages.sh executable file that can be used to download all relevant pages from a terminal.
 #' @return By default, returns nothing, used for its side effects (downloads html files in relevant folder). Download files can then be imported in a vector with the function ImportHtml.
 #' @export
@@ -38,6 +39,7 @@ DownloadContents <- function(links,
                              wait = 1,
                              ignoreSSLcertificates = FALSE,
                              use_headless_chromium = FALSE,
+                             headless_chromium_wait = 1,
                              use_phantomjs = FALSE,
                              createScript = FALSE,
                              project = NULL,
@@ -148,7 +150,7 @@ DownloadContents <- function(links,
                         Page$navigate(url = i)
                     } %...>% {
                         Page$loadEventFired()
-                    } %...>% {
+                    } %>% wait(delay = headless_chromium_wait) %...>% {
                         Runtime$evaluate(
                             expression = 'document.documentElement.outerHTML'
                         )
