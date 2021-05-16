@@ -310,16 +310,20 @@ ExtractDates <- function(dateFormat = "dmY",
         }
     }
 
-    if (is.element(el = tolower(language), set = names(months_by_language))) {
+    if (is.element(el = tolower(language), set = names(castarter:::months_by_language))) {
         if (stringr::str_detect(string = dateFormat, pattern = "B")) {
             replacement_vector <- month.name
-            names(replacement_vector) <- tolower(months_by_language[[which(x = names(months_by_language)==language)]]$month_name)
+            names(replacement_vector) <- tolower(castarter:::months_by_language[[which(x = names(castarter:::months_by_language)==language)]]$month_name)
+            datesTxt <- stringr::str_replace_all(string = tolower(datesTxt), replacement_vector)
+            dates <- as.Date(lubridate::parse_date_time(datesTxt, dateFormat, locale = "C"))
         } else if (stringr::str_detect(string = dateFormat, pattern = "b")) {
             replacement_vector <- month.abb
-            names(replacement_vector) <- tolower(months_by_language[[which(x = names(months_by_language)==language)]]$month_abb)
+            names(replacement_vector) <- tolower(castarter:::months_by_language[[which(x = names(castarter:::months_by_language)==language)]]$month_abb)
+            datesTxt <- stringr::str_replace_all(string = tolower(datesTxt), replacement_vector)
+            dates <- as.Date(lubridate::parse_date_time(datesTxt, dateFormat, locale = "C"))
+        } else {
+            dates <- as.Date(lubridate::parse_date_time(datesTxt, dateFormat, locale = language))
         }
-        datesTxt <- stringr::str_replace_all(string = tolower(datesTxt), replacement_vector)
-        dates <- as.Date(lubridate::parse_date_time(datesTxt, dateFormat, locale = "C"))
     } else {
         dates <- as.Date(lubridate::parse_date_time(datesTxt, dateFormat, locale = language))
     }
