@@ -38,6 +38,7 @@ ExtractTitles <- function(container = "title",
                           removeEverythingBefore = NULL,
                           removeEverythingAfter = NULL,
                           customXpath = NULL,
+                          customCSSpath = NULL,
                           maxCharacters = NULL,
                           encoding = "UTF-8",
                           progressBar = TRUE,
@@ -124,6 +125,10 @@ ExtractTitles <- function(container = "title",
                 if (is.null(customXpath)==FALSE) {
                     temp <- temp %>%
                         rvest::html_nodes(xpath = customXpath)%>%
+                        rvest::html_text()
+                } else if (is.null(customCSSpath)==FALSE) {
+                    temp <- temp %>%
+                        rvest::html_nodes(css = customCSSpath)%>%
                         rvest::html_text()
                 } else if (is.null(containerClass)==TRUE&is.null(containerId)==TRUE) {
                      temp <- temp %>%

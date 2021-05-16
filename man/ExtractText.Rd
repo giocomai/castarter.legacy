@@ -19,6 +19,7 @@ ExtractText(
   maxTitleCharacters = 80,
   removeString = NULL,
   customXpath = NULL,
+  customCSSpath = NULL,
   removeEverythingAfter_pre = NULL,
   removeEverythingBefore_pre = NULL,
   removeEverythingBefore = NULL,

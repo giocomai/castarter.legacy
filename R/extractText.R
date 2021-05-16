@@ -34,7 +34,12 @@ ExtractText <- function(container = NULL,
                         htmlLocation = NULL,
                         id = NULL,
                         encoding = "UTF-8",
-                        metadata = NULL, export = FALSE, maxTitleCharacters = 80, removeString = NULL, customXpath = NULL,
+                        metadata = NULL,
+                        export = FALSE,
+                        maxTitleCharacters = 80,
+                        removeString = NULL,
+                        customXpath = NULL,
+                        customCSSpath = NULL,
                         removeEverythingAfter_pre = NULL,
                         removeEverythingBefore_pre = NULL,
                         removeEverythingBefore = NULL,
@@ -137,6 +142,30 @@ ExtractText <- function(container = NULL,
         if (is.element("xml_node", set = class(temp))==TRUE) {
             if (keepEverything == TRUE) {
                 temp <- temp %>% rvest::html_text()
+            } else if (is.null(customXpath)==FALSE) {
+                temp <- temp %>%
+                    rvest::html_nodes(xpath = customXpath)
+                if (is.null(subElement)==TRUE) {
+                    temp <- temp %>%
+                        rvest::html_nodes(subElement) %>%
+                        rvest::html_text()
+                } else {
+                    temp <- temp %>%
+                        rvest::html_nodes(subElement) %>%
+                        rvest::html_text()
+                }
+            } else if (is.null(customCSSpath)==FALSE) {
+                temp <- temp %>%
+                    rvest::html_nodes(css = customCSSpath)
+                if (is.null(subElement)==TRUE) {
+                    temp <- temp %>%
+                        rvest::html_nodes(subElement) %>%
+                        rvest::html_text()
+                } else {
+                    temp <- temp %>%
+                        rvest::html_nodes(subElement) %>%
+                        rvest::html_text()
+                }
             } else if (is.null(containerClass)==TRUE&is.null(containerId)==TRUE) {
                 if (is.null(subElement)==TRUE) {
                     temp <- temp %>%

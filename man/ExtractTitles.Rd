@@ -18,6 +18,7 @@ ExtractTitles(
   removeEverythingBefore = NULL,
   removeEverythingAfter = NULL,
   customXpath = NULL,
+  customCSSpath = NULL,
   maxCharacters = NULL,
   encoding = "UTF-8",
   progressBar = TRUE,
