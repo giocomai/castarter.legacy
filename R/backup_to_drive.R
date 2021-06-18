@@ -94,8 +94,13 @@ backup_to_google_drive <- function(r_files = TRUE,
                 purrr::walk(.x = r_files,
                             .f = function(x) googledrive::drive_upload(media = x, path = website_folder_d))
             } else {
-                purrr::walk(.x = r_files[is.element(el = website_folders$name, set = fs::path_file(r_files))==FALSE],
-                            .f = function(x) googledrive::drive_upload(media = x, path = website_folder_d))
+                r_files_to_upload <- r_files[is.element(el = fs::path_file(r_files),
+                                                        set = website_folders$name)==FALSE]
+                if (length(r_files_to_upload)>0) {
+                    purrr::walk(.x = r_files_to_upload,
+                                .f = function(x) googledrive::drive_upload(media = x,
+                                                                           path = website_folder_d))
+                }
             }
         }
 
@@ -145,7 +150,7 @@ backup_to_google_drive <- function(r_files = TRUE,
                                             full.names = TRUE,
                                             recursive = FALSE)
             for (j in local_daily_files) {
-                if (archive_date_remote_daily_d %>% dplyr::filter(name == fs::file_path(j)) %>% nrow() == 0) {
+                if (archive_date_remote_daily_d %>% dplyr::filter(name == fs::path_file(j)) %>% nrow() == 0) {
                     googledrive::drive_upload(media = j, path = archive_date_remote_d)
                 }
             }
