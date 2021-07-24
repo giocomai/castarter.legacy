@@ -44,7 +44,7 @@ backup_to_google_drive <- function(r_files = TRUE,
 
     if (nrow(project_folder_d)==0) {
         project_folder_d <- googledrive::drive_mkdir(name = project,
-                                                     parent = castarter_folder_d)
+                                                     path = castarter_folder_d)
     } else if (nrow(project_folder_d)==1) {
         # do nothing
     } else {
@@ -59,7 +59,7 @@ backup_to_google_drive <- function(r_files = TRUE,
 
     if (nrow(website_folder_d)==0) {
         website_folder_d <- googledrive::drive_mkdir(name = website,
-                                                     parent = project_folder_d)
+                                                     path = project_folder_d)
     } else if (nrow(website_folder_d)==1) {
         # do nothing
     } else {
@@ -70,7 +70,7 @@ backup_to_google_drive <- function(r_files = TRUE,
 
     if (website_folders %>% dplyr::filter(name=="Archives") %>% nrow() == 0) {
         archives_folder_d <- googledrive::drive_mkdir(name = "Archives",
-                                                      parent = website_folder_d)
+                                                      path = website_folder_d)
     } else if (website_folders %>% dplyr::filter(name=="Archives") %>% nrow() == 1) {
         archives_folder_d <- website_folders %>% dplyr::filter(name=="Archives")
     }
@@ -113,7 +113,7 @@ backup_to_google_drive <- function(r_files = TRUE,
 
         if (website_folders %>% dplyr::filter(name=="Dataset") %>% nrow() == 0) {
             dataset_folder_d <- googledrive::drive_mkdir(name = "Dataset",
-                                                         parent = website_folder_d)
+                                                         path = website_folder_d)
         } else if (website_folders %>% dplyr::filter(name=="Dataset") %>% nrow() == 1) {
             dataset_folder_d <- website_folders %>% dplyr::filter(name=="Dataset")
         }
@@ -141,7 +141,7 @@ backup_to_google_drive <- function(r_files = TRUE,
         for (i in archive_dates_local) {
             if (archive_dates_remote %>% dplyr::filter(name==i) %>% nrow() == 0) {
                 archive_date_remote_d <- googledrive::drive_mkdir(name = i,
-                                                                  parent = archives_folder_d)
+                                                                  path = archives_folder_d)
             } else {
                 archive_date_remote_d <- archive_dates_remote %>% dplyr::filter(name==i)
             }
