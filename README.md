@@ -1,12 +1,30 @@
-An introduction to ‘castarter’ - content analysis starter toolkit for R
+An introduction to ‘castarter.legacy’ - content analysis starter toolkit
+for R
 ================
 Giorgio Comai
-2018-10-10
+2023-01-07
 
 [![Licence](https://img.shields.io/badge/licence-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
-[![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
+[![Lifecycle:
+superseded](https://img.shields.io/badge/lifecycle-superseded-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html#superseded)
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
+# `castarter.legacy`
+
+The original package `castarter` is superseded, and has been renamed to
+`castarter.legacy`. It has mostly been developed between 2015 and 2016,
+and has received some updates until 2019. As of 2023, a completely
+rewritten version of `castarter` has been released, and the older
+version has been renamed to `castarter.legacy` and is not actively
+mantained. If you used `castarter`, old scripts may still function: just
+install the package from this repository and load
+`library("castarter.legacy")`. The documentation will still mostly refer
+to `castarter` but keep in mind that this repository actually hosts
+`castarter.legacy`.
+
+Please do check out the new iteration of `castarter`, available [on
+GitHub](https://github.com/giocomai/castarter)
 
 # `castarter`
 
@@ -26,9 +44,9 @@ dataset. They may include sections on sampling (Krippendorff 2004;
 Riffe, Lacy, and Fico 2005), but they do not debate explicitly how new
 datasets can be built. Commercial software packages generally share the
 same expectation. In the R ecosystem, there are a number of packages
-that can be used to access existing datasets (e.g.
-`tm.plugin.lexisnexis`, `gutenbergr`, `manifestoR`) or import into R
-textual content from social media through their APIs (e.g. `Rtweet`).
+that can be used to access existing datasets
+(e.g. `tm.plugin.lexisnexis`, `gutenbergr`, `manifestoR`) or import into
+R textual content from social media through their APIs (e.g. `Rtweet`).
 
 However, there is no package dedicated to getting into R the textual
 contents of regular websites and extracting key metadata (date and
@@ -52,7 +70,7 @@ analysing web contents in the context of area studies, and for some
 practical examples of how `castarter` has been used, see:
 
 ``` r
-citation("castarter")
+citation("castarter.legacy")
 ```
 
 > Comai, Giorgio (2017). Quantitative Analysis of Web Content in Support
@@ -61,23 +79,23 @@ citation("castarter")
 > 14-34.
 > <http://publications.tlu.ee/index.php/stss/article/view/346/446>.
 
-## What does `castarter` do?
+## What does `castarter.legacy` do?
 
 Given a few basic criteria, it allows to:
 
-  - download index pages of a website
-  - extract direct links to individual web pages
-  - systematically download all selected pages (and making it easy to
-    restart the download process if it fails)
-  - facilitate the extraction of key metadata (title and date), as well
-    as the textual content of all pages
-  - store the resulting dataset in a tabular format that can easily be
-    used with other R packages (most easily with the `tidytext` package,
-    but it can easily be adapted for further analysis with the `tm` and
-    `quanteda` packages among others)
-  - export the metadata, the full dataset, or a subset in csv, txt, or
-    xlsx format, enabling further analysis with other software
-  - compress and archive all downloaded html files in a standard format
+- download index pages of a website
+- extract direct links to individual web pages
+- systematically download all selected pages (and making it easy to
+  restart the download process if it fails)
+- facilitate the extraction of key metadata (title and date), as well as
+  the textual content of all pages
+- store the resulting dataset in a tabular format that can easily be
+  used with other R packages (most easily with the `tidytext` package,
+  but it can easily be adapted for further analysis with the `tm` and
+  `quanteda` packages among others)
+- export the metadata, the full dataset, or a subset in csv, txt, or
+  xlsx format, enabling further analysis with other software
+- compress and archive all downloaded html files in a standard format
 
 As parameters for downloading web pages and extracting metadata and text
 are stored by default, it is easy to keep the dataset up-to-date with
@@ -99,14 +117,15 @@ with the following commands, which will download and store locally all
 press releases issued by the Kremlin and available on their website.
 
 ``` r
-library("castarter")
+library("castarter.legacy")
 devtools::install_github(repo = "giocomai/castarterpresidents")
+#> Using github PAT from envvar GITHUB_PAT
 #> Skipping install of 'castarterpresidents' from a github remote, the SHA1 (3c809129) has not changed since last install.
 #>   Use `force = TRUE` to force installation
 
 CreateFolders(project = "presidents", website = "kremlin_en")
 SaveWebsite(dataset = castarterpresidents::kremlin_en, project = "presidents", website = "kremlin_en")
-#> Dataset saved in castarter/presidents/kremlin_en/2018-10-10-presidents-kremlin_en-dataset.rds
+#> Dataset saved in castarter/presidents/kremlin_en/Dataset/2023-01-07-presidents-kremlin_en-dataset.rds
 ```
 
 ### `CreateDataset()`
@@ -159,9 +178,9 @@ been implemented, in full or in part.
 
 Enhancements to current functions will likely focus on:
 
-  - better `UpdateDataset()` for keeping multiple datasets up to date
-  - some heuristics and suggestions for extracting links, metadata, and
-    text
+- better `UpdateDataset()` for keeping multiple datasets up to date
+- some heuristics and suggestions for extracting links, metadata, and
+  text
 
 Forthcoming releases will likely include fully functional and enhanced
 version of the following shiny apps:
@@ -172,17 +191,17 @@ version of the following shiny apps:
 
 Other planned feature include:
 
-  - automatically generate human-readable and machine-readable log files
-    that detail the procedure used to create a dataset
+- automatically generate human-readable and machine-readable log files
+  that detail the procedure used to create a dataset
 
 ## Installation
 
-`castarter` can easily be installed from GitHub with `devtools`:
+`castarter.legacy` can easily be installed from GitHub with `devtools`:
 
 ``` r
 if(!require("devtools")) install.packages("devtools")
-devtools::install_github("giocomai/castarter")
-library("castarter")
+devtools::install_github("giocomai/castarter.legacy")
+library("castarter.legacy")
 ```
 
 To use interactive web interfaces, you will need to have installed on
@@ -200,18 +219,17 @@ if(!require("tidytext")) install.packages("tidytext")
 Some examples of analysis of media contents conducted with `castarter`
 are available on the author’s blog:
 
-  - [Word frequency of ‘Ukraine’, ‘Crimea’, and ‘Syria’ on Russia’s
-    First
-    Channel](http://www.giorgiocomai.eu/2015/11/03/word-frequency-of-ukraine-crimea-and-syria-on-russias-first-channel/)
+- [Word frequency of ‘Ukraine’, ‘Crimea’, and ‘Syria’ on Russia’s First
+  Channel](http://www.giorgiocomai.eu/2015/11/03/word-frequency-of-ukraine-crimea-and-syria-on-russias-first-channel/)
 
 ## Disclaimer
 
 `castarter` is under active development:
 
-  - some functions may not work as expected;
-  - documentation is incomplete (however, most paramaters should be
-    self-descriptive);
-  - the code has not been optimised for performance.
+- some functions may not work as expected;
+- documentation is incomplete (however, most paramaters should be
+  self-descriptive);
+- the code has not been optimised for performance.
 
 ## About the author
 

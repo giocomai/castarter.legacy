@@ -1,11 +1,11 @@
 ---
-title: "An introduction to 'castarter' - content analysis starter toolkit for R"
+title: "An introduction to 'castarter.legacy' - content analysis starter toolkit for R"
 author: "Giorgio Comai"
 date: "`r Sys.Date()`"
 output: github_document
 ---
 [![Licence](https://img.shields.io/badge/licence-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
-[![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
+[![Lifecycle: superseded](https://img.shields.io/badge/lifecycle-superseded-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html#superseded)
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
@@ -16,6 +16,12 @@ knitr::opts_chunk$set(
 )
 
 ```
+
+# `castarter.legacy`
+
+The original package `castarter` is superseded, and has been renamed to `castarter.legacy`. It has mostly been developed between 2015 and 2016, and has received some updates until 2019. As of 2023, a completely rewritten version of `castarter` has been released, and the older version has been renamed to `castarter.legacy` and is not actively mantained. If you used `castarter`, old scripts may still function: just install the package from this repository and load `library("castarter.legacy")`. The documentation will still mostly refer to `castarter` but keep in mind that this repository actually hosts `castarter.legacy`.
+
+Please do check out the new iteration of `castarter`, available [on GitHub](https://github.com/giocomai/castarter)
 
 # `castarter`
 
@@ -34,13 +40,13 @@ However, there is no package dedicated to getting into R the textual contents of
 For further debate on the usefulness of a structured approach to analysing web contents in the context of area studies, and for some practical examples of how `castarter` has been used, see:
 
 ```{r eval=FALSE}
-citation("castarter")
+citation("castarter.legacy")
 ```
 
 > Comai, Giorgio (2017). Quantitative Analysis of Web Content in Support of Qualitative Research. Examples from the Study of Post-Soviet De Facto States, *Studies of Transition States and Societies*, 9(1), 14-34.
   http://publications.tlu.ee/index.php/stss/article/view/346/446.
 
-## What does `castarter` do?
+## What does `castarter.legacy` do?
 
 Given a few basic criteria, it allows to:
 
@@ -63,7 +69,7 @@ Key `castarter` functionalities are available also through web interfaces, furth
 To see them in action, it is suggested to download an example dataset with the following commands, which will download and store locally all press releases issued by the Kremlin and available on their website. 
 
 ```{r}
-library("castarter")
+library("castarter.legacy")
 devtools::install_github(repo = "giocomai/castarterpresidents")
 
 CreateFolders(project = "presidents", website = "kremlin_en")
@@ -120,12 +126,12 @@ Other planned feature include:
 
 ## Installation
 
-`castarter` can easily be installed from GitHub with `devtools`:
+`castarter.legacy` can easily be installed from GitHub with `devtools`:
 
 ```{r eval=FALSE}
 if(!require("devtools")) install.packages("devtools")
-devtools::install_github("giocomai/castarter")
-library("castarter")
+devtools::install_github("giocomai/castarter.legacy")
+library("castarter.legacy")
 ```
 
 To use interactive web interfaces, you will need to have installed on your system also the `shiny` and `tidytext` packages.  
@@ -137,7 +143,7 @@ if(!require("tidytext")) install.packages("tidytext")
 
 
 ```{r eval=TRUE, include=FALSE}
-library("castarter")
+library("castarter.legacy")
 ```
 
 
